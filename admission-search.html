@@ -91,11 +91,12 @@ select:focus,input[type="text"]:focus{border-color:var(--accent);box-shadow:0 0 
 .below-count{background:rgba(244,63,94,.15);color:var(--red2)}
 
 /* RESULT LIST */
-.result-list{display:flex;flex-direction:column;gap:10px;margin-bottom:30px}
+.result-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:30px}
 
 /* CARD */
 .rcard{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;position:relative;transition:border-color .2s,transform .15s}
-.rcard:hover{border-color:var(--border2);transform:translateX(4px)}
+.rcard:hover{border-color:var(--border2);transform:translateY(-2px)}
+.rcard.expanded{grid-column:1/-1}
 .rcard-bar{position:absolute;left:0;top:0;bottom:0;width:4px}
 .above .rcard-bar{background:linear-gradient(180deg,var(--green),var(--green2))}
 .below .rcard-bar{background:linear-gradient(180deg,var(--red),var(--red2))}
@@ -166,6 +167,7 @@ select:focus,input[type="text"]:focus{border-color:var(--accent);box-shadow:0 0 
 footer{text-align:center;padding:40px 20px 20px;color:var(--muted);font-size:11px;border-top:1px solid var(--border);margin-top:40px;line-height:2.2}
 
 @media(max-width:560px){
+  .result-list{grid-template-columns:1fr}
   .rcard-top{grid-template-columns:36px 1fr auto;gap:8px;padding:14px 14px 10px 14px}
   .gval{font-size:26px}
   .rcard-detail{padding:0 14px 12px}
@@ -486,6 +488,8 @@ function toggleDetail(id){
   if(!el) return;
   const open = el.classList.toggle('open');
   btn.textContent = open?'▲ 접기':'▼ 연도별 상세';
+  const card = el.closest('.rcard');
+  if(card) card.classList.toggle('expanded', open);
 }
 
 /* keyword clear */
