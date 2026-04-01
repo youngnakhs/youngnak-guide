@@ -630,6 +630,86 @@ function submitPw2() {
 document.getElementById('pw-modal2').addEventListener('click', function(e) {
   if (e.target === this) closePwModal2();
 });
+
+/* ══ 만우절 이벤트 ══ */
+(function() {
+  // 오늘이 4월 1일인지 확인
+  var now = new Date();
+  if (now.getMonth() !== 3 || now.getDate() !== 1) return;
+
+  // 스타일 주입
+  var style = document.createElement('style');
+  style.textContent = `
+    #af-banner {
+      position: fixed;
+      z-index: 9999;
+      pointer-events: auto;
+      cursor: pointer;
+      background: linear-gradient(135deg, #ffe066, #ffaa00);
+      color: #1a1a00;
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(18px, 4vw, 36px);
+      font-weight: 900;
+      padding: 14px 32px;
+      border-radius: 60px;
+      box-shadow: 0 6px 32px rgba(255,170,0,0.55);
+      white-space: nowrap;
+      user-select: none;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    }
+  `;
+  document.head.appendChild(style);
+
+  // 떠다니는 배너 생성
+  var banner = document.createElement('div');
+  banner.id = 'af-banner';
+  banner.textContent = '🎓 서울대 가는 방법!';
+  document.body.appendChild(banner);
+
+  // 초기 위치 & 속도
+  var bx = window.innerWidth / 2 - 100;
+  var by = window.innerHeight / 2 - 30;
+  var vx = 2.2, vy = 1.8;
+
+  // 자율 이동 루프
+  function drift() {
+    var bw = banner.offsetWidth;
+    var bh = banner.offsetHeight;
+    bx += vx; by += vy;
+    if (bx <= 0)                        { bx = 0;                          vx = Math.abs(vx); }
+    if (bx + bw >= window.innerWidth)   { bx = window.innerWidth - bw;     vx = -Math.abs(vx); }
+    if (by <= 0)                        { by = 0;                          vy = Math.abs(vy); }
+    if (by + bh >= window.innerHeight)  { by = window.innerHeight - bh;    vy = -Math.abs(vy); }
+    banner.style.left = bx + 'px';
+    banner.style.top  = by + 'px';
+    requestAnimationFrame(drift);
+  }
+  drift();
+
+  // 마우스가 가까워지면 튕겨 도망
+  document.addEventListener('mousemove', function(e) {
+    var cx = bx + banner.offsetWidth / 2;
+    var cy = by + banner.offsetHeight / 2;
+    var dx = e.clientX - cx;
+    var dy = e.clientY - cy;
+    var dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < 160) {
+      var angle = Math.atan2(dy, dx);
+      var boost = (160 - dist) / 160 * 8;
+      vx -= Math.cos(angle) * boost;
+      vy -= Math.sin(angle) * boost;
+      // 최대 속도 제한
+      var spd = Math.sqrt(vx*vx + vy*vy);
+      if (spd > 14) { vx = vx/spd*14; vy = vy/spd*14; }
+    }
+  });
+
+  // 터치 지원 (모바일)
+  document.addEventListener('touchmove', function(e) {
+    var touch = e.touches[0];
+    document.dispatchEvent(new MouseEvent('mousemove', { clientX: touch.clientX, clientY: touch.clientY }));
+  }, { passive: true });
+})();
 </script>
 </body>
 </html>
