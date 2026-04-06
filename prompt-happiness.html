@@ -4,213 +4,271 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>행복 수행평가 AI 프롬프트</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Gowun+Dodum&family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:       #0d0d14;
-  --bg2:      #13131f;
-  --surface:  rgba(255,255,255,.05);
-  --border:   rgba(255,255,255,.09);
-  --border2:  rgba(255,255,255,.16);
-  --text:     #f0f0fa;
-  --muted:    #7070a0;
-  --dim:      #a0a0c0;
-  --violet:   #a78bfa;
-  --violet2:  #7c3aed;
-  --sky:      #38bdf8;
-  --pink:     #f472b6;
-  --mint:     #34d399;
-  --amber:    #fbbf24;
-}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{font-size:16px;scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+
 body{
-  font-family:'Plus Jakarta Sans',sans-serif;
-  background:var(--bg);color:var(--text);
+  font-family:'Noto Sans KR',sans-serif;
   min-height:100vh;overflow-x:hidden;
+  background:#fff0f6;
 }
 
-/* NOISE OVERLAY */
-body::before{
-  content:'';position:fixed;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events:none;z-index:0;opacity:.5;
-}
-
-/* MESH GRADIENT BG */
-.mesh{
-  position:fixed;inset:0;pointer-events:none;z-index:0;
+/* ── SPRING BACKGROUND ── */
+.bg-canvas{
+  position:fixed;inset:0;z-index:0;
   background:
-    radial-gradient(ellipse 60% 50% at 10% 0%,   rgba(124,58,237,.18) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 40% at 90% 20%,  rgba(56,189,248,.12) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 50% at 50% 100%, rgba(244,114,182,.10) 0%, transparent 70%);
+    radial-gradient(ellipse 80% 60% at 0%   0%,   #ffe4ef 0%, transparent 65%),
+    radial-gradient(ellipse 60% 50% at 100% 10%,  #f3e8ff 0%, transparent 60%),
+    radial-gradient(ellipse 70% 60% at 50% 100%,  #ffd6e8 0%, transparent 65%),
+    radial-gradient(ellipse 50% 40% at 80%  50%,  #fce7f3 0%, transparent 60%),
+    #fff5f9;
 }
 
-/* NAV */
+/* floating petals */
+.petal{
+  position:fixed;pointer-events:none;z-index:0;
+  font-size:20px;animation:fall linear infinite;opacity:.5;
+}
+.petal:nth-child(1){left:5%;  animation-duration:12s;animation-delay:0s;  font-size:16px;}
+.petal:nth-child(2){left:20%; animation-duration:14s;animation-delay:3s;  font-size:22px;}
+.petal:nth-child(3){left:40%; animation-duration:10s;animation-delay:1s;  font-size:14px;}
+.petal:nth-child(4){left:60%; animation-duration:16s;animation-delay:5s;  font-size:18px;}
+.petal:nth-child(5){left:80%; animation-duration:11s;animation-delay:2s;  font-size:20px;}
+.petal:nth-child(6){left:90%; animation-duration:13s;animation-delay:7s;  font-size:15px;}
+@keyframes fall{
+  0%  {transform:translateY(-60px) rotate(0deg);   opacity:0;}
+  10% {opacity:.45;}
+  90% {opacity:.3;}
+  100%{transform:translateY(105vh) rotate(360deg); opacity:0;}
+}
+
+/* ── LIQUID GLASS MIXIN ── */
+.glass{
+  background:rgba(255,255,255,.52);
+  backdrop-filter:blur(28px) saturate(160%);
+  -webkit-backdrop-filter:blur(28px) saturate(160%);
+  border:1px solid rgba(255,255,255,.75);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.9) inset,
+    0 -1px 0 rgba(255,180,210,.15) inset,
+    0 8px 32px rgba(220,100,150,.08),
+    0 2px 8px  rgba(220,100,150,.06);
+}
+.glass-strong{
+  background:rgba(255,255,255,.65);
+  backdrop-filter:blur(40px) saturate(180%);
+  -webkit-backdrop-filter:blur(40px) saturate(180%);
+  border:1px solid rgba(255,255,255,.85);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.95) inset,
+    0 -1px 0 rgba(255,180,210,.18) inset,
+    0 12px 40px rgba(220,100,150,.10),
+    0 2px 10px rgba(220,100,150,.07);
+}
+
+/* ── NAV ── */
 nav{
   position:sticky;top:0;z-index:100;
-  padding:0 20px;height:56px;
+  padding:0 22px;height:56px;
   display:flex;align-items:center;justify-content:space-between;
-  background:rgba(13,13,20,.72);
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--border);
 }
-.nav-logo{
-  font-size:13px;font-weight:700;color:var(--muted);
-  letter-spacing:.5px;text-decoration:none;
+nav.glass{border-radius:0;border-left:none;border-right:none;border-top:none;}
+.nav-title{
+  font-size:13px;font-weight:500;
+  color:#c0607a;letter-spacing:.3px;
 }
 .nav-back{
-  display:flex;align-items:center;gap:6px;
-  font-size:12px;font-weight:600;color:var(--dim);
+  display:flex;align-items:center;gap:5px;
+  font-size:12px;font-weight:600;color:#d4608a;
   text-decoration:none;
-  padding:5px 14px;border-radius:999px;
-  border:1px solid var(--border);
-  transition:all .2s;
-  background:var(--surface);
+  padding:6px 16px;border-radius:999px;
+  transition:all .25s;
 }
-.nav-back:hover{border-color:var(--violet);color:var(--violet);}
+.nav-back.glass:hover{
+  background:rgba(255,255,255,.8);
+  box-shadow:0 4px 16px rgba(220,100,150,.15),0 1px 0 rgba(255,255,255,.9) inset;
+}
 
-/* WRAPPER */
-.wrap{position:relative;z-index:1;max-width:680px;margin:0 auto;padding:0 20px 100px;}
+/* ── WRAP ── */
+.wrap{
+  position:relative;z-index:1;
+  max-width:660px;margin:0 auto;
+  padding:0 20px 100px;
+}
 
-/* HERO */
-.hero{
-  padding:72px 0 56px;text-align:center;
+/* ── HERO ── */
+.hero{padding:60px 0 48px;text-align:center;}
+.hero-kicker{
+  display:inline-block;
+  font-family:'Gowun Dodum',sans-serif;
+  font-size:12px;letter-spacing:2px;color:#e07090;
+  margin-bottom:20px;
 }
-.hero-chip{
-  display:inline-flex;align-items:center;gap:6px;
-  background:rgba(167,139,250,.12);border:1px solid rgba(167,139,250,.25);
-  color:var(--violet);font-size:11px;font-weight:700;letter-spacing:1px;
-  padding:5px 14px;border-radius:999px;margin-bottom:24px;
-  text-transform:uppercase;
+.hero-en{
+  font-family:'Playfair Display',serif;
+  font-style:italic;font-size:clamp(13px,3vw,16px);
+  color:#e8a0b8;letter-spacing:.5px;
+  display:block;margin-bottom:10px;
 }
-.hero-chip span{width:6px;height:6px;border-radius:50%;background:var(--violet);animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.8);}}
 .hero-title{
-  font-size:clamp(28px,6vw,44px);font-weight:900;line-height:1.2;
-  margin-bottom:16px;letter-spacing:-1px;
+  font-size:clamp(26px,6.5vw,42px);
+  font-weight:900;line-height:1.25;
+  letter-spacing:-1.5px;
+  color:#2d1520;margin-bottom:18px;
 }
-.grad{
-  background:linear-gradient(135deg,#a78bfa 0%,#38bdf8 50%,#f472b6 100%);
+.hero-title .pink{
+  background:linear-gradient(135deg,#f472b6 0%,#fb7185 50%,#c084fc 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
 .hero-sub{
-  font-size:14px;color:var(--dim);line-height:1.8;max-width:420px;margin:0 auto;
+  font-size:14px;color:#b06080;line-height:1.9;
+  max-width:380px;margin:0 auto;
+  font-weight:400;
 }
 
-/* SECTION LABEL */
+/* ── CHIP ── */
+.chip-row{display:flex;justify-content:center;gap:8px;margin-bottom:40px;flex-wrap:wrap;}
+.chip{
+  font-size:11px;font-weight:600;letter-spacing:.3px;
+  padding:5px 14px;border-radius:999px;
+  color:#c05070;
+}
+.chip.glass{border-color:rgba(255,180,210,.4);}
+
+/* ── SECTION LABEL ── */
 .sec-label{
+  font-size:11px;font-weight:700;letter-spacing:2px;
+  color:#d090a8;text-transform:uppercase;
   display:flex;align-items:center;gap:10px;
-  font-size:11px;font-weight:700;letter-spacing:1.5px;
-  color:var(--muted);text-transform:uppercase;
-  margin-bottom:14px;margin-top:48px;
+  margin-bottom:16px;margin-top:44px;
 }
-.sec-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.sec-label::before,.sec-label::after{content:'';flex:1;height:1px;background:rgba(220,130,160,.2);}
+.sec-label::before{max-width:40px;}
 
-/* STEPS BENTO */
-.steps{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:48px;}
-@media(max-width:480px){.steps{grid-template-columns:1fr;}}
-.step{
-  background:var(--surface);border:1px solid var(--border);
-  border-radius:20px;padding:20px;
-  backdrop-filter:blur(10px);
-  transition:border-color .2s, transform .2s;
-  animation:fadeUp .5s both;
-}
-.step:hover{border-color:var(--border2);transform:translateY(-2px);}
-.step:nth-child(1){animation-delay:.05s;}
-.step:nth-child(2){animation-delay:.10s;}
-.step:nth-child(3){animation-delay:.15s;}
-.step:nth-child(4){animation-delay:.20s;}
-.step:nth-child(5){animation-delay:.25s;grid-column:span 2;}
-@media(max-width:480px){.step:nth-child(5){grid-column:span 1;}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
-.step-num{
-  font-size:10px;font-weight:800;letter-spacing:1px;
-  color:var(--violet);margin-bottom:10px;text-transform:uppercase;
-}
-.step-icon{font-size:26px;margin-bottom:10px;display:block;}
-.step-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;}
-.step-desc{font-size:12px;color:var(--dim);line-height:1.75;}
+/* ── STEP BENTO ── */
+.bento{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:480px){.bento{grid-template-columns:1fr;}}
 
-/* PROMPT CARD */
+.bento-item{
+  border-radius:24px;padding:22px;
+  animation:riseUp .5s both;
+}
+.bento-item:nth-child(1){animation-delay:.04s;}
+.bento-item:nth-child(2){animation-delay:.10s;}
+.bento-item:nth-child(3){animation-delay:.16s;}
+.bento-item:nth-child(4){animation-delay:.22s;}
+.bento-item:nth-child(5){animation-delay:.28s;grid-column:span 2;}
+@media(max-width:480px){.bento-item:nth-child(5){grid-column:span 1;}}
+
+@keyframes riseUp{
+  from{opacity:0;transform:translateY(20px) scale(.97);}
+  to  {opacity:1;transform:translateY(0)   scale(1);}
+}
+
+.bento-num{
+  font-size:10px;font-weight:700;letter-spacing:1.5px;
+  color:#e8a0bc;text-transform:uppercase;margin-bottom:10px;
+}
+.bento-icon{font-size:28px;margin-bottom:10px;display:block;line-height:1;}
+.bento-title{font-size:14px;font-weight:700;color:#2d1520;margin-bottom:6px;}
+.bento-desc{font-size:12px;color:#b06080;line-height:1.8;}
+
+/* ── PROMPT CARD ── */
 .prompt-card{
-  background:var(--bg2);border:1px solid var(--border);
-  border-radius:24px;overflow:hidden;
-  animation:fadeUp .5s .3s both;
+  border-radius:28px;overflow:hidden;
+  animation:riseUp .5s .32s both;
 }
-.prompt-card-top{
-  padding:16px 20px;
+.prompt-topbar{
+  padding:14px 20px;
   display:flex;align-items:center;justify-content:space-between;
-  border-bottom:1px solid var(--border);
-  background:rgba(255,255,255,.03);
+  border-bottom:1px solid rgba(255,180,210,.25);
+  background:rgba(255,220,235,.18);
 }
-.prompt-dots{display:flex;gap:6px;}
-.dot{width:10px;height:10px;border-radius:50%;}
-.dot-r{background:#ff5f57;}.dot-y{background:#febc2e;}.dot-g{background:#28c840;}
-.prompt-label{
-  font-size:11px;font-weight:600;color:var(--muted);
-  letter-spacing:.5px;font-family:'JetBrains Mono',monospace;
+.mac-dots{display:flex;gap:6px;align-items:center;}
+.mac-dot{width:11px;height:11px;border-radius:50%;}
+.mac-dot.r{background:#ff6b8a;}.mac-dot.y{background:#ffc26b;}.mac-dot.g{background:#5fd4a0;}
+.prompt-filename{
+  font-size:11px;font-weight:500;color:#c07090;letter-spacing:.5px;
 }
 .copy-btn{
   display:flex;align-items:center;gap:6px;
   font-size:12px;font-weight:700;
-  padding:6px 16px;border-radius:999px;border:1px solid var(--border2);
-  background:rgba(167,139,250,.1);color:var(--violet);
-  cursor:pointer;transition:all .2s;
-  font-family:'Plus Jakarta Sans',sans-serif;
+  padding:6px 16px;border-radius:999px;
+  color:#d0507a;cursor:pointer;
+  transition:all .25s;
+  font-family:'Noto Sans KR',sans-serif;
+  border:none;
 }
-.copy-btn:hover{background:var(--violet);color:#fff;border-color:var(--violet);}
-.copy-btn.copied{background:rgba(52,211,153,.15);color:var(--mint);border-color:rgba(52,211,153,.3);}
+.copy-btn.glass{border-color:rgba(240,150,180,.35);}
+.copy-btn:hover{
+  background:rgba(255,100,150,.12) !important;
+  color:#c03060;
+  transform:scale(1.03);
+}
+.copy-btn.copied{
+  background:rgba(95,212,160,.15) !important;
+  color:#2d9a6a;
+  border-color:rgba(95,212,160,.3) !important;
+}
+
 .prompt-body{
   padding:24px 22px;
-  font-size:12px;line-height:2;
-  color:#c8c8e8;
+  font-size:12.5px;line-height:2.1;
+  color:#5a2035;
   white-space:pre-wrap;
-  font-family:'JetBrains Mono',monospace;
-  max-height:480px;overflow-y:auto;
-  scrollbar-width:thin;scrollbar-color:rgba(167,139,250,.3) transparent;
+  font-family:'Gowun Dodum',sans-serif;
+  max-height:460px;overflow-y:auto;
+  background:rgba(255,255,255,.25);
+  scrollbar-width:thin;
+  scrollbar-color:rgba(240,150,180,.4) transparent;
 }
 .prompt-body::-webkit-scrollbar{width:4px;}
-.prompt-body::-webkit-scrollbar-thumb{background:rgba(167,139,250,.3);border-radius:4px;}
+.prompt-body::-webkit-scrollbar-thumb{background:rgba(240,150,180,.4);border-radius:4px;}
 
-/* SYNTAX HIGHLIGHT CLASSES */
-.tok-bracket{color:var(--violet);}
-.tok-key{color:var(--sky);}
-.tok-num{color:var(--pink);}
-.tok-val{color:#c8c8e8;}
-.tok-line{color:var(--muted);}
-.tok-caution{color:var(--amber);}
-
-/* NOTICE */
+/* ── NOTICE ── */
 .notice{
-  margin-top:20px;
-  background:rgba(251,191,36,.07);
-  border:1px solid rgba(251,191,36,.2);
-  border-radius:20px;padding:20px 22px;
+  margin-top:16px;
+  border-radius:22px;padding:20px 22px;
   display:flex;gap:14px;align-items:flex-start;
-  animation:fadeUp .5s .4s both;
+  animation:riseUp .5s .4s both;
+  background:rgba(255,240,200,.55);
+  border:1px solid rgba(255,210,100,.45);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
 }
-.notice-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
-.notice-body{font-size:13px;line-height:1.85;color:#c8aa60;}
-.notice-body strong{color:var(--amber);}
+.notice-icon{font-size:22px;flex-shrink:0;line-height:1.3;}
+.notice-body{font-size:13px;line-height:1.85;color:#7a4f10;}
+.notice-body strong{color:#a06008;font-weight:700;}
 
-/* FOOTER */
+/* ── FOOTER ── */
 footer{
   position:relative;z-index:1;
-  text-align:center;padding:24px 20px;
-  font-size:11px;color:var(--muted);
-  border-top:1px solid var(--border);
+  text-align:center;padding:28px 20px;
+  font-size:11px;color:#d8a0b8;
+  letter-spacing:.5px;
 }
 </style>
 </head>
 <body>
-<div class="mesh"></div>
 
-<nav>
-  <span class="nav-logo">영락고등학교</span>
-  <a href="index.html" class="nav-back">
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M7.5 2L3.5 6L7.5 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<div class="bg-canvas"></div>
+
+<!-- floating cherry blossoms -->
+<div class="petal">🌸</div>
+<div class="petal">🌷</div>
+<div class="petal">🌸</div>
+<div class="petal">🌺</div>
+<div class="petal">🌸</div>
+<div class="petal">🌷</div>
+
+<nav class="glass">
+  <span class="nav-title">영락고등학교</span>
+  <a href="index.html" class="nav-back glass">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+      <path d="M7.5 2L3.5 6L7.5 10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
     메인으로
   </a>
 </nav>
@@ -219,61 +277,78 @@ footer{
 
   <!-- HERO -->
   <div class="hero">
-    <div class="hero-chip"><span></span>통합사회 수행평가</div>
+    <p class="hero-kicker">통합사회 수행평가 · 2026</p>
+    <span class="hero-en">What is true happiness to you?</span>
     <h1 class="hero-title">
       진정한 행복이란<br>
-      <span class="grad">무엇인가?</span>
+      <span class="pink">무엇인가?</span>
     </h1>
-    <p class="hero-sub">행복 인터뷰 활동지를 사진으로 찍어 아래 프롬프트와 함께 AI에 넣으면 논술 초안을 만들 수 있어.</p>
+    <p class="hero-sub">행복 인터뷰 활동지를 사진으로 찍고, 아래 프롬프트를 AI에 함께 넣으면 논술 초안을 만들 수 있어.</p>
   </div>
 
-  <!-- HOW TO USE -->
+  <div class="chip-row">
+    <span class="chip glass">📸 사진 찍기</span>
+    <span class="chip glass">📋 복사하기</span>
+    <span class="chip glass">🤖 AI에 입력</span>
+    <span class="chip glass">✏️ 직접 다듬기</span>
+  </div>
+
+  <!-- HOW TO -->
   <div class="sec-label">사용 방법</div>
-  <div class="steps">
-    <div class="step">
-      <div class="step-num">Step 01</div>
-      <span class="step-icon">📸</span>
-      <div class="step-title">활동지 사진 찍기</div>
-      <div class="step-desc">교과서 행복 인터뷰 활동지에 직접 쓴 내용을 깨끗하게 사진 찍기.</div>
+  <div class="bento">
+
+    <div class="bento-item glass">
+      <div class="bento-num">Step 01</div>
+      <span class="bento-icon">📸</span>
+      <div class="bento-title">활동지 사진 찍기</div>
+      <div class="bento-desc">행복 인터뷰 활동지에 직접 쓴 내용을 밝고 선명하게 찍어.</div>
     </div>
-    <div class="step">
-      <div class="step-num">Step 02</div>
-      <span class="step-icon">📋</span>
-      <div class="step-title">프롬프트 복사</div>
-      <div class="step-desc">아래 복사 버튼을 눌러 프롬프트 전체를 클립보드에 복사하기.</div>
+
+    <div class="bento-item glass">
+      <div class="bento-num">Step 02</div>
+      <span class="bento-icon">📋</span>
+      <div class="bento-title">프롬프트 복사</div>
+      <div class="bento-desc">아래 복사 버튼으로 프롬프트 전체를 클립보드에 복사해.</div>
     </div>
-    <div class="step">
-      <div class="step-num">Step 03</div>
-      <span class="step-icon">🤖</span>
-      <div class="step-title">AI에 사진 + 프롬프트 입력</div>
-      <div class="step-desc">ChatGPT 또는 Claude에 사진 첨부 후 복사한 프롬프트 붙여넣기.</div>
+
+    <div class="bento-item glass">
+      <div class="bento-num">Step 03</div>
+      <span class="bento-icon">🤖</span>
+      <div class="bento-title">AI에 사진 + 프롬프트</div>
+      <div class="bento-desc">ChatGPT 또는 Claude에 사진 첨부 후 복사한 프롬프트 붙여넣기.</div>
     </div>
-    <div class="step">
-      <div class="step-num">Step 04</div>
-      <span class="step-icon">✏️</span>
-      <div class="step-title">1단계: 손글씨 확인</div>
-      <div class="step-desc">AI가 읽은 내 답변 내용 확인 후 틀린 부분 직접 수정하기.</div>
+
+    <div class="bento-item glass">
+      <div class="bento-num">Step 04</div>
+      <span class="bento-icon">🔍</span>
+      <div class="bento-title">1단계: 손글씨 확인</div>
+      <div class="bento-desc">AI가 읽어준 내 답변 확인 후 틀린 부분 수정하고 진행 허락.</div>
     </div>
-    <div class="step">
-      <div class="step-num">Step 05</div>
-      <span class="step-icon">🎯</span>
-      <div class="step-title">2단계: 초안 받고 직접 다듬어 제출</div>
-      <div class="step-desc">AI 초안을 내 언어로 다듬은 뒤 리로스쿨 과제 제출 메뉴에 업로드.</div>
+
+    <div class="bento-item glass">
+      <div class="bento-num">Step 05</div>
+      <span class="bento-icon">✍️</span>
+      <div class="bento-title">2단계: 초안 받고 내 언어로 다듬어 리로스쿨 제출</div>
+      <div class="bento-desc">AI 초안을 그대로 쓰지 말고, AI가 알려주는 "더 채울 부분"을 본인 언어로 채워넣은 뒤 제출해.</div>
     </div>
+
   </div>
 
   <!-- PROMPT -->
   <div class="sec-label">AI 프롬프트</div>
-  <div class="prompt-card">
-    <div class="prompt-card-top">
-      <div class="prompt-dots">
-        <div class="dot dot-r"></div>
-        <div class="dot dot-y"></div>
-        <div class="dot dot-g"></div>
+  <div class="prompt-card glass-strong">
+    <div class="prompt-topbar">
+      <div class="mac-dots">
+        <div class="mac-dot r"></div>
+        <div class="mac-dot y"></div>
+        <div class="mac-dot g"></div>
       </div>
-      <span class="prompt-label">prompt.txt</span>
-      <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 4V2.5A.5.5 0 0 0 7.5 2h-5A.5.5 0 0 0 2 2.5v5a.5.5 0 0 0 .5.5H4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <span class="prompt-filename">happiness-prompt.txt</span>
+      <button class="copy-btn glass" id="copyBtn" onclick="copyPrompt()">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <rect x="4" y="4" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+          <path d="M8 4V2.5A.5.5 0 0 0 7.5 2h-5A.5.5 0 0 0 2 2.5v5a.5.5 0 0 0 .5.5H4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
         복사하기
       </button>
     </div>
@@ -342,23 +417,23 @@ footer{
 
   <!-- NOTICE -->
   <div class="notice">
-    <div class="notice-icon">⚡</div>
+    <div class="notice-icon">🌷</div>
     <div class="notice-body">
-      <strong>AI 초안 그대로 제출 금지.</strong><br>
-      평가 기준 <strong>성찰도</strong>는 네 삶이 얼마나 담겼는지를 봐. AI가 알려주는 "더 채울 부분"을 본인 언어로 직접 채워야 점수가 나온다.
+      <strong>AI 초안은 시작점일 뿐이에요.</strong><br>
+      평가 기준 <strong>성찰도</strong>는 네 삶이 얼마나 담겼는지를 봐. AI가 알려주는 "더 채울 부분"을 본인 언어로 직접 채워야 진짜 내 글이 돼.
     </div>
   </div>
 
 </div>
 
-<footer>영락고등학교 통합사회 수행평가 · 2026학년도</footer>
+<footer>🌸 영락고등학교 통합사회 수행평가 · 2026학년도 🌸</footer>
 
 <script>
 function copyPrompt() {
   const text = document.getElementById('promptText').innerText;
   navigator.clipboard.writeText(text).then(() => {
     const btn = document.getElementById('copyBtn');
-    btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6.5L4.5 9L10 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> 복사됨`;
+    btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6.5L4.5 9L10 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> 복사됐어 💕`;
     btn.classList.add('copied');
     setTimeout(() => {
       btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="4" y="4" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 4V2.5A.5.5 0 0 0 7.5 2h-5A.5.5 0 0 0 2 2.5v5a.5.5 0 0 0 .5.5H4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg> 복사하기`;
