@@ -296,7 +296,14 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 /* REVEAL */
 .reveal{opacity:0;transform:translateY(26px);transition:opacity .6s ease,transform .6s ease;}
 .reveal.visible{opacity:1;transform:translateY(0);}
-.rd1{transition-delay:.07s;}.rd2{transition-delay:.16s;}.rd3{transition-delay:.25s;}.rd4{transition-delay:.34s;}.rd5{transition-delay:.43s;}.rd6{transition-delay:.52s;}.rd7{transition-delay:.61s;}
+.rd1{transition-delay:.07s;}.rd2{transition-delay:.16s;}.rd3{transition-delay:.25s;}.rd4{transition-delay:.34s;}.rd5{transition-delay:.43s;}.rd6{transition-delay:.52s;}.rd7{transition-delay:.61s;}.rd8{transition-delay:.70s;}
+
+/* QR CARD */
+.qr-card-inner{display:flex;gap:20px;align-items:flex-start;}
+.qr-box{flex-shrink:0;width:100px;height:100px;background:#fff;border:2px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.qr-box img,.qr-box canvas{width:90px!important;height:90px!important;}
+.qr-text{flex:1;min-width:0;}
+@media(max-width:360px){.qr-card-inner{flex-direction:column;}.qr-box{width:100%;height:auto;padding:12px;}.qr-box canvas,.qr-box img{width:120px!important;height:120px!important;}}
 
 @media(max-width:480px){
   .menu-card{padding:26px 18px;}
@@ -435,6 +442,19 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
       <h3 class="c-title">2026<br>영특 안내</h3>
       <p class="c-desc">소규모 독서·토론·탐구 프로그램 영특의 구성 규칙, 일정, FAQ를 한눈에 확인하세요.</p>
       <div class="c-foot"><span class="c-meta">2026 기준</span><span class="c-arrow">→</span></div>
+    </a>
+
+    <a href="prompt-happiness.html" class="menu-card reveal rd8">
+      <div class="card-tbar"></div>
+      <div class="c-head"><span class="c-num">07</span><span class="c-tag">수행평가</span></div>
+      <div class="qr-card-inner">
+        <div class="qr-box" id="qr-box"></div>
+        <div class="qr-text">
+          <h3 class="c-title" style="margin-bottom:8px;">통합사회<br>수행평가 프롬프트</h3>
+          <p class="c-desc" style="margin-bottom:0;">행복 인터뷰 활동지 사진을 AI에 넣을 때 사용하는 프롬프트입니다. QR 스캔 또는 클릭하세요.</p>
+        </div>
+      </div>
+      <div class="c-foot" style="margin-top:16px;"><span class="c-meta">통합사회 1학년</span><span class="c-arrow">→</span></div>
     </a>
   </div>
 </section>
@@ -721,6 +741,15 @@ document.getElementById('pw-modal2').addEventListener('click', function(e) {
     document.dispatchEvent(new MouseEvent('mousemove', { clientX: touch.clientX, clientY: touch.clientY }));
   }, { passive: true });
 })();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+new QRCode(document.getElementById('qr-box'), {
+  text: 'https://youngnakhs.github.io/youngnak-guide/prompt-happiness.html',
+  width: 90, height: 90,
+  colorDark: '#1f7a49', colorLight: '#ffffff',
+  correctLevel: QRCode.CorrectLevel.M
+});
 </script>
 </body>
 </html>
