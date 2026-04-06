@@ -26,22 +26,22 @@ body{
     #fff5f9;
 }
 
-/* floating petals */
+/* floating names */
 .petal{
   position:fixed;pointer-events:none;z-index:0;
-  font-size:20px;animation:fall linear infinite;opacity:.5;
+  font-family:'Noto Sans KR',sans-serif;
+  font-weight:500;
+  color:#ffb6c1;
+  animation:fall linear infinite;
+  opacity:0;
+  white-space:nowrap;
+  text-shadow:0 0 8px rgba(255,182,193,.4);
 }
-.petal:nth-child(1){left:5%;  animation-duration:12s;animation-delay:0s;  font-size:16px;}
-.petal:nth-child(2){left:20%; animation-duration:14s;animation-delay:3s;  font-size:22px;}
-.petal:nth-child(3){left:40%; animation-duration:10s;animation-delay:1s;  font-size:14px;}
-.petal:nth-child(4){left:60%; animation-duration:16s;animation-delay:5s;  font-size:18px;}
-.petal:nth-child(5){left:80%; animation-duration:11s;animation-delay:2s;  font-size:20px;}
-.petal:nth-child(6){left:90%; animation-duration:13s;animation-delay:7s;  font-size:15px;}
 @keyframes fall{
-  0%  {transform:translateY(-60px) rotate(0deg);   opacity:0;}
-  10% {opacity:.45;}
-  90% {opacity:.3;}
-  100%{transform:translateY(105vh) rotate(360deg); opacity:0;}
+  0%  {transform:translateY(-40px) rotate(-5deg); opacity:0;}
+  8%  {opacity:.75;}
+  88% {opacity:.55;}
+  100%{transform:translateY(105vh) rotate(5deg);  opacity:0;}
 }
 
 /* ── LIQUID GLASS MIXIN ── */
@@ -253,13 +253,7 @@ footer{
 
 <div class="bg-canvas"></div>
 
-<!-- floating cherry blossoms -->
-<div class="petal">🌸</div>
-<div class="petal">🌷</div>
-<div class="petal">🌸</div>
-<div class="petal">🌺</div>
-<div class="petal">🌸</div>
-<div class="petal">🌷</div>
+<!-- floating student names (added dynamically via JS) -->
 
 <nav class="glass">
   <span class="nav-title">영락고등학교</span>
@@ -427,6 +421,66 @@ footer{
 <footer>🌸 영락고등학교 통합사회 수행평가 · 2026학년도 🌸</footer>
 
 <script>
+(function(){
+  const names = [
+    // 1반
+    '강주하','권기정','김민식','김연우','박상우','박성원','박승호','박현민','배건우','백준선',
+    '손예찬','송원준','신용인','심상준','우승재','유의진','유진서','윤환준','이산','이수빈',
+    '임예준','정재헌','정준호','최서우','최지웅','한결','허서보','허서준','김성한',
+    // 2반
+    '공민석','김강민','김민성','김민준','김유섭','김지호','나태호','남이현','문찬서','박시율',
+    '반지환','서우진','성은규','양혜준','오창진','이선구','이준우','이지안','이현준','임건희',
+    '임명준','임세훈','임태연','전유준','추건우','최강민','홍민철',
+    // 3반
+    '강우현','강은수','고건희','권지호','김가률','김건우','김경수','김민재','김시윤','김주호',
+    '김지환','김하람','박주원','박현우','방형민','백시우','서로','송백호','윤재문','이준기',
+    '이현수','정윤우','진영훈','최유준','최윤호','황우상','류재이',
+    // 4반
+    '고가연','고태은','김민서','김서연','김시아','김재은','김하선','노연서','박제언','박지은',
+    '신보라','신소미','안소율','오연아','오예솔','육서영','이다은','이서하','이예지','이은채',
+    '임수빈','전소연','전소은','전하음','정예슬','정유진','정주혜','최승연',
+    // 5반
+    '구현진','김가빈','김미솔','김민솔','김소랑','김아현','김지안','김채원','김초율','류화정',
+    '박서연','박세은','박하은','박혜민','배은지','백수아','손연서','송지아','안세빈','안효은',
+    '양선유','이소현','전예서','정단아','최민서','최희윤','최예인',
+    // 6반
+    '구민정','권민서','권연아','김리우','김시은','김지수','김진하','김태은','김홍우','김효은',
+    '박규리','박수현','박재희','서은서','신재영','오서진','오정아','유주연','윤예원','이나윤',
+    '이예나','이지호','이혜연','정수민','조수아','최나은'
+  ];
+
+  function shuffle(arr){
+    const a=[...arr];
+    for(let i=a.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [a[i],a[j]]=[a[j],a[i]];
+    }
+    return a;
+  }
+
+  let pool=shuffle(names), idx=0;
+  function nextName(){
+    if(idx>=pool.length){pool=shuffle(names);idx=0;}
+    return pool[idx++];
+  }
+
+  function spawnName(){
+    const el=document.createElement('div');
+    el.className='petal';
+    el.textContent=nextName();
+    el.style.left=(2+Math.random()*90)+'%';
+    const dur=9+Math.random()*10;
+    el.style.animationDuration=dur+'s';
+    el.style.fontSize=(11+Math.random()*6)+'px';
+    document.body.appendChild(el);
+    setTimeout(()=>{el.remove();spawnName();},(dur+0.3)*1000);
+  }
+
+  for(let i=0;i<28;i++){
+    setTimeout(spawnName, i*350);
+  }
+})();
+
 function copyPrompt() {
   const text = document.getElementById('promptText').innerText;
   navigator.clipboard.writeText(text).then(() => {
