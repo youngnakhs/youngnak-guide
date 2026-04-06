@@ -148,8 +148,7 @@ nav.glass{border-radius:0;border-left:none;border-right:none;border-top:none;}
 .sec-label::before{max-width:40px;}
 
 /* ── STEP BENTO ── */
-.bento{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-@media(max-width:480px){.bento{grid-template-columns:1fr;}}
+.bento{display:flex;flex-direction:column;gap:12px;}
 
 .bento-item{
   border-radius:24px;padding:22px;
@@ -159,8 +158,7 @@ nav.glass{border-radius:0;border-left:none;border-right:none;border-top:none;}
 .bento-item:nth-child(2){animation-delay:.10s;}
 .bento-item:nth-child(3){animation-delay:.16s;}
 .bento-item:nth-child(4){animation-delay:.22s;}
-.bento-item:nth-child(5){animation-delay:.28s;grid-column:span 2;}
-@media(max-width:480px){.bento-item:nth-child(5){grid-column:span 1;}}
+.bento-item:nth-child(5){animation-delay:.28s;}
 
 @keyframes riseUp{
   from{opacity:0;transform:translateY(20px) scale(.97);}
