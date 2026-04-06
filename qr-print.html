@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>행복 수행평가 QR코드 인쇄용</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Gowun+Dodum&family=Playfair+Display:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+
+body{
+  font-family:'Noto Sans KR',sans-serif;
+  background:#f8e8f0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}
+
+/* A4 SHEET */
+.sheet{
+  width:210mm;
+  min-height:297mm;
+  background:#fff5f9;
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:0;
+  padding:16mm 18mm;
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}
+
+/* BACKGROUND GRADIENT */
+.sheet::before{
+  content:'';
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 5%   5%,   #ffe0ef 0%, transparent 60%),
+    radial-gradient(ellipse 55% 45% at 95% 10%,  #f3e0ff 0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 50% 98%,  #ffd6e8 0%, transparent 60%),
+    radial-gradient(ellipse 45% 35% at 85% 55%,  #fce7f3 0%, transparent 55%),
+    #fff5f9;
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}
+
+/* CORNER PETALS */
+.petal-tl,.petal-tr,.petal-bl,.petal-br{
+  position:absolute;font-size:48px;opacity:.28;line-height:1;
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}
+.petal-tl{top:14mm; left:14mm;}
+.petal-tr{top:14mm; right:14mm;}
+.petal-bl{bottom:14mm;left:14mm;}
+.petal-br{bottom:14mm;right:14mm;}
+
+/* DECO PETALS SCATTERED */
+.petal-s{
+  position:absolute;font-size:22px;opacity:.18;
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}
+.ps1{top:28mm; left:32mm;}
+.ps2{top:36mm; right:28mm;}
+.ps3{bottom:52mm;left:24mm;}
+.ps4{bottom:40mm;right:36mm;}
+.ps5{top:50%;  left:12mm; transform:translateY(-50%);}
+.ps6{top:50%;  right:10mm;transform:translateY(-50%);}
+
+/* CONTENT (above ::before) */
+.content{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;
+  align-items:center;width:100%;
+}
+
+/* TOP BADGE */
+.badge{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,.62);
+  border:1px solid rgba(255,180,210,.55);
+  border-radius:999px;
+  padding:6px 18px;
+  font-size:11px;font-weight:700;letter-spacing:1.2px;
+  color:#c05070;margin-bottom:10mm;
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}
+.badge-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:linear-gradient(135deg,#f472b6,#fb7185);
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}
+
+/* TITLE */
+.title-en{
+  font-family:'Playfair Display',serif;
+  font-style:italic;font-size:15px;
+  color:#e0a0b8;letter-spacing:.5px;
+  margin-bottom:5mm;
+}
+.title-ko{
+  font-size:30px;font-weight:900;
+  letter-spacing:-1px;line-height:1.25;
+  text-align:center;margin-bottom:10mm;
+  color:#2d1520;
+}
+.title-ko .pink{
+  background:linear-gradient(135deg,#f472b6 0%,#fb7185 50%,#c084fc 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}
+
+/* QR WRAPPER — liquid glass card */
+.qr-wrap{
+  background:rgba(255,255,255,.68);
+  border:1.5px solid rgba(255,255,255,.9);
+  border-radius:28px;
+  padding:10mm;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.95) inset,
+    0 -1px 0 rgba(255,180,210,.2) inset,
+    0 12px 48px rgba(220,100,150,.12),
+    0 3px 12px rgba(220,100,150,.08);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+  margin-bottom:8mm;
+}
+#qrcode canvas,
+#qrcode img{
+  display:block;
+  border-radius:12px;
+}
+
+/* DIVIDER */
+.divider{
+  width:40mm;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(240,150,180,.4),transparent);
+  margin:6mm 0;
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}
+
+/* SUB TEXTS */
+.sub-label{
+  font-family:'Gowun Dodum',sans-serif;
+  font-size:16px;font-weight:400;
+  color:#c05878;letter-spacing:.5px;
+  margin-bottom:3mm;text-align:center;
+}
+.url-text{
+  font-size:9.5px;color:#d0a0b0;
+  letter-spacing:.3px;text-align:center;
+  margin-bottom:8mm;
+  font-family:'Noto Sans KR',sans-serif;
+}
+
+/* HOW TO ROW */
+.how-row{
+  display:flex;gap:5mm;justify-content:center;
+  flex-wrap:wrap;
+}
+.how-item{
+  background:rgba(255,255,255,.55);
+  border:1px solid rgba(255,180,210,.45);
+  border-radius:14px;
+  padding:3.5mm 5mm;
+  display:flex;align-items:center;gap:4px;
+  font-size:10.5px;font-weight:600;color:#c05070;
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}
+.how-num{
+  width:18px;height:18px;border-radius:50%;
+  background:linear-gradient(135deg,#f9a8d4,#f472b6);
+  color:#fff;font-size:9px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}
+
+/* BOTTOM TAG */
+.bottom-tag{
+  position:absolute;bottom:12mm;
+  font-size:9px;color:#d8a0b8;letter-spacing:1px;
+  font-family:'Gowun Dodum',sans-serif;
+}
+
+/* PRINT */
+@media print{
+  body{background:#fff5f9;margin:0;padding:0;}
+  .sheet{
+    width:210mm;min-height:297mm;
+    margin:0;padding:16mm 18mm;
+    box-shadow:none;
+  }
+  .no-print{display:none!important;}
+}
+
+/* SCREEN ONLY */
+@media screen{
+  .sheet{
+    box-shadow:0 8px 60px rgba(200,100,140,.15),0 2px 16px rgba(200,100,140,.1);
+    margin:20px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="sheet">
+  <!-- BG PETALS -->
+  <span class="petal-tl">🌸</span>
+  <span class="petal-tr">🌷</span>
+  <span class="petal-bl">🌺</span>
+  <span class="petal-br">🌸</span>
+  <span class="petal-s ps1">🌸</span>
+  <span class="petal-s ps2">🌷</span>
+  <span class="petal-s ps3">🌺</span>
+  <span class="petal-s ps4">🌸</span>
+  <span class="petal-s ps5">🌷</span>
+  <span class="petal-s ps6">🌸</span>
+
+  <div class="content">
+    <div class="badge"><span class="badge-dot"></span>통합사회 수행평가 · 2026학년도</div>
+
+    <p class="title-en">What is true happiness to you?</p>
+    <h1 class="title-ko">진정한 행복이란<br><span class="pink">무엇인가?</span></h1>
+
+    <div class="qr-wrap">
+      <div id="qrcode"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <p class="sub-label">QR코드를 스캔해서 AI 프롬프트를 받아가세요</p>
+    <p class="url-text">youngnakhs.github.io/youngnak-guide/prompt-happiness.html</p>
+
+    <div class="how-row">
+      <div class="how-item"><span class="how-num">1</span>활동지 사진 찍기</div>
+      <div class="how-item"><span class="how-num">2</span>프롬프트 복사</div>
+      <div class="how-item"><span class="how-num">3</span>AI에 사진+프롬프트</div>
+      <div class="how-item"><span class="how-num">4</span>내 언어로 다듬기</div>
+      <div class="how-item"><span class="how-num">5</span>리로스쿨 제출</div>
+    </div>
+  </div>
+
+  <p class="bottom-tag">영락고등학교 · Youngnak High School 🌸</p>
+</div>
+
+<!-- PRINT BUTTON (screen only) -->
+<div class="no-print" style="position:fixed;bottom:24px;right:24px;">
+  <button onclick="window.print()" style="
+    font-family:'Noto Sans KR',sans-serif;
+    font-size:14px;font-weight:700;
+    background:linear-gradient(135deg,#f9a8d4,#f472b6);
+    color:#fff;border:none;
+    padding:12px 28px;border-radius:999px;
+    cursor:pointer;
+    box-shadow:0 4px 20px rgba(244,114,182,.35);
+    transition:transform .2s,box-shadow .2s;
+  " onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
+    🖨️ 인쇄하기
+  </button>
+</div>
+
+<script>
+new QRCode(document.getElementById('qrcode'), {
+  text: 'https://youngnakhs.github.io/youngnak-guide/prompt-happiness.html',
+  width: 420,
+  height: 420,
+  colorDark: '#6b1a35',
+  colorLight: 'rgba(255,255,255,0)',
+  correctLevel: QRCode.CorrectLevel.H
+});
+</script>
+</body>
+</html>
