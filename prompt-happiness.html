@@ -468,15 +468,16 @@ footer{
     el.className='petal';
     el.textContent=nextName();
     el.style.left=(2+Math.random()*90)+'%';
-    const dur=9+Math.random()*10;
+    el.style.top='0px';
+    const dur=10+Math.random()*10;
     el.style.animationDuration=dur+'s';
-    el.style.fontSize=(11+Math.random()*6)+'px';
+    el.style.fontSize=(12+Math.random()*6)+'px';
     document.body.appendChild(el);
-    setTimeout(()=>{el.remove();spawnName();},(dur+0.3)*1000);
+    setTimeout(()=>{el.remove();spawnName();},(dur+0.5)*1000);
   }
 
-  for(let i=0;i<6;i++){
-    setTimeout(spawnName, i*2200);
+  for(let i=0;i<20;i++){
+    setTimeout(spawnName, i*600);
   }
 })();
 
