@@ -443,24 +443,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
       <p class="c-desc">소규모 독서·토론·탐구 프로그램 영특의 구성 규칙, 일정, FAQ를 한눈에 확인하세요.</p>
       <div class="c-foot"><span class="c-meta">2026 기준</span><span class="c-arrow">→</span></div>
     </a>
-
-    <div class="menu-card reveal rd8" onclick="openPwModal3(event)" style="cursor:pointer;">
-      <div class="card-tbar"></div>
-      <div class="c-head"><span class="c-num">07</span><span class="c-tag">교사용</span></div>
-      <span class="c-icon">📈</span>
-      <h3 class="c-title">3월 모의고사<br>분석 3학년</h3>
-      <p class="c-desc">2026학년도 3월 모의고사 성적 레포트입니다. 수능최저 충족 현황 및 등급 분포를 확인할 수 있습니다.</p>
-      <div class="c-foot"><span class="c-meta">3학년 · 2026</span><span class="c-arrow">→</span></div>
-    </div>
-
-    <div class="menu-card reveal rd1" onclick="openPwModal4(event)" style="cursor:pointer;">
-      <div class="card-tbar"></div>
-      <div class="c-head"><span class="c-num">08</span><span class="c-tag">교사용</span></div>
-      <span class="c-icon">📊</span>
-      <h3 class="c-title">3월 모의고사<br>분석 1학년</h3>
-      <p class="c-desc">2026학년도 1학년 3월 모의고사 국어·수학·영어 심층 분석 레포트입니다. 등급 분포 및 과목별 현황을 확인할 수 있습니다.</p>
-      <div class="c-foot"><span class="c-meta">1학년 · 2026</span><span class="c-arrow">→</span></div>
-    </div>
   </div>
 </section>
 
@@ -569,39 +551,6 @@ const io = new IntersectionObserver(entries => {
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 </script>
 
-<!-- 비밀번호 모달 4 (3월 모의고사 분석 1학년) -->
-<div id="pw-modal4" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center;">
-  <div style="background:#fff;border-radius:20px;padding:40px 36px;width:min(360px,90vw);box-shadow:0 24px 64px rgba(0,0,0,.25);text-align:center;">
-    <div style="font-size:36px;margin-bottom:12px;">🔒</div>
-    <p style="font-family:'Noto Serif KR',serif;font-size:17px;font-weight:700;color:#1a2e24;margin-bottom:4px;">교사 전용 페이지</p>
-    <p style="font-size:13px;color:#80aa92;margin-bottom:24px;">비밀번호를 입력하세요</p>
-    <input id="pw-input4" type="password" placeholder="비밀번호"
-      style="width:100%;box-sizing:border-box;padding:12px 16px;border:1.5px solid #c8e8d8;border-radius:10px;font-size:15px;outline:none;text-align:center;letter-spacing:4px;margin-bottom:8px;"
-      onkeydown="if(event.key==='Enter')submitPw4()">
-    <p id="pw-error4" style="font-size:12px;color:#c0392b;min-height:18px;margin-bottom:12px;"></p>
-    <div style="display:flex;gap:10px;">
-      <button onclick="closePwModal4()" style="flex:1;padding:12px;border:1.5px solid #c8e8d8;border-radius:10px;background:#fff;color:#3d6b52;font-size:14px;cursor:pointer;">취소</button>
-      <button onclick="submitPw4()" style="flex:1;padding:12px;border:none;border-radius:10px;background:#3cb878;color:#fff;font-size:14px;font-weight:700;cursor:pointer;">확인</button>
-    </div>
-  </div>
-</div>
-
-<!-- 비밀번호 모달 3 (3월 모의고사 분석 3학년) -->
-<div id="pw-modal3" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center;">
-  <div style="background:#fff;border-radius:20px;padding:40px 36px;width:min(360px,90vw);box-shadow:0 24px 64px rgba(0,0,0,.25);text-align:center;">
-    <div style="font-size:36px;margin-bottom:12px;">🔒</div>
-    <p style="font-family:'Noto Serif KR',serif;font-size:17px;font-weight:700;color:#1a2e24;margin-bottom:4px;">교사 전용 페이지</p>
-    <p style="font-size:13px;color:#80aa92;margin-bottom:24px;">비밀번호를 입력하세요</p>
-    <input id="pw-input3" type="password" placeholder="비밀번호"
-      style="width:100%;box-sizing:border-box;padding:12px 16px;border:1.5px solid #c8e8d8;border-radius:10px;font-size:15px;outline:none;text-align:center;letter-spacing:4px;margin-bottom:8px;"
-      onkeydown="if(event.key==='Enter')submitPw3()">
-    <p id="pw-error3" style="font-size:12px;color:#c0392b;min-height:18px;margin-bottom:12px;"></p>
-    <div style="display:flex;gap:10px;">
-      <button onclick="closePwModal3()" style="flex:1;padding:12px;border:1.5px solid #c8e8d8;border-radius:10px;background:#fff;color:#3d6b52;font-size:14px;cursor:pointer;">취소</button>
-      <button onclick="submitPw3()" style="flex:1;padding:12px;border:none;border-radius:10px;background:#3cb878;color:#fff;font-size:14px;font-weight:700;cursor:pointer;">확인</button>
-    </div>
-  </div>
-</div>
 
 <!-- 비밀번호 모달 2 (학생 성적 분석 상담 도구) -->
 <div id="pw-modal2" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center;">
@@ -662,58 +611,6 @@ function submitPw() {
 }
 document.getElementById('pw-modal').addEventListener('click', function(e) {
   if (e.target === this) closePwModal();
-});
-
-function openPwModal4(e) {
-  e.preventDefault();
-  const modal = document.getElementById('pw-modal4');
-  modal.style.display = 'flex';
-  document.getElementById('pw-input4').value = '';
-  document.getElementById('pw-error4').textContent = '';
-  setTimeout(() => document.getElementById('pw-input4').focus(), 50);
-}
-function closePwModal4() {
-  document.getElementById('pw-modal4').style.display = 'none';
-}
-function submitPw4() {
-  const val = document.getElementById('pw-input4').value;
-  if (val === '1003') {
-    closePwModal4();
-    window.open('march-mock-1st.html', '_blank');
-  } else {
-    document.getElementById('pw-error4').textContent = '비밀번호가 올바르지 않습니다.';
-    document.getElementById('pw-input4').value = '';
-    document.getElementById('pw-input4').focus();
-  }
-}
-document.getElementById('pw-modal4').addEventListener('click', function(e) {
-  if (e.target === this) closePwModal4();
-});
-
-function openPwModal3(e) {
-  e.preventDefault();
-  const modal = document.getElementById('pw-modal3');
-  modal.style.display = 'flex';
-  document.getElementById('pw-input3').value = '';
-  document.getElementById('pw-error3').textContent = '';
-  setTimeout(() => document.getElementById('pw-input3').focus(), 50);
-}
-function closePwModal3() {
-  document.getElementById('pw-modal3').style.display = 'none';
-}
-function submitPw3() {
-  const val = document.getElementById('pw-input3').value;
-  if (val === '1003') {
-    closePwModal3();
-    window.open('march-mock-3rd.html', '_blank');
-  } else {
-    document.getElementById('pw-error3').textContent = '비밀번호가 올바르지 않습니다.';
-    document.getElementById('pw-input3').value = '';
-    document.getElementById('pw-input3').focus();
-  }
-}
-document.getElementById('pw-modal3').addEventListener('click', function(e) {
-  if (e.target === this) closePwModal3();
 });
 
 function openPwModal2(e) {
