@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>영락봇 — 영락고 진로·입시 챗봇</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --kakao-yellow:   #FEE500;
+  --kakao-yellow2:  #F5DC00;
+  --kakao-bg:       #B2C7D9;
+  --kakao-bg2:      #9EB8CC;
+  --user-bubble:    #FFEB33;
+  --bot-bubble:     #FFFFFF;
+  --green:          #3cb878;
+  --green-dk:       #1f7a49;
+  --text:           #1a1a1a;
+  --text-muted:     #666;
+  --header-h:       56px;
+  --input-h:        56px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; font-family: 'Noto Sans KR', sans-serif; font-size: 15px; }
+body { background: #e0e0e0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+
+/* ── Phone frame ── */
+.phone-frame {
+  width: 100%;
+  max-width: 420px;
+  height: 100vh;
+  max-height: 900px;
+  display: flex;
+  flex-direction: column;
+  background: var(--kakao-bg);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,.35);
+}
+@media (min-width: 440px) {
+  .phone-frame {
+    border-radius: 28px;
+    height: 860px;
+  }
+}
+
+/* ── Header ── */
+.chat-header {
+  height: var(--header-h);
+  background: var(--kakao-bg2);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 10px;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(0,0,0,.1);
+}
+.header-back { font-size: 20px; cursor: pointer; color: var(--text); line-height: 1; }
+.header-avatar {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--green);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.header-info { flex: 1; }
+.header-name { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.2; }
+.header-sub  { font-size: 11px; color: #444; }
+.header-icons { display: flex; gap: 14px; font-size: 18px; color: var(--text); }
+.header-icons span { cursor: pointer; }
+
+/* ── Chat area ── */
+.chat-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 10px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  scroll-behavior: smooth;
+}
+.chat-area::-webkit-scrollbar { width: 4px; }
+.chat-area::-webkit-scrollbar-thumb { background: rgba(0,0,0,.2); border-radius: 4px; }
+
+/* ── Date divider ── */
+.date-divider {
+  text-align: center;
+  margin: 6px 0 10px;
+}
+.date-divider span {
+  background: rgba(0,0,0,.2);
+  color: #fff;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+/* ── Message rows ── */
+.msg-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  max-width: 82%;
+  margin-bottom: 2px;
+}
+.msg-row.bot  { align-self: flex-start; }
+.msg-row.user { align-self: flex-end; flex-direction: row-reverse; }
+
+.bot-avatar {
+  width: 34px; height: 34px; border-radius: 10px;
+  background: var(--green);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0; align-self: flex-start;
+}
+
+.bubble-col { display: flex; flex-direction: column; gap: 4px; }
+.sender-name { font-size: 11px; font-weight: 600; color: #333; padding-left: 2px; }
+
+.bubble {
+  padding: 9px 13px;
+  border-radius: 4px;
+  line-height: 1.55;
+  font-size: 14px;
+  word-break: break-word;
+  white-space: pre-wrap;
+  position: relative;
+}
+.msg-row.bot  .bubble { background: var(--bot-bubble); border-radius: 0 12px 12px 12px; }
+.msg-row.user .bubble { background: var(--user-bubble); border-radius: 12px 0 12px 12px; }
+
+.bubble-meta {
+  font-size: 10px; color: rgba(0,0,0,.45);
+  white-space: nowrap; padding-bottom: 2px;
+}
+.msg-row.bot  .bubble-meta { align-self: flex-end; }
+.msg-row.user .bubble-meta { align-self: flex-end; text-align: right; }
+
+/* cards inside bubble */
+.card {
+  background: #f7f7f7;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 6px;
+  font-size: 13px;
+}
+.card-title {
+  background: var(--green);
+  color: #fff;
+  font-weight: 700;
+  padding: 7px 12px;
+  font-size: 13px;
+}
+.card-body { padding: 8px 12px; line-height: 1.7; color: #222; }
+.card-body b { color: var(--green-dk); }
+
+/* quick reply chips */
+.quick-wrap {
+  display: flex; flex-wrap: wrap; gap: 6px;
+  margin-top: 8px;
+}
+.quick-btn {
+  background: #fff;
+  border: 1.5px solid var(--green);
+  border-radius: 20px;
+  padding: 5px 13px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--green-dk);
+  cursor: pointer;
+  transition: background .15s, color .15s;
+  white-space: nowrap;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+.quick-btn:hover { background: var(--green); color: #fff; }
+
+/* list-style items */
+.item-list { margin: 4px 0; }
+.item-list li { margin-left: 16px; line-height: 1.7; color: #222; font-size: 13px; }
+
+/* typing indicator */
+.typing-indicator { display: none; }
+.typing-indicator .bubble {
+  background: var(--bot-bubble);
+  border-radius: 0 12px 12px 12px;
+  display: flex; gap: 4px; align-items: center;
+  padding: 10px 14px;
+}
+.typing-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #aaa;
+  animation: bounce 1.2s infinite ease-in-out;
+}
+.typing-dot:nth-child(2) { animation-delay: .2s; }
+.typing-dot:nth-child(3) { animation-delay: .4s; }
+@keyframes bounce {
+  0%,80%,100% { transform: translateY(0); }
+  40%          { transform: translateY(-6px); }
+}
+
+/* ── Quick menu bar (below chat, above input) ── */
+.quick-menu-bar {
+  background: #c8d8e8;
+  border-top: 1px solid rgba(0,0,0,.1);
+  padding: 8px 10px;
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  flex-shrink: 0;
+}
+.quick-menu-bar::-webkit-scrollbar { display: none; }
+.menu-chip {
+  background: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background .15s;
+  font-family: 'Noto Sans KR', sans-serif;
+  box-shadow: 0 1px 3px rgba(0,0,0,.15);
+}
+.menu-chip:hover { background: var(--kakao-yellow); }
+.menu-chip.active { background: var(--kakao-yellow); }
+
+/* ── Input bar ── */
+.input-bar {
+  height: var(--input-h);
+  background: #c8d8e8;
+  border-top: 1px solid rgba(0,0,0,.1);
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.input-bar .icon-btn {
+  width: 32px; height: 32px;
+  border: none; background: none;
+  font-size: 20px; cursor: pointer; color: #555;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.chat-input {
+  flex: 1;
+  border: none;
+  border-radius: 20px;
+  background: #fff;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-family: 'Noto Sans KR', sans-serif;
+  outline: none;
+  height: 38px;
+}
+.send-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: #aac4d8;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background .15s;
+}
+.send-btn.active { background: var(--kakao-yellow); color: #333; }
+
+/* ── Page wrapper for desktop ── */
+.page-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--green-dk) 0%, var(--green) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.page-title {
+  color: rgba(255,255,255,.85);
+  font-size: 13px;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+</style>
+</head>
+<body>
+<div class="page-bg">
+  <p class="page-title">영락고등학교 진로·입시 챗봇 시뮬레이터</p>
+
+  <div class="phone-frame">
+    <!-- Header -->
+    <div class="chat-header">
+      <span class="header-back">‹</span>
+      <div class="header-avatar">🏫</div>
+      <div class="header-info">
+        <div class="header-name">영락봇</div>
+        <div class="header-sub">영락고등학교 진로·입시 상담</div>
+      </div>
+      <div class="header-icons">
+        <span title="검색">🔍</span>
+        <span title="메뉴">☰</span>
+      </div>
+    </div>
+
+    <!-- Chat messages -->
+    <div class="chat-area" id="chatArea">
+      <div class="date-divider"><span id="todayLabel"></span></div>
+
+      <!-- Welcome message -->
+      <div class="msg-row bot" id="welcomeMsg">
+        <div class="bot-avatar">🏫</div>
+        <div class="bubble-col">
+          <div class="sender-name">영락봇</div>
+          <div class="bubble">
+            안녕하세요! 저는 <b>영락고등학교 진로·입시 챗봇</b> 영락봇이에요 😊<br><br>
+            아래 메뉴를 선택하거나 궁금한 내용을 직접 입력해 주세요.
+            <div class="quick-wrap" id="mainMenu">
+              <button class="quick-btn" onclick="sendQuick('📋 입시 정보')">📋 입시 정보</button>
+              <button class="quick-btn" onclick="sendQuick('📊 성적 상담')">📊 성적 상담</button>
+              <button class="quick-btn" onclick="sendQuick('📚 과목 선택')">📚 과목 선택</button>
+              <button class="quick-btn" onclick="sendQuick('🗓️ 수능 일정')">🗓️ 수능 일정</button>
+            </div>
+          </div>
+          <div class="bubble-meta" id="welcomeTime"></div>
+        </div>
+      </div>
+
+      <!-- Typing indicator -->
+      <div class="msg-row bot typing-indicator" id="typingIndicator">
+        <div class="bot-avatar">🏫</div>
+        <div class="bubble-col">
+          <div class="sender-name">영락봇</div>
+          <div class="bubble">
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+            <div class="typing-dot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick menu bar -->
+    <div class="quick-menu-bar">
+      <button class="menu-chip" onclick="sendQuick('📋 입시 정보')">📋 입시 정보</button>
+      <button class="menu-chip" onclick="sendQuick('📊 성적 상담')">📊 성적 상담</button>
+      <button class="menu-chip" onclick="sendQuick('📚 과목 선택')">📚 과목 선택</button>
+      <button class="menu-chip" onclick="sendQuick('🗓️ 수능 일정')">🗓️ 수능 일정</button>
+      <button class="menu-chip" onclick="sendQuick('🏫 학교 소개')">🏫 학교 소개</button>
+      <button class="menu-chip" onclick="sendQuick('❓ 도움말')">❓ 도움말</button>
+    </div>
+
+    <!-- Input bar -->
+    <div class="input-bar">
+      <button class="icon-btn" title="더보기">+</button>
+      <input class="chat-input" id="chatInput" type="text"
+             placeholder="메시지를 입력하세요" autocomplete="off"
+             oninput="onInputChange()" onkeydown="onKeyDown(event)">
+      <button class="send-btn" id="sendBtn" onclick="handleSend()" disabled>➤</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Knowledge base ──────────────────────────────────────────────
+const KB = {
+
+  '입시 정보': {
+    text: '입시 전형에 대해 안내해 드릴게요. 아래 항목을 선택해 주세요.',
+    cards: [],
+    quick: ['수시 전형', '정시 전형', '학생부 관리', '자기소개서 팁']
+  },
+
+  '수시 전형': {
+    text: '',
+    cards: [{
+      title: '📋 2026학년도 수시 전형 개요',
+      body: `<b>원서접수</b> 2025년 9월 11일(목) ~ 15일(월)\n<b>전형 유형</b>\n  • 학생부교과 — 내신 중심, 수능최저 有\n  • 학생부종합 — 서류+면접, 성장 가능성 평가\n  • 논술 — 논술고사 + 학생부\n  • 실기/특기자 — 예체능·어학 특기자\n\n<b>지원 횟수</b> 최대 6개 대학 (학교 간 중복 제한 없음)\n<b>합격자 발표</b> 2025년 12월 12일(금) 이전`,
+    }],
+    quick: ['정시 전형', '학생부 관리', '수능 일정', '📋 입시 정보']
+  },
+
+  '정시 전형': {
+    text: '',
+    cards: [{
+      title: '📋 2026학년도 정시 전형 개요',
+      body: `<b>원서접수</b> 2026년 1월 초 (가/나/다군)\n<b>전형 방법</b> 수능 성적 100% (일부 학교 면접 병행)\n<b>군별 지원</b> 각 군 1개 대학, 총 3회 지원 가능\n\n<b>수능 반영 방법 (계열별 차이)</b>\n  • 인문 — 국어·수학·영어·사탐 위주\n  • 자연 — 국어·수학(미적/기하)·영어·과탐 위주\n  • 의약학 — 수학·과탐 비중 높음\n\n<b>탐구 변환표준점수</b> 대학별 상이`,
+    }],
+    quick: ['수시 전형', '수능 일정', '성적 상담', '📋 입시 정보']
+  },
+
+  '학생부 관리': {
+    text: '',
+    cards: [{
+      title: '📑 학생부 관리 핵심 포인트',
+      body: `<b>교과 성적</b> 1학년부터 꾸준히 — 3년 평균이 중요해요\n<b>세부능력·특기사항</b> 수업 참여도·심화 탐구 기록 필수\n<b>독서 활동</b> 전공 관련 도서 + 독후감 구체적으로 기재\n<b>창의적 체험활동</b>\n  • 자율: 학교 행사, 봉사 리더십\n  • 동아리: 전공 관련 동아리 적극 활동\n  • 봉사: 연 20시간 이상 권장\n  • 진로: 탐방·특강·직업체험`,
+    }],
+    quick: ['자기소개서 팁', '과목 선택', '📋 입시 정보']
+  },
+
+  '자기소개서 팁': {
+    text: '',
+    cards: [{
+      title: '✍️ 자기소개서 작성 핵심 팁',
+      body: `<b>1번 문항</b> 학업 역경 극복 경험 → 구체적 사례 + 배운 점\n<b>2번 문항</b> 의미 있는 교내 활동 → 과정·변화·성장 서술\n<b>3번 문항</b> 지원 동기/미래 계획 → 전공 연계 + 비전 제시\n\n<b>작성 원칙</b>\n  • 학생부 내용을 뒷받침하는 에피소드 선택\n  • '나'가 주인공인 서술 (남과 비교 금지)\n  • 결과보다 과정과 변화에 집중\n  • 고교생다운 언어로 진정성 있게`,
+    }],
+    quick: ['학생부 관리', '수시 전형', '📋 입시 정보']
+  },
+
+  '성적 상담': {
+    text: '성적 관련 상담 내용을 선택해 주세요.',
+    cards: [],
+    quick: ['내신 등급 계산법', '수능 등급 기준', '모의고사 활용법', '성적 향상 전략']
+  },
+
+  '내신 등급 계산법': {
+    text: '',
+    cards: [{
+      title: '📊 내신 등급 산출 방식',
+      body: `<b>석차등급</b> = 원점수로 석차를 구한 뒤 비율로 등급 부여\n\n<b>등급별 상위 누적 비율</b>\n  1등급 — 4%\n  2등급 — 11%\n  3등급 — 23%\n  4등급 — 40%\n  5등급 — 60%\n  6등급 — 77%\n  7등급 — 89%\n  8등급 — 96%\n  9등급 — 100%\n\n<b>평균 내신 계산</b>\n  (각 과목 단위 수 × 등급) 합 ÷ 전체 이수 단위 수\n  → 소수점 둘째 자리까지 표시`,
+    }],
+    quick: ['수능 등급 기준', '성적 향상 전략', '📊 성적 상담']
+  },
+
+  '수능 등급 기준': {
+    text: '',
+    cards: [{
+      title: '📊 2025 수능 등급 기준',
+      body: `<b>국어·수학·탐구(선택과목)</b>\n  1등급 — 상위 4% / 2등급 — 11% / 3등급 — 23%\n  4등급 — 40% / 5등급 — 60%\n\n<b>영어 (절대평가)</b>\n  1등급 — 90점 이상 / 2등급 — 80점 이상\n  3등급 — 70점 이상 / 4등급 — 60점 이상\n\n<b>한국사 (절대평가, 필수)</b>\n  1등급 — 40점 이상 / 2등급 — 35점 이상\n\n<b>표준점수</b> = 원점수만으로 환산, 응시자 평균·표준편차 반영`,
+    }],
+    quick: ['내신 등급 계산법', '모의고사 활용법', '수능 일정', '📊 성적 상담']
+  },
+
+  '모의고사 활용법': {
+    text: '',
+    cards: [{
+      title: '📝 모의고사 활용 전략',
+      body: `<b>시험 유형별 의미</b>\n  • 3월 학력평가 — 전년도 실력 가늠, 취약 영역 파악\n  • 6월 수능 모의평가 — 수능 출제기관(수능평가원) 출제, 매우 중요\n  • 9월 수능 모의평가 — 수능 최종 점검, 선택과목 최종 확정 기준\n\n<b>오답 분석 3단계</b>\n  1. 틀린 문제 → 오답노트 작성\n  2. 유형별 분류 → 취약 개념 집중 복습\n  3. 동일 유형 문제 재풀기 → 완성도 확인`,
+    }],
+    quick: ['성적 향상 전략', '수능 일정', '📊 성적 상담']
+  },
+
+  '성적 향상 전략': {
+    text: '',
+    cards: [{
+      title: '📈 영역별 성적 향상 전략',
+      body: `<b>국어</b> 비문학 — 배경지식 확장 + 시간 배분 훈련\n     문학 — 갈래별 개념 + 작품 다독\n\n<b>수학</b> 개념서 완전 이해 → 유형서 → 기출 반복\n     오답노트 필수, 풀이 과정 손으로 써보기\n\n<b>영어</b> 구문 독해 → 장문 + EBS 연계 지문 반복\n     어휘 매일 30개 암기 목표\n\n<b>탐구</b> 개념 → 기출 → 모의고사 순서로 진행\n     선택 2과목 균형 있게 공부`,
+    }],
+    quick: ['모의고사 활용법', '내신 등급 계산법', '📊 성적 상담']
+  },
+
+  '과목 선택': {
+    text: '선택과목 관련 안내입니다. 아래 항목을 선택해 주세요.',
+    cards: [],
+    quick: ['문과 선택과목', '이과 선택과목', '선택 기준 안내', '탐구 과목 비교']
+  },
+
+  '문과 선택과목': {
+    text: '',
+    cards: [{
+      title: '📚 인문·사회 계열 추천 선택과목',
+      body: `<b>수학</b> 확률과 통계 (대부분 인문계 필수)\n\n<b>탐구 — 사회탐구 (2과목 선택)</b>\n  • 생활과 윤리, 사회·문화 — 응시자 多, 자료 풍부\n  • 한국지리, 세계지리 — 지리 기반 전공 유리\n  • 동아시아사, 세계사 — 역사·국제 전공 연계\n  • 경제, 정치와 법 — 상경·법학 계열 유리\n\n<b>언어와 매체 vs 화법과 작문</b>\n  언어와 매체: 문법 강함 → 고득점 유리하나 학습량 多\n  화법과 작문: 상대적으로 접근 쉬움`,
+    }],
+    quick: ['이과 선택과목', '탐구 과목 비교', '📚 과목 선택']
+  },
+
+  '이과 선택과목': {
+    text: '',
+    cards: [{
+      title: '📚 자연·공학 계열 추천 선택과목',
+      body: `<b>수학</b> 미적분 (자연계 필수) / 기하 (일부 의대·이공계 유리)\n\n<b>탐구 — 과학탐구 (2과목 선택)</b>\n  • 물리학Ⅰ+Ⅱ — 물리·기계·전기 계열 필수에 가까움\n  • 화학Ⅰ+Ⅱ — 화학·생명·약학 계열 강점\n  • 생명과학Ⅰ+Ⅱ — 의학·수의학·간호 계열 우세\n  • 지구과학Ⅰ+Ⅱ — 지구·환경·천문 계열\n\n<b>의약학 계열</b> 화학+생명과학 조합이 가장 일반적\n<b>전략</b> Ⅱ과목은 학습량 많지만 표준점수 유리할 때 有`,
+    }],
+    quick: ['문과 선택과목', '탐구 과목 비교', '선택 기준 안내', '📚 과목 선택']
+  },
+
+  '선택 기준 안내': {
+    text: '',
+    cards: [{
+      title: '🎯 과목 선택 3가지 기준',
+      body: `<b>1. 진로·전공 연계</b>\n  희망 학과가 요구하거나 연계성 높은 과목 우선\n  예) 의학 → 생명과학·화학 / 경영 → 수학·경제\n\n<b>2. 수능 응시자 수 & 유불리</b>\n  응시 집단 수준에 따라 표준점수·등급 달라짐\n  → 학평·모평 등급컷 미리 확인 필수\n\n<b>3. 자신의 흥미와 강점</b>\n  좋아하는 과목 = 꾸준히 공부 가능 = 고득점 가능성 ↑\n  억지로 선택한 과목은 오히려 리스크\n\n⚠️ 2학년 선택 전 담임·진로 선생님 상담 적극 권장`,
+    }],
+    quick: ['문과 선택과목', '이과 선택과목', '탐구 과목 비교', '📚 과목 선택']
+  },
+
+  '탐구 과목 비교': {
+    text: '',
+    cards: [{
+      title: '🔬 탐구 과목 선택 비교표',
+      body: `<b>사회탐구 고려 사항</b>\n  외울 내용 多 / 최근 기출 분석 중요\n  생활과윤리·사회문화 — 안정적 선택지\n  경제 — 어렵지만 점수 유리할 수 있음\n\n<b>과학탐구 고려 사항</b>\n  개념 이해력 필요 / Ⅱ과목 심화 학습 필수\n  응시자 분포 고려 → Ⅱ 선택 시 유리/불리 해마다 달라\n\n<b>공통 전략</b>\n  • 6월·9월 모평 후 등급컷 확인\n  • 목표 대학 반영 방법(백분위/표준점수) 파악\n  • 2과목 이상 병행 시 시간 배분 계획 필수`,
+    }],
+    quick: ['문과 선택과목', '이과 선택과목', '선택 기준 안내', '📚 과목 선택']
+  },
+
+  '수능 일정': {
+    text: '',
+    cards: [{
+      title: '🗓️ 2026학년도 수능 주요 일정',
+      body: `<b>원서 접수</b> 2025년 8월 21일(목) ~ 9월 5일(금)\n<b>시험일</b> 2025년 11월 13일(목)\n<b>성적 통보</b> 2025년 12월 5일(금)\n\n<b>수능 당일 시간표</b>\n  08:40 — 국어 (80분)\n  10:30 — 수학 (100분)\n  13:10 — 영어 (70분)\n  15:20 — 한국사·탐구 (각 30분)\n  17:05 — 제2외국어/한문 (40분, 선택)\n\n<b>2025년도 수능 재수생 포함 지원자</b> 약 52만 명 예상`,
+    }],
+    quick: ['수시 전형', '정시 전형', '모의고사 활용법', '📋 입시 정보']
+  },
+
+  '학교 소개': {
+    text: '',
+    cards: [{
+      title: '🏫 영락고등학교 소개',
+      body: `<b>개교</b> 1959년 4월 9일\n<b>학교법인</b> 영락학원 (사립 일반고 · 남녀공학)\n<b>교훈</b> 하나님을 공경하고 이웃을 사랑하자\n<b>학교정신</b> 은혜 · 진리 · 사랑 · 봉사\n<b>교목</b> 개잎갈나무  <b>교화</b> 백합\n<b>학생수</b> 536명  <b>교직원</b> 50명\n<b>교장</b> 장호 선생님\n\n<b>주요 서비스</b>\n  📊 성적 분석 도구 — grade-predictor.html\n  📋 입시 탐색 — admission-search.html\n  📚 교육과정 안내 — curriculum-guide.html`,
+    }],
+    quick: ['📋 입시 정보', '📊 성적 상담', '📚 과목 선택']
+  },
+
+  '도움말': {
+    text: '다음과 같이 질문하실 수 있어요!',
+    cards: [{
+      title: '❓ 영락봇 이용 안내',
+      body: `<b>버튼으로 질문</b> 하단 바 또는 말풍선 안 버튼 클릭\n<b>직접 입력</b> 아래 입력창에 키워드 입력\n\n<b>지원 키워드 예시</b>\n  "수시", "정시", "내신", "수능", "탐구",\n  "모의고사", "자소서", "학생부", "과목",\n  "문과", "이과", "의대", "학교 소개" …\n\n<b>한계</b> 개인별 맞춤 상담은 담임·진로 선생님께\n  더 정확한 안내를 받으실 수 있어요 😊`,
+    }],
+    quick: ['📋 입시 정보', '📊 성적 상담', '📚 과목 선택']
+  },
+};
+
+// keyword → topic mapping
+const KEYWORD_MAP = [
+  { keys: ['수시', '학생부교과', '학생부종합', '논술', '원서'],   topic: '수시 전형' },
+  { keys: ['정시', '가군', '나군', '다군'],                       topic: '정시 전형' },
+  { keys: ['자기소개서', '자소서'],                               topic: '자기소개서 팁' },
+  { keys: ['학생부', '생기부', '세특'],                           topic: '학생부 관리' },
+  { keys: ['내신', '석차', '등급 계산'],                         topic: '내신 등급 계산법' },
+  { keys: ['수능 등급', '원점수', '표준점수', '백분위'],          topic: '수능 등급 기준' },
+  { keys: ['모의고사', '학력평가', '수능평가원', '모평'],         topic: '모의고사 활용법' },
+  { keys: ['성적 향상', '공부법', '공부 방법', '국어', '수학', '영어', '공부'], topic: '성적 향상 전략' },
+  { keys: ['문과', '사탐', '사회탐구', '인문'],                   topic: '문과 선택과목' },
+  { keys: ['이과', '과탐', '과학탐구', '자연', '공학', '의대', '의학'], topic: '이과 선택과목' },
+  { keys: ['과목 선택 기준', '어떤 과목'],                        topic: '선택 기준 안내' },
+  { keys: ['탐구 비교', '탐구 과목'],                             topic: '탐구 과목 비교' },
+  { keys: ['수능 일정', '수능 날', '시험 날', '수능일'],          topic: '수능 일정' },
+  { keys: ['학교 소개', '영락고', '영락학원', '개교'],            topic: '학교 소개' },
+  { keys: ['도움말', '사용법', '뭘 물어', '뭘 알'],               topic: '도움말' },
+  { keys: ['입시'],                                               topic: '입시 정보' },
+  { keys: ['성적'],                                               topic: '성적 상담' },
+  { keys: ['과목'],                                               topic: '과목 선택' },
+];
+
+// ── Utilities ─────────────────────────────────────────────────
+function nowTime() {
+  const d = new Date();
+  const h = d.getHours(), m = d.getMinutes();
+  const ampm = h < 12 ? '오전' : '오후';
+  const hh = h % 12 || 12;
+  return `${ampm} ${hh}:${m.toString().padStart(2,'0')}`;
+}
+function todayFull() {
+  const d = new Date();
+  const days = ['일','월','화','수','목','금','토'];
+  return `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 (${days[d.getDay()]})`;
+}
+
+function initTimes() {
+  document.getElementById('todayLabel').textContent = todayFull();
+  document.getElementById('welcomeTime').textContent = nowTime();
+}
+
+function scrollBottom() {
+  const area = document.getElementById('chatArea');
+  area.scrollTop = area.scrollHeight;
+}
+
+// ── Render helpers ────────────────────────────────────────────
+function renderBotMessage(data) {
+  const row = document.createElement('div');
+  row.className = 'msg-row bot';
+
+  const avatar = document.createElement('div');
+  avatar.className = 'bot-avatar';
+  avatar.textContent = '🏫';
+
+  const col = document.createElement('div');
+  col.className = 'bubble-col';
+
+  const name = document.createElement('div');
+  name.className = 'sender-name';
+  name.textContent = '영락봇';
+
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+
+  if (data.text) {
+    const t = document.createElement('span');
+    t.textContent = data.text;
+    bubble.appendChild(t);
+  }
+
+  (data.cards || []).forEach(c => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    const ct = document.createElement('div');
+    ct.className = 'card-title';
+    ct.textContent = c.title;
+    const cb = document.createElement('div');
+    cb.className = 'card-body';
+    // render body with newlines as <br>
+    cb.innerHTML = c.body
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+      .replace(/<b>(.*?)<\/b>/g, (_, m) => `<b>${m.replace(/&lt;/g,'<').replace(/&gt;/g,'>')}</b>`)
+      .replace(/\n/g,'<br>');
+    // allow <b> tags by re-processing
+    cb.innerHTML = c.body
+      .replace(/\n/g,'<br>')
+      .replace(/(<b>|<\/b>)/g, m => m);
+    card.appendChild(ct);
+    card.appendChild(cb);
+    bubble.appendChild(card);
+  });
+
+  if (data.quick && data.quick.length) {
+    const qw = document.createElement('div');
+    qw.className = 'quick-wrap';
+    data.quick.forEach(q => {
+      const btn = document.createElement('button');
+      btn.className = 'quick-btn';
+      btn.textContent = q;
+      btn.onclick = () => sendQuick(q);
+      qw.appendChild(btn);
+    });
+    bubble.appendChild(qw);
+  }
+
+  const meta = document.createElement('div');
+  meta.className = 'bubble-meta';
+  meta.textContent = nowTime();
+
+  col.appendChild(name);
+  col.appendChild(bubble);
+  col.appendChild(meta);
+  row.appendChild(avatar);
+  row.appendChild(col);
+
+  return row;
+}
+
+function renderUserMessage(text) {
+  const row = document.createElement('div');
+  row.className = 'msg-row user';
+  const col = document.createElement('div');
+  col.className = 'bubble-col';
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.textContent = text;
+  const meta = document.createElement('div');
+  meta.className = 'bubble-meta';
+  meta.textContent = nowTime();
+  col.appendChild(bubble);
+  col.appendChild(meta);
+  row.appendChild(col);
+  return row;
+}
+
+// ── Logic ────────────────────────────────────────────────────
+function findTopic(input) {
+  const s = input.trim().replace(/📋|📊|📚|🗓️|🏫|❓/g,'').trim();
+
+  // direct key match
+  if (KB[s]) return s;
+
+  // label shorthand
+  const MAP = {
+    '입시 정보': '입시 정보', '성적 상담': '성적 상담',
+    '과목 선택': '과목 선택', '수능 일정': '수능 일정',
+    '학교 소개': '학교 소개', '도움말': '도움말'
+  };
+  if (MAP[s]) return MAP[s];
+
+  // keyword scan
+  for (const {keys, topic} of KEYWORD_MAP) {
+    for (const k of keys) {
+      if (s.includes(k)) return topic;
+    }
+  }
+  return null;
+}
+
+function getReply(topic) {
+  return KB[topic] || {
+    text: '죄송해요, 해당 내용은 아직 준비 중이에요 😅\n아래 메뉴에서 선택해 주시거나 담임 선생님께 문의해 주세요.',
+    cards: [],
+    quick: ['📋 입시 정보', '📊 성적 상담', '📚 과목 선택', '❓ 도움말']
+  };
+}
+
+function appendBotReply(topic) {
+  const typing = document.getElementById('typingIndicator');
+  typing.style.display = 'flex';
+  scrollBottom();
+
+  setTimeout(() => {
+    typing.style.display = 'none';
+    const data = getReply(topic);
+    const area = document.getElementById('chatArea');
+    const node = renderBotMessage(data);
+    area.insertBefore(node, typing);
+    scrollBottom();
+  }, 600 + Math.random() * 400);
+}
+
+function sendMessage(text) {
+  if (!text.trim()) return;
+  const area = document.getElementById('chatArea');
+  const typing = document.getElementById('typingIndicator');
+  area.insertBefore(renderUserMessage(text), typing);
+  scrollBottom();
+
+  const topic = findTopic(text);
+  appendBotReply(topic);
+}
+
+function sendQuick(label) {
+  document.getElementById('chatInput').value = '';
+  updateSendBtn();
+  sendMessage(label);
+}
+
+function handleSend() {
+  const inp = document.getElementById('chatInput');
+  const v = inp.value.trim();
+  if (!v) return;
+  inp.value = '';
+  updateSendBtn();
+  sendMessage(v);
+}
+
+function onInputChange() { updateSendBtn(); }
+function updateSendBtn() {
+  const v = document.getElementById('chatInput').value.trim();
+  const btn = document.getElementById('sendBtn');
+  btn.disabled = !v;
+  btn.classList.toggle('active', !!v);
+}
+function onKeyDown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); }
+}
+
+// ── Init ─────────────────────────────────────────────────────
+initTimes();
+</script>
+</body>
+</html>
