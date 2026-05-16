@@ -327,7 +327,7 @@ body { background: #e0e0e0; display: flex; justify-content: center; align-items:
     <div class="chat-area" id="chatArea">
       <div class="date-divider"><span id="todayLabel"></span></div>
 
-      <!-- Welcome message -->
+      <!-- Welcome message (역할 선택) -->
       <div class="msg-row bot" id="welcomeMsg">
         <div class="bot-avatar">🏫</div>
         <div class="bubble-col">
@@ -335,12 +335,11 @@ body { background: #e0e0e0; display: flex; justify-content: center; align-items:
           <div class="bubble">
             안녕하세요! 저는 <b>영락고등학교 진로·입시 챗봇</b> 영락봇이에요 😊<br><br>
             <span id="ddayWelcome"></span>
-            아래 메뉴를 선택하거나 궁금한 내용을 직접 입력해 주세요.
-            <div class="quick-wrap" id="mainMenu">
-              <button class="quick-btn" onclick="sendQuick('📋 입시 정보')">📋 입시 정보</button>
-              <button class="quick-btn" onclick="sendQuick('📊 성적 상담')">📊 성적 상담</button>
-              <button class="quick-btn" onclick="sendQuick('📚 과목 선택')">📚 과목 선택</button>
-              <button class="quick-btn" onclick="sendQuick('🗓️ 수능 일정')">🗓️ 수능 일정</button>
+            먼저 본인이 누구인지 선택해 주세요.
+            <div class="quick-wrap">
+              <button class="quick-btn role-btn" onclick="selectRole('학생')">🎒 학생</button>
+              <button class="quick-btn role-btn" onclick="selectRole('학부모')">👨‍👩‍👧 학부모</button>
+              <button class="quick-btn role-btn" onclick="selectRole('교사')">👨‍🏫 교사</button>
             </div>
           </div>
           <div class="bubble-meta" id="welcomeTime"></div>
@@ -361,14 +360,9 @@ body { background: #e0e0e0; display: flex; justify-content: center; align-items:
       </div>
     </div>
 
-    <!-- Quick menu bar -->
-    <div class="quick-menu-bar">
-      <button class="menu-chip" onclick="sendQuick('📋 입시 정보')">📋 입시 정보</button>
-      <button class="menu-chip" onclick="sendQuick('📊 성적 상담')">📊 성적 상담</button>
-      <button class="menu-chip" onclick="sendQuick('📚 과목 선택')">📚 과목 선택</button>
-      <button class="menu-chip" onclick="sendQuick('🗓️ 수능 일정')">🗓️ 수능 일정</button>
-      <button class="menu-chip" onclick="sendQuick('🏫 학교 소개')">🏫 학교 소개</button>
-      <button class="menu-chip" onclick="sendQuick('❓ 도움말')">❓ 도움말</button>
+    <!-- Quick menu bar (역할 선택 후 동적으로 채워짐) -->
+    <div class="quick-menu-bar" id="quickMenuBar">
+      <span style="font-size:12px;color:#666;padding:4px 6px;align-self:center;">역할을 먼저 선택해 주세요</span>
     </div>
 
     <!-- Input bar -->
@@ -557,6 +551,120 @@ const KB = {
   },
 };
 
+// ── 학부모 전용 KB ─────────────────────────────────────────────
+const KB_PARENT = {
+
+  '수시·정시 차이': {
+    text: '',
+    cards: [{
+      title: '🔍 수시 vs 정시, 한눈에 비교',
+      body: `<b>수시모집</b>\n  • 시기: 고3 9월 원서접수\n  • 기준: 학생부(내신) + 면접·논술·서류\n  • 특징: 6개 대학까지 지원 가능, 합격하면 정시 지원 불가\n  • 유리한 경우: 내신 성적이 좋고 교내 활동이 풍부한 학생\n\n<b>정시모집</b>\n  • 시기: 수능 이후 (2027년 1월 원서접수)\n  • 기준: 수능 점수 위주\n  • 특징: 가/나/다군 각 1개씩 총 3번 지원\n  • 유리한 경우: 수능 성적이 내신보다 좋은 학생\n\n💡 두 전형을 동시에 준비하는 것이 일반적이에요.`,
+    }],
+    quick: ['입시 용어 설명', '자녀 성적 해석', '🗓️ 수능 일정', '📞 상담 신청']
+  },
+
+  '입시 용어 설명': {
+    text: '',
+    cards: [{
+      title: '📖 꼭 알아야 할 입시 용어',
+      body: `<b>학생부교과</b> 내신 등급 숫자로만 평가하는 전형\n<b>학생부종합(학종)</b> 내신 + 생활기록부 전체를 종합 평가\n<b>논술</b> 대학에서 출제한 시험 + 학생부\n<b>세부능력·특기사항(세특)</b> 선생님이 기록하는 수업 참여 내용\n<b>수능최저학력기준(수능최저)</b> 수시에서 요구하는 최소 수능 등급\n<b>표준점수</b> 수능 응시자 평균 대비 내 점수 위치\n<b>백분위</b> 나보다 낮은 점수 학생의 비율(%)\n<b>가/나/다군</b> 정시에서 대학을 묶은 그룹, 각 군에 1개씩 지원`,
+    }],
+    quick: ['수시·정시 차이', '자녀 성적 해석', '📞 상담 신청']
+  },
+
+  '자녀 성적 해석': {
+    text: '',
+    cards: [{
+      title: '📊 자녀 성적표, 이렇게 읽으세요',
+      body: `<b>내신 등급</b> 1~9등급 (1등급이 최상위)\n  • 1~2등급: 인서울 상위권 수시 지원 가능\n  • 3~4등급: 수도권·지방 국립대 수시 권장\n  • 5등급 이하: 수능 집중 또는 전문대 검토\n\n<b>모의고사 등급과 내신 등급의 차이</b>\n  모의고사는 전국 수험생 기준 → 내신보다 등급이 낮게 나오는 경우 多\n  두 성적을 함께 보고 수시·정시 전략 결정\n\n<b>3학년 1학기 내신이 가장 중요한 이유</b>\n  수시 원서접수(9월) 전 마지막 내신 → 지원 대학 결정에 직접 영향\n\n💡 정확한 지원 전략은 진학부 선생님과 상담을 권장드려요.`,
+    }],
+    quick: ['수시·정시 차이', '입시 용어 설명', '📞 상담 신청']
+  },
+
+  '상담 신청': {
+    text: '',
+    cards: [{
+      title: '📞 진학 상담 안내',
+      body: `<b>진학부 개별 상담</b>\n  담임 선생님을 통해 진학부 상담 신청\n  또는 학교 홈페이지에서 온라인 신청 가능\n\n<b>학부모 설명회</b>\n  매 학기 초 학년별 입시 설명회 개최\n  일정은 가정통신문·학교 홈페이지 공지 확인\n\n<b>영락고 홈페이지</b>\n  <a href="https://www.youngnakhs.hs.kr" target="_blank">www.youngnakhs.hs.kr</a>`,
+    }],
+    quick: ['수시·정시 차이', '입시 용어 설명', '자녀 성적 해석']
+  },
+};
+
+// ── 교사 전용 KB ────────────────────────────────────────────────
+const KB_TEACHER = {
+
+  '성적 분석 도구': {
+    text: '',
+    cards: [{
+      title: '📊 성적 분석 도구',
+      body: `학생 성적 입력 → 등급·석차·평균 자동 산출\n내신 산출, 학급별 분포 분석 기능\n\n<a href="index.html" target="_blank">▶ 성적 분석 도구 열기</a>`,
+    }],
+    quick: ['입시 탐색', '교육과정 안내', '상담 자료', '❓ 도움말']
+  },
+
+  '입시 탐색': {
+    text: '',
+    cards: [{
+      title: '📋 입시 정보 탐색 도구',
+      body: `대학별 전형 정보, 입결 데이터 탐색\n학생 상담 시 참고 자료로 활용\n\n<a href="admission-search.html" target="_blank">▶ 입시 탐색 도구 열기</a>`,
+    }],
+    quick: ['성적 분석 도구', '교육과정 안내', '상담 자료', '❓ 도움말']
+  },
+
+  '교육과정 안내': {
+    text: '',
+    cards: [{
+      title: '📚 교육과정 안내 자료',
+      body: `영락고 선택과목 구성 및 교육과정 안내\n학생 과목 선택 상담 시 활용\n\n<a href="curriculum-guide.html" target="_blank">▶ 교육과정 안내 열기</a>`,
+    }],
+    quick: ['성적 분석 도구', '입시 탐색', '상담 자료', '❓ 도움말']
+  },
+
+  '상담 자료': {
+    text: '',
+    cards: [{
+      title: '📄 학생 상담 자료',
+      body: `고1 학생 진로·진학 상담 자료\n담임 상담 및 진학부 상담 시 활용\n\n<a href="고1_상담자료.html" target="_blank">▶ 고1 상담자료 열기</a>`,
+    }],
+    quick: ['성적 분석 도구', '입시 탐색', '교육과정 안내', '❓ 도움말']
+  },
+};
+
+// ── 역할별 퀵메뉴 ───────────────────────────────────────────────
+const ROLE_MENUS = {
+  '학생': [
+    { label: '📋 입시 정보',  topic: '📋 입시 정보' },
+    { label: '📊 성적 상담',  topic: '📊 성적 상담' },
+    { label: '📚 과목 선택',  topic: '📚 과목 선택' },
+    { label: '🗓️ 수능 일정', topic: '🗓️ 수능 일정' },
+    { label: '🏫 학교 소개',  topic: '🏫 학교 소개' },
+    { label: '❓ 도움말',     topic: '❓ 도움말' },
+  ],
+  '학부모': [
+    { label: '🔍 수시·정시 차이', topic: '수시·정시 차이' },
+    { label: '📖 입시 용어 설명', topic: '입시 용어 설명' },
+    { label: '📊 자녀 성적 해석', topic: '자녀 성적 해석' },
+    { label: '🗓️ 수능 일정',     topic: '🗓️ 수능 일정' },
+    { label: '📞 상담 신청',      topic: '상담 신청' },
+    { label: '❓ 도움말',         topic: '❓ 도움말' },
+  ],
+  '교사': [
+    { label: '📊 성적 분석 도구', topic: '성적 분석 도구' },
+    { label: '📋 입시 탐색',      topic: '입시 탐색' },
+    { label: '📚 교육과정 안내',  topic: '교육과정 안내' },
+    { label: '📄 상담 자료',      topic: '상담 자료' },
+    { label: '❓ 도움말',         topic: '❓ 도움말' },
+  ],
+};
+
+// ── 역할별 인사말 ───────────────────────────────────────────────
+const ROLE_GREET = {
+  '학생': `안녕하세요 😊 학생 메뉴로 연결됐어요!\n궁금한 입시·성적·과목 정보를 아래에서 선택하거나 직접 입력해 주세요.`,
+  '학부모': `안녕하세요 😊 학부모님 전용 메뉴로 연결됐어요!\n자녀 입시 준비에 도움이 되는 정보를 안내해 드릴게요.`,
+  '교사': `안녕하세요 😊 교사 전용 메뉴로 연결됐어요!\n진학부 도구와 상담 자료를 빠르게 찾아드릴게요.`,
+};
+
 // keyword → topic mapping
 const KEYWORD_MAP = [
   { keys: ['수시', '학생부교과', '학생부종합', '논술', '원서'],   topic: '수시 전형' },
@@ -578,6 +686,60 @@ const KEYWORD_MAP = [
   { keys: ['성적'],                                               topic: '성적 상담' },
   { keys: ['과목'],                                               topic: '과목 선택' },
 ];
+
+// ── 현재 역할 ──────────────────────────────────────────────────
+let currentRole = null;
+
+function selectRole(role) {
+  currentRole = role;
+
+  // 역할 선택 버튼 비활성화
+  document.querySelectorAll('.role-btn').forEach(btn => {
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+    btn.style.cursor = 'default';
+  });
+
+  // 사용자 메시지 표시
+  const area = document.getElementById('chatArea');
+  const typing = document.getElementById('typingIndicator');
+  const roleLabel = role === '학생' ? '🎒 학생' : role === '학부모' ? '👨‍👩‍👧 학부모' : '👨‍🏫 교사';
+  area.insertBefore(renderUserMessage(roleLabel), typing);
+  scrollBottom();
+
+  // 퀵메뉴 바 업데이트
+  updateMenuBar(role);
+
+  // 역할별 인사 메시지 출력
+  const typing2 = document.getElementById('typingIndicator');
+  typing2.style.display = 'flex';
+  scrollBottom();
+
+  setTimeout(() => {
+    typing2.style.display = 'none';
+    const menus = ROLE_MENUS[role];
+    const greetData = {
+      text: ROLE_GREET[role],
+      cards: [],
+      quick: menus.map(m => m.label),
+    };
+    const node = renderBotMessage(greetData);
+    area.insertBefore(node, typing2);
+    scrollBottom();
+  }, 600);
+}
+
+function updateMenuBar(role) {
+  const bar = document.getElementById('quickMenuBar');
+  bar.innerHTML = '';
+  (ROLE_MENUS[role] || []).forEach(({ label, topic }) => {
+    const btn = document.createElement('button');
+    btn.className = 'menu-chip';
+    btn.textContent = label;
+    btn.onclick = () => sendQuick(topic);
+    bar.appendChild(btn);
+  });
+}
 
 // ── Utilities ─────────────────────────────────────────────────
 function nowTime() {
@@ -693,9 +855,16 @@ function renderUserMessage(text) {
 
 // ── Logic ────────────────────────────────────────────────────
 function findTopic(input) {
-  const s = input.trim().replace(/📋|📊|📚|🗓️|🏫|❓/g,'').trim();
+  const s = input.trim().replace(/📋|📊|📚|🗓️|🏫|❓|🔍|📖|📞|📄|👨‍🏫|👨‍👩‍👧|🎒/g, '').trim();
 
+  // 역할별 KB 우선 검색
+  if (currentRole === '학부모' && KB_PARENT[s]) return s;
+  if (currentRole === '교사'   && KB_TEACHER[s]) return s;
   if (KB[s]) return s;
+
+  // 학부모·교사 KB 전체 키 직접 매칭
+  if (KB_PARENT[s]) return s;
+  if (KB_TEACHER[s]) return s;
 
   const MAP = {
     '입시 정보': '입시 정보', '성적 상담': '성적 상담',
@@ -713,10 +882,24 @@ function findTopic(input) {
 }
 
 function getReply(topic) {
-  return KB[topic] || {
+  // 역할별 KB → 공통 KB 순서로 탐색
+  if (currentRole === '학부모' && KB_PARENT[topic]) return KB_PARENT[topic];
+  if (currentRole === '교사'   && KB_TEACHER[topic]) return KB_TEACHER[topic];
+  if (KB[topic]) return KB[topic];
+  if (KB_PARENT[topic]) return KB_PARENT[topic];
+  if (KB_TEACHER[topic]) return KB_TEACHER[topic];
+
+  // 역할별 기본 안내 메시지
+  const fallbackQuick = currentRole === '학부모'
+    ? ['수시·정시 차이', '입시 용어 설명', '자녀 성적 해석', '📞 상담 신청']
+    : currentRole === '교사'
+    ? ['성적 분석 도구', '입시 탐색', '교육과정 안내', '상담 자료']
+    : ['📋 입시 정보', '📊 성적 상담', '📚 과목 선택', '❓ 도움말'];
+
+  return {
     text: '죄송해요, 해당 내용은 아직 준비 중이에요 😅\n아래 메뉴에서 선택해 주시거나 담임 선생님께 문의해 주세요.',
     cards: [],
-    quick: ['📋 입시 정보', '📊 성적 상담', '📚 과목 선택', '❓ 도움말']
+    quick: fallbackQuick,
   };
 }
 
