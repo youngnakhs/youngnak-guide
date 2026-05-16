@@ -154,6 +154,20 @@ body { background: #e0e0e0; display: flex; justify-content: center; align-items:
 }
 .card-body { padding: 8px 12px; line-height: 1.7; color: #222; }
 .card-body b { color: var(--green-dk); }
+.card-body a { color: var(--green-dk); text-decoration: underline; }
+
+/* D-Day chip */
+.dday-chip {
+  display: inline-block;
+  background: #fff3cd;
+  border: 1.5px solid #f0a500;
+  border-radius: 16px;
+  padding: 3px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #7a4f00;
+  margin-bottom: 8px;
+}
 
 /* quick reply chips */
 .quick-wrap {
@@ -320,6 +334,7 @@ body { background: #e0e0e0; display: flex; justify-content: center; align-items:
           <div class="sender-name">영락봇</div>
           <div class="bubble">
             안녕하세요! 저는 <b>영락고등학교 진로·입시 챗봇</b> 영락봇이에요 😊<br><br>
+            <span id="ddayWelcome"></span>
             아래 메뉴를 선택하거나 궁금한 내용을 직접 입력해 주세요.
             <div class="quick-wrap" id="mainMenu">
               <button class="quick-btn" onclick="sendQuick('📋 입시 정보')">📋 입시 정보</button>
@@ -368,6 +383,23 @@ body { background: #e0e0e0; display: flex; justify-content: center; align-items:
 </div>
 
 <script>
+// ── D-Day 계산 ─────────────────────────────────────────────────
+// 2027학년도 수능 예정일 (공식 발표 전, 추정치)
+const SUNEUNG_DATE = '2026-11-19'; // 2026년 11월 19일(목) 예정
+
+function getDDay(dateStr) {
+  const target = new Date(dateStr);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  target.setHours(0, 0, 0, 0);
+  const diff = Math.ceil((target - today) / (1000 * 60 * 60 * 24));
+  if (diff > 0) return `D-${diff}`;
+  if (diff === 0) return 'D-Day';
+  return `D+${Math.abs(diff)} (시험 종료)`;
+}
+
+const DDAY_STR = getDDay(SUNEUNG_DATE); // 예: "D-187"
+
 // ── Knowledge base ──────────────────────────────────────────────
 const KB = {
 
@@ -380,8 +412,8 @@ const KB = {
   '수시 전형': {
     text: '',
     cards: [{
-      title: '📋 2026학년도 수시 전형 개요',
-      body: `<b>원서접수</b> 2025년 9월 11일(목) ~ 15일(월)\n<b>전형 유형</b>\n  • 학생부교과 — 내신 중심, 수능최저 有\n  • 학생부종합 — 서류+면접, 성장 가능성 평가\n  • 논술 — 논술고사 + 학생부\n  • 실기/특기자 — 예체능·어학 특기자\n\n<b>지원 횟수</b> 최대 6개 대학 (학교 간 중복 제한 없음)\n<b>합격자 발표</b> 2025년 12월 12일(금) 이전`,
+      title: '📋 2027학년도 수시 전형 개요',
+      body: `<b>원서접수</b> 2026년 9월 7일(월) ~ 11일(금) 중 3일 이상\n<b>전형 유형</b>\n  • 학생부교과 — 내신 중심, 수능최저 有\n  • 학생부종합 — 서류+면접, 성장 가능성 평가\n  • 논술 — 논술고사 + 학생부\n  • 실기/특기자 — 예체능·어학 특기자\n\n<b>지원 횟수</b> 최대 6개 대학 (학교 간 중복 제한 없음)\n<b>합격자 발표</b> 2026년 12월 18일(금)까지\n<b>합격자 등록</b> 2026년 12월 21일(월) ~ 23일(수)\n\n⚠️ 수능최저 적용 대학은 성적 통보(12/11) 이후 발표`,
     }],
     quick: ['정시 전형', '학생부 관리', '수능 일정', '📋 입시 정보']
   },
@@ -389,8 +421,8 @@ const KB = {
   '정시 전형': {
     text: '',
     cards: [{
-      title: '📋 2026학년도 정시 전형 개요',
-      body: `<b>원서접수</b> 2026년 1월 초 (가/나/다군)\n<b>전형 방법</b> 수능 성적 100% (일부 학교 면접 병행)\n<b>군별 지원</b> 각 군 1개 대학, 총 3회 지원 가능\n\n<b>수능 반영 방법 (계열별 차이)</b>\n  • 인문 — 국어·수학·영어·사탐 위주\n  • 자연 — 국어·수학(미적/기하)·영어·과탐 위주\n  • 의약학 — 수학·과탐 비중 높음\n\n<b>탐구 변환표준점수</b> 대학별 상이`,
+      title: '📋 2027학년도 정시 전형 개요',
+      body: `<b>원서접수</b> 2027년 1월 4일(월) ~ 7일(목) 중 3일 이상\n<b>전형 방법</b> 수능 성적 100% (일부 학교 면접 병행)\n<b>군별 지원</b> 각 군 1개 대학, 총 3회 지원 가능\n\n<b>군별 전형 기간</b>\n  • 가군 — 1월 11일(일) ~ 17일(토)\n  • 나군 — 1월 18일(일) ~ 24일(토)\n  • 다군 — 1월 25일(일) ~ 31일(토)\n\n<b>합격자 발표</b> 2027년 2월 5일(금)까지\n<b>최초 등록</b> 2027년 2월 10일(수) ~ 12일(금)\n<b>미등록 충원</b> 2027년 2월 13일(토) ~ 17일(수)\n\n<b>수능 반영 방법 (계열별 차이)</b>\n  • 인문 — 국어·수학·영어·사탐 위주\n  • 자연 — 국어·수학(미적/기하)·영어·과탐 위주\n  • 의약학 — 수학·과탐 비중 높음`,
     }],
     quick: ['수시 전형', '수능 일정', '성적 상담', '📋 입시 정보']
   },
@@ -423,7 +455,7 @@ const KB = {
     text: '',
     cards: [{
       title: '📊 내신 등급 산출 방식',
-      body: `<b>석차등급</b> = 원점수로 석차를 구한 뒤 비율로 등급 부여\n\n<b>등급별 상위 누적 비율</b>\n  1등급 — 4%\n  2등급 — 11%\n  3등급 — 23%\n  4등급 — 40%\n  5등급 — 60%\n  6등급 — 77%\n  7등급 — 89%\n  8등급 — 96%\n  9등급 — 100%\n\n<b>평균 내신 계산</b>\n  (각 과목 단위 수 × 등급) 합 ÷ 전체 이수 단위 수\n  → 소수점 둘째 자리까지 표시`,
+      body: `<b>석차등급</b> = 원점수로 석차를 구한 뒤 비율로 등급 부여\n\n<b>등급별 상위 누적 비율</b>\n  1등급 — 4%\n  2등급 — 11%\n  3등급 — 23%\n  4등급 — 40%\n  5등급 — 60%\n  6등급 — 77%\n  7등급 — 89%\n  8등급 — 96%\n  9등급 — 100%\n\n<b>평균 내신 계산</b>\n  (각 과목 단위 수 × 등급) 합 ÷ 전체 이수 단위 수\n  → 소수점 둘째 자리까지 표시\n\n📊 <a href="index.html" target="_blank">영락고 성적 분석 도구 바로가기</a>`,
     }],
     quick: ['수능 등급 기준', '성적 향상 전략', '📊 성적 상담']
   },
@@ -431,8 +463,8 @@ const KB = {
   '수능 등급 기준': {
     text: '',
     cards: [{
-      title: '📊 2025 수능 등급 기준',
-      body: `<b>국어·수학·탐구(선택과목)</b>\n  1등급 — 상위 4% / 2등급 — 11% / 3등급 — 23%\n  4등급 — 40% / 5등급 — 60%\n\n<b>영어 (절대평가)</b>\n  1등급 — 90점 이상 / 2등급 — 80점 이상\n  3등급 — 70점 이상 / 4등급 — 60점 이상\n\n<b>한국사 (절대평가, 필수)</b>\n  1등급 — 40점 이상 / 2등급 — 35점 이상\n\n<b>표준점수</b> = 원점수만으로 환산, 응시자 평균·표준편차 반영`,
+      title: '📊 수능 등급 기준',
+      body: `<b>국어·수학·탐구(선택과목)</b>\n  1등급 — 상위 4% / 2등급 — 11% / 3등급 — 23%\n  4등급 — 40% / 5등급 — 60%\n\n<b>영어 (절대평가)</b>\n  1등급 — 90점 이상 / 2등급 — 80점 이상\n  3등급 — 70점 이상 / 4등급 — 60점 이상\n\n<b>한국사 (절대평가, 필수)</b>\n  1등급 — 40점 이상 / 2등급 — 35점 이상\n\n<b>표준점수</b> = 원점수만으로 환산, 응시자 평균·표준편차 반영\n\n⚠️ 등급 기준 비율은 매년 동일하나 실제 원점수 컷은 해마다 달라요.`,
     }],
     quick: ['내신 등급 계산법', '모의고사 활용법', '수능 일정', '📊 성적 상담']
   },
@@ -498,10 +530,10 @@ const KB = {
   },
 
   '수능 일정': {
-    text: '',
+    text: `🗓️ 2027학년도 수능까지 ${DDAY_STR}`,
     cards: [{
-      title: '🗓️ 2026학년도 수능 주요 일정',
-      body: `<b>원서 접수</b> 2025년 8월 21일(목) ~ 9월 5일(금)\n<b>시험일</b> 2025년 11월 13일(목)\n<b>성적 통보</b> 2025년 12월 5일(금)\n\n<b>수능 당일 시간표</b>\n  08:40 — 국어 (80분)\n  10:30 — 수학 (100분)\n  13:10 — 영어 (70분)\n  15:20 — 한국사·탐구 (각 30분)\n  17:05 — 제2외국어/한문 (40분, 선택)\n\n<b>2025년도 수능 재수생 포함 지원자</b> 약 52만 명 예상`,
+      title: `🗓️ 2027학년도 수능 주요 일정 (${DDAY_STR})`,
+      body: `<b>원서 접수</b> 2026년 8월 21일(목) ~ 9월 4일(금)\n<b>시험일</b> 2026년 11월 19일(목) — <b>${DDAY_STR}</b>\n<b>성적 통보</b> 2026년 12월 4일(금)\n\n<b>수능 당일 시간표</b>\n  08:40 — 국어 (80분)\n  10:30 — 수학 (100분)\n  13:10 — 영어 (70분)\n  15:20 — 한국사·탐구 (각 30분)\n  17:05 — 제2외국어/한문 (40분, 선택)\n\n📌 <a href="https://www.suneung.re.kr" target="_blank">한국교육과정평가원 공식 사이트</a>`,
     }],
     quick: ['수시 전형', '정시 전형', '모의고사 활용법', '📋 입시 정보']
   },
@@ -510,7 +542,7 @@ const KB = {
     text: '',
     cards: [{
       title: '🏫 영락고등학교 소개',
-      body: `<b>개교</b> 1959년 4월 9일\n<b>학교법인</b> 영락학원 (사립 일반고 · 남녀공학)\n<b>교훈</b> 하나님을 공경하고 이웃을 사랑하자\n<b>학교정신</b> 은혜 · 진리 · 사랑 · 봉사\n<b>교목</b> 개잎갈나무  <b>교화</b> 백합\n<b>학생수</b> 536명  <b>교직원</b> 50명\n<b>교장</b> 장호 선생님\n\n<b>주요 서비스</b>\n  📊 성적 분석 도구 — grade-predictor.html\n  📋 입시 탐색 — admission-search.html\n  📚 교육과정 안내 — curriculum-guide.html`,
+      body: `<b>개교</b> 1959년 4월 9일\n<b>학교법인</b> 영락학원 (사립 일반고 · 남녀공학)\n<b>교훈</b> 하나님을 공경하고 이웃을 사랑하자\n<b>학교정신</b> 은혜 · 진리 · 사랑 · 봉사\n<b>교목</b> 개잎갈나무  <b>교화</b> 백합\n\n<b>진학부 서비스</b>\n  📊 <a href="index.html" target="_blank">성적 분석 도구</a>\n  📋 <a href="admission-search.html" target="_blank">입시 정보 탐색</a>\n  📚 <a href="curriculum-guide.html" target="_blank">교육과정 안내</a>`,
     }],
     quick: ['📋 입시 정보', '📊 성적 상담', '📚 과목 선택']
   },
@@ -519,7 +551,7 @@ const KB = {
     text: '다음과 같이 질문하실 수 있어요!',
     cards: [{
       title: '❓ 영락봇 이용 안내',
-      body: `<b>버튼으로 질문</b> 하단 바 또는 말풍선 안 버튼 클릭\n<b>직접 입력</b> 아래 입력창에 키워드 입력\n\n<b>지원 키워드 예시</b>\n  "수시", "정시", "내신", "수능", "탐구",\n  "모의고사", "자소서", "학생부", "과목",\n  "문과", "이과", "의대", "학교 소개" …\n\n<b>한계</b> 개인별 맞춤 상담은 담임·진로 선생님께\n  더 정확한 안내를 받으실 수 있어요 😊`,
+      body: `<b>버튼으로 질문</b> 하단 바 또는 말풍선 안 버튼 클릭\n<b>직접 입력</b> 아래 입력창에 키워드 입력\n\n<b>지원 키워드 예시</b>\n  "수시", "정시", "내신", "수능", "탐구",\n  "모의고사", "자소서", "학생부", "과목",\n  "문과", "이과", "의대", "학교 소개" …\n\n<b>한계</b> 개인별 맞춤 상담은 담임·진로 선생님께\n  더 정확한 안내를 받으실 수 있어요\n\n📞 <a href="https://www.youngnakhs.hs.kr" target="_blank">영락고 홈페이지에서 상담 신청</a>`,
     }],
     quick: ['📋 입시 정보', '📊 성적 상담', '📚 과목 선택']
   },
@@ -539,9 +571,9 @@ const KEYWORD_MAP = [
   { keys: ['이과', '과탐', '과학탐구', '자연', '공학', '의대', '의학'], topic: '이과 선택과목' },
   { keys: ['과목 선택 기준', '어떤 과목'],                        topic: '선택 기준 안내' },
   { keys: ['탐구 비교', '탐구 과목'],                             topic: '탐구 과목 비교' },
-  { keys: ['수능 일정', '수능 날', '시험 날', '수능일'],          topic: '수능 일정' },
+  { keys: ['수능 일정', '수능 날', '시험 날', '수능일', '디데이', 'd-day', 'dday'], topic: '수능 일정' },
   { keys: ['학교 소개', '영락고', '영락학원', '개교'],            topic: '학교 소개' },
-  { keys: ['도움말', '사용법', '뭘 물어', '뭘 알'],               topic: '도움말' },
+  { keys: ['도움말', '사용법', '뭘 물어', '뭘 알', '상담'],       topic: '도움말' },
   { keys: ['입시'],                                               topic: '입시 정보' },
   { keys: ['성적'],                                               topic: '성적 상담' },
   { keys: ['과목'],                                               topic: '과목 선택' },
@@ -564,6 +596,12 @@ function todayFull() {
 function initTimes() {
   document.getElementById('todayLabel').textContent = todayFull();
   document.getElementById('welcomeTime').textContent = nowTime();
+
+  // 웰컴 메시지에 D-Day 칩 삽입
+  const chip = document.getElementById('ddayWelcome');
+  if (chip) {
+    chip.innerHTML = `<span class="dday-chip">🗓️ 2027학년도 수능 ${DDAY_STR}</span><br>`;
+  }
 }
 
 function scrollBottom() {
@@ -604,16 +642,7 @@ function renderBotMessage(data) {
     ct.textContent = c.title;
     const cb = document.createElement('div');
     cb.className = 'card-body';
-    // render body with newlines as <br>
-    cb.innerHTML = c.body
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-      .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
-      .replace(/<b>(.*?)<\/b>/g, (_, m) => `<b>${m.replace(/&lt;/g,'<').replace(/&gt;/g,'>')}</b>`)
-      .replace(/\n/g,'<br>');
-    // allow <b> tags by re-processing
-    cb.innerHTML = c.body
-      .replace(/\n/g,'<br>')
-      .replace(/(<b>|<\/b>)/g, m => m);
+    cb.innerHTML = c.body.replace(/\n/g, '<br>');
     card.appendChild(ct);
     card.appendChild(cb);
     bubble.appendChild(card);
@@ -666,10 +695,8 @@ function renderUserMessage(text) {
 function findTopic(input) {
   const s = input.trim().replace(/📋|📊|📚|🗓️|🏫|❓/g,'').trim();
 
-  // direct key match
   if (KB[s]) return s;
 
-  // label shorthand
   const MAP = {
     '입시 정보': '입시 정보', '성적 상담': '성적 상담',
     '과목 선택': '과목 선택', '수능 일정': '수능 일정',
@@ -677,10 +704,9 @@ function findTopic(input) {
   };
   if (MAP[s]) return MAP[s];
 
-  // keyword scan
   for (const {keys, topic} of KEYWORD_MAP) {
     for (const k of keys) {
-      if (s.includes(k)) return topic;
+      if (s.toLowerCase().includes(k.toLowerCase())) return topic;
     }
   }
   return null;
