@@ -256,6 +256,16 @@ body {
   background: var(--green-lt);
 }
 .menu-chip.active { border-color: var(--green); background: var(--green-lt); color: var(--green-dk); }
+.menu-chip.nav-chip {
+  color: var(--text-muted);
+  border-style: dashed;
+  border-color: var(--border);
+}
+.menu-chip.nav-chip:hover {
+  border-color: var(--text-muted);
+  background: #F3F4F6;
+  color: var(--text);
+}
 
 /* ── Input bar ── */
 .input-bar {
@@ -303,7 +313,7 @@ body {
   <div class="phone-frame">
     <!-- Header -->
     <div class="chat-header">
-      <span class="header-back">‹</span>
+      <span class="header-back" onclick="resetChat()" title="처음으로">‹</span>
       <div class="header-avatar"></div>
       <div class="header-info">
         <div class="header-name">영락봇</div>
@@ -815,6 +825,49 @@ function updateMenuBar(role, grade) {
     btn.onclick = () => sendQuick(topic);
     bar.appendChild(btn);
   });
+
+  // 학생이고 학년까지 선택됐으면 "학년변경" 버튼
+  if (role === '학생' && grade) {
+    const gradeBtn = document.createElement('button');
+    gradeBtn.className = 'menu-chip nav-chip';
+    gradeBtn.textContent = '← 학년변경';
+    gradeBtn.onclick = goBack;
+    bar.appendChild(gradeBtn);
+  }
+
+  // 역할이 선택된 이후라면 항상 "처음으로" 버튼
+  if (role) {
+    const resetBtn = document.createElement('button');
+    resetBtn.className = 'menu-chip nav-chip';
+    resetBtn.textContent = '🔄 처음으로';
+    resetBtn.onclick = resetChat;
+    bar.appendChild(resetBtn);
+  }
+}
+
+function goBack() {
+  if (currentGrade) {
+    currentGrade = null;
+    updateMenuBar('학생', null);
+    const area   = document.getElementById('chatArea');
+    const typing = document.getElementById('typingIndicator');
+    typing.style.display = 'flex';
+    scrollBottom();
+    setTimeout(() => {
+      typing.style.display = 'none';
+      area.insertBefore(renderBotMessage({
+        text: '학년을 다시 선택해 주세요.',
+        cards: [], quick: ['1학년', '2학년', '3학년'],
+      }, true), typing);
+      scrollBottom();
+    }, 400);
+  } else {
+    resetChat();
+  }
+}
+
+function resetChat() {
+  location.reload();
 }
 
 // ── 질문 빈도 추적 (localStorage) ─────────────────────────────
