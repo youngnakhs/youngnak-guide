@@ -736,8 +736,18 @@ const KEYWORD_MAP = [
 ];
 
 // ── 현재 역할 / 학년 ───────────────────────────────────────────
-let currentRole  = null;
-let currentGrade = null;
+let currentRole    = null;
+let currentGrade   = null;
+let isBotReplying  = false;  // 중복 응답 방지 플래그
+
+function setBotBusy(busy) {
+  isBotReplying = busy;
+  const inp = document.getElementById('chatInput');
+  const btn = document.getElementById('sendBtn');
+  if (inp) inp.disabled = busy;
+  if (btn) btn.disabled = busy;
+  if (!busy && inp) updateSendBtn();
+}
 
 function selectRole(role) {
   currentRole = role;
@@ -1077,6 +1087,8 @@ function getReply(topic) {
 }
 
 function appendBotReply(topic) {
+  if (isBotReplying) return;
+  setBotBusy(true);
   trackTopic(topic);
 
   const typing = document.getElementById('typingIndicator');
@@ -1100,6 +1112,7 @@ function appendBotReply(topic) {
     const node = renderBotMessage(data);
     area.insertBefore(node, typing);
     scrollBottom();
+    setBotBusy(false);
   }, 600 + Math.random() * 400);
 }
 
