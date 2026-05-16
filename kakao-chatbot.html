@@ -463,6 +463,15 @@ const KB = {
     quick: ['내신 등급 계산법', '모의고사 활용법', '수능 일정', '📊 성적 상담']
   },
 
+  '모의고사 등급컷': {
+    text: '',
+    cards: [{
+      title: '📊 2026학년도 수능 확정 등급컷 (원점수 기준)',
+      body: `<b>국어</b>\n  화법과 작문 — 1등급 <b>89점</b> / 2등급 82점 / 3등급 74점\n  언어와 매체 — 1등급 <b>85점</b> / 2등급 79점 / 3등급 69점\n\n<b>수학</b>\n  확률과 통계 — 1등급 <b>92점</b> / 2등급 82점 / 3등급 75점\n  미적분 — 1등급 <b>88점</b> / 2등급 80점 / 3등급 72점\n\n<b>영어 (절대평가)</b>\n  1등급 90점 이상 / 2등급 80점 이상\n\n<b>한국사 (절대평가)</b>\n  1등급 40점 이상\n\n⚠️ 출처: 2026학년도 수능 채점 결과 (2025.12 발표)\n매년 난이도에 따라 컷이 달라지므로 참고용으로만 활용하세요.`,
+    }],
+    quick: ['모의고사 활용법', '수능 등급 기준', '수능 일정', '📊 성적 상담']
+  },
+
   '모의고사 활용법': {
     text: '',
     cards: [{
@@ -631,6 +640,40 @@ const KB_TEACHER = {
   },
 };
 
+// ── 학년별 퀵메뉴 ───────────────────────────────────────────────
+const GRADE_MENUS = {
+  '1학년': [
+    { label: '📑 학생부 관리',  topic: '학생부 관리' },
+    { label: '📚 과목 선택',    topic: '📚 과목 선택' },
+    { label: '🎯 선택 기준 안내', topic: '선택 기준 안내' },
+    { label: '📋 수시란?',      topic: '수시 전형' },
+    { label: '🏫 학교 소개',    topic: '🏫 학교 소개' },
+    { label: '❓ 도움말',       topic: '❓ 도움말' },
+  ],
+  '2학년': [
+    { label: '📚 과목 선택',    topic: '📚 과목 선택' },
+    { label: '📑 학생부 관리',  topic: '학생부 관리' },
+    { label: '📝 모의고사 활용법', topic: '모의고사 활용법' },
+    { label: '📋 수시 전형',    topic: '수시 전형' },
+    { label: '🗓️ 수능 일정',  topic: '🗓️ 수능 일정' },
+    { label: '❓ 도움말',       topic: '❓ 도움말' },
+  ],
+  '3학년': [
+    { label: '📋 수시 전형',    topic: '수시 전형' },
+    { label: '📋 정시 전형',    topic: '정시 전형' },
+    { label: '🗓️ 수능 일정',  topic: '🗓️ 수능 일정' },
+    { label: '📊 모의고사 등급컷', topic: '모의고사 등급컷' },
+    { label: '📊 성적 상담',    topic: '📊 성적 상담' },
+    { label: '❓ 도움말',       topic: '❓ 도움말' },
+  ],
+};
+
+const GRADE_GREET = {
+  '1학년': `1학년이시군요 😊\n아직 입시까지 시간이 있어요! 지금은 학생부 관리와 과목 선택이 가장 중요합니다.`,
+  '2학년': `2학년이시군요 😊\n과목 선택을 마무리하고 수시 전형 구조를 미리 파악해 두세요!`,
+  '3학년': `3학년이시군요 😊\n수시·정시 모두 중요한 시기예요. 수능 ${DDAY_STR}! 파이팅!`,
+};
+
 // ── 역할별 퀵메뉴 ───────────────────────────────────────────────
 const ROLE_MENUS = {
   '학생': [
@@ -673,6 +716,7 @@ const KEYWORD_MAP = [
   { keys: ['학생부', '생기부', '세특'],                           topic: '학생부 관리' },
   { keys: ['내신', '석차', '등급 계산'],                         topic: '내신 등급 계산법' },
   { keys: ['수능 등급', '원점수', '표준점수', '백분위'],          topic: '수능 등급 기준' },
+  { keys: ['등급컷', '1등급컷', '원점수 컷', '수능 컷'],          topic: '모의고사 등급컷' },
   { keys: ['모의고사', '학력평가', '수능평가원', '모평'],         topic: '모의고사 활용법' },
   { keys: ['성적 향상', '공부법', '공부 방법', '국어', '수학', '영어', '공부'], topic: '성적 향상 전략' },
   { keys: ['문과', '사탐', '사회탐구', '인문'],                   topic: '문과 선택과목' },
@@ -687,58 +731,118 @@ const KEYWORD_MAP = [
   { keys: ['과목'],                                               topic: '과목 선택' },
 ];
 
-// ── 현재 역할 ──────────────────────────────────────────────────
-let currentRole = null;
+// ── 현재 역할 / 학년 ───────────────────────────────────────────
+let currentRole  = null;
+let currentGrade = null;
 
 function selectRole(role) {
   currentRole = role;
 
-  // 역할 선택 버튼 비활성화
   document.querySelectorAll('.role-btn').forEach(btn => {
     btn.disabled = true;
     btn.style.opacity = '0.5';
     btn.style.cursor = 'default';
   });
 
-  // 사용자 메시지 표시
-  const area = document.getElementById('chatArea');
+  const area   = document.getElementById('chatArea');
   const typing = document.getElementById('typingIndicator');
   const roleLabel = role === '학생' ? '🎒 학생' : role === '학부모' ? '👨‍👩‍👧 학부모' : '👨‍🏫 교사';
   area.insertBefore(renderUserMessage(roleLabel), typing);
   scrollBottom();
 
-  // 퀵메뉴 바 업데이트
-  updateMenuBar(role);
-
-  // 역할별 인사 메시지 출력
-  const typing2 = document.getElementById('typingIndicator');
-  typing2.style.display = 'flex';
+  typing.style.display = 'flex';
   scrollBottom();
 
   setTimeout(() => {
-    typing2.style.display = 'none';
-    const menus = ROLE_MENUS[role];
-    const greetData = {
-      text: ROLE_GREET[role],
-      cards: [],
-      quick: menus.map(m => m.label),
-    };
-    const node = renderBotMessage(greetData);
-    area.insertBefore(node, typing2);
+    typing.style.display = 'none';
+
+    // 학생은 학년 추가 선택
+    if (role === '학생') {
+      const gradeAskData = {
+        text: '몇 학년이에요?',
+        cards: [],
+        quick: ['1학년', '2학년', '3학년'],
+      };
+      const node = renderBotMessage(gradeAskData, true); // grade 버튼 플래그
+      area.insertBefore(node, typing);
+    } else {
+      updateMenuBar(role, null);
+      const greetData = {
+        text: ROLE_GREET[role],
+        cards: [],
+        quick: ROLE_MENUS[role].map(m => m.label),
+      };
+      area.insertBefore(renderBotMessage(greetData), typing);
+    }
     scrollBottom();
   }, 600);
 }
 
-function updateMenuBar(role) {
+function selectGrade(grade) {
+  currentGrade = grade;
+
+  document.querySelectorAll('.grade-btn').forEach(btn => {
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+    btn.style.cursor = 'default';
+  });
+
+  const area   = document.getElementById('chatArea');
+  const typing = document.getElementById('typingIndicator');
+  area.insertBefore(renderUserMessage(grade), typing);
+  scrollBottom();
+
+  updateMenuBar('학생', grade);
+
+  typing.style.display = 'flex';
+  scrollBottom();
+
+  setTimeout(() => {
+    typing.style.display = 'none';
+    const menus = GRADE_MENUS[grade];
+    const greetData = {
+      text: GRADE_GREET[grade],
+      cards: [],
+      quick: menus.map(m => m.label),
+    };
+    area.insertBefore(renderBotMessage(greetData), typing);
+    scrollBottom();
+  }, 600);
+}
+
+function updateMenuBar(role, grade) {
   const bar = document.getElementById('quickMenuBar');
   bar.innerHTML = '';
-  (ROLE_MENUS[role] || []).forEach(({ label, topic }) => {
+  const items = (role === '학생' && grade)
+    ? GRADE_MENUS[grade]
+    : ROLE_MENUS[role] || [];
+  items.forEach(({ label, topic }) => {
     const btn = document.createElement('button');
     btn.className = 'menu-chip';
     btn.textContent = label;
     btn.onclick = () => sendQuick(topic);
     bar.appendChild(btn);
   });
+}
+
+// ── 질문 빈도 추적 (localStorage) ─────────────────────────────
+function trackTopic(topic) {
+  if (!topic) return;
+  try {
+    const counts = JSON.parse(localStorage.getItem('ynb_counts') || '{}');
+    counts[topic] = (counts[topic] || 0) + 1;
+    localStorage.setItem('ynb_counts', JSON.stringify(counts));
+  } catch(e) {}
+}
+
+function getTopTopics(n = 3) {
+  try {
+    const counts = JSON.parse(localStorage.getItem('ynb_counts') || '{}');
+    return Object.entries(counts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, n)
+      .map(([topic]) => topic);
+  } catch(e) { return []; }
 }
 
 // ── Utilities ─────────────────────────────────────────────────
@@ -772,7 +876,7 @@ function scrollBottom() {
 }
 
 // ── Render helpers ────────────────────────────────────────────
-function renderBotMessage(data) {
+function renderBotMessage(data, isGradeAsk) {
   const row = document.createElement('div');
   row.className = 'msg-row bot';
 
@@ -815,9 +919,9 @@ function renderBotMessage(data) {
     qw.className = 'quick-wrap';
     data.quick.forEach(q => {
       const btn = document.createElement('button');
-      btn.className = 'quick-btn';
+      btn.className = isGradeAsk ? 'quick-btn grade-btn' : 'quick-btn';
       btn.textContent = q;
-      btn.onclick = () => sendQuick(q);
+      btn.onclick = isGradeAsk ? () => selectGrade(q) : () => sendQuick(q);
       qw.appendChild(btn);
     });
     bubble.appendChild(qw);
@@ -904,13 +1008,25 @@ function getReply(topic) {
 }
 
 function appendBotReply(topic) {
+  trackTopic(topic);
+
   const typing = document.getElementById('typingIndicator');
   typing.style.display = 'flex';
   scrollBottom();
 
   setTimeout(() => {
     typing.style.display = 'none';
-    const data = getReply(topic);
+
+    // 도움말: 자주 찾는 질문 동적 삽입
+    let data = getReply(topic);
+    if (topic === '도움말') {
+      const tops = getTopTopics(3);
+      if (tops.length > 0) {
+        data = JSON.parse(JSON.stringify(data)); // 얕은 복사
+        data.cards[0].body += `\n\n<b>이 기기에서 자주 찾는 질문 TOP ${tops.length}</b>\n  ${tops.map((t, i) => `${i+1}. ${t}`).join('\n  ')}`;
+      }
+    }
+
     const area = document.getElementById('chatArea');
     const node = renderBotMessage(data);
     area.insertBefore(node, typing);
