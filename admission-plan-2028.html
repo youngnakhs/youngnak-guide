@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2028학년도 서울·수도권·거점국립대 49개 대학 입학전형 시행계획 정리</title>
+<style>
+  :root{
+    --c-bg:#f7f8fa; --c-card:#ffffff; --c-line:#e5e7eb;
+    --c-text:#1f2937; --c-sub:#4b5563; --c-mute:#6b7280;
+    --c-pri:#1e40af; --c-pri2:#3b82f6; --c-acc:#dc2626;
+    --c-warn:#f59e0b; --c-ok:#059669;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Noto Sans KR','Apple SD Gothic Neo',sans-serif;background:var(--c-bg);color:var(--c-text);line-height:1.55;font-size:15px}
+  .wrap{max-width:1280px;margin:0 auto;padding:24px 20px 80px}
+
+  header{background:linear-gradient(135deg,#1e3a8a 0%,#1e40af 60%,#3b82f6 100%);color:#fff;border-radius:16px;padding:32px 28px;margin-bottom:28px;box-shadow:0 8px 24px rgba(30,64,175,.18)}
+  header h1{font-size:26px;margin:0 0 6px;font-weight:800;letter-spacing:-0.5px}
+  header .sub{opacity:.92;font-size:14px}
+  header .meta{margin-top:14px;font-size:12.5px;opacity:.85;border-top:1px solid rgba(255,255,255,.25);padding-top:10px}
+
+  h2.section{font-size:20px;margin:34px 0 14px;padding-left:12px;border-left:5px solid var(--c-pri);font-weight:700}
+  h3{font-size:16px;margin:18px 0 8px;color:var(--c-pri);font-weight:700}
+
+  .common{background:var(--c-card);border:1px solid var(--c-line);border-radius:14px;padding:22px 24px;box-shadow:0 2px 8px rgba(0,0,0,.03)}
+  .common ul{margin:6px 0 14px;padding-left:20px}
+  .common li{margin:6px 0}
+  .common strong{color:var(--c-pri)}
+
+  .keyword-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:14px 0 6px}
+  .keyword{background:#f0f7ff;border:1px solid #c7dcff;border-radius:10px;padding:12px 14px;font-size:13.5px}
+  .keyword b{display:block;color:var(--c-pri);font-size:14px;margin-bottom:4px}
+
+  .controls{background:#fff;border:1px solid var(--c-line);border-radius:12px;padding:14px 16px;margin:18px 0 14px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+  .search-row{display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap}
+  #search{flex:1;min-width:200px;padding:10px 14px;font-size:14px;border:1px solid #d1d5db;border-radius:8px;font-family:inherit}
+  #search:focus{outline:none;border-color:var(--c-pri);box-shadow:0 0 0 3px rgba(59,130,246,.15)}
+  #count{font-size:13px;color:var(--c-mute);white-space:nowrap}
+
+  .filter-row{display:flex;flex-wrap:wrap;gap:6px}
+  .tab-btn{background:#f1f5f9;border:1px solid #e2e8f0;padding:7px 12px;font-size:13px;cursor:pointer;color:var(--c-sub);border-radius:18px;font-weight:500;font-family:inherit;transition:all .15s}
+  .tab-btn:hover{background:#e2e8f0}
+  .tab-btn.active{background:var(--c-pri);color:#fff;border-color:var(--c-pri);font-weight:700}
+
+  .univ-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px}
+  .univ-card{background:var(--c-card);border:1px solid var(--c-line);border-radius:12px;padding:18px 20px;box-shadow:0 1px 4px rgba(0,0,0,.04);transition:transform .15s, box-shadow .15s}
+  .univ-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.08)}
+  .univ-card.hidden{display:none}
+
+  .univ-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--c-line);padding-bottom:8px;margin-bottom:10px;gap:8px}
+  .univ-name{font-size:16.5px;font-weight:800;color:var(--c-pri);flex:1}
+  .univ-tier{font-size:11px;padding:3px 8px;border-radius:10px;font-weight:600;white-space:nowrap}
+  .tier-1{background:#fef2f2;color:#b91c1c}
+  .tier-2{background:#fff7ed;color:#c2410c}
+  .tier-3{background:#f0f9ff;color:#0369a1}
+  .tier-4{background:#f0fdf4;color:#15803d}
+  .tier-5{background:#faf5ff;color:#7c3aed}
+  .tier-6{background:#ecfeff;color:#0e7490}
+  .tier-7{background:#f0fdfa;color:#0f766e}
+
+  .info-row{margin:8px 0;font-size:13.2px}
+  .info-label{display:inline-block;background:#eef2ff;color:#3730a3;font-size:11px;font-weight:700;padding:2px 7px;border-radius:4px;margin-right:6px;vertical-align:middle;white-space:nowrap}
+  .info-text{color:var(--c-sub)}
+
+  .badge{display:inline-block;background:#fff7ed;color:#c2410c;font-size:11px;padding:1px 6px;border-radius:3px;margin:0 2px;font-weight:600}
+  .badge-new{background:#fee2e2;color:#b91c1c}
+  .badge-key{background:#dbeafe;color:#1e40af}
+
+  .note{background:#fffbeb;border-left:3px solid var(--c-warn);padding:10px 14px;margin:18px 0;font-size:13px;border-radius:0 8px 8px 0;color:#78350f}
+  .note b{color:#92400e}
+
+  .table-wrap{overflow-x:auto;margin:14px 0}
+  table{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:8px;overflow:hidden}
+  th{background:#1e40af;color:#fff;padding:9px 10px;text-align:left;font-weight:600}
+  td{padding:8px 10px;border-bottom:1px solid #f1f5f9}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:#f8fafc}
+
+  footer{margin-top:50px;padding:18px;text-align:center;color:var(--c-mute);font-size:12px;border-top:1px solid var(--c-line)}
+
+  @media (max-width:640px){
+    .wrap{padding:14px}
+    header{padding:20px 18px}
+    header h1{font-size:19px}
+    .univ-grid{grid-template-columns:1fr}
+    .keyword-grid{grid-template-columns:1fr 1fr}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div style="margin-bottom:16px"><a href="index.html" style="display:inline-block;padding:8px 16px;background:#3cb878;color:#fff;text-decoration:none;border-radius:8px;font-size:13px;font-weight:600">← 영락고 진로·대입 정보센터로 돌아가기</a></div>
+
+<header>
+  <h1>2028학년도 서울·수도권·거점국립대 49개 대학 입학전형 시행계획 정리</h1>
+  <div class="sub">현 고2(2025학년도 입학생)가 치를 대입 — 5등급제·통합수능·무전공 확대 등 큰 변화가 한 번에 적용되는 첫해 (서울 36 + 수도권 4 + 거점국립 9)</div>
+  <div class="meta">출처: 2028학년도 대학 신입학생 입학전형 시행계획(2026.4. 대교협 발표) | 정리 기준일: 2026-05-23 | <span style="opacity:.7">※ 대교협 심의·승인 결과에 따라 변경될 수 있음</span></div>
+</header>
+
+<!-- 공통 평가방향 -->
+<h2 class="section">📌 2028 대입 공통 평가방향</h2>
+<div class="common">
+
+  <h3>1. 핵심 키워드</h3>
+  <div class="keyword-grid">
+    <div class="keyword"><b>5등급제 내신</b>고1부터 9등급 → 5등급. 변별력 저하 우려를 다중 장치로 보완</div>
+    <div class="keyword"><b>통합형 수능</b>사·과탐 구분 없음, 융합 출제. 탐구 반영 방식 일제히 개편</div>
+    <div class="keyword"><b>전공자율선택제(무전공)</b>대부분 대학이 자유전공·광역모집 확대 또는 신설</div>
+    <div class="keyword"><b>정시에 학생부 반영</b>수능 100%가 사라지는 흐름. 다수 대학이 정시에 학생부·서류 도입</div>
+    <div class="keyword"><b>의약학·계약학 강세</b>의대 모집인원 확대 + 지역인재·통합 6년제 + 채용조건형 신설</div>
+  </div>
+
+  <h3>2. 5등급제 충격 — 대학별 변별력 확보 전략</h3>
+  <p style="color:var(--c-sub);font-size:14px">석차등급이 1~5등급으로 축소되면서 동일등급 학생이 폭증합니다. 대학들은 4가지 방식으로 변별력을 확보합니다.</p>
+  <ul>
+    <li><b>① 등급 점수 차등화</b>: 1~3등급 점수차 작게, 4~5등급에서 큰 폭 감점 (예: 연세대 1등급 70 → 4등급 25 → 5등급 0)</li>
+    <li><b>② 교과전형에 서류 정성평가 추가</b>: 한양대 60+40, 고려·외대·건국대·시립대 70~80+20~30 → 교과전형이 사실상 '약식 학종'화</li>
+    <li><b>③ 학종 면접 강화</b>: 고려대 학업우수 면접 신설, 한양·성균관·세종·국민·명지대 면접형 모집단위 확대</li>
+    <li><b>④ 정시에 학생부·서류 반영</b>: 서울대 교과역량평가, 연세대 서류 100점, 한양·동국·홍익·숙명·시립·고려·세종대 등이 정시에 학생부 일부 반영 신설</li>
+  </ul>
+
+  <h3>3. 수능 최저학력기준 변화</h3>
+  <ul>
+    <li>탐구 영역 반영 방식 일제히 개편 — 통합형 수능에 따라 사·과탐 통합 또는 평균 처리</li>
+    <li><b>수능최저 신설</b>: 연세대 논술(전 모집단위), 서울시립대 논술, 광운대 지역균형, 중앙대 학종 일부, 한성대 논술</li>
+    <li><b>수능최저 강화</b>: 한양대 교과추천(3개합 7 → 3개 각 3등급), 세종대 지역균형(2개합 6 → 5)</li>
+    <li><b>완화</b>: 동덕여대 교과(2개합 6 → 7), 동국대 논술 완화 표기</li>
+  </ul>
+
+  <h3>4. 무전공·전공자율선택제 확산</h3>
+  <ul>
+    <li>교육부 정책 기조 반영. 거의 모든 대학이 광역·자유전공·캠퍼스자율전공 등 운영</li>
+    <li><b>대표 사례</b>: 서울대 광역·자유전공·첨단융합 / 연세대 진리자유학부 / 한양대 인터칼리지 / 서강대 자유전공 3종(인문·SCIENCE·AI) / 외대 자유전공 324명 / 숙명대 순헌칼리지 293명 / 성신여대 창의융합학부 381명 / 광운대 자율전공 191명 / 한성대 상상력인재학부 195명</li>
+    <li>대부분 2학년 진학 시 전공 선택 — 1학년은 진로 탐색</li>
+  </ul>
+
+  <h3>5. 의약학·계약학과 동향</h3>
+  <ul>
+    <li><b>의예과 전형 개편</b>: 고려대(의예+의학 6년 통합), 연세대(정시 단계별·면접 50점), 성균관대(지역의사 신설 — 경기 의정부·남양주·이천·포천)</li>
+    <li><b>정시 면접 신규</b>: 서울대·고려대·연세대 의예 적성·인성면접</li>
+    <li><b>약학과 별도 수능최저</b>: 숙명·동덕·덕성·삼육·중앙대 등 강화 또는 별도 기준</li>
+    <li><b>채용조건형 계약학과</b>: 연세대 시스템반도체(삼성)·디스플레이(LG) / 고려대 반도체(SK)·통신(삼성)·사이버국방·스마트모빌리티(현대) / 성균관대 반도체·배터리·SW(삼성) / 서강·한양 시스템반도체(SK) / 숭실대 정보보호(LG유플러스)</li>
+  </ul>
+
+</div>
+
+<!-- 학부모·학생 FAQ -->
+<h2 class="section">👨‍👩‍👧 학부모·학생이 가장 궁금해하는 7가지</h2>
+<div class="common">
+
+  <h3>Q1. "5등급제로 바뀌면 우리 아이는 유리한가요, 불리한가요?"</h3>
+  <p style="color:var(--c-sub);font-size:14px;margin:6px 0 10px">
+  <b>상위권은 불리, 중위권은 유리, 4·5등급은 매우 불리합니다.</b> 1·2등급 학생이 폭증해 변별이 어려워지므로, 대학들은 ① 학종 면접 강화 ② 교과전형에 서류 정성평가 추가 ③ 정시에 학생부 반영 ④ <b>4·5등급에서 큰 폭 감점</b>으로 변별력을 확보합니다. 예: 연세대 3등급 45점→4등급 25점→5등급 0점, 서울과기대 4등급 967점→5등급 0점.</p>
+
+  <h3>Q2. "무전공/자유전공이 좋은 건가요? 학과 들어가는 게 어렵나요?"</h3>
+  <p style="color:var(--c-sub);font-size:14px;margin:6px 0 10px">
+  <b>진로 미확정 학생에게 유리, 의·약·사범 등 인기학과는 진입 어려움.</b> 49개 대학 중 35개가 운영하며, 1학년 1년간 진로 탐색 후 2학년 진학 시 전공 선택합니다. <b>주의</b>: 대부분 의·약·사범·수의 등 인기학과는 자유전공에서 진입 불가하거나 별도 선발입니다(서울대 광역도 7개 단과대학 한정, 가천대·삼육대 자유전공도 일부 학과 진입 제한).</p>
+
+  <h3>Q3. "학종 면접이 무섭다는데, 면접 없는 전형은 어디인가요?"</h3>
+  <p style="color:var(--c-sub);font-size:14px;margin:6px 0 10px">
+  <b>면접 없는 학종</b>: 서강대 학종 전체(일반Ⅰ·Ⅱ·기회균형·서강가치), 한성대 한성인재, 성신여대 자기주도인재(서류 100%형), 외대 SW인재·서류형·기회균형, 홍익대 서류형, 광운대 광운참빛Ⅱ-서류형, 충북대 학종 전체. <b>교과전형도 대부분 면접 없음</b>(학교장추천·지역균형 등). 검색창에 "면접 없음" 입력하면 모두 표시됩니다.</p>
+
+  <h3>Q4. "수능 최저 없는 대학은 어디인가요?"</h3>
+  <p style="color:var(--c-sub);font-size:14px;margin:6px 0 10px">
+  <b>수시 전 전형 미적용</b>: 서울대(수시 전체), 상명대(수시 전체), 한성대(학종·논술·실기 등), 성공회대(전 전형), 감신대, 장신대, 총신대, 강서대(간호 제외). <b>주요대 중 학종 미적용 대학</b>: 중앙대 탐구하는·모두의·어울림, 서강대 일반Ⅰ·기회균형, 한양대 면접형, 동국대 학종 전체, 숙명대 학종, 시립대 학종. 수능 자신 없는 학생의 핵심 카드.</p>
+
+  <h3>Q5. "의대·치대·한의대·약대를 노린다면 어떤 대학이 유리한가요?"</h3>
+  <p style="color:var(--c-sub);font-size:14px;margin:6px 0 10px">
+  <b>의대 보유 — 서울·수도권</b>: 서울대·연세대·고려대·성균관대·한양대·중앙대·이화여대·경희대·아주대·인하대·가천대 / <b>거점국립</b>: 9개 모두 의대 보유(경북·부산·전북은 치대까지). <b>한의대</b>: 가천대(수도권 유일), 경상국립·부산. <b>지역인재·지역의사 전형이 핵심</b>: 거점국립대는 권역별 선발(예: 충남대 충청권, 강원대 강원도, 부산대 부울경)로 합격 가능성이 수도권보다 높습니다. <b>거주지 요건</b>: 2022 이후 중학교 입학자는 비수도권 중학교 졸업 요건이 추가됩니다(강원·제주 등).</p>
+
+  <h3>Q6. "정시에서도 학생부가 반영된다는데 정말인가요?"</h3>
+  <p style="color:var(--c-sub);font-size:14px;margin:6px 0 10px">
+  <b>네, 8개 대학 이상이 정시에 학생부·서류 도입.</b> 서울대(교과역량평가 40점), 연세대(서류 100점), 고려대 교과우수전형(수능80+교과20), 한양대(수능90+학생부종합 10), 동국대(수능80+학생부20), 홍익대 ㉰군(수능90+교과10), 숙명여대(수능80+서류20), 시립대(수능80+교과18+출결2), 충남대(수능80+교과15+비교과5), 중앙대 수능67 전형(수능67+서류33). <b>"수능 100%만 보면 된다"는 옛말입니다.</b></p>
+
+  <h3>Q7. "영락고에서 받을 수 있는 학교장 추천은 몇 명, 어디가 유리한가요?"</h3>
+  <p style="color:var(--c-sub);font-size:14px;margin:6px 0 10px">
+  <b>2028 대입 변화 — 추천인원 제한 폐지 대학이 늘어남.</b> 서강대 지역균형(20명→무제한), 외대 학교장추천(폐지), 시립대 지역균형(폐지), 홍익대 학교장추천(폐지), 한양대 교과추천(폐지), 경기대 학교장추천(폐지)로 변경. 단 서울대 지역균형은 여전히 3명 제한 유지, 고려대 학교추천도 별도 인원. <b>주의</b>: 추천인원이 폐지된 대신 <b>수능최저·서류 정성평가가 강화</b>되어 누구나 지원 가능해진 만큼 합격선은 오를 가능성이 큽니다.</p>
+
+</div>
+
+<!-- ⚠️ 영락고 특화 안내: 지역인재 전형 -->
+<h2 class="section">🚨 영락고 학생이 꼭 알아야 할 — 지역인재 전형 지원 불가</h2>
+<div class="note" style="background:#fef2f2;border-color:#dc2626;color:#7f1d1d">
+  <b>⚠️ 결론부터: 영락고 학생은 거점국립대·지방대 의약학과 "지역인재 전형" 지원 불가능합니다.</b>
+  <p style="margin:10px 0">지역인재 전형은 의·치·한의·약·수의 등 인기학과를 일반 정원의 30~40%로 별도 선발하지만, <b>해당 권역 고교 전 과정 이수</b>가 필수 자격입니다. 영락고는 서울 소재 → 모든 거점국립대 지역인재 자격 미달.</p>
+
+  <div class="table-wrap" style="margin-top:10px">
+    <table>
+      <thead><tr><th>대학(권역)</th><th>지역인재 자격</th><th>영락고 지원</th><th>대안</th></tr></thead>
+      <tbody>
+        <tr><td>부산대 (부·울·경)</td><td>부산·울산·경남 고교 전 과정</td><td style="color:#dc2626;font-weight:700">불가</td><td>일반전형(교과우수·서류·면접)</td></tr>
+        <tr><td>경북대 (대구·경북)</td><td>대구·경북 고교 전 과정</td><td style="color:#dc2626;font-weight:700">불가</td><td>일반전형(교과우수·학종 일반)</td></tr>
+        <tr><td>경상국립대 (경남)</td><td>경남 고교 전 과정</td><td style="color:#dc2626;font-weight:700">불가</td><td>일반전형</td></tr>
+        <tr><td>전남대 (호남권)</td><td>광주·전남·전북 고교 전 과정</td><td style="color:#dc2626;font-weight:700">불가</td><td>일반전형(고우Ⅰ·Ⅱ)</td></tr>
+        <tr><td>전북대 (호남권+전북)</td><td>광주·전남·전북(1유형), 전북(2유형)</td><td style="color:#dc2626;font-weight:700">불가</td><td>일반전형(큰사람)</td></tr>
+        <tr><td>충남대 (충청권)</td><td>대전·세종·충남·충북 고교 전 과정</td><td style="color:#dc2626;font-weight:700">불가</td><td>일반전형(학종Ⅰ·Ⅱ 일반)</td></tr>
+        <tr><td>충북대 (충청권)</td><td>충북·세종·대전·충남 고교 전 과정</td><td style="color:#dc2626;font-weight:700">불가</td><td>일반전형(학종Ⅰ·Ⅱ)</td></tr>
+        <tr><td>강원대 (강원)</td><td>강원 고교 전 과정</td><td style="color:#dc2626;font-weight:700">불가</td><td>일반전형(미래인재면접·서류)</td></tr>
+        <tr><td>제주대 (제주)</td><td>제주특별자치도 고교 전 과정</td><td style="color:#dc2626;font-weight:700">불가</td><td>일반전형</td></tr>
+        <tr><td>성균관대 의예(경기 의정부·남양주·이천·포천)</td><td>해당 권역 고교 전 과정</td><td style="color:#dc2626;font-weight:700">불가</td><td>성균관대 일반 의예(전국)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="margin-top:14px;color:#7f1d1d">📌 영락고 학생의 실질적 전략</h3>
+  <ul style="margin:8px 0;padding-left:22px;color:#7f1d1d">
+    <li><b>거점국립대 의대 지원 시 — "일반전형"으로만 가능</b>. 지역인재(권역) 30~40% 인원을 제외한 나머지 60~70%가 전국 경쟁(영락고 포함). 경쟁률·합격선 모두 지역인재보다 높음.</li>
+    <li><b>지역의사 전형도 마찬가지</b> — 권역별 의무복무 10년 조건이지만 거주·출신 요건은 지역인재와 동일하게 적용되는 곳이 많음(부산대·전남대·전북대·충남대·충북대·강원대·제주대 모두). 사전 확인 필수.</li>
+    <li><b>서울 소재 의대 + 인하·아주·가천대 의대</b>가 영락고 학생에게 더 유리한 선택지. 단, 이들 역시 권역 지역인재(서울·경기·인천)는 별도 운영.</li>
+    <li><b>참고</b>: 2022학년도 이후 중학교 입학자는 <b>비수도권 중학교 졸업</b> 요건이 추가되는 거점국립대가 다수(강원대·제주대 등). 영락고 현 고2(2025 입학)는 어차피 서울 거주로 해당 없음.</li>
+  </ul>
+</div>
+
+<!-- 🔍 흔한 오해 박스 -->
+<h2 class="section">🔍 학부모·학생이 자주 빠지는 오해 5가지</h2>
+<div class="common">
+  <h3 style="color:#dc2626">❌ 오해 1. "수시 합격해도 정시 다시 보면 되겠지"</h3>
+  <p style="color:var(--c-sub);font-size:14px;margin:6px 0 14px">
+  <b>틀렸습니다. 수시 1곳이라도 충원 포함 합격하면 정시 지원 자체가 금지됩니다("수시 납치").</b> 등록 여부와 무관합니다. 수시 6장은 신중히 — 안정 2, 적정 2, 도전 2가 일반적이지만 <b>"무조건 가도 좋은 곳"으로만 도전·상향 카드 짜는 게 정시 보존의 핵심</b>. 특히 수능 모의고사 상위권 학생은 수시 카드를 모두 도전·상향으로 채워 정시까지 열어두는 전략이 흔합니다.</p>
+
+  <h3 style="color:#dc2626">❌ 오해 2. "9등급 1.5등급 → 5등급으로 환산하면 2등급쯤 되겠지"</h3>
+  <p style="color:var(--c-sub);font-size:14px;margin:6px 0 14px">
+  <b>단순 계산 불가능합니다.</b> 9등급제에서 1·2등급(상위 11%)이 5등급제에서는 모두 1등급(상위 10%)으로 합쳐집니다. 즉 <b>옛 1·2등급 학생이 새 1등급에 몰리면서 동일등급 학생 수가 폭증</b>. "1등급만 받으면 된다"가 아니라 <b>1등급 내에서도 학교에서 몇 등인지(석차 백분율)·이수학점·진로선택 성취도</b>까지 본다는 점을 이해해야 합니다. 작년 합격선(9등급제) ≠ 올해 합격선(5등급제).</p>
+
+  <h3 style="color:#dc2626">❌ 오해 3. "무전공·자유전공 가면 나중에 원하는 학과 자유롭게 갈 수 있겠지"</h3>
+  <p style="color:var(--c-sub);font-size:14px;margin:6px 0 14px">
+  <b>주의: 대부분 대학에서 의·약·사범·간호·수의 등 인기학과는 무전공 진입이 제한됩니다.</b> 예시:
+  서울대 광역 → 7개 단과대학(인문·사회·자연·경영·공과·농생명·생활과학)만 / 가천대·삼육대 자유전공 → 일부 학과 진입 불가 / 한양대 인터칼리지·서강대 자유전공 3종 → 의·약 진입 불가 / 거점국립대 글로벌자율학부도 의예·수의·약학·간호 제외. <b>"무전공으로 들어가서 의대 전과하자"는 거의 불가능한 전략</b>입니다.</p>
+
+  <h3 style="color:#dc2626">❌ 오해 4. "수능최저 없는 학종이 제일 만만하지"</h3>
+  <p style="color:var(--c-sub);font-size:14px;margin:6px 0 14px">
+  <b>오히려 가장 까다롭습니다.</b> 수능최저가 없는 학종(서강대 일반Ⅰ, 동국대 Do Dream, 시립대 학종 등)은 그만큼 <b>서류 정성평가·면접 비중이 절대적</b>으로 커집니다. 학생부 기록(세특·자율·진로활동), 독서활동, 탐구 깊이, 면접 답변의 논리성으로 모든 것이 결정됩니다. 수능 자신 없는 학생에게 "쉬운 카드"가 아니라, <b>"학교생활 충실도가 검증된 학생에게만 열린 카드"</b>입니다.</p>
+
+  <h3 style="color:#dc2626">❌ 오해 5. "정시는 수능만 잘 보면 되는 거 아닌가요?"</h3>
+  <p style="color:var(--c-sub);font-size:14px;margin:6px 0 14px">
+  <b>2028 대입부터는 옛말입니다.</b> 서울대(정시 교과역량평가 40점), 연세대(서류 100점 신설), 한양대(수능90+학생부종합 10), 동국대·홍익대·숙명대·시립대·중앙대 수능67·고려대 교과우수전형 모두 정시에 학생부·서류를 반영합니다. <b>"수능만 잘 보면 정시는 안전" 전략은 위험</b>합니다. 고2 1·2학기 내신과 진로활동도 정시까지 영향을 미칩니다.</p>
+</div>
+
+<!-- 🚸 학교폭력 감점 비교표 -->
+<h2 class="section">🚸 학교폭력 조치별 대학별 감점 비교</h2>
+<div class="note" style="background:#fffbeb;border-color:#f59e0b;color:#78350f">
+  <b>📌 2026학년도부터 모든 대학이 학교폭력 조치사항을 입시에 반영합니다.</b>
+  <p style="margin:8px 0">감점 방식은 ① 정량 감점(점수 직접 차감), ② 정성 평가(서류평가 시 반영), ③ 부적격 처리(중대 사안은 자동 탈락) 세 가지로 구분. 같은 조치라도 대학마다 강도가 다릅니다.</p>
+
+  <div class="table-wrap" style="margin-top:10px">
+    <table>
+      <thead><tr><th>대학</th><th>유형</th><th>1~3호 조치</th><th>4~5호 조치</th><th>6~7호 조치</th><th>8·9호 조치</th></tr></thead>
+      <tbody>
+        <tr><td><b>중앙대</b></td><td>정량</td><td>최저 30점~최고 100점 감점</td><td>부적격 처리</td><td>부적격 처리</td><td>부적격 처리</td></tr>
+        <tr><td><b>성균관대</b></td><td>정량/0점</td><td>1호: 총점 10% 감점</td><td colspan="3" style="text-align:center;color:#dc2626">2~9호: 총점 0점 처리</td></tr>
+        <tr><td><b>전북대</b></td><td>정량(교과)</td><td>35점 감점</td><td>70점 감점</td><td>105점 감점</td><td style="color:#dc2626;font-weight:700">불합격</td></tr>
+        <tr><td><b>동덕여대</b></td><td>정량</td><td>(명시 없음)</td><td>100점 감점</td><td>200점 감점</td><td>300점 감점</td></tr>
+        <tr><td><b>한국체대</b></td><td>부적격</td><td>정성 반영</td><td>정성 반영</td><td colspan="2" style="text-align:center;color:#dc2626">5~9호 부적격</td></tr>
+        <tr><td><b>성공회대</b></td><td>정량</td><td colspan="4" style="text-align:center">총점 최대 -2% ~ 최저 0점 감점</td></tr>
+        <tr><td><b>광운대</b></td><td>정성</td><td colspan="4" style="text-align:center">1~9호 모두 정성평가 반영(전형 전반)</td></tr>
+        <tr><td>서울대·연세대·고려대·한양대·서강대</td><td>정성</td><td colspan="4" style="text-align:center">서류평가 정성평가에 반영(점수 비공개)</td></tr>
+        <tr><td>홍익대·숙명대·동국대·건국대 등</td><td>정성</td><td colspan="4" style="text-align:center">학생부종합전형 정성평가에 반영</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 style="margin-top:14px;color:#78350f">📌 학부모가 알아야 할 핵심</h3>
+  <ul style="margin:8px 0;padding-left:22px;color:#78350f">
+    <li><b>경미한 1~3호(서면 사과·접촉 금지·교내 봉사)</b>도 대학에 따라 30~35점 감점 또는 불합격 사유. 더 이상 "가벼운 조치니까 괜찮다"고 안심할 수 없음.</li>
+    <li><b>4호 이상(사회봉사)부터는 사실상 상위권 대학 합격 불가능</b>한 경우가 많습니다. 중앙대·동덕여대처럼 정량 부적격, 성균관대처럼 사실상 총점 0점.</li>
+    <li><b>학생부 기록은 졸업 후에도 일정 기간 보존</b>되어 정시·재수·N수까지 영향. 학교생활 중 분쟁 발생 시 즉시 학교에 도움 요청 + 가족 협조 필수.</li>
+    <li><b>피해자는 신고해도 학생부에 가해 기록이 남지 않습니다</b> — 피해 사실은 별도 처리, 가해자만 조치사항 기록. 신고를 망설이지 마세요.</li>
+  </ul>
+</div>
+
+<!-- 검색·필터 -->
+<h2 class="section">🎓 대학별 전형 상세 (49개 대학)</h2>
+
+<div class="controls">
+  <div class="search-row">
+    <input type="text" id="search" placeholder="대학명 또는 키워드 검색 (예: 의예, 면접, 자유전공, 지역인재, 수능최저)">
+    <span id="count">49개 대학 표시 중</span>
+  </div>
+  <div class="filter-row">
+    <button class="tab-btn active" data-tier="all">전체(49)</button>
+    <button class="tab-btn" data-tier="1">최상위 SKY+성한(5)</button>
+    <button class="tab-btn" data-tier="2">상위 서중외시(4)</button>
+    <button class="tab-btn" data-tier="3">중상위 건동홍숙(4)</button>
+    <button class="tab-btn" data-tier="4">중위 종합·여대(11)</button>
+    <button class="tab-btn" data-tier="5">특수·소규모(12)</button>
+    <button class="tab-btn" data-tier="6">수도권 인아가경(4)</button>
+    <button class="tab-btn" data-tier="7">거점국립대(9)</button>
+  </div>
+</div>
+
+<div class="univ-grid" id="univGrid"></div>
+
+<!-- 5등급제 환산점수 비교표 -->
+<div class="note" style="background:#f0f9ff;border-color:#3b82f6;color:#1e3a8a">
+  <b>📊 5등급제 환산점수 비교표</b> — 교과전형 한 눈에 보기
+  <div class="table-wrap" style="margin-top:8px">
+    <table>
+      <thead><tr><th>대학</th><th>1등급</th><th>2등급</th><th>3등급</th><th>4등급</th><th>5등급</th><th>특징</th></tr></thead>
+      <tbody>
+        <tr><td>연세대</td><td>70</td><td>63</td><td>45</td><td>25</td><td>0</td><td>3→4등급 차 20점(최대 변별)</td></tr>
+        <tr><td>고려대</td><td>100</td><td>95</td><td>83</td><td>67</td><td>55</td><td>1·2등급 5점 차(상위권 변별 작음)</td></tr>
+        <tr><td>성균관대</td><td>1,000</td><td>950</td><td>880</td><td>750</td><td>600</td><td>고려대와 유사 구조(천 단위)</td></tr>
+        <tr><td>서울과기대</td><td>1,000</td><td>990</td><td>977</td><td>967</td><td>0</td><td>4→5등급에서 절벽(변별 극대화)</td></tr>
+        <tr><td>홍익대</td><td>A=10</td><td>B=9</td><td>C=7</td><td>D=4</td><td>E=0</td><td>성취도 환산(석차등급과 통합)</td></tr>
+        <tr><td>서강대</td><td colspan="5">(5-등급평균)×200 공식, 성취도 A100/B90/C70/D40/E0</td><td>수식형(공식)</td></tr>
+        <tr><td>명지대</td><td>100</td><td>96</td><td>89</td><td>68</td><td>0</td><td>3→4등급 차 21점, 4→5등급 절벽</td></tr>
+        <tr><td>상명대</td><td>100</td><td>95</td><td>93</td><td>70</td><td>0</td><td>3→4등급 23점 차, 4→5등급 절벽</td></tr>
+        <tr><td>한성대</td><td>1,000</td><td>960</td><td>900</td><td>750</td><td>600</td><td>성균관대와 유사 구조</td></tr>
+        <tr><td>성신여대</td><td>100</td><td>97.5</td><td>95</td><td>83</td><td>70</td><td>3→4등급에서 12점 차</td></tr>
+        <tr><td>서울여대</td><td>100</td><td>96</td><td>88</td><td>50</td><td>0</td><td>3→4 38점 차(매우 큰 변별)</td></tr>
+        <tr><td>장신대</td><td>100</td><td>90</td><td>80</td><td>70</td><td>60</td><td>등급당 10점 균일</td></tr>
+        <tr><td>강서대</td><td>1,000</td><td>970</td><td>930</td><td>880</td><td>700</td><td>5등급 700점(완만)</td></tr>
+        <tr><td>삼육대</td><td>100</td><td>99</td><td>98</td><td>90</td><td>70</td><td>3→4등급 8점, 4→5등급 20점 차</td></tr>
+        <tr><td>총신대</td><td colspan="5">등급별 5~50점 감점 적용</td><td>감점형</td></tr>
+        <tr><td>한국성서대</td><td>700</td><td>692</td><td>684</td><td>674</td><td>658</td><td>변별력 매우 작음(8점 단위)</td></tr>
+        <tr><td>성공회대</td><td>10</td><td>9</td><td>8</td><td>6</td><td>4</td><td>12과목 누적 산출</td></tr>
+        <tr><td>추계예대</td><td>100</td><td>95</td><td>85</td><td>50</td><td>0</td><td>3→4 35점 차(큰 변별)</td></tr>
+        <tr><td>아주대</td><td>100</td><td>96</td><td>90</td><td>80</td><td>0</td><td>4→5등급 절벽(80→0)</td></tr>
+        <tr><td>가천대</td><td>100</td><td>99</td><td>98</td><td>80</td><td>30</td><td>3→4 18점, 4→5 50점 차</td></tr>
+        <tr><td>경기대(정시Ⅱ)</td><td>5</td><td>4.95</td><td>4.9</td><td>4.75</td><td>0</td><td>4→5 절벽(4.75→0)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="margin-top:8px;font-size:12px">※ 일부 대학은 PDF에 환산표 미공개(국민·세종·숭실·광운·동덕·덕성·인하·서울교대·한국체대·서울한영). 추후 모집요강 발표 시 추가 예정.</div>
+</div>
+
+<footer>
+  © 2026 영락고등학교 진학부 자료실 — 본 정리는 입시 상담 보조 자료이며, 최종 지원 시 반드시 각 대학 입학처의 공식 모집요강(2027년 발표 예정)을 확인하시기 바랍니다.<br>
+  데이터 출처: 2028학년도 대학 신입학생 입학전형 시행계획(2026.4 대교협 발표), 경기도교육청 「2028 대학입학 시행계획 검색기」<br><br>
+  <a href="index.html" style="color:#3cb878;font-weight:600;text-decoration:none">← 진로·대입 정보센터 홈으로</a>
+</footer>
+
+</div>
+
+<script>
+const universities = [
+  // ========== 최상위 (Tier 1) ==========
+  {name:"서울대학교", tier:1, tierLabel:"최상위",
+   structure:"수시 3,603명(학종 지역균형 728+일반 1,585)·정시 일반(1,107). <span class='badge badge-key'>광역</span><span class='badge badge-key'>자유전공학부</span><span class='badge badge-key'>첨단융합학부</span> 운영 — 입학 후 단과대학·전공 선택",
+   grade:"학종 전형 모두 정성평가. 정시는 1단계 수능 100%(3배수) 환산 시 <b>1등급=10점, 2등급=9점, …, 9등급=2점</b>(1점 차등)으로 5등급제 영향 작음",
+   csat:"<b>수시 전 전형 미적용</b>(지역균형·일반·기회균형 모두). 정시 기회균형(농어촌·저소득)만 3개 영역 3등급 이내",
+   interview:"지역균형 서류70+면접30 / 일반 서류50+면접50. 면접은 <b>제시문 기반 30분</b>(분석적 주제토론·심층적 문제해결·융합적 과제수행 3유형)",
+   note:"<span class='badge badge-new'>정시 교과역량평가 40점</span> 신설 — 학생부 정성평가 도입. 의·수의·치 정시 적성·인성면접. 사범대 교직적성·인성면접. 음대·미대 실기"},
+
+  {name:"연세대학교(서울)", tier:1, tierLabel:"최상위",
+   structure:"수시 2,471명(68%)·정시 1,133명. 학종(종합인재 981/탐구인재 375), 교과추천 539, 논술 318. <span class='badge badge-key'>진리자유학부</span>(인문89+자연101) 자유전공형 운영",
+   grade:"교과추천 1단계 교과100, 2단계 교과80+서류20. 환산 <b>1등급 70 / 2등급 63 / 3등급 45 / 4등급 25 / 5등급 0</b> — 4·5등급 변별력 강함",
+   csat:"학종 종합인재(인문 2개합4, 자연 2개합5), 의·치·약 1등급 2개 이상. <span class='badge badge-new'>논술 전 모집단위 수능최저 신설</span>(3개합6+영어3+한국사4)",
+   interview:"종합인재 2단계 서류70+면접30(제시문 기반, 언더우드는 영어). 탐구·기회균형 서류60+면접40. 교과추천 2단계에 서류 20% 정성평가",
+   note:"<span class='badge badge-new'>정시 학생부 정량평가 폐지·서류 100점 신설</span>. 의예과 정시 단계별(면접 50점). 채용조건형 시스템반도체(삼성)·디스플레이(LG)"},
+
+  {name:"고려대학교(서울)", tier:1, tierLabel:"최상위",
+   structure:"수시 2,721명(58%)·정시 1,867명. 학교추천 672·학업우수 823·계열적합 556·논술 367. <span class='badge badge-key'>자유전공학부(인문)</span><span class='badge badge-key'>학부대학(자연)</span> 운영",
+   grade:"학교추천 교과80+서류20(2027 90+10에서 변경). 환산 <b>1등급 100 / 2등급 95 / 3등급 83 / 4등급 67 / 5등급 55</b>. 정시 교과우수 수능80+교과20",
+   csat:"학업우수 4개합 9+한국사 4, 의학과 4개합 5. 논술 4개합 8. 학교추천은 의학과만 적용(4개합 5). 계열적합·고른기회·다문화 미적용",
+   interview:"<span class='badge badge-new'>학업우수 2단계 면접 신설</span>(서류80+면접20). 계열적합·고른기회는 제시문 면접. 의학과 적성·인성면접. 학교추천·논술 면접 없음",
+   note:"<span class='badge badge-new'>의학과 6년 통합</span>(의예+의학). 정시 일반전형 표준점수·교과우수 백분위. 채용조건형 SK반도체·삼성통신·사이버국방·현대모빌리티"},
+
+  {name:"성균관대학교", tier:1, tierLabel:"최상위",
+   structure:"총 4,144명. 수시 2,367(57%)·정시 1,708(41%). 학종 1,480(서류형·면접형 분리)·교과 415·논술 376. <span class='badge badge-key'>자유전공계열·전공예약제</span> 운영",
+   grade:"교과(추천인재) 정량 70(공통35+선택35)+정성 30. 환산 <b>1등급 1,000 / 2등급 950 / 3등급 880 / 4등급 750 / 5등급 600</b>. 공통·선택 분리 계산",
+   csat:"추천인재·논술 모두 5개 중 3개합 6~7(모집단위 차등). 의예 논술 수리형 4개합 5(탐구 2과목 평균). 자연·공학 논술 언어형은 수학 필수",
+   interview:"면접형(성균인재) 1단계 학생부 100, 2단계 학생부70+면접30(인·적성). 과학인재 제시문 수학·과학. <span class='badge badge-new'>면접형 사회·공학계열 신설</span>. 서류형 면접 없음",
+   note:"<span class='badge badge-new'>의예 지역의사 신설</span>(경기 권역별 1명). 정시 일반형·특화형(국+탐/수+탐) 분리. 채용조건형 반도체·배터리·SW(삼성 계열). 학폭 1호 10% 감점·2~9호 0점"},
+
+  {name:"한양대학교(서울)", tier:1, tierLabel:"최상위",
+   structure:"수시 2,070(67%)·정시 939(33%). 교과추천 506·학종 학업형 811·면접형 266·논술 289. <span class='badge badge-key'>한양인터칼리지학부</span> 운영. <span class='badge badge-new'>학종 서류형 폐지·학업형 통합 확대</span>",
+   grade:"교과추천 교과60+학생부종합평가40(2027 90+10에서 큰 변경). <span class='badge badge-new'>학교장 추천인원 제한 폐지</span>. 학종은 학생부종합평가 100% 정성",
+   csat:"교과추천 자연·상경·인터칼리지 <b>3개 영역 각 3등급 이내</b>(2027 3개합 7에서 강화). 학업형 3개합 7, 의예 3개합 4. 면접형·고른기회·체육인재 미적용",
+   interview:"학종(면접형) 1단계 종합평가100(3~5배수), 2단계 70+면접30. <span class='badge badge-new'>면접형 모집단위 대폭 확대</span>. 의예·공대·인터칼리지(자연) 제시문 면접",
+   note:"<span class='badge badge-new'>논술 학생부(출결) 10% 반영 신설</span>. <span class='badge badge-new'>학종(체육인재) 신설</span>(스키·스노보드 1명). 컴SW·파이낸스경영 정시 나→다군 이동. 정시 일반 수능90+학생부종합평가10"},
+
+  // ========== 상위 (Tier 2) ==========
+  {name:"서강대학교", tier:2, tierLabel:"상위",
+   structure:"수시 1,046(58%)·정시 719(40%). 교과(지역균형) 180·학종 5종(일반Ⅰ 497·Ⅱ 74·기회균형 85 등)·논술 170. <span class='badge badge-key'>자유전공 3종</span>(인문기반·SCIENCE·AI) 운영",
+   grade:"교과(지역균형) 교과90(석차80+성취도10)+출결10. 환산 <b>(5-등급평균)×200</b> 공식, 성취도 A100/B90/C70/D40/E0. 논술도 교과 10% 정량",
+   csat:"교과(지역균형)·논술 국·수·영·탐 4개 중 <b>3개 등급합 7</b>+한국사 4. <span class='badge badge-new'>학종(일반Ⅱ) 수능최저 신설</span>(3개합 7). 일반Ⅰ·기회균형 미적용",
+   interview:"<b>학종 일반Ⅰ·Ⅱ·기회균형·서강가치 모두 서류 100% 면접 없음</b>. 특성화고만 2단계 면접 20%. 면접 비중 낮은 대학",
+   note:"<span class='badge badge-new'>교과 추천인원 제한 폐지</span>. 논술 100%→80+교과10+출결10. <span class='badge badge-new'>정시 수능(지역균형) 신설</span>(나군 90명). 의대 없음. SK반도체 채용조건형"},
+
+  {name:"중앙대학교(서울)", tier:2, tierLabel:"상위",
+   structure:"총 5,038명. 수시 56.6%·정시 41.7%. 교과(지역균형) 505·학종 4종(탐구하는·모두의·최저있는·어울림)·논술 482. <span class='badge badge-new'>학종 명칭 전면 개편</span>",
+   grade:"교과(지역균형) 학생부 100%(교과90+출결10). 5등급제 석차등급 정량(세부 환산표 모집요강 공지). 논술 80+교과10+출결10",
+   csat:"교과(지역균형) 3개합 7(약학 4개합 5). 최저있는 학종·논술 3개합 6(약학 4개합 5). <span class='badge badge-new'>수능67(정시) 신설</span> 3개합 7. 영어 2등급 누적 20% 미만시 1·2등급 통합",
+   interview:"<b>탐구하는·모두의 학종 2단계 면접 40%</b>(서류기반 심층, 5~6배수). 최저있는 학종은 의학부만 면접. 어울림·기회균형·논술 면접 없음",
+   note:"<span class='badge badge-new'>정시 수능67 신설</span>(수능67+서류33). 의·약 별도 수능최저, 의학부 학종 면접. 학폭 1~3호 30~100점 감점, 4~9호 부적격"},
+
+  {name:"한국외국어대학교(서울)", tier:2, tierLabel:"상위",
+   structure:"총 3,731명. 수시 58.4%·정시 41.6%. 학교장추천 375·학종(면접형 601·SW인재 34·서류형 464)·논술 449. <span class='badge badge-key'>자유전공학부 서울 100+글로벌 224</span>",
+   grade:"<span class='badge badge-new'>학교장추천 교과100→교과70+서류30</span>(서류는 교과종합평가 정성). 국·수·영·사·과 전 과목 등급환산, 계열 구분 없이 동일 비율",
+   csat:"학교장추천·서류형·논술 국·수·영·탐(통사·통과 1) 중 <b>2개 영역 등급합 5/6/7</b>(모집단위 차등). 학종(면접형·SW·기회균형) 미적용",
+   interview:"학종(면접형)만 2단계 <b>면접 50%</b>(서류기반 개별 블라인드 인·적성). SW인재·서류형·기회균형·학교장추천 면접 없음",
+   note:"<span class='badge badge-new'>학교장추천 추천인원 제한 폐지·졸업예정자만</span>. 논술 학생부 미반영. 정시 영역별 반영 변경. 통사·통과 중 상위 1과목만"},
+
+  {name:"서울시립대학교", tier:2, tierLabel:"상위",
+   structure:"정원내 1,802(수시 1,071·정시 731)+정원외 102. 논술 86·지역균형 346·학종 424·기회균형Ⅰ 132. <span class='badge badge-key'>자유전공학부 156</span>+<span class='badge badge-key'>첨단융합학부</span>(바이오헬스·AI·반도체)",
+   grade:"<span class='badge badge-new'>지역균형 교과60+서류40</span>(2027 80+20에서 변경). 정시 인문·자연 <span class='badge badge-new'>수능80+교과18+출결2</span>(수능100에서 변경). 학종은 서류 100% 정성",
+   csat:"<span class='badge badge-new'>논술 수능최저 신설</span>(3개합 7+한국사 4). 지역균형도 동일(3개합 7). 학종·기회균형·실기 미적용",
+   interview:"학종·기회균형Ⅰ·사회공헌통합 모두 <b>2단계 면접 50%</b>(2인 약 12분, 블라인드). 논술·지역균형·실기는 면접 없음. 디자인 실기 3단계 면접 10%",
+   note:"<span class='badge badge-new'>논술 대개편</span>(논술80+교과20→논술100, 수능최저 신설). 학종 서류형 폐지. 디자인 정시→수시 이동"},
+
+  // ========== 중상위 (Tier 3) ==========
+  {name:"건국대학교(서울)", tier:3, tierLabel:"중상위",
+   structure:"수시 56.8%(1,938)·정시 43.2%(1,472). KU자기추천(학종) 910·KU지역균형 348·KU논술 327. <span class='badge badge-key'>단과대학 자유전공학부</span> + <span class='badge badge-key'>KU자유전공학부 308명</span>",
+   grade:"KU지역균형 <b>학생부(교과정량)70+학생부(교과정성)30</b>. 반영 국·수·영·과·사·한국사 상위 20개 과목. 정시 자유전공 <span class='badge badge-new'>수능90+학생부 정성10</span>",
+   csat:"KU지역균형 2개합 5+한국사 5. KU논술 인문·자연 3개합 8, <b>수의예 3개합 4</b>(탐구 2과목 평균). 학종·정시 미적용",
+   interview:"KU자기추천 1단계 서류100(3배수), 2단계 1단계70+면접30. 평가요소 학업·진로·공동체역량(자유전공은 학업·성장·공동체). 서류기반 블라인드 10분",
+   note:"정시 예술디자인 <span class='badge badge-new'>단계별 전형 도입</span>(1단계 수능100 5배수, 2단계 수능60+실기40). 수의예 수능최저 강화. 재외국민 유형1·2·3 신설"},
+
+  {name:"동국대학교(서울)", tier:3, tierLabel:"중상위",
+   structure:"학종 Do Dream 894(주력)·불교추천 108·교과 학교장추천 470·논술 291. 정시 일반 가/나/다 855. 광역화 모집단위 존재",
+   grade:"학교장추천 교과70+서류30(수능최저 미적용). 학종은 서류 정성. 정시 일반 <span class='badge badge-new'>수능80+학생부 20</span>(2027 수능100에서 변경)",
+   csat:"<b>학종 전 전형 + 학교장추천 + 정시 모두 미적용</b>. 논술만 수능최저 적용(<span class='badge badge-new'>2028 완화 표기</span>)",
+   interview:"학종 전 전형 1단계 서류100, 2단계 1단계60+면접40 공통. Do Dream 2.5~3.5배수. 학교장추천은 면접 없음(서류 30% 정성)",
+   note:"미술학부 조소 정시 나군 수능60+실기40. 체육교육 정시 가군 수능60+실기40. 정시 전 모집단위 학생부 20% 도입"},
+
+  {name:"홍익대학교(서울)", tier:3, tierLabel:"중상위",
+   structure:"서울캠 2,375. <span class='badge badge-new'>학교장추천 21% 확대</span>(420명, 추천인원 폐지). 학종 서류형 434·면접형 23(신설, 자율전공 한정). 논술 384·미술우수 289. <span class='badge badge-key'>캠퍼스자율전공</span>",
+   grade:"학교장추천 교과95+출결5. 성취도 환산 <b>A=10 / B=9 / C=7 / D=4 / E=0</b>. 9등급→5등급 전환, 성취도 통합. 정시 ㉰군 <span class='badge badge-new'>수능90+교과10</span>(성취도)",
+   csat:"학교장추천·서류형·논술 <b>2개 영역 등급합 5</b>+한국사 4. 미술우수 3개합 9+한국사 4. 면접형·공연예술·농어촌 미적용",
+   interview:"서류형 학생부 정성 100%(면접 없음). 면접형 1단계 서류100(5배수), 2단계 서류50+면접50. <b>미술우수</b> 1단계 교과20+서류80(미술활동보고서), 2단계 서류40+면접60",
+   note:"<span class='badge badge-new'>미술대 학과 통폐합</span>(미술학부·디자인학부·공예학부) — 2학년 전공 선택. 정시 미술 ㉯군 1단계 수능100(3배수), 2단계 수능60+서류40"},
+
+  {name:"숙명여자대학교", tier:3, tierLabel:"중상위",
+   structure:"수시 1,114(52%)·정시 1,038(48%). 숙명인재(면접형) 361·지역균형 314·논술 214·SW인재 35·예능창의인재 135. <span class='badge badge-key'>순헌칼리지 293</span>+첨단공학부 광역",
+   grade:"지역균형·논술·예체능 모두 <b>공통·일반선택: 석차70+성취30 / 진로선택: 석차30+성취70</b>. 융합선택 미반영. 정시 일반 <span class='badge badge-new'>수능80+서류20</span>",
+   csat:"지역균형 일반 미적용(약학 3개합 5). 논술 인문·자연 2개합 5(약학 3개합 4, 수학 필수). 학종·예체능·정시 미적용",
+   interview:"숙명인재(면접형)·SW인재 1단계 서류100(4배수), 2단계 1단계70+면접30. 기회균형·농어촌·특성화고는 일괄 서류100",
+   note:"논술 90+10→<span class='badge badge-new'>85+15</span>. 예능창의 실기 비중 확대(체육 60→70). <span class='badge badge-new'>정시 첨단공학부 다군 신설</span>. 회화과 1단계 학생부100(20배수), 2단계 실기100"},
+
+  // ========== 중위 (Tier 4) ==========
+  {name:"국민대학교", tier:4, tierLabel:"중위",
+   structure:"수시 2,245(67%)·정시 1,095. 학종 1,217(국민프런티어 723)·교과 620·논술 237. <span class='badge badge-key'>자유전공(A·B)·미래융합전공(A·B·C)</span> 운영",
+   grade:"교과우수자(학교장추천): 학생부교과 100%(1,000점). 학종은 학생부 정성평가. 5등급제 환산표 PDF 미공개(모집요강 공지)",
+   csat:"교과우수자(학교장추천): 자유전공·미래융합전공(A·B)는 국·수·영·탐(1) 중 <b>2개 영역 등급합 6</b>. 학종·실기 미적용",
+   interview:"학종 면접형(국민프런티어) <span class='badge badge-new'>1단계 서류100(3배수), 2단계 1단계60+면접40</span>(2027 70:30에서 변경). 학생부 기반 면접",
+   note:"체육특기자 종목·전형 변경(체육대 신설, 특기 60→70·교과 20→10). 어학·미술조형 특기자. 의·약 없음"},
+
+  {name:"세종대학교", tier:4, tierLabel:"중위",
+   structure:"수시 1,892·정시 1,134(총 3,026). 지역균형 388·세종인재 면접형 385/서류형 252·논술 344. <span class='badge badge-key'>자유전공학부(수시 122명)</span>",
+   grade:"지역균형: 학생부교과 100%(공통·일반 80+진로 20, 이수학점 반영). 5등급제 환산표 PDF 미공개",
+   csat:"지역균형: 국·수·영·탐(1) 중 <b>2개 등급합 5</b>(2027 6→5 강화). 논술 2개합 5. 학종·일반학생 미적용",
+   interview:"세종인재(면접형) 1단계 서류100(3배수), 2단계 1단계60+면접40(서류기반 9분). 서류형·기회균형 면접 없음",
+   note:"논술 80+20→<span class='badge badge-new'>논술 100% 변경</span>. 정시 일반학생 분리(수능형 100% / 융합형 수능90+교과 정성10). 수학·과탐 가산점 폐지. 의·약 없음"},
+
+  {name:"숭실대학교", tier:4, tierLabel:"중위",
+   structure:"수시 1,642·정시 1,369(총 3,211). SSU미래인재 면접형 538/서류형 166·교과우수자 462·논술 240·AI우수자 17. <span class='badge badge-key'>자유전공학부(인문 18·자연 24)</span>",
+   grade:"교과우수자: <span class='badge badge-new'>학생부 교과(정량)90+학생부(정성)10</span>(2027 교과100에서 변경). 인문/자연 반영교과 차등. 5등급제 환산표 PDF 미공개",
+   csat:"교과우수자·논술 전 계열 국·수·영·탐(1) 중 <b>2개 등급합 6</b>. SSU미래인재·AI우수자·기회균형 미적용",
+   interview:"SSU미래인재(면접형) 1단계 서류100(3~3.5배수), 2단계 1단계50+면접50. 평가요소 학업20·진로50·공동체30(면접형) / 학업10·탐구60·공동체30(서류형)",
+   note:"정보보호학과 <span class='badge badge-new'>LG유플러스 채용조건형</span> 계약학과(정원 외). 예술창작학부 면접형 신설. 정시 탐구 가산점 폐지. 의·약 없음"},
+
+  {name:"광운대학교", tier:4, tierLabel:"중위",
+   structure:"정원내 1,684 중 수시 920(55%)·정시 764. 광운참빛인재Ⅰ-면접형 250/Ⅱ-서류형 208·SW우수인재 72·지역균형 191·논술 181. <span class='badge badge-key'>자율전공학부 191(자연 126·인문 65)</span>",
+   grade:"지역균형: <span class='badge badge-new'>학생부 100%(교과90+비교과10)</span>(2027 교과100에서 변경). 공통·일반선택 석차+이수학점, 진로선택 성취도+이수학점",
+   csat:"<span class='badge badge-new'>지역균형 수능최저 신설</span>(자율전공 자연·인문): 국·수·영·탐(사 또는 과) 중 <b>2개 등급합 6</b>. 학종·논술·체육특기 미적용",
+   interview:"광운참빛Ⅰ-면접형·SW우수인재 1단계 서류100(3.5배수), 2단계 1단계60+면접40. 입학사정관 2인 블라인드 개별면접 10분, 문제제시 없음. Ⅱ-서류형은 서류100",
+   note:"수능 영어 변환점수 축소(150점 만점), 수학(미적·기하)·과탐 가산점 폐지. 학폭 1~9호 모두 정성평가. 의·약 없음"},
+
+  {name:"명지대학교(서울)", tier:4, tierLabel:"중위",
+   structure:"총 2,908 중 수시 2,027(70%)·정시 881. 학교장추천 291·교과면접 349·명지인재면접 392/서류 269. <span class='badge badge-key'>자율전공학부(인문/자연)</span>",
+   grade:"학교장추천·교과면접: <span class='badge badge-new'>학생부 교과90+출결10</span>(2027 교과100에서 변경). 환산 <b>1등급 100 / 2등급 96 / 3등급 89 / 4등급 68 / 5등급 0</b>. 9등급제 별도 환산",
+   csat:"학교장추천·명지인재서류: 인문계열 국·수·영·사/과 중 <b>2개 등급합 6</b>, 자연계열 2개합 7(탐구 상위 1과목). 명지인재서류 수능최저 신설(2027 미적용)",
+   interview:"명지인재면접 1단계 서류100(<span class='badge badge-new'>3배수, 2027 4배수→축소</span>), 2단계 1단계60+면접40(2027 70:30 변경). 평가요소 학업·진로·공동체역량 10분 개별",
+   note:"학사구조 개편(전기전자 분할, 예술학부 통합, 미래전략·융합인재학부 신설). 의·약 없음"},
+
+  {name:"상명대학교(서울)", tier:4, tierLabel:"중위",
+   structure:"수시 1,302(정원내 811+정원외)·정시 491(나군 단일). 고교추천 349·상명인재 155·논술 98·실기 138. <span class='badge badge-key'>자유전공(인문 142·이공 99·예체능 23)</span>",
+   grade:"고교추천: <span class='badge badge-new'>학생부 교과95+출결5</span>(2027 교과100에서 변경). 환산 <b>1등급 100 / 2등급 95 / 3등급 93 / 4등급 70 / 5등급 0</b>. 9등급제 별도",
+   csat:"<b>모든 수시 전형 수능 최저 없음</b>(고교추천·상명인재·논술·실기·서해5도·특수교육)",
+   interview:"상명인재(인문/자연/애니메이션) 서류 100% 일괄. 스포츠건강·조형예술 1단계 서류100(5배수), 2단계 서류60+면접40. 학업·진로·공동체역량 10분",
+   note:"국가안보학과(체력검정·신체검사). 논술·실기 비교내신 환산 하향(1등급 100→90). 무용예술 실기 90→80%. 의·약 없음"},
+
+  {name:"서울과학기술대학교", tier:4, tierLabel:"중위",
+   structure:"수시 69.2%(1,743)·정시 30.8%(776). 교과 고교추천 393·학종 서울텍인재 599·서울텍미래 106·논술 150·실기 72. <span class='badge badge-key'>ST자유전공학부·미래융합대학</span>",
+   grade:"교과: 일괄 학생부교과 100%(계열별 국·수·영+사·과·한국사 지정). 환산 <b>1등급 1,000 / 2등급 990 / 3등급 977 / 4등급 967 / 5등급 0</b>(4→5 절벽)",
+   csat:"고교추천: 국·수·영·탐(1) 중 <b>2개 영역 합 6등급</b>. 학생부종합·논술·실기·특성화고졸 미적용",
+   interview:"서울텍인재·서울텍미래·기회균형 1단계 서류100(3배수), 2단계 서류70+면접30. 군위탁 일괄 서류70+면접30. 블라인드",
+   note:"산업체협력 특성화고졸재직자 168명(미래융합대학). 명칭 변경(학교생활우수자→서울텍인재). 논술 학20+논80(2027 30+70 조정). 양자융합물리학과 신설"},
+
+  {name:"성신여자대학교", tier:4, tierLabel:"중위",
+   structure:"수시 1,343(65%)·정시 721(35%). 학종 자기주도인재 535·기회균형Ⅰ 110·교과 지역균형Ⅰ·Ⅱ 297(무전공 126)·논술 158·실기 228. <span class='badge badge-key'>창의융합학부 381명</span>(자유전공 238+첨단 143)",
+   grade:"교과(지역균형) 교과90+출결10, 공통·일반선택 상위 + 진로선택(등급·성취도 환산표). 환산 <b>1등급 100 / 2등급 97.5 / 3등급 95 / 4등급 83 / 5등급 70</b>(성취도 A 기준)",
+   csat:"지역균형Ⅰ·Ⅱ·논술: 국·영·수·탐(1) 중 <b>2개 영역 합 7</b>(제2외/한문 대체 불가). 학종 전 전형 미적용",
+   interview:"자기주도인재·특수교육 1단계 서류100(3배수), 2단계 서류60+면접40. 기회균형Ⅰ·특성화고졸 서류 100% 일괄. 학생부 종합·정성",
+   note:"2028 변경: 지역균형 졸업예정자(Ⅰ)/졸업자(Ⅱ) 분리, 학생부 반영 변경. 사범대(교육·사회·윤리·한문·유아교육과). 간호학과 89명"},
+
+  {name:"동덕여자대학교", tier:4, tierLabel:"중위",
+   structure:"수시 1,010(정원내)+114(정원외)·정시 569+83. 학종 동덕창의리더 208·기회균형 12·교과우수자 181·논술 232·실기 359. <span class='badge badge-key'>자율전공학부 94·인문사회 125·자연정보 43</span>(ARETE교양대학)",
+   grade:"교과: 학생부교과 100%, 최고 1,000·최저 400점(5등급 환산표 PDF 미공개, 평균 석차등급 산출식만). 학종은 서류 100% 정성",
+   csat:"교과우수자·논술(약학 제외): 국·영·수·탐(1) 중 <b>2개 영역 합 7</b>(<span class='badge badge-new'>2027 6→7 완화</span>). 약학과(교과우수·동덕창의): 국·수·탐(과) 3개 영역 합 5(6→5 강화)",
+   interview:"동덕창의리더 1단계 서류100(3배수), 2단계 서류40+<b>면접60</b>. 기회균형·특성화고졸 서류 100%. 교과우수자·논술·실기 면접 없음",
+   note:"약학과 40명(수시 학생부교과 8, 동덕창의 8, 정시 가군 24). 약학 재외국민 면접60 신설. 회화 인물소묘 폐지. 학폭 감점 강화(4~5호 100점)"},
+
+  {name:"덕성여자대학교", tier:4, tierLabel:"중위",
+   structure:"수시 740(정원내)·정시 477. 교과 고교추천 160·학종 덕성인재Ⅰ 107·Ⅱ 237·기회균형 50·논술 115·미술실기 71. <span class='badge badge-key'>미래인재대학 자유전공학부 259</span>(가상현실·데이터사이언스·AI신약 각 40)",
+   grade:"교과 고교추천 학생부(교과90+출결10), 석차등급+성취도, 모집단위 연계 진로선택 가산점. 학종 서류 100% 정성. 5등급 환산표 PDF 미공개",
+   csat:"고교추천 일반: 국·수·영·사·과(1) 중 <b>2개 합 7</b>(제2외·한문→영어 대체 가능). 약학과 수학 포함 3개 합 5(사·과 평균). 덕성인재Ⅱ 약학 3개 합 6",
+   interview:"덕성인재Ⅰ(서류형) 서류 100%. 덕성인재Ⅱ(약학·가상현실·데이터·AI신약) 1단계 서류100(3~4배수), 2단계 1단계60+면접40. 기회균형 서류 100%",
+   note:"<b>약학과 80명</b>(수시 교과 20, 덕성인재Ⅱ 27, 정시 가군 28). <span class='badge badge-new'>학생부교과 기회균형 폐지→학생부종합으로 통합</span>. 실기 한국사 가산 일원화(최대 4점)"},
+
+  {name:"서울여자대학교", tier:4, tierLabel:"중위",
+   structure:"수시 985(55%)·정시 729(40%)·자율 89(5%). 학종 바롬인재서류 182·면접 202·AI융합 34·기독교지도자 23·기회균형 147·교과우수 183·논술 120·실기 69. <span class='badge badge-key'>자유전공학부(5개 광역)</span>",
+   grade:"교과우수자 교과90+출결10, 국·수·영·사·과·한국사 전 과목 5개 학기. 환산 <b>1등급 100 / 2등급 96 / 3등급 88 / 4등급 50 / 5등급 0</b>(3→4 38점 차)",
+   csat:"교과우수자: 국·수·영·탐(상위 1) 4개 중 <b>2개 합 7</b>(직업탐·제2외 미반영). 학종·논술·실기 미적용",
+   interview:"바롬인재서류·기회균형 서류 100%. 바롬인재면접·AI융합·기독교지도자(3배수) 1단계 서류100, 2단계 서류50+면접50. 교과·논술·실기 면접 없음",
+   note:"기독교지도자(기독교학과 23명, 세례교인). 체육 실기(스포츠운동과학과 댄스·태권도·핀수영 8명). 첨단융합학부(AI콘텐츠·뉴미디어·기업경영) 89명 자율모집"},
+
+  // ========== 특수목적·소규모 (Tier 5) ==========
+  {name:"서울교육대학교", tier:5, tierLabel:"특수·교대",
+   structure:"수시(학교장추천교과·교직인성우수자종합·기회균형Ⅰ·Ⅱ·기타특별)+정시(나군 일반). 학교장추천 1단계 교과70+정성30, 2단계 1단계80+면접20",
+   grade:"학교장추천 교과 정량70+정성평가30 혼합. 종합(교직인성·기회균형) 서류 100% 정성. 5등급제 환산표 PDF 미공개",
+   csat:"교직인성우수자: 국·수·영·탐(사/과 택) <b>2개합 6</b>+한국사 4. 기회균형Ⅰ·Ⅱ: 2개합 8+한국사 4. 정시: 영어 3등급+한국사 4",
+   interview:"<b>교대 특성상 전 전형 면접 필수</b>. 학교장추천 면접 20%, 교직인성·기회균형Ⅰ 면접 50%, 기회균형Ⅱ·재외·북한이탈 면접 100%",
+   note:"정시 일반도 1단계 수능100(2배수)+2단계 면접 20%. 재외·북한이탈 면접 100%(학생부 P/F)"},
+
+  {name:"한국체육대학교", tier:5, tierLabel:"특수·체대",
+   structure:"수시 303+정시 232(가군)+정원외 등 총 603. 수시 체육특기자·경기입상·실기우수자·교과성적우수자. 정시 가군 일반·수능성적우수자",
+   grade:"교과성적우수자 학생부 실질반영률 약 59.3%(정량). 학과별 1등급-5등급 점수차 상이(공연예술 700→140, 특수체육 700→620). 학년별 30:30:40",
+   csat:"교과성적우수자 학과별: 사회체육·운동건강·특수체육 2개합 6(각 4), 노인체육 3개합 10, 스포츠산업·청소년 3개 각 4. 정시 대부분 3개 각 6",
+   interview:"학종 PDF 미명시(체대 특성). 면접은 특수체육·공연예술·외국인·재외국민 등 일부. 인성·전공적성·한국어. 60점 미만/불참 시 불합격",
+   note:"체육특기·경기입상우수자 실기/실적 중심. 8대 육성종목(당구·세팍타크로·댄스 등). 태권도학과 단증(1단↑) 필수. 학폭 5~9호 부적격"},
+
+  {name:"추계예술대학교", tier:5, tierLabel:"특수·예대",
+   structure:"정원내 250(수시 117(48%)·정시 133(52%)). 실기/실적(일반·수상실적), 교과 미래인재(콘텐츠창작학부 10명). 정시 가·나·다군 분산",
+   grade:"미술창작 학생부 20+실기 80(국어·영어). 콘텐츠창작(미래인재) 학생부100(1단계)→40+면접60(2단계, 국·영·수). 환산 <b>1등급 100 / 2등급 95 / 3등급 85 / 4등급 50 / 5등급 0</b>",
+   csat:"전 전형 수능최저 미적용. 정시는 수능 점수 반영(국어·영어 백분위, 한국사 응시필수·미반영)",
+   interview:"학종 PDF 미명시. 미래인재(콘텐츠창작) 2단계 면접 60%. 그 외 면접 미실시. 수상실적특기자 서류 100%(본교 인정 문예대회)",
+   note:"예술대 실기 중심(국악·성악·피아노·관현악·작곡·미술·문예창작). 미술창작 전공자율선택제+분리 병행(동양·서양·판화미디어). 작곡 정시 피아노 폐지. 콘텐츠창작 서해5도 신설"},
+
+  {name:"한성대학교", tier:5, tierLabel:"특수·소규모",
+   structure:"수시 952+정시 507(총 1,459). 교과우수 161·지역균형 188·한성인재 310·논술 99·실기우수 128. <span class='badge badge-key'>상상력인재학부(자율전공) 195</span>·AI디지털융합인재학부",
+   grade:"교과: 공통·일반 석차+진로 등급·성취도 상위 성적 전과목. 환산 <b>1등급 1,000 / 2등급 960 / 3등급 900 / 4등급 750 / 5등급 600</b>. 학종 서류 100% 정성(학업30·진로40·공동체30)",
+   csat:"교과우수(주간): 국·수·영·탐 중 <b>2개 합 7</b>. 야간: 2개 합 8. 지역균형·학종·논술·실기 미적용",
+   interview:"학종(한성인재) 서류 100% 면접 없음. 모든 학생부교과·논술·실기 면접 없음. 정부/군위탁만 면접 100%",
+   note:"<span class='badge badge-new'>2028 논술전형 신설</span>(약술형 80+학생부 20, 99명, 수능최저 없음). 농어촌 유형Ⅰ(6년)+Ⅱ(12년) 모두. 미래플러스대학은 성인학습자/특성화고졸 전담"},
+
+  {name:"삼육대학교", tier:5, tierLabel:"특수·소규모",
+   structure:"정원내 1,155(수시 895+정시 260). 학교장추천·세움인재(종합)·논술·재림교회목회자추천·S/W인재·기회균형·예체능·신학특별·실기 등. <span class='badge badge-key'>창의융합 자유전공 93+미래융합 자유전공 148</span>",
+   grade:"학교장추천·농어촌·특성화고 등 교과 정량(석차+성취도·이수학점). 종합 학업·진로·공동체 정성. 환산 <b>1등급 100 / 2등급 99 / 3등급 98 / 4등급 90 / 5등급 70</b>",
+   csat:"학교장추천 일반학과 2개합 7, 간호·물리치료 2개합 6, 약학 3개합 5(과탐). 재림교회목회자추천 1개 4(간호·물치 3). 논술 1개 3. 예체능·세움인재·기회균형 미적용",
+   interview:"종합(세움인재·S/W인재·기회균형Ⅰ·Ⅱ·특수교육) 1단계 서류100(4배수), 2단계 서류60+면접40. <b>신학특별 필기(성경)+면접</b>. 학교장추천·논술·실기 면접 없음",
+   note:"신학특별(목회자추천+성경필기), 재림교회목회자추천(인성검사). 약학과 별도 환산표(9등급제 유지). 자유전공 2개 운영(일부 학과 진입 제한)"},
+
+  {name:"강서대학교", tier:5, tierLabel:"특수·소규모",
+   structure:"정원내 277(수시 243+정시 34). 학생부교과위주(일반·교과우수·사회통합)+실기/실적(실용음악) +정시 수능·실기. 자유전공/무전공 PDF 명시 없음",
+   grade:"학생부 교과 100%(비교과 미반영). 환산 <b>1등급 1,000 / 2등급 970 / 3등급 930 / 4등급 880 / 5등급 700</b>. 9등급제(2027.2 이전) 별도",
+   csat:"<b>간호학과만 수시 전형 수능 최저 적용</b>: 국·수·영·탐(1) <b>2개 합 8</b>. 그 외 학과 미적용",
+   interview:"학종 PDF 미명시(교과·실기 중심). 일반학생(단계별) 1단계 학생부100, 2단계 학생부80+면접20. 교과우수·사회통합 면접 없음. 면접 5분 내외 인성·학업의지",
+   note:"신학·간호·실용음악 등 7개 학과 소규모. 실용음악 실기(보컬·건반·베이스·기악·작곡). 교과우수 5등급/9등급 산출 학점 80학점↑ 조건"},
+
+  {name:"총신대학교", tier:5, tierLabel:"특수·종교",
+   structure:"수시 267(87%)·정시 40(13%, 총 307). 학생부교과(교과우수자)·학종(목회자추천 27·코람데오인재 119·총신고른기회·대안학교)·실기/실적(성경지식·외국어·실기우수자 31). 자율전공학부 운영",
+   grade:"교과우수자 교과90+비교과(출결)10, 국·영·수·사·과. 2028 졸업자는 공통·일반·진로·융합선택 석차+성취도, 등급별 5~50점 감점",
+   csat:"<b>모든 수시 전형 수능최저 없음</b>. 정시 CS인재(가군) 국/수 우수 백분위 40+영어환산 30+탐구 1과목 30-한국사 감점",
+   interview:"학종 코람데오·총신고른기회·대안학교 1단계 서류100(3배수), 2단계 1단계70+면접30. 교과우수자·성경지식우수자 면접 없음. 외국어우수자 1단계 서류 정성40+정량60, 2단계 면접30",
+   note:"출석교회 담임목사 추천 받은 기독교 세례교인만 지원(예장합동 지정 이단·사이비 제외). 교회음악과 실기우수자 31명 별도"},
+
+  {name:"감리교신학대학교", tier:5, tierLabel:"특수·종교",
+   structure:"신학부 단일 모집단위, 수시·정시(나군). 수시 일반·추천자·사회적배려·검정고시·농어촌·기초·차상위·특수교육, 정시 일반. 정원·정시 비율 PDF 미공개",
+   grade:"수시 학생부 800점(교과90+비교과 출결5+봉사5). 각 학년 국어·영어·사회/과학 각 1과목씩 9과목, 백분율 점수. 진로선택 미반영",
+   csat:"<b>수시·정시 모두 수능최저 없음</b>. 정시 수능: 국어40+영어40+탐구20(사·과·직 중 최고 1)",
+   interview:"수시 일반 학생부80(교과72+비교과8)+면접20. 검정고시 학생부20+면접80. <b>면접 F 시 서류와 관계없이 불합격</b>",
+   note:"모든 전형 기독교세례 자격 요구. 농어촌 검정고시 제외, 읍·면 소재 특목고(과학·외고·예고·체고) 제외. 재외·외국인 서류70+면접30"},
+
+  {name:"장로회신학대학교", tier:5, tierLabel:"특수·종교",
+   structure:"수시 139(93%)·정시 11(7%, 총 150). 자유전공·신학·기독교교육·교회음악. 수시 성경고사성적우수자·학생부우수자·사회기여및배려자·드림(PUTS인재)·교회음악 실기",
+   grade:"학생부우수자 640점. 5등급은 석차80+성취20, 9등급은 석차100. 환산 <b>1등급 100 / 2등급 90 / 3등급 80 / 4등급 70 / 5등급 60</b>. 국·수·영·사·과",
+   csat:"<b>모든 수시 전형 수능최저 미적용</b>. 정시(나군) 자유전공·신학·기독교교육 4개 중 상위 3개 백분위(영어 등급 변환)",
+   interview:"학생부우수자 학생부80+면접20. 사회기여·드림(PUTS) 서류60+면접40. 학생부종합 학업·진로·공동체 정성평가",
+   note:"개신교 세례·유아세례·입교 교인, 출석교회 담임목사 추천 필수. 사회기여(목회자녀·선교사녀·다자녀·직업군인 자녀·다문화). 교회음악 실기 39명"},
+
+  {name:"서울한영대학교", tier:5, tierLabel:"특수·종교",
+   structure:"수시(학생부교과) 일반·국가보훈·만학도, 정원외 기초·농어촌·장애인. 정시(나군) 일반·기초·농어촌. 자유전공/무전공 PDF 미명시. 모집인원 PDF 미공개",
+   grade:"수시 학생부 교과80+비교과(출결)20. 학년별 1학년20·2학년30·3학년50. 국·수·영·사·과. 등급별 점수 PDF 미공개",
+   csat:"<b>수시 수능최저 없음</b>. 정시 수능: 국어30+영어30+탐구30(통사·통과·직업 중 1)+한국사10",
+   interview:"수시 학생부(교과) 장애인등은 학생부60+면접40. 그 외 일반·보훈·만학도·기초·농어촌은 학생부 100% 면접 없음",
+   note:"정원외 장애인등 전형에 면접40 반영. 외국인전형은 부모와 학생 모두 외국 국적"},
+
+  {name:"한국성서대학교", tier:5, tierLabel:"특수·종교",
+   structure:"수시 학생부교과 일반학생 119(간호 제외)+27(간호)·목회자추천 68·고른기회 4. 정시(다군) 일반 10(간호)+사회복지·영유아·AI 이월. 자유전공/무전공 PDF 미명시",
+   grade:"학생부 교과 700점(일반) 또는 600점(목회자). 환산 <b>1등급 700 / 2등급 692 / 3등급 684 / 4등급 674 / 5등급 658</b>(변별 매우 작음). 간호 제외 학과는 8과목, 간호는 전체",
+   csat:"<b>간호학과 학생부교과(일반학생)만</b>: 국·수·영·탐 중 <b>2개 합 7</b>(탐구 상위 1). 그 외 수시 미적용",
+   interview:"<b>모든 수시 전형 면접 실시</b>(평가위원 2~3명 일반면접). 일반·고른기회·농어촌·기초·특수교육은 학생부70+면접30, 목회자추천 학생부60+면접40",
+   note:"목회자추천 68명 비중 큼(교단 신학대 특성). 간호학과 별도 모집, 유일하게 수능최저 적용. 정시 사회복지·영유아·AI·성서학과는 수시 이월 시에만"},
+
+  {name:"성공회대학교", tier:5, tierLabel:"특수·종교",
+   structure:"수시 391+정원외 25+북한 10+재외 9, 정시 75(총 510). <span class='badge badge-key'>자유전공학부 105</span>. 수시 학생부교과(교과·사회기여·국가보훈·특성화·기회균형·농어촌)·학종(열린인재·대안학교)",
+   grade:"학생부 600점(기본 480+12과목). 환산 <b>1등급 10 / 2등급 9 / 3등급 8 / 4등급 6 / 5등급 4</b>(12과목 누적 산출). 성취도 5단계는 A=1등급 등 환산. 국·영·수·사(한국사)·과",
+   csat:"<b>모든 수시·정시 전형 수능최저 없음</b>",
+   interview:"학생부교과 학생부 100% 면접 없음. 학종 열린인재·대안학교 서류60+면접40. 전공적합성·역량·발전가능성 5구간 정성, 평가위원 2명",
+   note:"학폭 조치 전체 전형 총점 최대 2%~최저 0점 감점. 정시(가/나/다 모두). 미래융합·SW융합 수학 반영 시 백분위 10% 가산"},
+
+  // ========== 수도권 (Tier 6) ==========
+  {name:"인하대학교", tier:6, tierLabel:"수도권·인천",
+   structure:"수시 2,501(63%)·정시 1,262(32%)·자율 197(총 3,960). 인하미래인재 면접형 740·서류형 447, 지역균형 485, 논술 449. <span class='badge badge-key'>자유전공융합학부(인문/자연)</span> 정시 별도 선발",
+   grade:"학종 서류종합평가 100% 정성(1,000점 또는 250점 등 전형별). 지역균형 교과90+출결5+봉사5 정량. 5등급제 환산표 PDF 미공개",
+   csat:"지역균형 공통: 국·수·영·탐 중 <b>2개합 6</b>. 논술 인문/자연 2개합 6, <b>의예과 3개합 3</b>. <span class='badge badge-new'>인하미래인재 의예과 수능최저 신설(3개합 4)</span>. 농어촌·서해5도는 의예과만 적용",
+   interview:"인하미래인재(면접형) 1단계 서류100(3.5배수), 2단계 1단계70+면접30. 서류형·고른기회·농어촌·서해5도·평생학습자 서류 100% 면접 없음",
+   note:"<span class='badge badge-new'>의예과 신설</span>(서해5도 1명, 간호 1명). <span class='badge badge-new'>지역의사선발 의예 7명</span>. 논술 시간·반영비율 변경(논술90+교과10). 인천 송도캠퍼스(공과·자연·바이오) 운영"},
+
+  {name:"아주대학교", tier:6, tierLabel:"수도권·수원",
+   structure:"수시 1,469·정시 748·자율 110+α(총 2,217). 학종 ACE 면접형 563·<span class='badge badge-new'>서류형 201 분리 신설</span>, 교과 고교추천 279, 논술 224. <span class='badge badge-key'>자유전공학부(인문/자연)</span>",
+   grade:"학종 서류 100% 정성. 교과·논술·체육 교과90+출결10 정량. 환산 <b>1등급 100 / 2등급 96 / 3등급 90 / 4등급 80 / 5등급 0</b>. 사회/과학 융합선택 상위 5과목 반영",
+   csat:"고교추천: 인문 2개합 6, 자연 2개합 5(탐구 2과목만 불가). <b>ACE 의학과 4개합 6, 약학과 3개합 5</b>. 논술 의학과 4개합 6. 지역의사 의학과 4개합 6",
+   interview:"ACE 면접형·지역의사·특수교육: 1단계 서류100(4배수), 2단계 1단계70+면접30. ACE 서류형·고른기회 서류 100% 면접 없음. <span class='badge badge-new'>특성화고재직자 면접 폐지</span>",
+   note:"<span class='badge badge-new'>학종 지역의사선발 의학과 7명 신설</span>(남양주 2, 의정부·이천·포천·인천서북·인천중부 각 1). ACE 면접형·서류형 분리(2027 ACE+첨단융합인재 → 2028 ACE 분리). <span class='badge badge-new'>논술 시간 120→90분 단축</span>. 학폭 비율 감점(최저 -1%~불합격)"},
+
+  {name:"가천대학교", tier:6, tierLabel:"수도권·성남",
+   structure:"수시 논술 1,054(최대)·학생부우수자 426·지역균형 360·가천바람개비 447·<span class='badge badge-new'>조기취업형계약학과 260명</span>. 정시 가·나·다 일반Ⅰ 1,042+일반Ⅱ 241+실기 43. 자유전공/무전공 PDF 명시 없음",
+   grade:"학생부우수자·농어촌(교과)·실기우수자 5개 과목 미반영(국·수·영 5+사·과 5 제외) 평균. <b>의·약·한의예 전체과목 평균</b>(이수단위). 환산 <b>1등급 100 / 2등급 99 / 3등급 98 / 4등급 80 / 5등급 30</b>",
+   csat:"논술/학생부우수자: 인문·자연 2개합 6(국·수 반영 시 1등급 상향). <b>의예 3개 각 1등급, 한의예 2개 각 1등급, 약학 3개합 5</b>. 지역균형·바람개비·교육기회균형 미적용",
+   interview:"지역균형·특성화·바람개비·가천의약학·기회균형·농어촌·교육기회균형: 1단계 서류/교과100(4~5배수), 2단계 1단계50+면접50. 조기취업형 1단계 서류100(3배수), 2단계 면접50",
+   note:"<b>의예·한의예·약학 보유 — 가천의약학전형 26명</b>. <span class='badge badge-new'>지역의사 의예 9명</span>. 조기취업형 계약학과 260명 별도(채용조건형 형태). 메디컬캠퍼스·글로벌캠퍼스 운영"},
+
+  {name:"경기대학교", tier:6, tierLabel:"수도권·수원",
+   structure:"수시 2,114·정시 978. KGU학생부종합 680·학교장추천 317·교과성적우수자 255·논술 239·기회균형 203. <span class='badge badge-key'>자유전공학부(수원 185+서울 54)</span> 2학년 학과 자유선택",
+   grade:"KGU·SW·기회균형·사회배려·특수교육 서류 100% 정성. 교과성적우수자·학교장추천·논술 교과90+출결10 정량. 정시 일반Ⅱ 환산 <b>1등급 5 / 2등급 4.95 / 3등급 4.9 / 4등급 4.75 / 5등급 0</b>",
+   csat:"교과성적우수자: 국·수·영·탐(상위1) 중 <b>2개합 7</b>(영어 1·2등급은 모두 1등급, 한국사 6등급). 학생부종합·논술·실기·정시 일반·자유전공학부 미적용",
+   interview:"KGU·SW·특수교육 1단계 서류100(3배수), 2단계 1단계70+면접30(디자인비즈는 아이디어 스케치 후 면접). 기회균형·사회배려 서류 100% 면접 없음",
+   note:"의·약·치·한의대 학과 없음. <span class='badge badge-new'>학교장추천 졸업생 지원 불가</span>(졸업예정자만), 추천인원 제한 폐지. <span class='badge badge-new'>특성화고졸업자전형 신설</span>(교과90+출결10), 체육실기우수자 신설"},
+
+  // ========== 거점국립대 (Tier 7) ==========
+  {name:"부산대학교", tier:7, tierLabel:"거점국립·부산",
+   structure:"총 5,097명. 수시 71.7%(3,654)·정시 28.3%(1,443). 교과우수 1,062·교과지역 447·탐구 308·서류 463·면접 569·면접지역 131·지역의사 38. <span class='badge badge-key'>자유전공학부 179</span>·광역 운영. <span class='badge badge-new'>논술 폐지</span>",
+   grade:"교과: 교과80+학업역량평가20(정량+일부 정성). 환산 <b>1등급 99.5 / 2등급 97.5 / 3등급 94.5 / 4등급 90 / 5등급 0</b>(4→5 절벽). 학종 서류 100% 또는 서류70+면접30",
+   csat:"교과우수·교과지역 인문·경영 3개합 7, 자연 수학포함 2개합 5, 의·치·한·약 수학포함 <b>3개합 4</b>(약·치 일부 3합 5). 서류 자연 수학포함 2개합 6. 면접·면접지역은 의·치·한·약·간호만",
+   interview:"학종 서류평가 학업30+탐구50+사회20(서류전형 40+40+20). <span class='badge badge-new'>면접전형 70+30 확대</span>(2027 80+20). 서류전형 면접 없음, 탐구전형은 교과역량면접(현장 녹화)",
+   note:"의예 163·치예 81·한의 25·약학 66. <span class='badge badge-new'>지역의사 38명 신설</span>(광역 12+진료권 26, 부·울·경). 교과지역·면접지역(부울경 지역인재). <span class='badge badge-new'>탐구전형·서류전형 신설</span>"},
+
+  {name:"경북대학교", tier:7, tierLabel:"거점국립·대구",
+   structure:"총 5,586명. 수시 4,552·정시 1,034. 교과우수자 1,395·지역인재(교과) 597·일반학생(학종) 911·지역인재(학종) 360·논술(AAT) 551·지역의사 33. <span class='badge badge-key'>자율미래인재학부</span>",
+   grade:"교과: 교과80+서류평가(교과이수 충실도)20(생환대·과기대는 교과100). 학종 일반학생 서류 100%, 지역인재 1단계 서류100(4~5배수)+2단계 서류70+면접30. 5등급 환산표 PDF 미공개",
+   csat:"교과우수·지역인재(교과) 적용(생환대·과기대·자율미래 미적용). 학종 일반학생 미적용, 지역인재(학종)는 의예·치예·약학·수의만. 의예 3합 4(추정). 정시 모바일공학 3개합 5",
+   interview:"학종 서류평가 100% 또는 1단계 서류100(3~5배수)+2단계 서류70+면접30. 면접 개인 10분 내외 학생부 기반. 의예 정시 인·적성 면접(합·불). 면접 60점 미만 불합격",
+   note:"의예·치예·수의·약학 운영. <b>지역인재 957명 + 지역의사 33명</b>(대구·경북). 지역인재 기초생활 9명·치예 학교장추천 3명. 모바일과학인재 5명 신설"},
+
+  {name:"경상국립대학교", tier:7, tierLabel:"거점국립·진주",
+   structure:"총 4,649명. 수시 80.3%(3,734)·정시 18.7%(870)+자율 45. 교과 일반 1,731·지역인재 194·학종 일반(일괄) 672·일반(면접) 100·지역인재(학종) 508·지역의사 28. <span class='badge badge-key'>자율전공학부 41</span>",
+   grade:"교과: 등급80+성취도20(사·과 융합선택 성취도100). 환산 <b>1등급 200 / 2등급 160 / 3등급 120 / 4등급 80 / 5등급 0</b>. <span class='badge badge-new'>수의예·의예·약학 교과 80+정성 20 신설</span>",
+   csat:"교과 일반·지역인재 적용. 의예 3합 4(일반)·3합 6(지역·기초·지역의사), 약학 3합 5(일반)·3합 6(지역)·3합 7(기초), 수의 3합 6(일반)·3합 7(지역), 간호 2합 8",
+   interview:"학종 일괄(일반_일괄) 서류 100% 면접 없음. 단계평가(일반_면접·지역인재 의대·지역의사·농어촌 의대) 1단계 서류100(3배수, 의·약 5배수)+2단계 서류80+면접20",
+   note:"의예 108(지역의사 28 포함)·약학 38·수의 54·간호 114. <span class='badge badge-new'>지역의사 28 신설</span>(광역 8+창원 7+김해 6+진주 4+통영 2+거창 1). 기초·평생학습자 학종→교과 이동, 특성화고졸 신설"},
+
+  {name:"전남대학교", tier:7, tierLabel:"거점국립·광주",
+   structure:"수시 4,081(83.5%)·정시 803(16.5%, 총 4,503). 교과 2,310(지역인재 846 포함)·학종 1,240. <span class='badge badge-key'>자율전공학부(1년/4년)</span> 별도 모집",
+   grade:"교과 정량(석차등급 5등급제): <b>1등급 100 / 2등급 90 / 3등급 80 / 4등급 70 / 5등급 0</b>. 진로·융합선택 상위 3과목 성취도(A·B·C=5·3·1점). 학종은 정성 70+면접30 또는 100%",
+   csat:"교과(일반): 의대 5등급/치전 5/수의·약학 6/간호·경영 7/일반 7/수산 8(2개 영역 합). 지역인재 +1등급, 지역균형·사배 추가 완화",
+   interview:"학종 평가요소 진로역량·학업역량·공동체역량. 학종 일반(고우Ⅰ·지역의사·후계농) 1단계 서류100(3배수, 의약치수의 6배수)+2단계 서류70+면접30. 고우Ⅱ·농어촌 서류 100%",
+   note:"<b>호남권(광주·전남·전북) 지역인재</b>. 지역의사 수시 26명(목포7·여수2·순천9·나주3·해남3·영광2)+정시 12명. <span class='badge badge-new'>농어촌 교과→종합 이관, 9등급→5등급 환산, 진로·융합 동시반영</span>"},
+
+  {name:"전북대학교", tier:7, tierLabel:"거점국립·전주",
+   structure:"수시 3,487(78%)·자율 126·정시 867(19%, 총 4,480). 교과 2,280(51%)·학종 1,072(24%)·예체능 135. 융합자율전공학부1·2 운영",
+   grade:"교과 정량 100%(5등급, 세부 환산표 요약 미포함). 학종 서류 정성. 학폭 교과 일괄감점(1~3호 35점/4~5호 70점/6~7호 105점/8·9호 불합격)",
+   csat:"학종(큰사람·지역인재) 간호 2합 6/수의·약 3합 7(수학포함)/의예 4합 6/치예 3합 6. 교과 일반 의예 4합 5·치예 3합 5/지역인재·기회 의예 4합 6·치예 3합 6/지역의사 3합 6. 일반학과 2합 7~8",
+   interview:"학종 1단계 서류100(3배수)+2단계 1단계80+면접20. 면접 미실시: 국가보훈·농어촌·기회균형·특수교육·만학도. SW인재·사회통합·특성화고는 면접 실시",
+   note:"의·치·수의·약 보유. <b>지역인재1유형(호남권) 633명, 2유형(전북) 118명, 기회균형 10명</b>. <span class='badge badge-new'>지역의사 27→33명</span>(광역·전주·군산·익산·정읍·남원 6권역). 교과 농어촌 정성평가 미실시"},
+
+  {name:"충남대학교", tier:7, tierLabel:"거점국립·대전",
+   structure:"수시 교과 2,034(49%)·학종 1,139(27%)·실기 146·정시 수능 752(18%)·실기 25·자율 60(총 4,170). <span class='badge badge-key'>창의융합대학(자율전공·인문사회·자연과학·공학 융합학부)</span>",
+   grade:"교과 정량 100%(석차 5등급+성취도 A~E 혼합). <span class='badge badge-new'>의예·수의·약학 교과80+정성20</span>. 정시도 학생부 반영(<span class='badge badge-new'>수능80+교과15+비교과5</span>)",
+   csat:"교과 일반: 의대 수학+2합 4/약학 5/수의 6/간호 등 2합 6~7. 지역인재 저소득 의대 6·약학 7. 학종Ⅰ 의대 5·약학 6·수의 7. 학종Ⅱ 지역인재(의예) 5, 지역의사 6",
+   interview:"학종Ⅰ(면접)·학종Ⅱ 1단계 서류100(3배수, 의대 6배수)+2단계 서류67+면접33. 학종Ⅰ(서류)·지역의사 서류 100% 면접 없음",
+   note:"<b>충청권(대전·세종·충남·충북) 지역인재</b>. <span class='badge badge-new'>지역의사 27→33명</span>(천안7·공주2·서산6·논산4·홍성4+광역10, 의무복무 10년). 국가안보융합학부(국토·해양안보). 2027→2028: <span class='badge badge-new'>수능최저 3개→2개 영역</span>(의약수의 제외), 정시 학생부 도입"},
+
+  {name:"충북대학교", tier:7, tierLabel:"거점국립·청주",
+   structure:"수시 2,702(82%, 정원외 포함)·정시 559(17%)·자율 30(총 3,291). 학종Ⅰ 542·Ⅱ 387·교과 751·지역인재 630. <span class='badge badge-key'>자연·인문사회 자율전공계열</span>",
+   grade:"교과 일괄 학생부교과 100%(80점, 기본40+실질40). 산출식 \"등급별 환산점수×이수학점\" 합산 가중. 학종 서류 100% 정성. 5등급 환산표 PDF 미공개",
+   csat:"교과 의예 4·약학 6·수의 7·간호 10(3개합); 학종Ⅱ 의예 5·약학 7·수의 8·간호 10; 인문·자연 일반 8(2합). 지역인재 의예 5·약학 7·수의 8; 지역의사 의예 6. <span class='badge badge-new'>간호 2027 2합6→2028 3합10 완화</span>",
+   interview:"<b>학종 Ⅰ·Ⅱ·농어촌 모두 서류 100% 면접 없음</b>. 실기/실적전형에만 실기 반영",
+   note:"<b>충청권 지역인재 수시 630+정시 34</b>. 의·약·수의 모두 지역인재 모집. <span class='badge badge-new'>지역의사 49명 신설</span>(청주24+충주7+제천3+광역15). SW우수인재 폐지. 간호 수능최저 완화"},
+
+  {name:"강원대학교", tier:7, tierLabel:"거점국립·춘천",
+   structure:"수시 2,690(80%)·정시 652(19%)·자율 21(총 3,363). 학종 954(미래인재서류 462·면접 372)·교과 1,621(일반 742·강원인재 487). 자유전공학부 별도(자기주도역량 평가)",
+   grade:"교과 100%+출결 가감점(+3~-15). 등급80+성취20. 환산 <b>1등급 500 / 2등급 470 / 3등급 430 / 4등급 380 / 5등급 100</b>, 성취도 A500/B481/C461/D441/E400. <span class='badge badge-new'>정성평가 신설</span>",
+   csat:"일반 2개합(국·수·영·탐1중 2개). 사범 인문·자연 6, 일반 인문·자연 8, 의예 6(수학포함 3합), 수의·약학 7(3합), 간호 6. 강원인재 일반 +1~2 완화. <span class='badge badge-new'>3합→2합 축소</span>",
+   interview:"학종 미래인재면접 1단계 서류100(4배수, 6명↑ 모집 3배수)+2단계 서류60+면접40. 평가요소 학업30+진로50+공동체20(자유전공은 자기주도). 미래인재서류·기회균형 면접 없음",
+   note:"<b>강원지역 강원인재</b>(고교 전 과정+2022↑ 입학자는 비수도권 중학교). 의·약·수의 별도 전형. <span class='badge badge-new'>지역의사 의예 49명</span>(춘천10·원주9·영월2·강릉5·동해4·속초4+광역15). 지역인재면접 폐지"},
+
+  {name:"제주대학교", tier:7, tierLabel:"거점국립·제주",
+   structure:"수시 1,761(71%)·정시 643(26%)·자율 86(총 2,490). 교과 1,038(일반 524·지역인재 487)·학종 641(일반 237·지역인재 56·고른기회 119). <span class='badge badge-key'>글로벌자율학부</span>(1학년 말 전공 선택, 사범·의예·수의·간호·약학 제외)",
+   grade:"교과 1,000점(기본840+실질160). 학종 서류평가 학업400+진로300+인성공동체300(최저 400점). 5등급 환산표 PDF 미공개(46쪽 참조)",
+   csat:"교과 일반·지역인재·지역인재고른기회·지역의사 적용(46쪽 참조). 학종 전체 미적용. 야간 모집단위 미적용",
+   interview:"학종 일반·지역인재 사범대·초등교육·수의·간호·약학만 단계(1단 서류100 3배수, 2단 서류70+면접30, 15분). 그 외 서류 100%. 평가 학업400+진로300+인성공동체300",
+   note:"<b>제주특별자치도 지역인재</b>(고교 전 과정+2022↑ 입학자는 비수도권 중학교). 의·수의 지역인재. <span class='badge badge-new'>지역의사 3종</span>(진료권 제주시9·서귀포7+광역제주6, 의무복무 10년). 학종에도 지역의사 광역 2명"}
+];
+
+const grid = document.getElementById('univGrid');
+const search = document.getElementById('search');
+const countEl = document.getElementById('count');
+const buttons = document.querySelectorAll('.tab-btn');
+let currentTier = 'all';
+
+function renderCards() {
+  const q = search.value.trim().toLowerCase();
+  let visible = 0;
+  grid.innerHTML = universities.map(u => {
+    const tierMatch = currentTier === 'all' || String(u.tier) === currentTier;
+    const text = (u.name + u.structure + u.grade + u.csat + u.interview + u.note).toLowerCase();
+    const qMatch = !q || text.includes(q);
+    const show = tierMatch && qMatch;
+    if (show) visible++;
+    return `<div class="univ-card ${show?'':'hidden'}" data-tier="${u.tier}">
+      <div class="univ-head">
+        <div class="univ-name">${u.name}</div>
+        <span class="univ-tier tier-${u.tier}">${u.tierLabel}</span>
+      </div>
+      <div class="info-row"><span class="info-label">전형구조</span><span class="info-text">${u.structure}</span></div>
+      <div class="info-row"><span class="info-label">내신반영</span><span class="info-text">${u.grade}</span></div>
+      <div class="info-row"><span class="info-label">수능최저</span><span class="info-text">${u.csat}</span></div>
+      <div class="info-row"><span class="info-label">면접·서류</span><span class="info-text">${u.interview}</span></div>
+      <div class="info-row"><span class="info-label">특이사항</span><span class="info-text">${u.note}</span></div>
+    </div>`;
+  }).join('');
+  countEl.textContent = `${visible}개 대학 표시 중`;
+}
+
+buttons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    buttons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTier = btn.dataset.tier;
+    renderCards();
+  });
+});
+
+search.addEventListener('input', renderCards);
+
+renderCards();
+</script>
+
+</body>
+</html>
