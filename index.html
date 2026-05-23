@@ -184,10 +184,17 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
   border-radius:4px; padding:3px 9px; background:var(--green-pale);
 }
 .c-tag{
-  font-size:10px; font-weight:700; letter-spacing:1px; color:var(--text-muted);
-  border:1px solid var(--border); border-radius:20px; padding:3px 10px;
-  background:var(--green-bg); text-transform:uppercase;
+  font-size:10px; font-weight:700; letter-spacing:1px;
+  border:1px solid; border-radius:20px; padding:3px 10px;
+  text-transform:uppercase; transition:all .25s;
 }
+/* 카테고리별 태그 색상 */
+.c-tag.tag-ai{       background:#e0f2fe; color:#0369a1; border-color:#bae6fd;}
+.c-tag.tag-admission{background:#fef2f2; color:#b91c1c; border-color:#fecaca;}
+.c-tag.tag-career{   background:#fff7ed; color:#c2410c; border-color:#fed7aa;}
+.c-tag.tag-parent{   background:#f5f3ff; color:#6d28d9; border-color:#ddd6fe;}
+.c-tag.tag-teacher{  background:#f1f5f9; color:#475569; border-color:#cbd5e1;}
+.c-lock{display:inline-block;margin-left:5px;font-size:11px;opacity:.7;}
 .c-icon{font-size:40px;margin-bottom:14px;display:block;line-height:1;}
 .c-title{
   font-family:'Noto Serif KR',serif; font-size:clamp(16px,2.3vw,20px);
@@ -195,7 +202,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 }
 .c-desc{font-size:13px;color:var(--text-dim);line-height:1.8;margin-bottom:22px;}
 .c-foot{display:flex;justify-content:space-between;align-items:center;}
-.c-meta{font-size:10px;color:var(--text-muted);font-family:'DM Mono',monospace;}
+.c-meta{font-size:10px;color:var(--text-muted);font-family:'DM Mono',monospace;letter-spacing:1px;}
 .c-arrow{
   width:32px;height:32px; background:var(--green-pale); border:1px solid var(--border);
   border-radius:50%; display:flex;align-items:center;justify-content:center;
@@ -369,8 +376,8 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
     </div>
 
     <p class="hero-sub">
-      학생과 학부모님께 필요한 교육과정 안내, 과목 선택,<br>
-      내신 합격예측 정보를 한곳에서 확인하세요.
+      AI 챗봇, 합격예측기, 2028 시행계획, 선택과목 안내까지<br>
+      진로·대입 핵심 정보를 한곳에서 확인하세요.
     </p>
 
     <div class="hero-scroll" onclick="document.querySelector('.menu-section').scrollIntoView({behavior:'smooth'})">
@@ -391,16 +398,16 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
   <div class="card-grid">
     <a href="kakao-chatbot.html" class="menu-card reveal rd1">
       <div class="card-tbar"></div>
-      <div class="c-head"><span class="c-num">01</span><span class="c-tag">AI 상담</span></div>
+      <div class="c-head"><span class="c-num">01</span><span class="c-tag tag-ai">AI 상담</span></div>
       <span class="c-icon">💬</span>
       <h3 class="c-title">진로·입시<br>챗봇 영락봇</h3>
       <p class="c-desc">카카오톡 스타일 챗봇으로 입시 정보, 성적 상담, 과목 선택을 빠르게 안내받으세요.</p>
-      <div class="c-foot"><span class="c-meta">학생 · 학부모 공통</span><span class="c-arrow">→</span></div>
+      <div class="c-foot"><span class="c-meta">학생·학부모용</span><span class="c-arrow">→</span></div>
     </a>
 
     <a href="admission-search.html" class="menu-card reveal rd2">
       <div class="card-tbar"></div>
-      <div class="c-head"><span class="c-num">02</span><span class="c-tag">대입 정보</span></div>
+      <div class="c-head"><span class="c-num">02</span><span class="c-tag tag-admission">대입 정보</span></div>
       <span class="c-icon">🎯</span>
       <h3 class="c-title">수시 내신<br>합격예측기</h3>
       <p class="c-desc">2023~2025년 전국 대학 수시 합격 데이터를 바탕으로 내 내신 등급에 맞는 대학·학과를 검색해 보세요.</p>
@@ -409,39 +416,39 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 
     <a href="admission-plan-2028.html" class="menu-card reveal rd3">
       <div class="card-tbar"></div>
-      <div class="c-head"><span class="c-num">03</span><span class="c-tag">대입 정보</span></div>
+      <div class="c-head"><span class="c-num">03</span><span class="c-tag tag-admission">대입 정보</span></div>
       <span class="c-icon">📋</span>
       <h3 class="c-title">2028 대학입학<br>시행계획 정리</h3>
       <p class="c-desc">서울·수도권·거점국립대 49개 대학의 2028학년도 전형 변화를 한눈에. 5등급제·통합수능 첫해 핵심 정리.</p>
-      <div class="c-foot"><span class="c-meta">고2(2025 입학) 대상</span><span class="c-arrow">→</span></div>
+      <div class="c-foot"><span class="c-meta">현 고2 대상</span><span class="c-arrow">→</span></div>
     </a>
 
     <a href="subject-guide.html" class="menu-card reveal rd4">
       <div class="card-tbar"></div>
-      <div class="c-head"><span class="c-num">04</span><span class="c-tag">진로 맞춤</span></div>
+      <div class="c-head"><span class="c-num">04</span><span class="c-tag tag-career">진로 맞춤</span></div>
       <span class="c-icon">🧭</span>
       <h3 class="c-title">선택과목<br>나침반</h3>
       <p class="c-desc">진로와 관심 분야에 따라 어떤 과목을 선택할지 단계별로 안내합니다. 나만의 교육과정을 설계해보세요.</p>
-      <div class="c-foot"><span class="c-meta">2025 기준</span><span class="c-arrow">→</span></div>
+      <div class="c-foot"><span class="c-meta">2022 개정 교육과정</span><span class="c-arrow">→</span></div>
     </a>
 
     <a href="curriculum-guide.html" class="menu-card reveal rd5">
       <div class="card-tbar"></div>
-      <div class="c-head"><span class="c-num">05</span><span class="c-tag">학부모 필독</span></div>
+      <div class="c-head"><span class="c-num">05</span><span class="c-tag tag-parent">학부모 필독</span></div>
       <span class="c-icon">📚</span>
       <h3 class="c-title">2022 개정<br>교육과정 안내</h3>
       <p class="c-desc">새 교육과정의 핵심 변화를 이해하기 쉽게 정리했습니다. 공통과목·선택과목·고교학점제 구조를 한눈에 파악하세요.</p>
-      <div class="c-foot"><span class="c-meta">학부모 · 학생 공통</span><span class="c-arrow">→</span></div>
+      <div class="c-foot"><span class="c-meta">학생·학부모용</span><span class="c-arrow">→</span></div>
     </a>
 
-    <div class="menu-card reveal rd6" onclick="openPwModal(event)" style="cursor:pointer;">
+    <a href="#" class="menu-card reveal rd6" onclick="openPwModal(event); return false;">
       <div class="card-tbar"></div>
-      <div class="c-head"><span class="c-num">06</span><span class="c-tag">교사용</span></div>
-      <span class="c-icon">🎓</span>
+      <div class="c-head"><span class="c-num">06</span><span class="c-tag tag-teacher">교사용<span class="c-lock">🔒</span></span></div>
+      <span class="c-icon">📊</span>
       <h3 class="c-title">진학<br>상담 리포트</h3>
       <p class="c-desc">2023~2025년 전국 4년제 대학 수시 결과를 분석하여 지역·전형별 맞춤 진학 상담 리포트를 제공합니다.</p>
       <div class="c-foot"><span class="c-meta">2023–2025 데이터</span><span class="c-arrow">→</span></div>
-    </div>
+    </a>
 
   </div>
 </section>
