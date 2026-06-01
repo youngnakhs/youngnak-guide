@@ -1,0 +1,57 @@
+{
+  "id": "gangseo",
+  "name": "강서대학교",
+  "category": "인서울 주요대",
+  "region": {
+    "value": "서울 양천구",
+    "status": "needs_review"
+  },
+  "campus": "신월동",
+  "summary": {
+    "susiRatio": 87.7,
+    "jeongsiRatio": 12.3,
+    "hasSuneungMinimum": true,
+    "hasInterview": true,
+    "totalQuota": 277
+  },
+  "highlights": [
+    "소규모 종합대학(구 그리스도대) — 신학·간호·실용음악 등 7개 학과",
+    "신학",
+    "간호·실용음악 등 7개 학과 소규모."
+  ],
+  "admissionTypes": [
+    {
+      "track": "2028 전형 개요",
+      "subType": "워크벤치 요약 이식",
+      "quota": {
+        "value": "각 입학처 모집요강 확인",
+        "status": "needs_review"
+      },
+      "method": {
+        "value": "정원내 277(수시 243+정시 34). 학생부교과위주(일반·교과우수·사회통합)+실기/실적(실용음악) +정시 수능·실기. 자유전공/무전공 PDF 명시 없음",
+        "status": "needs_review"
+      },
+      "suneungMinimum": {
+        "value": "<b>간호학과만 수시 전형 수능 최저 적용</b>: 국·수·영·탐(1) <b>2개 합 8</b>. 그 외 학과 미적용",
+        "status": "needs_review"
+      },
+      "interview": {
+        "value": "학종 PDF 미명시(교과·실기 중심). 일반학생(단계별) 1단계 학생부100, 2단계 학생부80+면접20. 교과우수·사회통합 면접 없음. 면접 5분 내외 인성·학업의지",
+        "status": "needs_review"
+      }
+    }
+  ],
+  "departments": [],
+  "naesinReflection": {
+    "value": "학생부 교과 100%(비교과 미반영). 환산 <b>1등급 1,000 / 2등급 970 / 3등급 930 / 4등급 880 / 5등급 700</b>. 9등급제(2027.2 이전) 별도",
+    "status": "needs_review"
+  },
+  "changes2028": [],
+  "officialLinks": [
+    {
+      "name": "어디가 2028 대학별 전형계획 모음집",
+      "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+    }
+  ],
+  "_source": "2028 전형 워크벤치(admission-plan-2028) 이식 · 요약 수준"
+}

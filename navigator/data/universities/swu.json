@@ -1,0 +1,57 @@
+{
+  "id": "swu",
+  "name": "서울여자대학교",
+  "category": "인서울 주요대",
+  "region": {
+    "value": "서울 노원구",
+    "status": "needs_review"
+  },
+  "campus": "공릉동",
+  "summary": {
+    "susiRatio": 55.0,
+    "jeongsiRatio": 40.0,
+    "hasSuneungMinimum": true,
+    "hasInterview": true,
+    "totalQuota": 1803
+  },
+  "highlights": [
+    "여자대학교 — 바롬인재 학종, 자유전공학부(5개 광역) 운영",
+    "기독교지도자(기독교학과 23명, 세례교인).",
+    "체육 실기(스포츠운동과학과 댄스"
+  ],
+  "admissionTypes": [
+    {
+      "track": "2028 전형 개요",
+      "subType": "워크벤치 요약 이식",
+      "quota": {
+        "value": "각 입학처 모집요강 확인",
+        "status": "needs_review"
+      },
+      "method": {
+        "value": "수시 985(55%)·정시 729(40%)·자율 89(5%). 학종 바롬인재서류 182·면접 202·AI융합 34·기독교지도자 23·기회균형 147·교과우수 183·논술 120·실기 69. 자유전공학부(5개 광역)",
+        "status": "needs_review"
+      },
+      "suneungMinimum": {
+        "value": "교과우수자: 국·수·영·탐(상위 1) 4개 중 <b>2개 합 7</b>(직업탐·제2외 미반영). 학종·논술·실기 미적용",
+        "status": "needs_review"
+      },
+      "interview": {
+        "value": "바롬인재서류·기회균형 서류 100%. 바롬인재면접·AI융합·기독교지도자(3배수) 1단계 서류100, 2단계 서류50+면접50. 교과·논술·실기 면접 없음",
+        "status": "needs_review"
+      }
+    }
+  ],
+  "departments": [],
+  "naesinReflection": {
+    "value": "교과우수자 교과90+출결10, 국·수·영·사·과·한국사 전 과목 5개 학기. 환산 <b>1등급 100 / 2등급 96 / 3등급 88 / 4등급 50 / 5등급 0</b>(3→4 38점 차)",
+    "status": "needs_review"
+  },
+  "changes2028": [],
+  "officialLinks": [
+    {
+      "name": "어디가 2028 대학별 전형계획 모음집",
+      "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+    }
+  ],
+  "_source": "2028 전형 워크벤치(admission-plan-2028) 이식 · 요약 수준"
+}

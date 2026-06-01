@@ -1,0 +1,57 @@
+{
+  "id": "mtu",
+  "name": "감리교신학대학교",
+  "category": "인서울 주요대",
+  "region": {
+    "value": "서울 서대문구",
+    "status": "needs_review"
+  },
+  "campus": "냉천동",
+  "summary": {
+    "susiRatio": null,
+    "jeongsiRatio": null,
+    "hasSuneungMinimum": false,
+    "hasInterview": true,
+    "totalQuota": null
+  },
+  "highlights": [
+    "감리교 신학대학 — 신학부 단일 모집, 전 전형 기독교 세례 요건",
+    "모든 전형 기독교세례 자격 요구.",
+    "농어촌 검정고시 제외, 읍·면 소재 특목고(과학"
+  ],
+  "admissionTypes": [
+    {
+      "track": "2028 전형 개요",
+      "subType": "워크벤치 요약 이식",
+      "quota": {
+        "value": "각 입학처 모집요강 확인",
+        "status": "needs_review"
+      },
+      "method": {
+        "value": "신학부 단일 모집단위, 수시·정시(나군). 수시 일반·추천자·사회적배려·검정고시·농어촌·기초·차상위·특수교육, 정시 일반. 정원·정시 비율 PDF 미공개",
+        "status": "needs_review"
+      },
+      "suneungMinimum": {
+        "value": "<b>수시·정시 모두 수능최저 없음</b>. 정시 수능: 국어40+영어40+탐구20(사·과·직 중 최고 1)",
+        "status": "needs_review"
+      },
+      "interview": {
+        "value": "수시 일반 학생부80(교과72+비교과8)+면접20. 검정고시 학생부20+면접80. <b>면접 F 시 서류와 관계없이 불합격</b>",
+        "status": "needs_review"
+      }
+    }
+  ],
+  "departments": [],
+  "naesinReflection": {
+    "value": "수시 학생부 800점(교과90+비교과 출결5+봉사5). 각 학년 국어·영어·사회/과학 각 1과목씩 9과목, 백분율 점수. 진로선택 미반영",
+    "status": "needs_review"
+  },
+  "changes2028": [],
+  "officialLinks": [
+    {
+      "name": "어디가 2028 대학별 전형계획 모음집",
+      "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+    }
+  ],
+  "_source": "2028 전형 워크벤치(admission-plan-2028) 이식 · 요약 수준"
+}

@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-05-31",
-  "count": 42,
+  "count": 59,
   "categories": [
     "인서울 주요대",
     "지방거점국립대",
@@ -849,6 +849,346 @@
         {
           "name": "한양대 ERICA 입학처",
           "url": "https://goerica.hanyang.ac.kr"
+        }
+      ]
+    },
+    {
+      "id": "smu",
+      "name": "상명대학교",
+      "category": "인서울 주요대",
+      "region": "서울 종로구",
+      "campus": "홍지동(서울)",
+      "summary": {
+        "susiRatio": null,
+        "jeongsiRatio": null,
+        "hasSuneungMinimum": false,
+        "hasInterview": true,
+        "totalQuota": null
+      },
+      "officialLinks": [
+        {
+          "name": "어디가 2028 대학별 전형계획 모음집",
+          "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+        }
+      ]
+    },
+    {
+      "id": "seoultech",
+      "name": "서울과학기술대학교",
+      "category": "인서울 주요대",
+      "region": "서울 노원구",
+      "campus": "공릉동",
+      "summary": {
+        "susiRatio": 69.2,
+        "jeongsiRatio": 30.8,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 2519
+      },
+      "officialLinks": [
+        {
+          "name": "어디가 2028 대학별 전형계획 모음집",
+          "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+        }
+      ]
+    },
+    {
+      "id": "dongduk",
+      "name": "동덕여자대학교",
+      "category": "인서울 주요대",
+      "region": "서울 성북구",
+      "campus": "월곡동",
+      "summary": {
+        "susiRatio": null,
+        "jeongsiRatio": null,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": null
+      },
+      "officialLinks": [
+        {
+          "name": "어디가 2028 대학별 전형계획 모음집",
+          "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+        }
+      ]
+    },
+    {
+      "id": "duksung",
+      "name": "덕성여자대학교",
+      "category": "인서울 주요대",
+      "region": "서울 도봉구",
+      "campus": "쌍문동",
+      "summary": {
+        "susiRatio": 60.8,
+        "jeongsiRatio": 39.2,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 1217
+      },
+      "officialLinks": [
+        {
+          "name": "어디가 2028 대학별 전형계획 모음집",
+          "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+        }
+      ]
+    },
+    {
+      "id": "swu",
+      "name": "서울여자대학교",
+      "category": "인서울 주요대",
+      "region": "서울 노원구",
+      "campus": "공릉동",
+      "summary": {
+        "susiRatio": 55.0,
+        "jeongsiRatio": 40.0,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 1803
+      },
+      "officialLinks": [
+        {
+          "name": "어디가 2028 대학별 전형계획 모음집",
+          "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+        }
+      ]
+    },
+    {
+      "id": "snue",
+      "name": "서울교육대학교",
+      "category": "인서울 주요대",
+      "region": "서울 서초구",
+      "campus": "서초동",
+      "summary": {
+        "susiRatio": null,
+        "jeongsiRatio": null,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": null
+      },
+      "officialLinks": [
+        {
+          "name": "어디가 2028 대학별 전형계획 모음집",
+          "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+        }
+      ]
+    },
+    {
+      "id": "knsu",
+      "name": "한국체육대학교",
+      "category": "인서울 주요대",
+      "region": "서울 송파구",
+      "campus": "오륜동",
+      "summary": {
+        "susiRatio": null,
+        "jeongsiRatio": null,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 603
+      },
+      "officialLinks": [
+        {
+          "name": "어디가 2028 대학별 전형계획 모음집",
+          "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+        }
+      ]
+    },
+    {
+      "id": "chugye",
+      "name": "추계예술대학교",
+      "category": "인서울 주요대",
+      "region": "서울 서대문구",
+      "campus": "북아현동",
+      "summary": {
+        "susiRatio": 48.0,
+        "jeongsiRatio": 52.0,
+        "hasSuneungMinimum": false,
+        "hasInterview": true,
+        "totalQuota": 250
+      },
+      "officialLinks": [
+        {
+          "name": "어디가 2028 대학별 전형계획 모음집",
+          "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+        }
+      ]
+    },
+    {
+      "id": "hansung",
+      "name": "한성대학교",
+      "category": "인서울 주요대",
+      "region": "서울 성북구",
+      "campus": "삼선동",
+      "summary": {
+        "susiRatio": 65.2,
+        "jeongsiRatio": 34.8,
+        "hasSuneungMinimum": false,
+        "hasInterview": true,
+        "totalQuota": 1459
+      },
+      "officialLinks": [
+        {
+          "name": "어디가 2028 대학별 전형계획 모음집",
+          "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+        }
+      ]
+    },
+    {
+      "id": "syu",
+      "name": "삼육대학교",
+      "category": "인서울 주요대",
+      "region": "서울 노원구",
+      "campus": "공릉동",
+      "summary": {
+        "susiRatio": 77.5,
+        "jeongsiRatio": 22.5,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 1155
+      },
+      "officialLinks": [
+        {
+          "name": "어디가 2028 대학별 전형계획 모음집",
+          "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+        }
+      ]
+    },
+    {
+      "id": "gangseo",
+      "name": "강서대학교",
+      "category": "인서울 주요대",
+      "region": "서울 양천구",
+      "campus": "신월동",
+      "summary": {
+        "susiRatio": 87.7,
+        "jeongsiRatio": 12.3,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 277
+      },
+      "officialLinks": [
+        {
+          "name": "어디가 2028 대학별 전형계획 모음집",
+          "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+        }
+      ]
+    },
+    {
+      "id": "chongshin",
+      "name": "총신대학교",
+      "category": "인서울 주요대",
+      "region": "서울 동작구",
+      "campus": "사당동",
+      "summary": {
+        "susiRatio": 87.0,
+        "jeongsiRatio": 13.0,
+        "hasSuneungMinimum": false,
+        "hasInterview": true,
+        "totalQuota": 307
+      },
+      "officialLinks": [
+        {
+          "name": "어디가 2028 대학별 전형계획 모음집",
+          "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+        }
+      ]
+    },
+    {
+      "id": "mtu",
+      "name": "감리교신학대학교",
+      "category": "인서울 주요대",
+      "region": "서울 서대문구",
+      "campus": "냉천동",
+      "summary": {
+        "susiRatio": null,
+        "jeongsiRatio": null,
+        "hasSuneungMinimum": false,
+        "hasInterview": true,
+        "totalQuota": null
+      },
+      "officialLinks": [
+        {
+          "name": "어디가 2028 대학별 전형계획 모음집",
+          "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+        }
+      ]
+    },
+    {
+      "id": "puts",
+      "name": "장로회신학대학교",
+      "category": "인서울 주요대",
+      "region": "서울 광진구",
+      "campus": "광장동",
+      "summary": {
+        "susiRatio": 93.0,
+        "jeongsiRatio": 7.0,
+        "hasSuneungMinimum": false,
+        "hasInterview": true,
+        "totalQuota": 150
+      },
+      "officialLinks": [
+        {
+          "name": "어디가 2028 대학별 전형계획 모음집",
+          "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+        }
+      ]
+    },
+    {
+      "id": "hanyeong",
+      "name": "서울한영대학교",
+      "category": "인서울 주요대",
+      "region": "서울 구로구",
+      "campus": "개봉동",
+      "summary": {
+        "susiRatio": null,
+        "jeongsiRatio": null,
+        "hasSuneungMinimum": false,
+        "hasInterview": true,
+        "totalQuota": null
+      },
+      "officialLinks": [
+        {
+          "name": "어디가 2028 대학별 전형계획 모음집",
+          "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+        }
+      ]
+    },
+    {
+      "id": "bible",
+      "name": "한국성서대학교",
+      "category": "인서울 주요대",
+      "region": "서울 노원구",
+      "campus": "월계동",
+      "summary": {
+        "susiRatio": null,
+        "jeongsiRatio": null,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": null
+      },
+      "officialLinks": [
+        {
+          "name": "어디가 2028 대학별 전형계획 모음집",
+          "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+        }
+      ]
+    },
+    {
+      "id": "skhu",
+      "name": "성공회대학교",
+      "category": "인서울 주요대",
+      "region": "서울 구로구",
+      "campus": "항동",
+      "summary": {
+        "susiRatio": null,
+        "jeongsiRatio": null,
+        "hasSuneungMinimum": false,
+        "hasInterview": true,
+        "totalQuota": 510
+      },
+      "officialLinks": [
+        {
+          "name": "어디가 2028 대학별 전형계획 모음집",
+          "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
         }
       ]
     }

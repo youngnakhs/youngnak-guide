@@ -1,0 +1,57 @@
+{
+  "id": "syu",
+  "name": "삼육대학교",
+  "category": "인서울 주요대",
+  "region": {
+    "value": "서울 노원구",
+    "status": "needs_review"
+  },
+  "campus": "공릉동",
+  "summary": {
+    "susiRatio": 77.5,
+    "jeongsiRatio": 22.5,
+    "hasSuneungMinimum": true,
+    "hasInterview": true,
+    "totalQuota": 1155
+  },
+  "highlights": [
+    "소규모 종합대학(SDA 재단) — 신학특별·재림교회목회자추천 전형 운영",
+    "신학특별(목회자추천+성경필기), 재림교회목회자추천(인성검사).",
+    "약학과 별도 환산표(9등급제 유지)."
+  ],
+  "admissionTypes": [
+    {
+      "track": "2028 전형 개요",
+      "subType": "워크벤치 요약 이식",
+      "quota": {
+        "value": "각 입학처 모집요강 확인",
+        "status": "needs_review"
+      },
+      "method": {
+        "value": "정원내 1,155(수시 895+정시 260). 학교장추천·세움인재(종합)·논술·재림교회목회자추천·S/W인재·기회균형·예체능·신학특별·실기 등. 창의융합 자유전공 93+미래융합 자유전공 148",
+        "status": "needs_review"
+      },
+      "suneungMinimum": {
+        "value": "학교장추천 일반학과 2개합 7, 간호·물리치료 2개합 6, 약학 3개합 5(과탐). 재림교회목회자추천 1개 4(간호·물치 3). 논술 1개 3. 예체능·세움인재·기회균형 미적용",
+        "status": "needs_review"
+      },
+      "interview": {
+        "value": "종합(세움인재·S/W인재·기회균형Ⅰ·Ⅱ·특수교육) 1단계 서류100(4배수), 2단계 서류60+면접40. <b>신학특별 필기(성경)+면접</b>. 학교장추천·논술·실기 면접 없음",
+        "status": "needs_review"
+      }
+    }
+  ],
+  "departments": [],
+  "naesinReflection": {
+    "value": "학교장추천·농어촌·특성화고 등 교과 정량(석차+성취도·이수학점). 종합 학업·진로·공동체 정성. 환산 <b>1등급 100 / 2등급 99 / 3등급 98 / 4등급 90 / 5등급 70</b>",
+    "status": "needs_review"
+  },
+  "changes2028": [],
+  "officialLinks": [
+    {
+      "name": "어디가 2028 대학별 전형계획 모음집",
+      "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+    }
+  ],
+  "_source": "2028 전형 워크벤치(admission-plan-2028) 이식 · 요약 수준"
+}

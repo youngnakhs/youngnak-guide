@@ -1,0 +1,62 @@
+{
+  "id": "chugye",
+  "name": "추계예술대학교",
+  "category": "인서울 주요대",
+  "region": {
+    "value": "서울 서대문구",
+    "status": "needs_review"
+  },
+  "campus": "북아현동",
+  "summary": {
+    "susiRatio": 48.0,
+    "jeongsiRatio": 52.0,
+    "hasSuneungMinimum": false,
+    "hasInterview": true,
+    "totalQuota": 250
+  },
+  "highlights": [
+    "예술 특성화대학 — 음악·미술·문예창작 실기 중심",
+    "예술대 실기 중심(국악",
+    "성악"
+  ],
+  "admissionTypes": [
+    {
+      "track": "2028 전형 개요",
+      "subType": "워크벤치 요약 이식",
+      "quota": {
+        "value": "각 입학처 모집요강 확인",
+        "status": "needs_review"
+      },
+      "method": {
+        "value": "정원내 250(수시 117(48%)·정시 133(52%)). 실기/실적(일반·수상실적), 교과 미래인재(콘텐츠창작학부 10명). 정시 가·나·다군 분산",
+        "status": "needs_review"
+      },
+      "suneungMinimum": {
+        "value": "전 전형 수능최저 미적용. 정시는 수능 점수 반영(국어·영어 백분위, 한국사 응시필수·미반영)",
+        "status": "needs_review"
+      },
+      "interview": {
+        "value": "학종 PDF 미명시. 미래인재(콘텐츠창작) 2단계 면접 60%. 그 외 면접 미실시. 수상실적특기자 서류 100%(본교 인정 문예대회)",
+        "status": "needs_review"
+      }
+    }
+  ],
+  "departments": [],
+  "naesinReflection": {
+    "value": "미술창작 학생부 20+실기 80(국어·영어). 콘텐츠창작(미래인재) 학생부100(1단계)→40+면접60(2단계, 국·영·수). 환산 <b>1등급 100 / 2등급 95 / 3등급 85 / 4등급 50 / 5등급 0</b>",
+    "status": "needs_review"
+  },
+  "changes2028": [
+    {
+      "value": "작곡 정시 피아노 폐지",
+      "status": "needs_review"
+    }
+  ],
+  "officialLinks": [
+    {
+      "name": "어디가 2028 대학별 전형계획 모음집",
+      "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+    }
+  ],
+  "_source": "2028 전형 워크벤치(admission-plan-2028) 이식 · 요약 수준"
+}

@@ -1,0 +1,62 @@
+{
+  "id": "hansung",
+  "name": "한성대학교",
+  "category": "인서울 주요대",
+  "region": {
+    "value": "서울 성북구",
+    "status": "needs_review"
+  },
+  "campus": "삼선동",
+  "summary": {
+    "susiRatio": 65.2,
+    "jeongsiRatio": 34.8,
+    "hasSuneungMinimum": false,
+    "hasInterview": true,
+    "totalQuota": 1459
+  },
+  "highlights": [
+    "소규모 종합대학 — 상상력인재학부(자율전공), 2028 논술 신설",
+    "2028 논술전형 신설(약술형 80+학생부 20, 99명, 수능최저 없음).",
+    "농어촌 유형Ⅰ(6년)+Ⅱ(12년) 모두."
+  ],
+  "admissionTypes": [
+    {
+      "track": "2028 전형 개요",
+      "subType": "워크벤치 요약 이식",
+      "quota": {
+        "value": "각 입학처 모집요강 확인",
+        "status": "needs_review"
+      },
+      "method": {
+        "value": "수시 952+정시 507(총 1,459). 교과우수 161·지역균형 188·한성인재 310·논술 99·실기우수 128. 상상력인재학부(자율전공) 195·AI디지털융합인재학부",
+        "status": "needs_review"
+      },
+      "suneungMinimum": {
+        "value": "교과우수(주간): 국·수·영·탐 중 <b>2개 합 7</b>. 야간: 2개 합 8. 지역균형·학종·논술·실기 미적용",
+        "status": "needs_review"
+      },
+      "interview": {
+        "value": "학종(한성인재) 서류 100% 면접 없음. 모든 학생부교과·논술·실기 면접 없음. 정부/군위탁만 면접 100%",
+        "status": "needs_review"
+      }
+    }
+  ],
+  "departments": [],
+  "naesinReflection": {
+    "value": "교과: 공통·일반 석차+진로 등급·성취도 상위 성적 전과목. 환산 <b>1등급 1,000 / 2등급 960 / 3등급 900 / 4등급 750 / 5등급 600</b>. 학종 서류 100% 정성(학업30·진로40·공동체30)",
+    "status": "needs_review"
+  },
+  "changes2028": [
+    {
+      "value": "2028 논술전형 신설",
+      "status": "needs_review"
+    }
+  ],
+  "officialLinks": [
+    {
+      "name": "어디가 2028 대학별 전형계획 모음집",
+      "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+    }
+  ],
+  "_source": "2028 전형 워크벤치(admission-plan-2028) 이식 · 요약 수준"
+}

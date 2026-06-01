@@ -1,0 +1,57 @@
+{
+  "id": "snue",
+  "name": "서울교육대학교",
+  "category": "인서울 주요대",
+  "region": {
+    "value": "서울 서초구",
+    "status": "needs_review"
+  },
+  "campus": "서초동",
+  "summary": {
+    "susiRatio": null,
+    "jeongsiRatio": null,
+    "hasSuneungMinimum": true,
+    "hasInterview": true,
+    "totalQuota": null
+  },
+  "highlights": [
+    "교육대학 — 초등교원 양성, 전 전형 면접 필수",
+    "정시 일반도 1단계 수능100(2배수)+2단계 면접 20%.",
+    "재외·북한이탈 면접 100%(학생부 P/F)"
+  ],
+  "admissionTypes": [
+    {
+      "track": "2028 전형 개요",
+      "subType": "워크벤치 요약 이식",
+      "quota": {
+        "value": "각 입학처 모집요강 확인",
+        "status": "needs_review"
+      },
+      "method": {
+        "value": "수시(학교장추천교과·교직인성우수자종합·기회균형Ⅰ·Ⅱ·기타특별)+정시(나군 일반). 학교장추천 1단계 교과70+정성30, 2단계 1단계80+면접20",
+        "status": "needs_review"
+      },
+      "suneungMinimum": {
+        "value": "교직인성우수자: 국·수·영·탐(사/과 택) <b>2개합 6</b>+한국사 4. 기회균형Ⅰ·Ⅱ: 2개합 8+한국사 4. 정시: 영어 3등급+한국사 4",
+        "status": "needs_review"
+      },
+      "interview": {
+        "value": "<b>교대 특성상 전 전형 면접 필수</b>. 학교장추천 면접 20%, 교직인성·기회균형Ⅰ 면접 50%, 기회균형Ⅱ·재외·북한이탈 면접 100%",
+        "status": "needs_review"
+      }
+    }
+  ],
+  "departments": [],
+  "naesinReflection": {
+    "value": "학교장추천 교과 정량70+정성평가30 혼합. 종합(교직인성·기회균형) 서류 100% 정성. 5등급제 환산표 PDF 미공개",
+    "status": "needs_review"
+  },
+  "changes2028": [],
+  "officialLinks": [
+    {
+      "name": "어디가 2028 대학별 전형계획 모음집",
+      "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+    }
+  ],
+  "_source": "2028 전형 워크벤치(admission-plan-2028) 이식 · 요약 수준"
+}

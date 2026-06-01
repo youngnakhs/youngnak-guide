@@ -1,0 +1,62 @@
+{
+  "id": "seoultech",
+  "name": "서울과학기술대학교",
+  "category": "인서울 주요대",
+  "region": {
+    "value": "서울 노원구",
+    "status": "needs_review"
+  },
+  "campus": "공릉동",
+  "summary": {
+    "susiRatio": 69.2,
+    "jeongsiRatio": 30.8,
+    "hasSuneungMinimum": true,
+    "hasInterview": true,
+    "totalQuota": 2519
+  },
+  "highlights": [
+    "국립 과학기술 특성화대학 — ST자유전공학부·미래융합대학",
+    "산업체협력 특성화고졸재직자 168명(미래융합대학).",
+    "명칭 변경(학교생활우수자→서울텍인재)."
+  ],
+  "admissionTypes": [
+    {
+      "track": "2028 전형 개요",
+      "subType": "워크벤치 요약 이식",
+      "quota": {
+        "value": "각 입학처 모집요강 확인",
+        "status": "needs_review"
+      },
+      "method": {
+        "value": "수시 69.2%(1,743)·정시 30.8%(776). 교과 고교추천 393·학종 서울텍인재 599·서울텍미래 106·논술 150·실기 72. ST자유전공학부·미래융합대학",
+        "status": "needs_review"
+      },
+      "suneungMinimum": {
+        "value": "고교추천: 국·수·영·탐(1) 중 <b>2개 영역 합 6등급</b>. 학생부종합·논술·실기·특성화고졸 미적용",
+        "status": "needs_review"
+      },
+      "interview": {
+        "value": "서울텍인재·서울텍미래·기회균형 1단계 서류100(3배수), 2단계 서류70+면접30. 군위탁 일괄 서류70+면접30. 블라인드",
+        "status": "needs_review"
+      }
+    }
+  ],
+  "departments": [],
+  "naesinReflection": {
+    "value": "교과: 일괄 학생부교과 100%(계열별 국·수·영+사·과·한국사 지정). 환산 <b>1등급 1,000 / 2등급 990 / 3등급 977 / 4등급 967 / 5등급 0</b>(4→5 절벽)",
+    "status": "needs_review"
+  },
+  "changes2028": [
+    {
+      "value": "양자융합물리학과 신설",
+      "status": "needs_review"
+    }
+  ],
+  "officialLinks": [
+    {
+      "name": "어디가 2028 대학별 전형계획 모음집",
+      "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+    }
+  ],
+  "_source": "2028 전형 워크벤치(admission-plan-2028) 이식 · 요약 수준"
+}

@@ -1,0 +1,66 @@
+{
+  "id": "duksung",
+  "name": "덕성여자대학교",
+  "category": "인서울 주요대",
+  "region": {
+    "value": "서울 도봉구",
+    "status": "needs_review"
+  },
+  "campus": "쌍문동",
+  "summary": {
+    "susiRatio": 60.8,
+    "jeongsiRatio": 39.2,
+    "hasSuneungMinimum": true,
+    "hasInterview": true,
+    "totalQuota": 1217
+  },
+  "highlights": [
+    "여자대학교 — 약학과 80명, 미래인재대학 자유전공학부 운영",
+    "<b>약학과 80명</b>(수시 교과 20, 덕성인재Ⅱ 27, 정시 가군 28).",
+    "학생부교과 기회균형 폐지→학생부종합으로 통합."
+  ],
+  "admissionTypes": [
+    {
+      "track": "2028 전형 개요",
+      "subType": "워크벤치 요약 이식",
+      "quota": {
+        "value": "각 입학처 모집요강 확인",
+        "status": "needs_review"
+      },
+      "method": {
+        "value": "수시 740(정원내)·정시 477. 교과 고교추천 160·학종 덕성인재Ⅰ 107·Ⅱ 237·기회균형 50·논술 115·미술실기 71. 미래인재대학 자유전공학부 259(가상현실·데이터사이언스·AI신약 각 40)",
+        "status": "needs_review"
+      },
+      "suneungMinimum": {
+        "value": "고교추천 일반: 국·수·영·사·과(1) 중 <b>2개 합 7</b>(제2외·한문→영어 대체 가능). 약학과 수학 포함 3개 합 5(사·과 평균). 덕성인재Ⅱ 약학 3개 합 6",
+        "status": "needs_review"
+      },
+      "interview": {
+        "value": "덕성인재Ⅰ(서류형) 서류 100%. 덕성인재Ⅱ(약학·가상현실·데이터·AI신약) 1단계 서류100(3~4배수), 2단계 1단계60+면접40. 기회균형 서류 100%",
+        "status": "needs_review"
+      }
+    }
+  ],
+  "departments": [],
+  "naesinReflection": {
+    "value": "교과 고교추천 학생부(교과90+출결10), 석차등급+성취도, 모집단위 연계 진로선택 가산점. 학종 서류 100% 정성. 5등급 환산표 PDF 미공개",
+    "status": "needs_review"
+  },
+  "changes2028": [
+    {
+      "value": "학생부교과 기회균형 폐지→학생부종합으로 통합",
+      "status": "needs_review"
+    },
+    {
+      "value": "학생부교과 기회균형 폐지",
+      "status": "needs_review"
+    }
+  ],
+  "officialLinks": [
+    {
+      "name": "어디가 2028 대학별 전형계획 모음집",
+      "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+    }
+  ],
+  "_source": "2028 전형 워크벤치(admission-plan-2028) 이식 · 요약 수준"
+}

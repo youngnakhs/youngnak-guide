@@ -1,0 +1,57 @@
+{
+  "id": "chongshin",
+  "name": "총신대학교",
+  "category": "인서울 주요대",
+  "region": {
+    "value": "서울 동작구",
+    "status": "needs_review"
+  },
+  "campus": "사당동",
+  "summary": {
+    "susiRatio": 87.0,
+    "jeongsiRatio": 13.0,
+    "hasSuneungMinimum": false,
+    "hasInterview": true,
+    "totalQuota": 307
+  },
+  "highlights": [
+    "장로교(예장합동) 신학 기반 대학 — 전 수시 수능최저 없음",
+    "출석교회 담임목사 추천 받은 기독교 세례교인만 지원(예장합동 지정 이단·사이비 제외).",
+    "교회음악과 실기우수자 31명 별도"
+  ],
+  "admissionTypes": [
+    {
+      "track": "2028 전형 개요",
+      "subType": "워크벤치 요약 이식",
+      "quota": {
+        "value": "각 입학처 모집요강 확인",
+        "status": "needs_review"
+      },
+      "method": {
+        "value": "수시 267(87%)·정시 40(13%, 총 307). 학생부교과(교과우수자)·학종(목회자추천 27·코람데오인재 119·총신고른기회·대안학교)·실기/실적(성경지식·외국어·실기우수자 31). 자율전공학부 운영",
+        "status": "needs_review"
+      },
+      "suneungMinimum": {
+        "value": "<b>모든 수시 전형 수능최저 없음</b>. 정시 CS인재(가군) 국/수 우수 백분위 40+영어환산 30+탐구 1과목 30-한국사 감점",
+        "status": "needs_review"
+      },
+      "interview": {
+        "value": "학종 코람데오·총신고른기회·대안학교 1단계 서류100(3배수), 2단계 1단계70+면접30. 교과우수자·성경지식우수자 면접 없음. 외국어우수자 1단계 서류 정성40+정량60, 2단계 면접30",
+        "status": "needs_review"
+      }
+    }
+  ],
+  "departments": [],
+  "naesinReflection": {
+    "value": "교과우수자 교과90+비교과(출결)10, 국·영·수·사·과. 2028 졸업자는 공통·일반·진로·융합선택 석차+성취도, 등급별 5~50점 감점",
+    "status": "needs_review"
+  },
+  "changes2028": [],
+  "officialLinks": [
+    {
+      "name": "어디가 2028 대학별 전형계획 모음집",
+      "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+    }
+  ],
+  "_source": "2028 전형 워크벤치(admission-plan-2028) 이식 · 요약 수준"
+}

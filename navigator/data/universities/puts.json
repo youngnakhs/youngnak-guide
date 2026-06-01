@@ -1,0 +1,57 @@
+{
+  "id": "puts",
+  "name": "장로회신학대학교",
+  "category": "인서울 주요대",
+  "region": {
+    "value": "서울 광진구",
+    "status": "needs_review"
+  },
+  "campus": "광장동",
+  "summary": {
+    "susiRatio": 93.0,
+    "jeongsiRatio": 7.0,
+    "hasSuneungMinimum": false,
+    "hasInterview": true,
+    "totalQuota": 150
+  },
+  "highlights": [
+    "장로교(예장통합) 신학대학 — 세례·담임목사 추천 필수",
+    "개신교 세례",
+    "유아세례·입교 교인, 출석교회 담임목사 추천 필수."
+  ],
+  "admissionTypes": [
+    {
+      "track": "2028 전형 개요",
+      "subType": "워크벤치 요약 이식",
+      "quota": {
+        "value": "각 입학처 모집요강 확인",
+        "status": "needs_review"
+      },
+      "method": {
+        "value": "수시 139(93%)·정시 11(7%, 총 150). 자유전공·신학·기독교교육·교회음악. 수시 성경고사성적우수자·학생부우수자·사회기여및배려자·드림(PUTS인재)·교회음악 실기",
+        "status": "needs_review"
+      },
+      "suneungMinimum": {
+        "value": "<b>모든 수시 전형 수능최저 미적용</b>. 정시(나군) 자유전공·신학·기독교교육 4개 중 상위 3개 백분위(영어 등급 변환)",
+        "status": "needs_review"
+      },
+      "interview": {
+        "value": "학생부우수자 학생부80+면접20. 사회기여·드림(PUTS) 서류60+면접40. 학생부종합 학업·진로·공동체 정성평가",
+        "status": "needs_review"
+      }
+    }
+  ],
+  "departments": [],
+  "naesinReflection": {
+    "value": "학생부우수자 640점. 5등급은 석차80+성취20, 9등급은 석차100. 환산 <b>1등급 100 / 2등급 90 / 3등급 80 / 4등급 70 / 5등급 60</b>. 국·수·영·사·과",
+    "status": "needs_review"
+  },
+  "changes2028": [],
+  "officialLinks": [
+    {
+      "name": "어디가 2028 대학별 전형계획 모음집",
+      "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+    }
+  ],
+  "_source": "2028 전형 워크벤치(admission-plan-2028) 이식 · 요약 수준"
+}

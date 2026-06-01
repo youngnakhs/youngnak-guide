@@ -1,0 +1,57 @@
+{
+  "id": "skhu",
+  "name": "성공회대학교",
+  "category": "인서울 주요대",
+  "region": {
+    "value": "서울 구로구",
+    "status": "needs_review"
+  },
+  "campus": "항동",
+  "summary": {
+    "susiRatio": null,
+    "jeongsiRatio": null,
+    "hasSuneungMinimum": false,
+    "hasInterview": true,
+    "totalQuota": 510
+  },
+  "highlights": [
+    "성공회 재단 종합대학 — 자유전공학부, 전 전형 수능최저 없음",
+    "학폭 조치 전체 전형 총점 최대 2%~최저 0점 감점.",
+    "정시(가/나/다 모두)."
+  ],
+  "admissionTypes": [
+    {
+      "track": "2028 전형 개요",
+      "subType": "워크벤치 요약 이식",
+      "quota": {
+        "value": "각 입학처 모집요강 확인",
+        "status": "needs_review"
+      },
+      "method": {
+        "value": "수시 391+정원외 25+북한 10+재외 9, 정시 75(총 510). 자유전공학부 105. 수시 학생부교과(교과·사회기여·국가보훈·특성화·기회균형·농어촌)·학종(열린인재·대안학교)",
+        "status": "needs_review"
+      },
+      "suneungMinimum": {
+        "value": "<b>모든 수시·정시 전형 수능최저 없음</b>",
+        "status": "needs_review"
+      },
+      "interview": {
+        "value": "학생부교과 학생부 100% 면접 없음. 학종 열린인재·대안학교 서류60+면접40. 전공적합성·역량·발전가능성 5구간 정성, 평가위원 2명",
+        "status": "needs_review"
+      }
+    }
+  ],
+  "departments": [],
+  "naesinReflection": {
+    "value": "학생부 600점(기본 480+12과목). 환산 <b>1등급 10 / 2등급 9 / 3등급 8 / 4등급 6 / 5등급 4</b>(12과목 누적 산출). 성취도 5단계는 A=1등급 등 환산. 국·영·수·사(한국사)·과",
+    "status": "needs_review"
+  },
+  "changes2028": [],
+  "officialLinks": [
+    {
+      "name": "어디가 2028 대학별 전형계획 모음집",
+      "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+    }
+  ],
+  "_source": "2028 전형 워크벤치(admission-plan-2028) 이식 · 요약 수준"
+}

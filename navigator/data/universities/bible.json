@@ -1,0 +1,57 @@
+{
+  "id": "bible",
+  "name": "한국성서대학교",
+  "category": "인서울 주요대",
+  "region": {
+    "value": "서울 노원구",
+    "status": "needs_review"
+  },
+  "campus": "월계동",
+  "summary": {
+    "susiRatio": null,
+    "jeongsiRatio": null,
+    "hasSuneungMinimum": true,
+    "hasInterview": true,
+    "totalQuota": null
+  },
+  "highlights": [
+    "신학 기반 대학 — 간호학과만 수능최저 적용, 전 전형 면접",
+    "목회자추천 68명 비중 큼(교단 신학대 특성).",
+    "간호학과 별도 모집, 유일하게 수능최저 적용."
+  ],
+  "admissionTypes": [
+    {
+      "track": "2028 전형 개요",
+      "subType": "워크벤치 요약 이식",
+      "quota": {
+        "value": "각 입학처 모집요강 확인",
+        "status": "needs_review"
+      },
+      "method": {
+        "value": "수시 학생부교과 일반학생 119(간호 제외)+27(간호)·목회자추천 68·고른기회 4. 정시(다군) 일반 10(간호)+사회복지·영유아·AI 이월. 자유전공/무전공 PDF 미명시",
+        "status": "needs_review"
+      },
+      "suneungMinimum": {
+        "value": "<b>간호학과 학생부교과(일반학생)만</b>: 국·수·영·탐 중 <b>2개 합 7</b>(탐구 상위 1). 그 외 수시 미적용",
+        "status": "needs_review"
+      },
+      "interview": {
+        "value": "<b>모든 수시 전형 면접 실시</b>(평가위원 2~3명 일반면접). 일반·고른기회·농어촌·기초·특수교육은 학생부70+면접30, 목회자추천 학생부60+면접40",
+        "status": "needs_review"
+      }
+    }
+  ],
+  "departments": [],
+  "naesinReflection": {
+    "value": "학생부 교과 700점(일반) 또는 600점(목회자). 환산 <b>1등급 700 / 2등급 692 / 3등급 684 / 4등급 674 / 5등급 658</b>(변별 매우 작음). 간호 제외 학과는 8과목, 간호는 전체",
+    "status": "needs_review"
+  },
+  "changes2028": [],
+  "officialLinks": [
+    {
+      "name": "어디가 2028 대학별 전형계획 모음집",
+      "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+    }
+  ],
+  "_source": "2028 전형 워크벤치(admission-plan-2028) 이식 · 요약 수준"
+}
