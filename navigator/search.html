@@ -2,6 +2,7 @@
 <html lang="ko" data-theme="light">
   <head>
     <meta charset="UTF-8" />
+    <script>try{var t=localStorage.getItem("adm2028-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>모집단위(학과) 검색 · 2028 대입 내비게이터</title>
     <meta name="description" content="전국 주요 대학의 2028 모집단위(학과)별 수능최저를 한 곳에서 검색·비교합니다." />
@@ -41,5 +42,24 @@
         </div>
       </section>
     </main>
+    <script>
+      // 메인 hero 검색폼에서 넘어온 ?q=... 를 학과 검색창에 자동 적용 (번들 미수정·방어적 폴링)
+      (function () {
+        var q = new URLSearchParams(location.search).get('q');
+        if (!q) return;
+        var tries = 0;
+        var iv = setInterval(function () {
+          var el = document.getElementById('searchInput');
+          if (el) {
+            el.value = q;
+            el.dispatchEvent(new Event('input', { bubbles: true }));
+            el.focus();
+            clearInterval(iv);
+          } else if (++tries > 80) {
+            clearInterval(iv);
+          }
+        }, 50);
+      })();
+    </script>
   </body>
 </html>

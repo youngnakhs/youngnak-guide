@@ -2,6 +2,7 @@
 <html lang="ko" data-theme="light">
   <head>
     <meta charset="UTF-8" />
+    <script>try{var t=localStorage.getItem("adm2028-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>2028 대입 내비게이터 · 대학별 전형 비교</title>
     <meta name="description" content="2028학년도 대학입학전형시행계획을 대학별로 비교·분석합니다. 통합형 수능·내신 5등급제 등 개편 핵심과 대학별 차이를 한눈에. 교사·학생·학부모용." />
@@ -38,6 +39,10 @@
             <a class="btn btn--primary btn--lg" href="compare.html">대학 비교 시작하기</a>
             <a class="btn btn--ghost btn--lg" href="reform.html">개편 핵심 보기</a>
           </div>
+          <form class="hero__search fade-in" action="search.html" method="get" role="search">
+            <input name="q" type="search" placeholder="학과·키워드 검색 (예: 컴퓨터, 약학, 간호)" aria-label="학과 검색" autocomplete="off" />
+            <button class="btn btn--primary" type="submit">검색</button>
+          </form>
           <div class="hero__hint fade-in" id="sceneHint">
             <button id="toggle3d" class="text-btn" type="button">✦ 3D 보기 끄기</button>
             <span class="text-soft">· 별을 드래그해 돌려보고, 대학을 클릭해 보세요</span>
