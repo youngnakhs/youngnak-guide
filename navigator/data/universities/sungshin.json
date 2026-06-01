@@ -1,0 +1,58 @@
+{
+  "id": "sungshin",
+  "name": "성신여자대학교",
+  "category": "인서울 주요대",
+  "region": { "value": "서울 성북구", "status": "confirmed" },
+  "campus": "돈암·운정",
+  "summary": { "susiRatio": 65.1, "jeongsiRatio": 34.9, "hasSuneungMinimum": true, "hasInterview": false, "totalQuota": 2064 },
+  "highlights": [
+    "총 2,064명 (수시 65.1% · 정시 34.9%), 간호학과 보유",
+    "학생부교과 지역균형 I(졸업예정자)·II(졸업자) 분리 선발"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "지역균형 I·II",
+      "quota": { "value": "지역균형I 225명 · II 72명(전공/무전공)", "source": { "name": "성신여대 2028 시행계획(어디가 공식 모음집)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "학생부(교과 90 + 출결 10), 일괄합산", "status": "confirmed" },
+      "suneungMinimum": { "value": "국·영·수·탐(상위1) 중 2개 영역 합 7등급 이내", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "자기주도인재 · 기회균형",
+      "quota": { "value": "자기주도인재 535명 · 기회균형Ⅰ 110명", "status": "confirmed" },
+      "method": { "value": "서류 기반 평가", "status": "confirmed" },
+      "suneungMinimum": { "value": "없음", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "논술", "subType": "논술우수자",
+      "quota": { "value": "158명", "status": "confirmed" },
+      "method": { "value": "논술 위주", "status": "confirmed" },
+      "suneungMinimum": { "value": "2개 영역 합 7등급 이내", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "일반학생(가·나·다)",
+      "quota": { "value": "721명(가228·나227·다184 등)", "status": "confirmed" },
+      "method": { "value": "수능 위주", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "naesinReflection": { "value": "학생부 교과 90 + 출결 10(지역균형). 4개 영역 중 상위 3개 영역 반영 학과 별도 존재.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "학생부교과 지역균형 I(졸업예정자)·II(졸업자) 분리 선발", "status": "confirmed" },
+    { "value": "지역균형I 학생부 반영방법 변경, 정시 수능 반영방법 변경", "status": "confirmed" }
+  ],
+  "departments": [
+    { "name": "간호학과", "college": "간호대학", "track": "교과·논술", "suneungMinimum": { "value": "2개 영역 합 7", "status": "confirmed" } },
+    { "name": "경영학부", "college": "지식산업대학", "track": "교과·논술", "suneungMinimum": { "value": "2개 영역 합 7", "status": "confirmed" } },
+    { "name": "컴퓨터공학과", "college": "공과대학", "track": "교과·논술", "suneungMinimum": { "value": "2개 영역 합 7", "status": "confirmed" } },
+    { "name": "AI융합학부", "college": "공과대학", "track": "교과·논술", "suneungMinimum": { "value": "2개 영역 합 7", "status": "confirmed" } },
+    { "name": "창의융합학부(자유전공)", "college": "창의융합", "track": "교과·종합", "suneungMinimum": { "value": "교과 2개 영역 합 7 / 학종 없음", "status": "confirmed" } }
+  ],
+  "officialLinks": [
+    { "name": "성신여자대학교 입학처", "url": "https://ipsi.sungshin.ac.kr/" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

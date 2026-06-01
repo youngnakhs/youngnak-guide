@@ -1,0 +1,60 @@
+{
+  "id": "sejong",
+  "name": "세종대학교",
+  "category": "인서울 주요대",
+  "region": { "value": "서울 광진구", "status": "confirmed" },
+  "campus": "본교",
+  "summary": { "susiRatio": null, "jeongsiRatio": null, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 3026 },
+  "highlights": [
+    "총 3,026명",
+    "논술 전형요소 논술 100%로 변경(교과 20% 폐지)",
+    "정시 수능형/융합형 분리·신설(융합형 학생부 정성 10%)"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "지역균형",
+      "quota": { "value": "388명", "source": { "name": "세종대 2028 시행계획(어디가 공식 모음집)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "학생부교과 100%", "status": "confirmed" },
+      "suneungMinimum": { "value": "국·수·영·탐(1과목) 중 2개 영역 등급 합 5 이내", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "세종인재 면접형 / 서류형",
+      "quota": { "value": "면접형 385명 · 서류형 252명", "status": "confirmed" },
+      "method": { "value": "면접형 1단계 서류 100%(3배수) → 2단계 60 + 면접 40 / 서류형 서류 100%", "status": "confirmed" },
+      "suneungMinimum": { "value": "없음", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "논술", "subType": "논술우수자",
+      "quota": { "value": "344명", "status": "confirmed" },
+      "method": { "value": "논술 100% (2027 논술80+교과20에서 변경)", "status": "confirmed" },
+      "suneungMinimum": { "value": "2개 영역 등급 합 5 이내", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "일반학생 수능형 / 융합형(신설)",
+      "quota": { "value": "수능형 418명 등 · 융합형 358명", "status": "confirmed" },
+      "method": { "value": "수능형 수능 100% / 융합형 수능 90 + 학생부교과(정성) 10. 자연계 가산점 폐지", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "naesinReflection": { "value": "공통/일반선택 석차등급+이수학점, 진로선택 석차등급 또는 성취도 중 상위. 인문 국·수·영·사 / 자연 국·수·영·과.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "교과(지역균형) 수능최저 강화 2합6 → 2합5", "status": "confirmed" },
+    { "value": "논술 전형요소 논술 100%로 변경(교과 20% 폐지)", "status": "confirmed" },
+    { "value": "정시 수능형/융합형 분리·신설, 자연계 수학·과탐 가산점 폐지", "status": "confirmed" }
+  ],
+  "departments": [
+    { "name": "경영학부", "college": "경영경제대학", "track": "교과·논술", "suneungMinimum": { "value": "2개 영역 합 5", "status": "confirmed" } },
+    { "name": "컴퓨터공학과", "college": "소프트웨어융합대학", "track": "교과·논술", "suneungMinimum": { "value": "2개 영역 합 5", "status": "confirmed" } },
+    { "name": "반도체시스템공학과", "college": "공과대학", "track": "교과·논술", "suneungMinimum": { "value": "2개 영역 합 5", "status": "confirmed" } },
+    { "name": "지능기전공학부", "college": "공과대학", "track": "교과·논술", "suneungMinimum": { "value": "2개 영역 합 5", "status": "confirmed" } },
+    { "name": "호텔관광외식경영학부", "college": "호텔관광대학", "track": "교과·논술", "suneungMinimum": { "value": "2개 영역 합 5", "status": "confirmed" } }
+  ],
+  "officialLinks": [
+    { "name": "세종대학교 입학처", "url": "https://ipsi.sejong.ac.kr/" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "id": "korea-sejong",
+  "name": "고려대학교 세종",
+  "category": "지방캠퍼스",
+  "region": { "value": "세종특별자치시", "status": "confirmed" },
+  "campus": "세종",
+  "summary": { "susiRatio": 70.0, "jeongsiRatio": 30.0, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 1795 },
+  "highlights": [
+    "정원내 1,795명 (수시 약 70% / 정시 약 30%)",
+    "학생부종합 면접형 신설(1단계 서류100 → 2단계 면접30)",
+    "수능최저 완화 — 1개 영역 3등급 이내(2027 2개 합 6에서 변경)"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "학생부교과",
+      "quota": { "value": "521명", "source": { "name": "고려대(세종) 2028 시행계획(어디가 공식 모음집)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "교과 위주", "status": "confirmed" },
+      "suneungMinimum": { "value": "국·수·영·탐(상위1) 중 1개 영역 3등급 이내 (약학과 3개 합 5)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "서류형",
+      "quota": { "value": "421명", "status": "confirmed" },
+      "method": { "value": "서류 100% (구 크림슨인재 → 일반전형-서류형으로 명칭 변경)", "status": "confirmed" },
+      "suneungMinimum": { "value": "미적용", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "면접형(신설)",
+      "quota": { "value": "61명", "status": "confirmed" },
+      "method": { "value": "1단계 서류 100% → 2단계 70 + 면접 30", "status": "confirmed" },
+      "suneungMinimum": { "value": "미적용", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "논술", "subType": "논술전형",
+      "quota": { "value": "210명", "status": "confirmed" },
+      "method": { "value": "논술 위주 (논술-지역인재는 폐지)", "status": "confirmed" },
+      "suneungMinimum": { "value": "1개 영역 3등급 이내(약학 3개 합 5)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "정원내 일반 등",
+      "quota": { "value": "538명(일반 446·지역인재 6·농어촌 52·사배 29·특수교육 5)", "status": "confirmed" },
+      "method": { "value": "수능 위주", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "naesinReflection": { "value": "교과전형 교과 위주, 학종은 서류·면접 평가. 통합형 수능 반영.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "학생부종합 면접형 신설", "status": "confirmed" },
+    { "value": "서류형 명칭 변경(크림슨인재 → 일반전형-서류형)", "status": "confirmed" },
+    { "value": "논술-지역인재·실기(미래인재) 폐지, 수능최저 완화", "status": "confirmed" }
+  ],
+  "officialLinks": [
+    { "name": "고려대 세종캠퍼스 입학팀", "url": "https://oku.korea.ac.kr/sejong" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

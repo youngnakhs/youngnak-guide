@@ -1,0 +1,52 @@
+{
+  "id": "cbnu",
+  "name": "충북대학교",
+  "category": "지방거점국립대",
+  "region": { "value": "충북 청주시 서원구", "status": "confirmed" },
+  "campus": "개신",
+  "summary": { "susiRatio": 80.6, "jeongsiRatio": 18.6, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 3422 },
+  "highlights": [
+    "총 3,422명 (수시 2,757명 80.6% / 정시 635명 18.6%)",
+    "지역인재 718명(21.8%), 사회적배려대상자 347명(10.5%)",
+    "정시 지역의사 진료권별(청주/충주/제천/광역) 전형 운영"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "정원내 / 정원외",
+      "quota": { "value": "일반 751명 · 지역인재 630명", "source": { "name": "충북대 2028 시행계획(어디가 공식 모음집)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "교과 위주(모집단위별 교과 안내)", "status": "confirmed" },
+      "suneungMinimum": { "value": "의·약·수의·간호만 상위 3개 영역 합 / 그 외 상위 2개 영역 합 8 이내", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "Ⅰ / Ⅱ · 지역인재",
+      "quota": { "value": "학생부종합Ⅰ 542명 · Ⅱ 387명 · 지역인재 718명", "status": "confirmed" },
+      "method": { "value": "서류·면접(전형별 상이)", "status": "confirmed" },
+      "suneungMinimum": { "value": "미적용", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "가·나군 일반 / 지역인재 / 지역의사진료권",
+      "quota": { "value": "635명(18.6%)", "status": "confirmed" },
+      "method": { "value": "수능 위주. 지역의사 진료권별(청주/충주/제천/광역) 운영", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "departments": [
+    { "name": "의예과", "college": "의과대학", "track": "학생부교과", "suneungMinimum": { "value": "상위 3개 영역 등급 합 5 이내", "status": "confirmed" } },
+    { "name": "약학과·제약학과", "college": "약학대학", "track": "학생부교과", "suneungMinimum": { "value": "상위 3개 영역 합 7 이내", "status": "confirmed" } },
+    { "name": "수의예과", "college": "수의과대학", "track": "학생부교과", "suneungMinimum": { "value": "상위 3개 영역 합 8 이내", "status": "confirmed" } },
+    { "name": "간호학과", "college": "의과대학", "track": "학생부교과", "suneungMinimum": { "value": "상위 3개 영역 합 10 이내", "status": "confirmed" } },
+    { "name": "경영·공과·자연 등", "college": "전 계열", "track": "학생부교과", "suneungMinimum": { "value": "상위 2개 영역 합 8 이내", "status": "confirmed" } }
+  ],
+  "naesinReflection": { "value": "모집단위별 교과 안내 발표. 통합형 수능·5등급제 반영. 의·약·수의·간호만 상위 3개 영역 합, 그 외 상위 2개 영역 합 8.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "지역의사 진료권별 전형 운영", "status": "confirmed" },
+    { "value": "통합형 수능·5등급제 반영", "status": "confirmed" }
+  ],
+  "officialLinks": [
+    { "name": "충북대학교 입학처", "url": "https://ipsi.chungbuk.ac.kr/kor.do" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

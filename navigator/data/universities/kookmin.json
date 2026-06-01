@@ -1,0 +1,60 @@
+{
+  "id": "kookmin",
+  "name": "국민대학교",
+  "category": "인서울 주요대",
+  "region": { "value": "서울 성북구", "status": "confirmed" },
+  "campus": "본교",
+  "summary": { "susiRatio": 67, "jeongsiRatio": 33, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 3340 },
+  "highlights": [
+    "총 3,340명 (수시 2,245 · 정시 1,095)",
+    "교과우수자 학교장추천 전형 신설(졸업예정자/졸업자 분리)",
+    "학종 면접형 2단계 면접 30→40% 상향"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "교과우수자(학교장추천 I·II)",
+      "quota": { "value": "620명", "source": { "name": "국민대 2028 시행계획(어디가 공식 모음집)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "학생부교과 100%, 일괄합산", "status": "confirmed" },
+      "suneungMinimum": { "value": "국·수·영·탐 중 2개 영역 등급 합 6 이내(탐구 1과목)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "국민프런티어 등",
+      "quota": { "value": "1,217명", "status": "confirmed" },
+      "method": { "value": "1단계 서류 100%(3배수) → 2단계 1단계 60 + 면접 40", "status": "confirmed" },
+      "suneungMinimum": { "value": "없음", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "논술", "subType": "논술전형",
+      "quota": { "value": "237명", "status": "confirmed" },
+      "method": { "value": "논술 100%, 일괄합산", "status": "confirmed" },
+      "suneungMinimum": { "value": "2개 영역 등급 합 6 이내", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "일반전형",
+      "quota": { "value": "1,095명", "status": "confirmed" },
+      "method": { "value": "수능 100%, 탐구 가산점 폐지", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "naesinReflection": { "value": "학년별 차등·비교과 미반영. 인문 국·영·수·사 / 자연 국·영·수·과, 석차등급, 이수한 모든 교과목.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "교과우수자 학교장추천 전형 신설(졸업예정자/졸업자 분리)", "status": "confirmed" },
+    { "value": "학종 면접형 2단계 면접 30→40% 상향", "status": "confirmed" },
+    { "value": "수능최저 탐구 1과목 반영, 정시 탐구 가산점 폐지", "status": "confirmed" }
+  ],
+  "departments": [
+    { "name": "경영학부", "college": "경상대학", "track": "교과·논술", "suneungMinimum": { "value": "2개 영역 합 6", "status": "confirmed" } },
+    { "name": "소프트웨어학부", "college": "SW융합대학", "track": "교과·논술", "suneungMinimum": { "value": "2개 영역 합 6", "status": "confirmed" } },
+    { "name": "자동차공학과", "college": "창의공과대학", "track": "교과·논술", "suneungMinimum": { "value": "2개 영역 합 6", "status": "confirmed" } },
+    { "name": "건축학부", "college": "건축대학", "track": "교과·논술", "suneungMinimum": { "value": "2개 영역 합 6", "status": "confirmed" } },
+    { "name": "교육학과", "college": "사범대학", "track": "교과·종합", "suneungMinimum": { "value": "교과 2개 영역 합 6 / 학종 없음", "status": "confirmed" } }
+  ],
+  "officialLinks": [
+    { "name": "국민대학교 입학처", "url": "https://ipsi.kookmin.ac.kr/" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

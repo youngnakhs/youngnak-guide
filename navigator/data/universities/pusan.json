@@ -1,0 +1,55 @@
+{
+  "id": "pusan",
+  "name": "부산대학교",
+  "category": "지방거점국립대",
+  "region": { "value": "부산 금정구", "status": "confirmed" },
+  "campus": "부산(+양산·밀양)",
+  "summary": { "susiRatio": 71.7, "jeongsiRatio": 28.3, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 5097 },
+  "highlights": [
+    "총 5,097명 (수시 3,654명 71.7% / 정시 1,443명 28.3%)",
+    "논술전형(논술·지역인재) 전면 폐지",
+    "정시 학업충실도평가(수능 80 + 학생부 20) 전 모집단위 확대"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "일반 / 지역인재 / 탐구전형(신설)",
+      "quota": { "value": "교과우수전형 1,062명 · 지역인재(교과지역) 447명 (교과 계 1,961명·38.5%)", "source": { "name": "부산대 2028 시행계획(어디가 공식 모음집)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "교과 위주. 탐구전형(신설)은 수능최저 없이 현장녹화 면접", "status": "confirmed" },
+      "suneungMinimum": { "value": "상위 3개 영역 등급합 7 이내(인문) 등 모집단위별 / 탐구전형은 없음", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "서류전형(신설) / 지역의사선발(신설)",
+      "quota": { "value": "학생부종합 1,471명(28.9%) · 지역의사선발 38명", "status": "confirmed" },
+      "method": { "value": "지역의사선발 1단계 서류 100%(4배수) → 2단계 70 + 면접 30", "status": "confirmed" },
+      "suneungMinimum": { "value": "지역의사선발 수학 포함 3개 영역 등급합 4 이내", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "수능 위주",
+      "quota": { "value": "1,439명(28.2%)", "status": "confirmed" },
+      "method": { "value": "학업충실도평가 — 수능 80 + 학생부 20 (전 모집단위 확대)", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "departments": [
+    { "name": "의예과", "college": "의과대학", "track": "교과·종합·정시", "quota": 163, "suneungMinimum": { "value": "수학 포함 3개 영역 등급 합 4 이내(탐구 2과목 평균)", "status": "confirmed" } },
+    { "name": "치의학전문대학원(학·석사통합)", "college": "치의학", "track": "교과·종합·정시", "quota": 81, "suneungMinimum": { "value": "수학 포함 3개 영역 합 4 이내", "status": "confirmed" } },
+    { "name": "약학부", "college": "약학대학", "track": "교과·종합·정시", "quota": 66, "suneungMinimum": { "value": "수학 포함 3개 영역 합 4 이내", "status": "confirmed" } },
+    { "name": "간호학과", "college": "간호대학", "track": "교과·종합·정시", "quota": 84, "suneungMinimum": { "value": "수학 포함 2개 영역 합 5 이내", "status": "confirmed" } },
+    { "name": "경영학과", "college": "경영대학", "track": "교과·종합·정시", "quota": 214, "suneungMinimum": { "value": "상위 3개 영역 등급 합 7 이내", "status": "confirmed" } },
+    { "name": "자연·공과계열", "college": "자연·공과대학", "track": "교과·종합·정시", "suneungMinimum": { "value": "수학 포함 2개 영역 합 5 이내", "status": "confirmed" } },
+    { "name": "탐구전형(신설)", "college": "전 계열", "track": "학생부교과", "suneungMinimum": { "value": "없음(현장녹화 면접)", "status": "confirmed" } }
+  ],
+  "naesinReflection": { "value": "교과 반영 전과목. 정시에 학업충실도평가(학생부 20%)를 전 모집단위로 확대. 의예 교과전형 학업역량평가 반영.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "논술전형(논술·지역인재) 전면 폐지", "status": "confirmed" },
+    { "value": "학생부교과(탐구전형)·학생부종합(서류전형)·지역의사선발 신설", "status": "confirmed" },
+    { "value": "정시 학업충실도평가(수능80+20) 전 모집단위 확대", "status": "confirmed" }
+  ],
+  "officialLinks": [
+    { "name": "부산대학교 입학처", "url": "https://go.pusan.ac.kr/" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

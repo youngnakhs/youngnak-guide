@@ -1,0 +1,69 @@
+{
+  "id": "khu",
+  "name": "경희대학교",
+  "category": "인서울 주요대",
+  "region": { "value": "서울 동대문구 · 국제(용인)", "status": "confirmed" },
+  "campus": "서울·국제",
+  "summary": { "susiRatio": 55.6, "jeongsiRatio": 44.4, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 5411 },
+  "highlights": [
+    "정원내외 5,411명 (수시 3,007명 55.6% / 정시 2,404명 44.4%)",
+    "네오르네상스 면접형·서류형 이원화(서류형 수능최저 신설)",
+    "정시 수능·학생부형(수능 90 + 학생부 10) 운영"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "지역균형",
+      "quota": { "value": "580명", "source": { "name": "경희대 2028 시행계획(어디가 공식 모음집, OCR 확인)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "학생부 교과·비교과(출결·봉사) + 교과종합평가 일괄합산", "status": "confirmed" },
+      "suneungMinimum": { "value": "인문/자연·자유전공 2개 영역 합 5(한국사 5) / 의·한·치·약 3개 영역 합 4(한국사 5) / 예체능 1개 영역 3등급. 탐구는 통합사회·통합과학 중 상위 1", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "네오르네상스 — 면접형",
+      "quota": { "value": "754명", "status": "confirmed" },
+      "method": { "value": "1단계 서류 100%(일반 4배수·의약 5배수) → 2단계 1단계 70 + 면접 30", "status": "confirmed" },
+      "suneungMinimum": { "value": "없음", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "네오르네상스 — 서류형(수능최저 신설)",
+      "quota": { "value": "345명", "status": "confirmed" },
+      "method": { "value": "서류평가 100% 일괄합산", "status": "confirmed" },
+      "suneungMinimum": { "value": "있음(교과전형 기준 준용)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "논술", "subType": "논술우수자",
+      "quota": { "value": "469명", "status": "confirmed" },
+      "method": { "value": "논술고사 100% 일괄합산(1,000점)", "status": "confirmed" },
+      "suneungMinimum": { "value": "있음(교과전형 기준 준용)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "수능형 / 수능·학생부형",
+      "quota": { "value": "1,959명(가·나군)", "status": "confirmed" },
+      "method": { "value": "수능형 수능 100% / 수능·학생부형 수능 90 + 학생부 10", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "departments": [
+    { "name": "의예과", "college": "의과대학(서울)", "track": "교과·종합·논술·정시", "suneungMinimum": { "value": "3개 영역 합 4 + 한국사 5", "status": "confirmed" } },
+    { "name": "한의예과", "college": "한의과대학", "track": "교과·종합·논술·정시", "suneungMinimum": { "value": "3개 영역 합 4 + 한국사 5", "status": "confirmed" } },
+    { "name": "치의예과", "college": "치과대학", "track": "교과·종합·논술·정시", "suneungMinimum": { "value": "3개 영역 합 4 + 한국사 5", "status": "confirmed" } },
+    { "name": "약학과", "college": "약학대학", "track": "교과·종합·논술·정시", "suneungMinimum": { "value": "3개 영역 합 4 + 한국사 5", "status": "confirmed" } },
+    { "name": "간호학과", "college": "간호과학대학", "track": "교과·종합·논술·정시", "suneungMinimum": { "value": "인문/자연 2개 영역 합 5 + 한국사 5", "status": "confirmed" } },
+    { "name": "경영학과", "college": "경영대학(서울)", "track": "교과·종합·논술·정시", "suneungMinimum": { "value": "2개 영역 합 5 + 한국사 5", "status": "confirmed" } },
+    { "name": "컴퓨터공학부", "college": "전자정보대학(국제)", "track": "교과·종합·논술·정시", "suneungMinimum": { "value": "2개 영역 합 5 + 한국사 5", "status": "confirmed" } }
+  ],
+  "naesinReflection": { "value": "교과전형은 교과·비교과 + 교과종합평가 일괄합산. 정시 수능·학생부형에 학생부 10% 반영. 인문/자연 2개 합 5, 의·한·치·약 3개 합 4.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "네오르네상스 면접형·서류형 이원화(서류형 수능최저 신설)", "status": "confirmed" },
+    { "value": "지역균형 졸업연도 제한 변경, 기회균형 전형방법 서류 100%로 변경", "status": "confirmed" },
+    { "value": "논술 사회계 수리문항 폐지(3→2문제), 학교장추천 학폭 1호 이상 추천 불가", "status": "confirmed" }
+  ],
+  "officialLinks": [
+    { "name": "경희대학교 입학처", "url": "https://iphak.khu.ac.kr" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

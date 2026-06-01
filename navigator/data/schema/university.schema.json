@@ -1,0 +1,93 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "University 2028 admission plan",
+  "type": "object",
+  "required": ["id", "name", "category", "region", "campus", "admissionTypes"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[a-z0-9_-]+$" },
+    "name": { "type": "string" },
+    "category": {
+      "type": "string",
+      "enum": ["인서울 주요대", "지방거점국립대", "수도권 주요대", "지방캠퍼스"]
+    },
+    "region": { "$ref": "#/definitions/sourcedOrString" },
+    "campus": { "type": "string" },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "susiRatio": { "type": ["number", "null"] },
+        "jeongsiRatio": { "type": ["number", "null"] },
+        "hasSuneungMinimum": { "type": ["boolean", "null"] },
+        "hasInterview": { "type": ["boolean", "null"] },
+        "totalQuota": { "type": ["number", "null"] }
+      }
+    },
+    "admissionTypes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["track"],
+        "properties": {
+          "track": { "type": "string" },
+          "subType": { "type": "string" },
+          "quota": { "$ref": "#/definitions/sourcedOrAny" },
+          "ratioOfTotal": { "$ref": "#/definitions/sourcedOrAny" },
+          "method": { "$ref": "#/definitions/sourcedOrString" },
+          "suneungMinimum": { "$ref": "#/definitions/sourcedOrString" },
+          "interview": { "$ref": "#/definitions/sourcedOrAny" }
+        }
+      }
+    },
+    "naesinReflection": { "$ref": "#/definitions/sourcedOrString" },
+    "changes2028": { "type": "array", "items": { "$ref": "#/definitions/sourcedOrString" } },
+    "departments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string" },
+          "college": { "type": "string" },
+          "track": { "type": "string" },
+          "quota": { "$ref": "#/definitions/sourcedOrAny" },
+          "suneungMinimum": { "$ref": "#/definitions/sourcedOrString" }
+        }
+      }
+    },
+    "highlights": { "type": "array", "items": { "type": "string" } },
+    "officialLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "url"],
+        "properties": { "name": { "type": "string" }, "url": { "type": "string" } }
+      }
+    }
+  },
+  "definitions": {
+    "source": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "url": { "type": "string" },
+        "page": { "type": "string" }
+      }
+    },
+    "sourced": {
+      "type": "object",
+      "required": ["value"],
+      "properties": {
+        "value": {},
+        "source": { "$ref": "#/definitions/source" },
+        "asOf": { "type": "string" },
+        "status": { "type": "string", "enum": ["confirmed", "needs_review"] }
+      }
+    },
+    "sourcedOrString": {
+      "oneOf": [{ "$ref": "#/definitions/sourced" }, { "type": "string" }]
+    },
+    "sourcedOrAny": {
+      "oneOf": [{ "$ref": "#/definitions/sourced" }, { "type": ["string", "number", "boolean"] }]
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "id": "jnu",
+  "name": "전남대학교",
+  "category": "지방거점국립대",
+  "region": { "value": "광주 북구", "status": "confirmed" },
+  "campus": "광주(+여수)",
+  "summary": { "susiRatio": 82.2, "jeongsiRatio": 17.8, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 4503 },
+  "highlights": [
+    "정원내 4,503명 (수시 3,700명 82.2% / 정시 803명 17.8%)",
+    "수능최저를 7등급 이내로 통합 유형화, 탐구 상위 1과목 반영(의치수약 2과목 평균)",
+    "논술전형 미실시"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "일반",
+      "quota": { "value": "1,274명", "source": { "name": "전남대 2028 시행계획(어디가 공식 모음집)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "일괄선발 학생부 100%", "status": "confirmed" },
+      "suneungMinimum": { "value": "의과 3개 영역 합 5 / 치의학 5 / 수의·약학 6 / 간호·경영 9 / 공과·인문·자연 2개 영역 합 7 이내", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "고교생활우수자Ⅰ",
+      "quota": { "value": "1,037명", "status": "confirmed" },
+      "method": { "value": "1단계 서류평가 100%(3배수, 의학계열 6배수) → 2단계 1단계 70 + 면접 30", "status": "confirmed" },
+      "suneungMinimum": { "value": "일부 모집단위 적용", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "고교생활우수자Ⅱ",
+      "quota": { "value": "172명", "status": "confirmed" },
+      "method": { "value": "일괄선발 서류평가 100%", "status": "confirmed" },
+      "suneungMinimum": { "value": "미적용", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "일반",
+      "quota": { "value": "745명", "status": "confirmed" },
+      "method": { "value": "일괄선발 수능 100%", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "departments": [
+    { "name": "의학과", "college": "의과대학", "track": "교과·종합·정시", "quota": 165, "suneungMinimum": { "value": "3개 영역 합 — 지역인재 5 / 지역균형 6 / 고교생활우수자Ⅰ 5 / 지역의사·농어촌 6", "status": "confirmed" } },
+    { "name": "치의학전문대학원(학·석사통합)", "college": "치의학", "track": "교과·종합", "suneungMinimum": { "value": "3개 영역 합 5/6/7/6(전형별)", "status": "confirmed" } },
+    { "name": "약학부", "college": "약학대학", "track": "교과·종합", "quota": 65, "suneungMinimum": { "value": "수학 포함 3개 영역 합 — 일반 6 / 지역인재 7 / 지역균형 8", "status": "confirmed" } },
+    { "name": "수의예과", "college": "수의과대학", "track": "교과·종합", "quota": 52, "suneungMinimum": { "value": "수학 포함 3개 영역 합 6/7/8(전형별)", "status": "confirmed" } },
+    { "name": "간호학과", "college": "간호대학", "track": "교과·종합", "quota": 88, "suneungMinimum": { "value": "일반 9 / 지역인재 10 / 그 외 미적용", "status": "confirmed" } },
+    { "name": "경영학부", "college": "경영대학", "track": "교과·종합", "quota": 214, "suneungMinimum": { "value": "2개 영역 합 9/10(간호·경영 그룹)", "status": "confirmed" } },
+    { "name": "공과·자연·인문 등", "college": "전 계열", "track": "교과·종합", "suneungMinimum": { "value": "2개 영역 합 — 일반 7 / 지역인재 8", "status": "confirmed" } }
+  ],
+  "naesinReflection": { "value": "석차등급 9→5등급 체계(100/90/80/70/0) 반영. 탐구 2개 중 상위 1과목(의·치·수·약은 2과목 평균), 영어 등급간 점수 10→5점.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "학생부교과(농어촌학생) → 학생부종합(농어촌학생) 전환", "status": "confirmed" },
+    { "value": "수능 응시지정영역 폐지, 수능최저 7등급 이내로 통합 유형화", "status": "confirmed" },
+    { "value": "탐구 상위 1과목 반영(의·치·수·약 2과목 평균), 영어 등급간 점수 5점", "status": "confirmed" }
+  ],
+  "officialLinks": [
+    { "name": "전남대학교 입학처", "url": "https://admission.jnu.ac.kr/" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

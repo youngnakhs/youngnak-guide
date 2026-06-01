@@ -1,0 +1,856 @@
+{
+  "generatedAt": "2026-05-31",
+  "count": 42,
+  "categories": [
+    "인서울 주요대",
+    "지방거점국립대",
+    "수도권 주요대",
+    "지방캠퍼스"
+  ],
+  "dataStatus": {
+    "confirmed": 967,
+    "needsReview": 92
+  },
+  "universities": [
+    {
+      "id": "catholic",
+      "name": "가톨릭대학교",
+      "category": "인서울 주요대",
+      "region": "경기 부천(성심) · 서울 서초(의예)",
+      "campus": "성심·성의",
+      "summary": {
+        "susiRatio": 69,
+        "jeongsiRatio": 31,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 2045
+      },
+      "officialLinks": [
+        {
+          "name": "가톨릭대학교 입학처",
+          "url": "https://ipsin.catholic.ac.kr/"
+        }
+      ]
+    },
+    {
+      "id": "konkuk",
+      "name": "건국대학교",
+      "category": "인서울 주요대",
+      "region": "서울 광진구",
+      "campus": "서울",
+      "summary": {
+        "susiRatio": null,
+        "jeongsiRatio": null,
+        "hasSuneungMinimum": true,
+        "hasInterview": false,
+        "totalQuota": null
+      },
+      "officialLinks": [
+        {
+          "name": "건국대학교 입학처",
+          "url": "https://enter.konkuk.ac.kr"
+        }
+      ]
+    },
+    {
+      "id": "khu",
+      "name": "경희대학교",
+      "category": "인서울 주요대",
+      "region": "서울 동대문구 · 국제(용인)",
+      "campus": "서울·국제",
+      "summary": {
+        "susiRatio": 55.6,
+        "jeongsiRatio": 44.4,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 5411
+      },
+      "officialLinks": [
+        {
+          "name": "경희대학교 입학처",
+          "url": "https://iphak.khu.ac.kr"
+        }
+      ]
+    },
+    {
+      "id": "korea",
+      "name": "고려대학교",
+      "category": "인서울 주요대",
+      "region": "서울 성북구",
+      "campus": "안암(서울)",
+      "summary": {
+        "susiRatio": 58.3,
+        "jeongsiRatio": 40.0,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 4666
+      },
+      "officialLinks": [
+        {
+          "name": "고려대학교 입학처",
+          "url": "https://oku.korea.ac.kr"
+        }
+      ]
+    },
+    {
+      "id": "kwangwoon",
+      "name": "광운대학교",
+      "category": "인서울 주요대",
+      "region": "서울 노원구(월계동)",
+      "campus": "본교",
+      "summary": {
+        "susiRatio": 55,
+        "jeongsiRatio": 45,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 1684
+      },
+      "officialLinks": [
+        {
+          "name": "광운대학교 입학처",
+          "url": "https://iphak.kw.ac.kr/"
+        }
+      ]
+    },
+    {
+      "id": "kookmin",
+      "name": "국민대학교",
+      "category": "인서울 주요대",
+      "region": "서울 성북구",
+      "campus": "본교",
+      "summary": {
+        "susiRatio": 67,
+        "jeongsiRatio": 33,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 3340
+      },
+      "officialLinks": [
+        {
+          "name": "국민대학교 입학처",
+          "url": "https://ipsi.kookmin.ac.kr/"
+        }
+      ]
+    },
+    {
+      "id": "dongguk",
+      "name": "동국대학교",
+      "category": "인서울 주요대",
+      "region": "서울 중구(필동)",
+      "campus": "서울",
+      "summary": {
+        "susiRatio": 70,
+        "jeongsiRatio": 30,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": null
+      },
+      "officialLinks": [
+        {
+          "name": "동국대학교 입학처",
+          "url": "https://ipsi.dongguk.edu"
+        }
+      ]
+    },
+    {
+      "id": "myongji",
+      "name": "명지대학교",
+      "category": "인서울 주요대",
+      "region": "서울 서대문(인문) · 용인(자연)",
+      "campus": "인문(서울)·자연(용인)",
+      "summary": {
+        "susiRatio": 70,
+        "jeongsiRatio": 30,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 2908
+      },
+      "officialLinks": [
+        {
+          "name": "명지대학교 입학처",
+          "url": "https://ipsi.mju.ac.kr/"
+        }
+      ]
+    },
+    {
+      "id": "sogang",
+      "name": "서강대학교",
+      "category": "인서울 주요대",
+      "region": "서울 마포구",
+      "campus": "신촌",
+      "summary": {
+        "susiRatio": 58.2,
+        "jeongsiRatio": 40,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 1796
+      },
+      "officialLinks": [
+        {
+          "name": "서강대학교 입학처(전형계획)",
+          "url": "https://admission.sogang.ac.kr/enter/html/counsel/plan.asp"
+        }
+      ]
+    },
+    {
+      "id": "snu",
+      "name": "서울대학교",
+      "category": "인서울 주요대",
+      "region": "서울 관악구",
+      "campus": "관악",
+      "summary": {
+        "susiRatio": 65.7,
+        "jeongsiRatio": 34.3,
+        "hasSuneungMinimum": false,
+        "hasInterview": true,
+        "totalQuota": null
+      },
+      "officialLinks": [
+        {
+          "name": "서울대학교 입학본부(공지)",
+          "url": "https://admission.snu.ac.kr/undergraduate/notice"
+        }
+      ]
+    },
+    {
+      "id": "uos",
+      "name": "서울시립대학교",
+      "category": "인서울 주요대",
+      "region": "서울 동대문구(전농동)",
+      "campus": "단일",
+      "summary": {
+        "susiRatio": null,
+        "jeongsiRatio": null,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": null
+      },
+      "officialLinks": [
+        {
+          "name": "서울시립대학교 입학처",
+          "url": "https://admission.uos.ac.kr"
+        }
+      ]
+    },
+    {
+      "id": "skku",
+      "name": "성균관대학교",
+      "category": "인서울 주요대",
+      "region": "서울 종로구(명륜) · 수원(율전)",
+      "campus": "명륜·율전",
+      "summary": {
+        "susiRatio": 57.1,
+        "jeongsiRatio": 41.2,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 4144
+      },
+      "officialLinks": [
+        {
+          "name": "성균관대학교 입학처",
+          "url": "https://admission.skku.edu/"
+        }
+      ]
+    },
+    {
+      "id": "sungshin",
+      "name": "성신여자대학교",
+      "category": "인서울 주요대",
+      "region": "서울 성북구",
+      "campus": "돈암·운정",
+      "summary": {
+        "susiRatio": 65.1,
+        "jeongsiRatio": 34.9,
+        "hasSuneungMinimum": true,
+        "hasInterview": false,
+        "totalQuota": 2064
+      },
+      "officialLinks": [
+        {
+          "name": "성신여자대학교 입학처",
+          "url": "https://ipsi.sungshin.ac.kr/"
+        }
+      ]
+    },
+    {
+      "id": "sejong",
+      "name": "세종대학교",
+      "category": "인서울 주요대",
+      "region": "서울 광진구",
+      "campus": "본교",
+      "summary": {
+        "susiRatio": null,
+        "jeongsiRatio": null,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 3026
+      },
+      "officialLinks": [
+        {
+          "name": "세종대학교 입학처",
+          "url": "https://ipsi.sejong.ac.kr/"
+        }
+      ]
+    },
+    {
+      "id": "sookmyung",
+      "name": "숙명여자대학교",
+      "category": "인서울 주요대",
+      "region": "서울 용산구(청파동)",
+      "campus": "단일",
+      "summary": {
+        "susiRatio": 51.8,
+        "jeongsiRatio": 48.2,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 2152
+      },
+      "officialLinks": [
+        {
+          "name": "숙명여자대학교 입학처",
+          "url": "https://admission.sookmyung.ac.kr"
+        }
+      ]
+    },
+    {
+      "id": "soongsil",
+      "name": "숭실대학교",
+      "category": "인서울 주요대",
+      "region": "서울 동작구(상도동)",
+      "campus": "본교",
+      "summary": {
+        "susiRatio": 51,
+        "jeongsiRatio": 43,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 3211
+      },
+      "officialLinks": [
+        {
+          "name": "숭실대학교 입학처",
+          "url": "https://admission.ssu.ac.kr/"
+        }
+      ]
+    },
+    {
+      "id": "yonsei",
+      "name": "연세대학교",
+      "category": "인서울 주요대",
+      "region": "서울 서대문구",
+      "campus": "신촌",
+      "summary": {
+        "susiRatio": 66,
+        "jeongsiRatio": 33.8,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": null
+      },
+      "officialLinks": [
+        {
+          "name": "연세대학교 입학처(서울)",
+          "url": "https://admission.yonsei.ac.kr/seoul/"
+        }
+      ]
+    },
+    {
+      "id": "ewha",
+      "name": "이화여자대학교",
+      "category": "인서울 주요대",
+      "region": "서울 서대문구",
+      "campus": "단일",
+      "summary": {
+        "susiRatio": null,
+        "jeongsiRatio": 36.4,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": null
+      },
+      "officialLinks": [
+        {
+          "name": "이화여자대학교 입학처",
+          "url": "https://admission.ewha.ac.kr"
+        }
+      ]
+    },
+    {
+      "id": "cau",
+      "name": "중앙대학교",
+      "category": "인서울 주요대",
+      "region": "서울 동작구(흑석)",
+      "campus": "서울(흑석·일부 안성)",
+      "summary": {
+        "susiRatio": 56.6,
+        "jeongsiRatio": 41.7,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 5038
+      },
+      "officialLinks": [
+        {
+          "name": "중앙대학교 입학처",
+          "url": "https://admission.cau.ac.kr/"
+        }
+      ]
+    },
+    {
+      "id": "hufs",
+      "name": "한국외국어대학교",
+      "category": "인서울 주요대",
+      "region": "서울 동대문구 · 글로벌(용인)",
+      "campus": "서울·글로벌",
+      "summary": {
+        "susiRatio": 58.4,
+        "jeongsiRatio": 41.6,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 3731
+      },
+      "officialLinks": [
+        {
+          "name": "한국외국어대학교 입학처",
+          "url": "https://adms.hufs.ac.kr"
+        }
+      ]
+    },
+    {
+      "id": "hanyang",
+      "name": "한양대학교",
+      "category": "인서울 주요대",
+      "region": "서울 성동구",
+      "campus": "서울(행당)",
+      "summary": {
+        "susiRatio": 66.8,
+        "jeongsiRatio": 33.2,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": null
+      },
+      "officialLinks": [
+        {
+          "name": "한양대학교 입학처(서울)",
+          "url": "https://go.hanyang.ac.kr/"
+        }
+      ]
+    },
+    {
+      "id": "hongik",
+      "name": "홍익대학교",
+      "category": "인서울 주요대",
+      "region": "서울 마포구 · 세종",
+      "campus": "서울(+세종)",
+      "summary": {
+        "susiRatio": null,
+        "jeongsiRatio": null,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 2375
+      },
+      "officialLinks": [
+        {
+          "name": "홍익대학교 입학 공지(2028 시행계획)",
+          "url": "https://www.hongik.ac.kr/kr/admission/notice-admission.do"
+        }
+      ]
+    },
+    {
+      "id": "kangwon",
+      "name": "강원대학교",
+      "category": "지방거점국립대",
+      "region": "강원 춘천",
+      "campus": "춘천",
+      "summary": {
+        "susiRatio": 80,
+        "jeongsiRatio": 19.4,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 3363
+      },
+      "officialLinks": [
+        {
+          "name": "강원대학교 입학처",
+          "url": "https://wwwk.kangwon.ac.kr/admission/main.do"
+        }
+      ]
+    },
+    {
+      "id": "knu",
+      "name": "경북대학교",
+      "category": "지방거점국립대",
+      "region": "대구 북구",
+      "campus": "대구",
+      "summary": {
+        "susiRatio": 81.5,
+        "jeongsiRatio": 18.5,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 5586
+      },
+      "officialLinks": [
+        {
+          "name": "경북대학교 입학처",
+          "url": "https://ipsi1.knu.ac.kr/plan/?m_type=SUSI"
+        }
+      ]
+    },
+    {
+      "id": "gnu",
+      "name": "경상국립대학교",
+      "category": "지방거점국립대",
+      "region": "경남 진주시",
+      "campus": "가좌(+칠암)",
+      "summary": {
+        "susiRatio": 80.3,
+        "jeongsiRatio": 18.7,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 4649
+      },
+      "officialLinks": [
+        {
+          "name": "경상국립대학교 입학안내",
+          "url": "https://new.gnu.ac.kr/new/main.do"
+        }
+      ]
+    },
+    {
+      "id": "pusan",
+      "name": "부산대학교",
+      "category": "지방거점국립대",
+      "region": "부산 금정구",
+      "campus": "부산(+양산·밀양)",
+      "summary": {
+        "susiRatio": 71.7,
+        "jeongsiRatio": 28.3,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 5097
+      },
+      "officialLinks": [
+        {
+          "name": "부산대학교 입학처",
+          "url": "https://go.pusan.ac.kr/"
+        }
+      ]
+    },
+    {
+      "id": "jnu",
+      "name": "전남대학교",
+      "category": "지방거점국립대",
+      "region": "광주 북구",
+      "campus": "광주(+여수)",
+      "summary": {
+        "susiRatio": 82.2,
+        "jeongsiRatio": 17.8,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 4503
+      },
+      "officialLinks": [
+        {
+          "name": "전남대학교 입학처",
+          "url": "https://admission.jnu.ac.kr/"
+        }
+      ]
+    },
+    {
+      "id": "jbnu",
+      "name": "전북대학교",
+      "category": "지방거점국립대",
+      "region": "전북 전주시",
+      "campus": "전주(+익산)",
+      "summary": {
+        "susiRatio": 81,
+        "jeongsiRatio": 19,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 4561
+      },
+      "officialLinks": [
+        {
+          "name": "전북대학교 입학처",
+          "url": "https://enter.jbnu.ac.kr/main.do"
+        }
+      ]
+    },
+    {
+      "id": "jejunu",
+      "name": "제주대학교",
+      "category": "지방거점국립대",
+      "region": "제주특별자치도 제주시",
+      "campus": "아라",
+      "summary": {
+        "susiRatio": 70.7,
+        "jeongsiRatio": 25.8,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 2490
+      },
+      "officialLinks": [
+        {
+          "name": "제주대학교 입학처",
+          "url": "https://ibsi.jejunu.ac.kr/"
+        }
+      ]
+    },
+    {
+      "id": "cnu",
+      "name": "충남대학교",
+      "category": "지방거점국립대",
+      "region": "대전 유성구",
+      "campus": "대덕(+보운)",
+      "summary": {
+        "susiRatio": 82.0,
+        "jeongsiRatio": 18.0,
+        "hasSuneungMinimum": null,
+        "hasInterview": true,
+        "totalQuota": 4170
+      },
+      "officialLinks": [
+        {
+          "name": "충남대학교 입학처",
+          "url": "https://ipsi.cnu.ac.kr/"
+        }
+      ]
+    },
+    {
+      "id": "cbnu",
+      "name": "충북대학교",
+      "category": "지방거점국립대",
+      "region": "충북 청주시 서원구",
+      "campus": "개신",
+      "summary": {
+        "susiRatio": 80.6,
+        "jeongsiRatio": 18.6,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 3422
+      },
+      "officialLinks": [
+        {
+          "name": "충북대학교 입학처",
+          "url": "https://ipsi.chungbuk.ac.kr/kor.do"
+        }
+      ]
+    },
+    {
+      "id": "gachon",
+      "name": "가천대학교",
+      "category": "수도권 주요대",
+      "region": "경기 성남시",
+      "campus": "메디컬·글로벌",
+      "summary": {
+        "susiRatio": null,
+        "jeongsiRatio": null,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": null
+      },
+      "officialLinks": [
+        {
+          "name": "가천대학교 입학처",
+          "url": "https://www.gachon.ac.kr/ipsi/index.jsp"
+        }
+      ]
+    },
+    {
+      "id": "kyonggi",
+      "name": "경기대학교",
+      "category": "수도권 주요대",
+      "region": "경기 수원 · 서울제2",
+      "campus": "수원·서울",
+      "summary": {
+        "susiRatio": 68,
+        "jeongsiRatio": 32,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 3092
+      },
+      "officialLinks": [
+        {
+          "name": "경기대학교 입학처",
+          "url": "https://ipsi.kyonggi.ac.kr/"
+        }
+      ]
+    },
+    {
+      "id": "dankook",
+      "name": "단국대학교",
+      "category": "수도권 주요대",
+      "region": "경기 용인(죽전) · 충남 천안",
+      "campus": "죽전·천안",
+      "summary": {
+        "susiRatio": 62,
+        "jeongsiRatio": 38,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 5146
+      },
+      "officialLinks": [
+        {
+          "name": "단국대학교 입학처",
+          "url": "https://ipsi.dankook.ac.kr/"
+        }
+      ]
+    },
+    {
+      "id": "ajou",
+      "name": "아주대학교",
+      "category": "수도권 주요대",
+      "region": "경기 수원시 영통구",
+      "campus": "단일",
+      "summary": {
+        "susiRatio": 66.3,
+        "jeongsiRatio": 33.7,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 2217
+      },
+      "officialLinks": [
+        {
+          "name": "아주대학교 입학처",
+          "url": "https://www.iajou.ac.kr"
+        }
+      ]
+    },
+    {
+      "id": "incheon",
+      "name": "인천대학교",
+      "category": "수도권 주요대",
+      "region": "인천 송도(국립대학법인)",
+      "campus": "송도",
+      "summary": {
+        "susiRatio": 70.2,
+        "jeongsiRatio": 29.8,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 2516
+      },
+      "officialLinks": [
+        {
+          "name": "인천대학교 입학처",
+          "url": "https://ipsi.inu.ac.kr/"
+        }
+      ]
+    },
+    {
+      "id": "inha",
+      "name": "인하대학교",
+      "category": "수도권 주요대",
+      "region": "인천 미추홀구",
+      "campus": "단일",
+      "summary": {
+        "susiRatio": null,
+        "jeongsiRatio": null,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": null
+      },
+      "officialLinks": [
+        {
+          "name": "인하대학교 입학처",
+          "url": "https://admission.inha.ac.kr"
+        }
+      ]
+    },
+    {
+      "id": "tukorea",
+      "name": "한국공학대학교",
+      "category": "수도권 주요대",
+      "region": "경기 시흥시",
+      "campus": "단일",
+      "summary": {
+        "susiRatio": null,
+        "jeongsiRatio": null,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 1680
+      },
+      "officialLinks": [
+        {
+          "name": "한국공학대학교 입학처",
+          "url": "https://ipsi.tukorea.ac.kr/"
+        }
+      ]
+    },
+    {
+      "id": "kau",
+      "name": "한국항공대학교",
+      "category": "수도권 주요대",
+      "region": "경기 고양시",
+      "campus": "단일",
+      "summary": {
+        "susiRatio": 73.2,
+        "jeongsiRatio": 26.8,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 821
+      },
+      "officialLinks": [
+        {
+          "name": "한국항공대학교 입학처",
+          "url": "https://iphak.kau.ac.kr/"
+        }
+      ]
+    },
+    {
+      "id": "korea-sejong",
+      "name": "고려대학교 세종",
+      "category": "지방캠퍼스",
+      "region": "세종특별자치시",
+      "campus": "세종",
+      "summary": {
+        "susiRatio": 70.0,
+        "jeongsiRatio": 30.0,
+        "hasSuneungMinimum": true,
+        "hasInterview": true,
+        "totalQuota": 1795
+      },
+      "officialLinks": [
+        {
+          "name": "고려대 세종캠퍼스 입학팀",
+          "url": "https://oku.korea.ac.kr/sejong"
+        }
+      ]
+    },
+    {
+      "id": "yonsei-mirae",
+      "name": "연세대학교 미래캠퍼스",
+      "category": "지방캠퍼스",
+      "region": "강원 원주시",
+      "campus": "미래(원주)",
+      "summary": {
+        "susiRatio": null,
+        "jeongsiRatio": null,
+        "hasSuneungMinimum": null,
+        "hasInterview": true,
+        "totalQuota": null
+      },
+      "officialLinks": [
+        {
+          "name": "연세대 미래캠퍼스 입학처",
+          "url": "https://admission.yonsei.ac.kr/mirae"
+        }
+      ]
+    },
+    {
+      "id": "hanyang-erica",
+      "name": "한양대학교 ERICA",
+      "category": "지방캠퍼스",
+      "region": "경기 안산시 상록구",
+      "campus": "ERICA(안산)",
+      "summary": {
+        "susiRatio": null,
+        "jeongsiRatio": null,
+        "hasSuneungMinimum": null,
+        "hasInterview": true,
+        "totalQuota": null
+      },
+      "officialLinks": [
+        {
+          "name": "한양대 ERICA 입학처",
+          "url": "https://goerica.hanyang.ac.kr"
+        }
+      ]
+    }
+  ]
+}

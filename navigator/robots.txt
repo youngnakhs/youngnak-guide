@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://youngnakhs.github.io/admission-analyzer/sitemap.xml

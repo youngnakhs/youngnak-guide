@@ -1,0 +1,66 @@
+{
+  "id": "hufs",
+  "name": "한국외국어대학교",
+  "category": "인서울 주요대",
+  "region": { "value": "서울 동대문구 · 글로벌(용인)", "status": "confirmed" },
+  "campus": "서울·글로벌",
+  "summary": { "susiRatio": 58.4, "jeongsiRatio": 41.6, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 3731 },
+  "highlights": [
+    "총 3,731명 (수시 2,179명 58.4% / 정시 1,552명 41.6%)",
+    "학교장추천 교과 70 + 서류(교과종합평가) 30, 추천인원 제한 폐지",
+    "학종 면접형 1단계 서류100(3배수) → 2단계 면접 50%"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "학교장추천",
+      "quota": { "value": "375명", "source": { "name": "한국외대(서울) 2028 시행계획(어디가 공식 모음집)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "교과 70% + 서류(교과종합평가) 30%. 고교별 추천인원 제한 폐지, 원점수 미적용", "status": "confirmed" },
+      "suneungMinimum": { "value": "2개 영역 등급합 5~6 이내(모집단위별)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "면접형",
+      "quota": { "value": "601명", "status": "confirmed" },
+      "method": { "value": "1단계 서류 100%(3배수) → 2단계 50 + 면접 50", "status": "confirmed" },
+      "suneungMinimum": { "value": "미적용", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "서류형 / SW인재 / 기회균형",
+      "quota": { "value": "서류형 464명 · SW인재 34명 · 기회균형 189명", "status": "confirmed" },
+      "method": { "value": "서류 100%", "status": "confirmed" },
+      "suneungMinimum": { "value": "서류형 적용 / 그 외 미적용", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "논술", "subType": "논술전형",
+      "quota": { "value": "449명", "status": "confirmed" },
+      "method": { "value": "논술 100% (학생부 미반영)", "status": "confirmed" },
+      "suneungMinimum": { "value": "적용(2028 반영방법 변경)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "일반",
+      "quota": { "value": "1,367명", "status": "confirmed" },
+      "method": { "value": "수능 100% (반영방법 변경)", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "departments": [
+    { "name": "ELLT학과", "college": "영어대학(서울)", "track": "교과·종합", "quota": 52, "suneungMinimum": { "value": "2개 영역 등급 합 5 이내(탐구 통합사회/과학 1)", "status": "confirmed" } },
+    { "name": "경영학부", "college": "경영대학(서울)", "track": "교과·종합·논술", "quota": 130, "suneungMinimum": { "value": "2개 영역 합 5 이내", "status": "confirmed" } },
+    { "name": "경제학부", "college": "사회과학대학(서울)", "track": "교과·종합·논술", "quota": 62, "suneungMinimum": { "value": "2개 영역 합 5 이내", "status": "confirmed" } },
+    { "name": "컴퓨터공학부", "college": "공과대학(글로벌)", "track": "교과·SW면접·정시", "quota": 80, "suneungMinimum": { "value": "2개 영역 합 6 이내", "status": "confirmed" } }
+  ],
+  "naesinReflection": { "value": "학교장추천에 서류(교과종합평가) 30% 반영, 원점수 미적용. 서울캠 2개 합 5 / 글로벌캠 2개 합 6. 의약계열 미보유.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "학교장추천 교과 70 + 서류 30, 추천인원 제한 폐지", "status": "confirmed" },
+    { "value": "논술 수능최저 반영방법 변경", "status": "confirmed" },
+    { "value": "정시 수능 반영방법 변경", "status": "confirmed" }
+  ],
+  "officialLinks": [
+    { "name": "한국외국어대학교 입학처", "url": "https://adms.hufs.ac.kr" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

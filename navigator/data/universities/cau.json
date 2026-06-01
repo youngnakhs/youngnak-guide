@@ -1,0 +1,74 @@
+{
+  "id": "cau",
+  "name": "중앙대학교",
+  "category": "인서울 주요대",
+  "region": { "value": "서울 동작구(흑석)", "status": "confirmed" },
+  "campus": "서울(흑석·일부 안성)",
+  "summary": { "susiRatio": 56.6, "jeongsiRatio": 41.7, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 5038 },
+  "highlights": [
+    "총 5,038명 (수시 2,849명 56.6% / 정시 2,101명 41.7%)",
+    "정시 이원화 — 수능89(수능89+출결11) + 수능67(수능67+서류33, 신설)",
+    "수시 학종 3모델(Core·All·Up) 재편, 지역균형 정량 100% 유지"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "지역균형",
+      "quota": { "value": "505명", "source": { "name": "중앙대(서울) 2028 시행계획(어디가 공식 모음집)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "학생부 100% (교과 90 + 출결 10), 정성평가 미도입", "status": "confirmed" },
+      "suneungMinimum": { "value": "3개 영역 등급합 7 (약학부 4개 합 5)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "탐구하는 학종(Core)",
+      "quota": { "value": "499명", "status": "confirmed" },
+      "method": { "value": "1단계 서류 100% → 2단계 60 + 면접 40", "status": "confirmed" },
+      "suneungMinimum": { "value": "미적용", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "모두의 학종(All)",
+      "quota": { "value": "384명", "status": "confirmed" },
+      "method": { "value": "서류 100%", "status": "confirmed" },
+      "suneungMinimum": { "value": "미적용", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "최저 있는 학종(Up)",
+      "quota": { "value": "114명", "status": "confirmed" },
+      "method": { "value": "서류 100% (의학부만 2단계 면접)", "status": "confirmed" },
+      "suneungMinimum": { "value": "3개 영역 등급합 6 (약학부 4개 합 5)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "논술", "subType": "모두의 논술 / 재학생 논술",
+      "quota": { "value": "모두의 논술 395명 · 재학생 논술 87명", "status": "confirmed" },
+      "method": { "value": "모두의 논술 논술80+교과10+출결10 / 재학생 논술 수능최저 미적용", "status": "confirmed" },
+      "suneungMinimum": { "value": "모두의 논술 3개 영역 합 6 / 재학생 논술 미적용", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "수능89 / 수능67(신설)",
+      "quota": { "value": "수능89 1,459명 · 수능67 251명", "status": "confirmed" },
+      "method": { "value": "수능89: 수능89+출결11(최저 없음) / 수능67: 수능67+서류33(학생부 정성평가), 수능최저 적용", "status": "confirmed" },
+      "suneungMinimum": { "value": "수능89 없음 / 수능67 적용", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "departments": [
+    { "name": "의학부", "college": "의과대학", "track": "학종Up·논술·정시", "quota": 86, "suneungMinimum": { "value": "국·수·영·탐 등급합(공식 PDF 표 셀 공란) + 한국사 4 — 원문 확인 필요", "status": "needs_review" } },
+    { "name": "약학부", "college": "약학대학", "track": "지역균형·학종Up·논술", "quota": 120, "suneungMinimum": { "value": "4개 영역 등급 합 5 이내 + 한국사 4", "status": "confirmed" } },
+    { "name": "간호학과", "college": "적십자간호대학", "track": "지역균형·학종Up·논술", "quota": 200, "suneungMinimum": { "value": "지역균형 3개 합 7 / 학종Up·논술 3개 합 6", "status": "confirmed" } },
+    { "name": "소프트웨어학부", "college": "소프트웨어대학", "track": "교과·종합·논술·정시", "quota": 206, "suneungMinimum": { "value": "지역균형 3개 합 7 / 학종Up·논술 3개 합 6", "status": "confirmed" } },
+    { "name": "경영학부", "college": "경영경제대학", "track": "교과·종합·논술·정시", "suneungMinimum": { "value": "지역균형 3개 합 7 / 학종Up·논술 3개 합 6", "status": "confirmed" } }
+  ],
+  "naesinReflection": { "value": "지역균형 정량 100% 유지. 정시 수능67 전형에서 서류평가(학생부 정성) 33% 반영.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "정시 이원화(수능89 + 수능67 신설, 서류 33% 반영)", "status": "confirmed" },
+    { "value": "수시 학종 3모델 재편(Core·All·Up)", "status": "confirmed" },
+    { "value": "논술 모두의/재학생 분리, 'CAU 수능 케어' 도입", "status": "confirmed" }
+  ],
+  "officialLinks": [
+    { "name": "중앙대학교 입학처", "url": "https://admission.cau.ac.kr/" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

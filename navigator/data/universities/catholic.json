@@ -1,0 +1,61 @@
+{
+  "id": "catholic",
+  "name": "가톨릭대학교",
+  "category": "인서울 주요대",
+  "region": { "value": "경기 부천(성심) · 서울 서초(의예)", "status": "confirmed" },
+  "campus": "성심·성의",
+  "summary": { "susiRatio": 69, "jeongsiRatio": 31, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 2045 },
+  "highlights": [
+    "총 2,045명 (수시 69.0% · 정시 31.0%), 의예·약학·간호 보유",
+    "교과 전형방법 변경(교과 90 + 출결 10), 지역균형에서 약학·의예 미선발",
+    "논술 서술형 → 약술형(의약·간호 제외)"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "지역균형",
+      "quota": { "value": "231명(약학·의예 미선발)", "source": { "name": "가톨릭대 2028 시행계획(어디가 공식 모음집)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "학생부교과 90 + 출결 10 (2027 교과 100%에서 변경)", "status": "confirmed" },
+      "suneungMinimum": { "value": "전 모집단위(간호 제외) 2개 영역 합 7 / 간호 3개 영역 합 7", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "잠재능력우수자(서류/면접) · 학교장추천",
+      "quota": { "value": "서류 256 · 면접 283 · 학교장추천 69 등(소계 876)", "status": "confirmed" },
+      "method": { "value": "면접/추천형 1단계 서류 100% → 2단계 70 + 면접 30 / 서류형 서류 100%", "status": "confirmed" },
+      "suneungMinimum": { "value": "대부분 없음 / 학교장추천 약학 3개 합 5·의예 3개 합 4+한국사 4", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "논술", "subType": "논술전형",
+      "quota": { "value": "176명", "status": "confirmed" },
+      "method": { "value": "논술(약학·의예·간호 제외 시 약술형)", "status": "confirmed" },
+      "suneungMinimum": { "value": "약학 3개 합 5 / 의예 3개 합 4+한국사 4 / 간호 3개 합 7 (그 외 없음)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "일반 / 의예(가군)",
+      "quota": { "value": "634명(의예 일반전형Ⅲ 35명 포함)", "status": "confirmed" },
+      "method": { "value": "일반 수능 위주 / 의예 수능 95 + 인·적성면접 5", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    }
+  ],
+  "naesinReflection": { "value": "공통/일반선택·전문교과 석차등급, 진로/융합선택 성취도, 이수학점 반영.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "교과 100% → 교과 90 + 출결 10, 지역균형에서 약학·의예 미선발", "status": "confirmed" },
+    { "value": "논술 서술형 → 약술형(의약·간호 제외)", "status": "confirmed" },
+    { "value": "학종 서류평가 진로역량 35→50%, 학교장추천 의예 추천 2명 확대", "status": "confirmed" }
+  ],
+  "departments": [
+    { "name": "의예과", "college": "의과대학(서울 성의)", "track": "학종 학교장추천·논술·정시", "suneungMinimum": { "value": "3개 영역 합 4 + 한국사 4 (정시 면접 5%)", "status": "confirmed" } },
+    { "name": "약학과", "college": "약학대학(성심)", "track": "학종·논술", "suneungMinimum": { "value": "3개 영역 합 5 (농어촌 3개 합 7)", "status": "confirmed" } },
+    { "name": "간호학과", "college": "간호대학(성심)", "track": "교과·논술", "suneungMinimum": { "value": "3개 영역 합 7", "status": "confirmed" } },
+    { "name": "경영학부", "college": "경영대학(성심)", "track": "교과·논술", "suneungMinimum": { "value": "2개 영역 합 7", "status": "confirmed" } },
+    { "name": "컴퓨터정보공학부", "college": "정보공학(성심)", "track": "교과·논술", "suneungMinimum": { "value": "2개 영역 합 7", "status": "confirmed" } },
+    { "name": "자유전공학부", "college": "자유전공(성심)", "track": "교과·종합", "suneungMinimum": { "value": "교과 2개 영역 합 7 / 학종 없음", "status": "confirmed" } }
+  ],
+  "officialLinks": [
+    { "name": "가톨릭대학교 입학처", "url": "https://ipsin.catholic.ac.kr/" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

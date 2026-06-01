@@ -1,0 +1,60 @@
+{
+  "id": "soongsil",
+  "name": "숭실대학교",
+  "category": "인서울 주요대",
+  "region": { "value": "서울 동작구(상도동)", "status": "confirmed" },
+  "campus": "본교",
+  "summary": { "susiRatio": 51, "jeongsiRatio": 43, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 3211 },
+  "highlights": [
+    "총 3,211명 (수시 1,642 · 정시 1,369, 그 외 재직자·재외국민)",
+    "교과우수자 정성평가 10% 추가(교과 정량 90 + 정성 10)",
+    "논술 인문·경상계열 통합 출제, 정보보호특기자전형 폐지"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "교과우수자(학교장추천)",
+      "quota": { "value": "462명", "source": { "name": "숭실대 2028 시행계획(어디가 공식 모음집)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "학생부교과(정량) 90 + 학생부(정성) 10 (2027 교과 100%에서 변경)", "status": "confirmed" },
+      "suneungMinimum": { "value": "전 계열 국·수·영·탐(상위1) 2개 영역 등급 합 6 이내", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "SSU미래인재 면접형 / 서류형 · AI우수자",
+      "quota": { "value": "면접형 538명 · 서류형 166명 · 기회균형 130 · AI우수자 17", "status": "confirmed" },
+      "method": { "value": "면접형 1단계 서류 100%(3~3.5배수) → 2단계 1단계 50 + 면접 50 / 서류형 서류 100%", "status": "confirmed" },
+      "suneungMinimum": { "value": "없음", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "논술", "subType": "논술우수자",
+      "quota": { "value": "240명", "status": "confirmed" },
+      "method": { "value": "논술 90 + 학생부교과 10", "status": "confirmed" },
+      "suneungMinimum": { "value": "전 계열 2개 영역 등급 합 6 이내", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "가·나·다군",
+      "quota": { "value": "1,369명(가494·나335·다484 등)", "status": "confirmed" },
+      "method": { "value": "수능 위주", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "naesinReflection": { "value": "공통/일반선택 석차등급, 진로선택 성취도/석차등급 상위. 인문 국·영·수·사 / 자연 국·수·영·과 전 과목.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "교과우수자 정성평가 10% 추가(교과 정량 90 + 정성 10)", "status": "confirmed" },
+    { "value": "학종 SW우수자 → AI우수자 명칭 변경, 정보보호특기자전형 폐지", "status": "confirmed" },
+    { "value": "논술 인문·경상계열 통합 출제", "status": "confirmed" }
+  ],
+  "departments": [
+    { "name": "경영학부", "college": "경영대학", "track": "교과·논술", "suneungMinimum": { "value": "2개 영역 합 6", "status": "confirmed" } },
+    { "name": "컴퓨터학부", "college": "IT대학", "track": "교과·논술", "suneungMinimum": { "value": "2개 영역 합 6", "status": "confirmed" } },
+    { "name": "AI융합학부", "college": "IT대학", "track": "교과·논술", "suneungMinimum": { "value": "2개 영역 합 6", "status": "confirmed" } },
+    { "name": "전자정보공학부", "college": "공과대학", "track": "교과·논술", "suneungMinimum": { "value": "2개 영역 합 6", "status": "confirmed" } },
+    { "name": "국어국문학과", "college": "인문대학", "track": "교과·논술", "suneungMinimum": { "value": "2개 영역 합 6", "status": "confirmed" } }
+  ],
+  "officialLinks": [
+    { "name": "숭실대학교 입학처", "url": "https://admission.ssu.ac.kr/" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

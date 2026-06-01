@@ -1,0 +1,52 @@
+{
+  "id": "uos",
+  "name": "서울시립대학교",
+  "category": "인서울 주요대",
+  "region": { "value": "서울 동대문구(전농동)", "status": "confirmed" },
+  "campus": "단일",
+  "summary": { "susiRatio": null, "jeongsiRatio": null, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": null },
+  "highlights": [
+    "학생부교과(지역균형) 정성평가 20 → 40%로 대폭 확대",
+    "교과전형 지원자격을 졸업예정자로 제한(재수생 배제)",
+    "고교별 추천인원 제한 폐지"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "지역균형",
+      "quota": { "value": "확인 필요", "source": { "name": "베타뉴스 — 최주영 입시해부(2026-05-14)", "url": "https://www.betanews.net/article/view/beta202605140065" }, "asOf": "2026-05", "status": "needs_review" },
+      "method": { "value": "정성평가 비중 20 → 40%로 확대, 출결 강조. 지원자격 졸업예정자 제한(재수생 배제), 고교별 추천인원 제한 폐지", "status": "confirmed" },
+      "suneungMinimum": { "value": "강화(모집요강 확인)", "status": "needs_review" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "학생부종합 Ⅰ·Ⅱ",
+      "quota": { "value": "확인 필요", "status": "needs_review" },
+      "method": { "value": "2028 구성 변화 확인 필요(현행 단계별 면접 운영)", "status": "needs_review" },
+      "suneungMinimum": { "value": "확인 필요", "status": "needs_review" },
+      "interview": { "value": true, "status": "needs_review" }
+    },
+    {
+      "track": "논술", "subType": "논술전형",
+      "quota": { "value": "확인 필요", "status": "needs_review" },
+      "method": { "value": "확인 필요", "status": "needs_review" },
+      "suneungMinimum": { "value": "확인 필요", "status": "needs_review" },
+      "interview": { "value": false, "status": "needs_review" }
+    },
+    {
+      "track": "정시(수능)", "subType": "수능위주",
+      "quota": { "value": "확인 필요", "status": "needs_review" },
+      "method": { "value": "학생부 정성평가 도입 검토(미확정)", "status": "needs_review" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "needs_review" }
+    }
+  ],
+  "naesinReflection": { "value": "교과전형 정성평가를 40%로 확대하고 출결을 강조.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "교과 정성평가 40% 확대", "status": "confirmed" },
+    { "value": "교과전형 재수생 지원 차단(졸업예정자만)", "status": "confirmed" },
+    { "value": "고교별 추천인원 제한 폐지", "status": "confirmed" }
+  ],
+  "officialLinks": [
+    { "name": "서울시립대학교 입학처", "url": "https://admission.uos.ac.kr" }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "id": "incheon",
+  "name": "인천대학교",
+  "category": "수도권 주요대",
+  "region": { "value": "인천 송도(국립대학법인)", "status": "confirmed" },
+  "campus": "송도",
+  "summary": { "susiRatio": 70.2, "jeongsiRatio": 29.8, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 2516 },
+  "highlights": [
+    "정원내 2,516명 (수시 70.2% / 정시 29.8%)",
+    "교과성적우수자·지역균형 → '교과성적우수자(학교장추천)' 통합(608명)",
+    "학종 자기추천-서류형(자유전공 75명) 신설, 면접 비중 30→40% 상향"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "교과성적우수자(학교장추천)",
+      "quota": { "value": "608명", "source": { "name": "인천대 2028 시행계획(어디가 공식 모음집, HWP)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "교과 100% (N수 3수까지·검정고시 불가)", "status": "confirmed" },
+      "suneungMinimum": { "value": "동북아국제통상 2개 영역 합 6 / 그 외 2개 영역 합 7", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부교과", "subType": "사회통합",
+      "quota": { "value": "82명", "status": "confirmed" },
+      "method": { "value": "교과 100%", "status": "confirmed" },
+      "suneungMinimum": { "value": "없음", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "자기추천-면접형 / 서류형(신설)",
+      "quota": { "value": "면접형 732명 · 서류형 75명(자유전공)", "status": "confirmed" },
+      "method": { "value": "면접형 1단계 서류 100%(3배수, 사범 4·체육 5) → 2단계 1단계 60 + 면접 40 / 서류형 서류 100%", "status": "confirmed" },
+      "suneungMinimum": { "value": "없음", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "일반학생",
+      "quota": { "value": "736명", "status": "confirmed" },
+      "method": { "value": "수능 100%(체육계열 제외)", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "naesinReflection": { "value": "졸업자·졸업예정자 모두 3-1학기까지, 전 학년 가중치 없음. 석차등급+이수단위. 9등급제+5등급제 환산 병행.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "교과성적우수자·지역균형 → '교과성적우수자(학교장추천)' 통합(608명)", "status": "confirmed" },
+    { "value": "사회통합 확대(55→82), 학종 서류형(자유전공 75명) 신설", "status": "confirmed" },
+    { "value": "자기추천-면접형 면접 30→40% 상향, 단과대 명칭변경(정보기술대학→인공지능대학 등)", "status": "confirmed" }
+  ],
+  "departments": [
+    { "name": "동북아국제통상전공", "college": "글로벌Trade&Service", "track": "교과성적우수자", "suneungMinimum": { "value": "2개 영역 합 6(강화)", "status": "confirmed" } },
+    { "name": "컴퓨터공학부", "college": "인공지능대학", "track": "교과성적우수자", "suneungMinimum": { "value": "2개 영역 합 7", "status": "confirmed" } },
+    { "name": "경영학부", "college": "경영대학", "track": "교과성적우수자", "suneungMinimum": { "value": "2개 영역 합 7", "status": "confirmed" } },
+    { "name": "전자공학부", "college": "공과대학", "track": "교과성적우수자", "suneungMinimum": { "value": "2개 영역 합 7", "status": "confirmed" } },
+    { "name": "자유전공학부", "college": "자유전공", "track": "학종 서류형(신설)", "suneungMinimum": { "value": "없음", "status": "confirmed" } }
+  ],
+  "officialLinks": [
+    { "name": "인천대학교 입학처", "url": "https://ipsi.inu.ac.kr/" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "id": "korea",
+  "name": "고려대학교",
+  "category": "인서울 주요대",
+  "region": { "value": "서울 성북구", "status": "confirmed" },
+  "campus": "안암(서울)",
+  "summary": { "susiRatio": 58.3, "jeongsiRatio": 40.0, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 4666 },
+  "highlights": [
+    "학교추천 수능최저 폐지(의학과 제외), 교과 80 + 서류 20로 변경",
+    "학업우수 면접 20% 신설 + 수능최저 완화(4개 합 8 → 9)",
+    "계열적합 면접 폐지(서류 100%)"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "학교추천",
+      "quota": { "value": "672명", "source": { "name": "고려대(서울) 2028 시행계획(어디가 공식 모음집)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "교과 80% + 서류 20% (2027 교과90+서류10에서 변경)", "status": "confirmed" },
+      "suneungMinimum": { "value": "인문·자연 적용하지 않음(폐지). 의학과만 4개 영역 합 5 및 한국사 4", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "학업우수",
+      "quota": { "value": "823명", "status": "confirmed" },
+      "method": { "value": "1단계 서류 100%(5배수) → 2단계 1단계 80 + 면접 20 (면접 신설)", "status": "confirmed" },
+      "suneungMinimum": { "value": "4개 영역 등급합 9 이내 및 한국사 4 (2027 합 8에서 완화)", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "계열적합",
+      "quota": { "value": "556명", "status": "confirmed" },
+      "method": { "value": "서류 100% 일괄선발 (2027 2단계 면접40에서 면접 폐지)", "status": "confirmed" },
+      "suneungMinimum": { "value": "미적용", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "논술", "subType": "논술전형",
+      "quota": { "value": "367명", "status": "confirmed" },
+      "method": { "value": "논술 100%", "status": "confirmed" },
+      "suneungMinimum": { "value": "국·수·영·탐 4개 영역 등급합 8 이내 및 한국사 4등급", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "수능 일반 / 교과우수",
+      "quota": { "value": "1,867명", "status": "confirmed" },
+      "method": { "value": "수능 위주(국·수·탐 표준점수, 영·한국사 등급 감점). 학생부 미반영", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "departments": [
+    { "name": "의학과", "college": "의과대학", "track": "교과추천·학업우수·계열적합·정시", "quota": 106, "suneungMinimum": { "value": "4개 영역 합 5 이내 및 한국사 4(교과추천·학업우수 공통)", "status": "confirmed" } },
+    { "name": "간호학과", "college": "간호대학", "track": "교과추천·학업우수·계열적합", "quota": 60, "suneungMinimum": { "value": "학교추천 미적용 / 학업우수 4개 합 9 + 한국사 4", "status": "confirmed" } },
+    { "name": "컴퓨터학과", "college": "정보대학", "track": "교과추천·학업우수·계열적합·논술", "quota": 120, "suneungMinimum": { "value": "학업우수 4개 합 9 / 논술 4개 합 8 + 한국사 4 / 계열적합 미적용", "status": "confirmed" } },
+    { "name": "경영학과", "college": "경영대학", "track": "교과추천·학업우수·계열적합", "quota": 320, "suneungMinimum": { "value": "학업우수 4개 합 9 + 한국사 4 / 학교추천·계열적합 미적용", "status": "confirmed" } },
+    { "name": "전기전자공학부", "college": "공과대학", "track": "교과추천·학업우수·계열적합", "quota": 205, "suneungMinimum": { "value": "학업우수 4개 합 9", "status": "confirmed" } }
+  ],
+  "naesinReflection": { "value": "학교추천에 서류평가 20% 병행. 정시는 수능 위주로 학생부를 반영하지 않음(일부 보도된 '정시 학생부 반영'은 시행계획상 확인되지 않음). 고려대는 약·수의·치의 미보유.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "학교추천 수능최저 폐지(의학과 제외), 교과 80 + 서류 20", "status": "confirmed" },
+    { "value": "학업우수 면접 20% 신설, 수능최저 4합8 → 4합9 완화", "status": "confirmed" },
+    { "value": "계열적합 면접 폐지(서류 100%)", "status": "confirmed" },
+    { "value": "학교추천·학업우수 중복지원 제한 폐지", "status": "confirmed" }
+  ],
+  "officialLinks": [
+    { "name": "고려대학교 입학처", "url": "https://oku.korea.ac.kr" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

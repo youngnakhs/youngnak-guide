@@ -1,0 +1,68 @@
+{
+  "id": "sogang",
+  "name": "서강대학교",
+  "category": "인서울 주요대",
+  "region": { "value": "서울 마포구", "status": "confirmed" },
+  "campus": "신촌",
+  "summary": { "susiRatio": 58.2, "jeongsiRatio": 40, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 1796 },
+  "highlights": [
+    "학종 일반Ⅱ 수능최저 신설, 논술 전형요소 다변화(교과·출결 추가)",
+    "정시 수능(지역균형) 신설, 교과 추천인원 제한 폐지"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "지역균형",
+      "quota": { "value": "180명", "source": { "name": "2028 서강대 신입학 전형시행계획(공식 PDF)", "url": "https://admission.sogang.ac.kr/upload/GUIDES/20260430161704MS56GA.pdf" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "교과(정량) 90 + 출결(정량) 10. 추천인원 제한 폐지", "status": "confirmed" },
+      "suneungMinimum": { "value": "국·수·영·탐(1) 4개 중 3개 각 3등급 이내, 한국사 4등급", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "일반Ⅰ",
+      "quota": { "value": "497명", "status": "confirmed" },
+      "method": { "value": "서류 100%", "status": "confirmed" },
+      "suneungMinimum": { "value": "미적용", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "일반Ⅱ(수능최저 신설)",
+      "quota": { "value": "74명", "status": "confirmed" },
+      "method": { "value": "서류 100%", "status": "confirmed" },
+      "suneungMinimum": { "value": "3개 영역 등급합 7, 한국사 4등급", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "논술", "subType": "논술 일반",
+      "quota": { "value": "170명", "status": "confirmed" },
+      "method": { "value": "논술 80 + 교과(정량) 10 + 출결 10 (2027 논술100에서 변경)", "status": "confirmed" },
+      "suneungMinimum": { "value": "3개 영역 등급합 7, 한국사 4등급", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "일반(나군 439·다군 95) + 수능 지역균형(나군 90 신설)",
+      "quota": { "value": "수능 일반 534명 + 지역균형 90명", "status": "confirmed" },
+      "method": { "value": "일반: 수능 100%. 지역균형(신설): 수능 80 + 교과 10 + 출결 10(고교장추천·졸업예정자)", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "departments": [
+    { "name": "경영학부", "college": "경영대학", "track": "교과·종합·정시", "quota": 247, "suneungMinimum": { "value": "지역균형 4개 중 3개 각 3등급 / 일반Ⅱ·논술 3개 합 7", "status": "confirmed" } },
+    { "name": "경제학과", "college": "경제대학", "track": "교과·종합·정시", "quota": 151, "suneungMinimum": { "value": "지역균형 3개 각 3등급 / 일반Ⅱ·논술 3개 합 7", "status": "confirmed" } },
+    { "name": "컴퓨터공학과", "college": "공과대학", "track": "교과·종합·정시", "quota": 90, "suneungMinimum": { "value": "지역균형 3개 각 3등급 / 일반Ⅱ·논술 3개 합 7", "status": "confirmed" } },
+    { "name": "전자공학과", "college": "공과대학", "track": "교과·종합·정시", "quota": 76, "suneungMinimum": { "value": "지역균형 3개 각 3등급 / 논술 3개 합 7", "status": "confirmed" } },
+    { "name": "화공생명공학과", "college": "공과대학", "track": "교과·종합·정시", "quota": 91, "suneungMinimum": { "value": "지역균형 3개 각 3등급 / 논술 3개 합 7", "status": "confirmed" } },
+    { "name": "국어국문학과", "college": "인문대학", "track": "교과·종합·정시", "quota": 120, "suneungMinimum": { "value": "지역균형 3개 각 3등급 / 일반Ⅰ 미적용", "status": "confirmed" } }
+  ],
+  "naesinReflection": { "value": "교과·논술·정시 지역균형 전형에 교과 정량 + 출결을 반영. 정시 수능 반영비율 변경(국·수 1.2·1.4, 탐구 0.4). 서강대는 의약계열 미보유.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "학종 일반Ⅱ 수능최저 신설", "status": "confirmed" },
+    { "value": "논술 전형요소 다변화(교과·출결 추가)", "status": "confirmed" },
+    { "value": "정시 수능(지역균형) 90명 신설", "status": "confirmed" },
+    { "value": "학생부교과 추천인원 제한 폐지(2027 20명 → 무제한)", "status": "confirmed" }
+  ],
+  "officialLinks": [
+    { "name": "서강대학교 입학처(전형계획)", "url": "https://admission.sogang.ac.kr/enter/html/counsel/plan.asp" },
+    { "name": "2028 신입학 전형시행계획 PDF", "url": "https://admission.sogang.ac.kr/upload/GUIDES/20260430161704MS56GA.pdf" }
+  ]
+}

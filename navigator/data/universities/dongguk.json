@@ -1,0 +1,52 @@
+{
+  "id": "dongguk",
+  "name": "동국대학교",
+  "category": "인서울 주요대",
+  "region": { "value": "서울 중구(필동)", "status": "confirmed" },
+  "campus": "서울",
+  "summary": { "susiRatio": 70, "jeongsiRatio": 30, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": null },
+  "highlights": [
+    "수시 60% → 70%로 확대",
+    "학생부교과 영역(Zone) 매트릭스 도입(석차등급 + 성취도 병합)",
+    "학종 두드림 면접 30 → 40% 확대, 정시 전군 수능 80 + 학생부 20"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "교과전형",
+      "quota": { "value": "확인 필요", "source": { "name": "괜찮은뉴스(nextplay) 2028 예고안", "url": "https://www.nextplay.kr/news/articleView.html?idxno=8604" }, "asOf": "2026", "status": "needs_review" },
+      "method": { "value": "교과 70 + 서류종합 30. 고교별 추천인원 제한 폐지, 영역(Zone) 매트릭스 도입(공통과목 제외 상위 10과목, 5등급 + 성취도 A~E)", "status": "confirmed" },
+      "suneungMinimum": { "value": "적용(모집요강 확인)", "status": "needs_review" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "두드림",
+      "quota": { "value": "확인 필요", "status": "needs_review" },
+      "method": { "value": "면접 비중 30 → 40%로 확대", "status": "confirmed" },
+      "suneungMinimum": { "value": "확인 필요", "status": "needs_review" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "논술", "subType": "논술전형",
+      "quota": { "value": "확인 필요", "status": "needs_review" },
+      "method": { "value": "논술 70 + 교과 30, 학과모집 → 광역화 모집 변경", "status": "confirmed" },
+      "suneungMinimum": { "value": "확인 필요", "status": "needs_review" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "가·나·다군",
+      "quota": { "value": "확인 필요", "status": "needs_review" },
+      "method": { "value": "전군 수능 80 + 학생부평가 20", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "naesinReflection": { "value": "교과전형에 영역(Zone) 매트릭스(석차등급 + 성취도 병합) 도입, 정시에 학생부평가 20% 반영.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "수시 70%로 확대", "status": "confirmed" },
+    { "value": "교과 Zone 매트릭스 도입, 추천인원 제한 폐지", "status": "confirmed" },
+    { "value": "학종 면접 40%, 논술 광역화, 정시 학생부 20% 전군 도입", "status": "confirmed" }
+  ],
+  "officialLinks": [
+    { "name": "동국대학교 입학처", "url": "https://ipsi.dongguk.edu" }
+  ]
+}

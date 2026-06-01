@@ -1,0 +1,60 @@
+{
+  "id": "tukorea",
+  "name": "한국공학대학교",
+  "category": "수도권 주요대",
+  "region": { "value": "경기 시흥시", "status": "confirmed" },
+  "campus": "단일",
+  "summary": { "susiRatio": null, "jeongsiRatio": null, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 1680 },
+  "highlights": [
+    "총 1,680명(입학정원 1,409), 공학 중심 대학",
+    "교과우수자 수능최저 공학계열 완화(2개 합 7→8), 논술 비율 66.7→80%",
+    "의예·약학·간호 미보유"
+  ],
+  "admissionTypes": [
+    {
+      "track": "논술", "subType": "논술우수자",
+      "quota": { "value": "200명", "source": { "name": "한국공학대 2028 시행계획(어디가 공식 모음집)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "논술 80 + 교과 20", "status": "confirmed" },
+      "suneungMinimum": { "value": "없음", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부교과", "subType": "교과우수자 / 지역균형",
+      "quota": { "value": "교과우수자 194명 · 지역균형 170명", "status": "confirmed" },
+      "method": { "value": "교과 100%", "status": "confirmed" },
+      "suneungMinimum": { "value": "교과우수자 4개 영역 중 2개 합 8(한국사 필수) / 지역균형 없음", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "창의인재 / 융합인재 / 기회균형",
+      "quota": { "value": "창의인재 256명 · 융합인재 80명 · 기회균형 58명", "status": "confirmed" },
+      "method": { "value": "창의인재 1단계 서류 100%(3배수) → 2단계 면접 40% / 융합·기회 서류 100%", "status": "confirmed" },
+      "suneungMinimum": { "value": "없음", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "일반학생1 / 일반학생2",
+      "quota": { "value": "일반1 254명 · 일반2 195명", "status": "confirmed" },
+      "method": { "value": "일반1 수능 100%(공학 국25수35영20탐20) / 일반2 상위 3개 영역 중 수학 필수", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "naesinReflection": { "value": "교과별 석차등급 상위 4과목씩(공학=국·수·영·과 / 경영=국·수·영·사 또는 과). 융합선택 과·사 미반영.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "교과우수자 수능최저 공학계열 완화(2개 합 7→8)", "status": "confirmed" },
+    { "value": "논술 반영비율 66.7→80%, 융합인재 47→80명 확대", "status": "confirmed" },
+    { "value": "모집단위 명칭변경(SW자율전공→AI융합 자율전공, 전력응용시스템→전기공학 등)", "status": "confirmed" }
+  ],
+  "departments": [
+    { "name": "컴퓨터공학부", "college": "공과대학", "track": "교과우수자", "suneungMinimum": { "value": "2개 영역 합 8", "status": "confirmed" } },
+    { "name": "전자공학부", "college": "공과대학", "track": "교과우수자", "suneungMinimum": { "value": "2개 영역 합 8", "status": "confirmed" } },
+    { "name": "반도체공학부", "college": "공과대학", "track": "교과우수자", "suneungMinimum": { "value": "2개 영역 합 8", "status": "confirmed" } },
+    { "name": "기계공학과", "college": "공과대학", "track": "교과우수자", "suneungMinimum": { "value": "2개 영역 합 8", "status": "confirmed" } },
+    { "name": "경영학부", "college": "경영대학", "track": "교과우수자", "suneungMinimum": { "value": "2개 영역 합 8", "status": "confirmed" } }
+  ],
+  "officialLinks": [
+    { "name": "한국공학대학교 입학처", "url": "https://ipsi.tukorea.ac.kr/" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

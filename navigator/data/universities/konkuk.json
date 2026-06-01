@@ -1,0 +1,45 @@
+{
+  "id": "konkuk",
+  "name": "건국대학교",
+  "category": "인서울 주요대",
+  "region": { "value": "서울 광진구", "status": "confirmed" },
+  "campus": "서울",
+  "summary": { "susiRatio": null, "jeongsiRatio": null, "hasSuneungMinimum": true, "hasInterview": false, "totalQuota": null },
+  "highlights": [
+    "학종 일괄합산 변경(서류 70 + 학생부 교과 30), 면접 폐지 방향",
+    "논술 출제유형을 '통합'으로 일원화",
+    "정시 수능 80 + 학생부(정성) 20 도입"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부종합", "subType": "(일괄합산 변경)",
+      "quota": { "value": "확인 필요", "source": { "name": "건국대 2028 변경안(2025-09-29 게시)", "url": "https://enter.konkuk.ac.kr" }, "asOf": "2025-09", "status": "needs_review" },
+      "method": { "value": "서류 70 + 학생부(교과 정량) 30, 일괄합산(기존 단계별·면접 30%에서 변경 → 면접 폐지 방향)", "status": "needs_review" },
+      "suneungMinimum": { "value": "확인 필요", "status": "needs_review" },
+      "interview": { "value": false, "status": "needs_review" }
+    },
+    {
+      "track": "논술", "subType": "논술위주",
+      "quota": { "value": "확인 필요", "status": "needs_review" },
+      "method": { "value": "출제유형 인문/통합/자연 3종 → '통합' 일원화", "status": "needs_review" },
+      "suneungMinimum": { "value": "적용", "status": "needs_review" },
+      "interview": { "value": false, "status": "needs_review" }
+    },
+    {
+      "track": "정시(수능)", "subType": "수능위주",
+      "quota": { "value": "확인 필요", "status": "needs_review" },
+      "method": { "value": "수능 80 + 학생부(정성) 20 (기존 수능 100%에서 변경)", "status": "needs_review" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "needs_review" }
+    }
+  ],
+  "naesinReflection": { "value": "학종 일괄합산에서 학생부 교과를 정량 30% 반영, 정시에 학생부 정성평가 20% 도입.", "status": "needs_review" },
+  "changes2028": [
+    { "value": "학종 일괄합산화 및 면접 폐지 방향", "status": "needs_review" },
+    { "value": "논술 출제유형 '통합' 일원화", "status": "needs_review" },
+    { "value": "정시 학생부 정성평가 20% 도입", "status": "needs_review" }
+  ],
+  "officialLinks": [
+    { "name": "건국대학교 입학처", "url": "https://enter.konkuk.ac.kr" }
+  ]
+}

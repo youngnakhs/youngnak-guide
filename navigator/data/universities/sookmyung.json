@@ -1,0 +1,59 @@
+{
+  "id": "sookmyung",
+  "name": "숙명여자대학교",
+  "category": "인서울 주요대",
+  "region": { "value": "서울 용산구(청파동)", "status": "confirmed" },
+  "campus": "단일",
+  "summary": { "susiRatio": 51.8, "jeongsiRatio": 48.2, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 2152 },
+  "highlights": [
+    "총 2,152명 (수시 1,114명 51.8% / 정시 1,038명 48.2%)",
+    "숙명인재 면접형 1단계 서류100(4배수) → 2단계 면접 30%",
+    "지역균형 교과 70 + 서류 30, 인원 확대(287→314명)"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부종합", "subType": "숙명인재 면접형",
+      "quota": { "value": "361명", "source": { "name": "숙명여대 2028 시행계획(어디가 공식 모음집)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "1단계 서류 100%(4배수) → 2단계 70 + 면접 30", "status": "confirmed" },
+      "suneungMinimum": { "value": "미적용", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "소프트웨어인재 / 기회균형",
+      "quota": { "value": "소프트웨어인재 35명 · 기회균형 55명", "status": "confirmed" },
+      "method": { "value": "서류 100%", "status": "confirmed" },
+      "suneungMinimum": { "value": "미적용", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부교과", "subType": "지역균형선발",
+      "quota": { "value": "314명 (2027 287명에서 증가)", "status": "confirmed" },
+      "method": { "value": "교과 70 + 서류 30", "status": "confirmed" },
+      "suneungMinimum": { "value": "약학부만 3개 영역 합 5, 그 외 미적용", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "논술", "subType": "논술우수자",
+      "quota": { "value": "214명", "status": "confirmed" },
+      "method": { "value": "논술 85 + 학생부교과 15", "status": "confirmed" },
+      "suneungMinimum": { "value": "적용", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "일반학생",
+      "quota": { "value": "가군 485 · 나군 293(약학부·자유전공) · 다군 68(첨단공학부)", "status": "confirmed" },
+      "method": { "value": "수능 위주", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "naesinReflection": { "value": "지역균형 교과 70 + 서류 30, 논술 학생부교과 15% 반영.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "지역균형 인원 증가(287→314명)", "status": "confirmed" },
+    { "value": "기회균형 71→55명 축소", "status": "confirmed" }
+  ],
+  "officialLinks": [
+    { "name": "숙명여자대학교 입학처", "url": "https://admission.sookmyung.ac.kr" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

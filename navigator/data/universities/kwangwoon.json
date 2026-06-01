@@ -1,0 +1,60 @@
+{
+  "id": "kwangwoon",
+  "name": "광운대학교",
+  "category": "인서울 주요대",
+  "region": { "value": "서울 노원구(월계동)", "status": "confirmed" },
+  "campus": "본교",
+  "summary": { "susiRatio": 55, "jeongsiRatio": 45, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 1684 },
+  "highlights": [
+    "정원내 1,684명 (수시 920 · 정시 764)",
+    "지역균형(교과) 수능최저 신설(없음 → 2개 합 6)",
+    "정시 수능 영역별 가산점 폐지"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "지역균형전형",
+      "quota": { "value": "191명(10.0%)", "source": { "name": "광운대 2028 시행계획(어디가 공식 모음집)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "학생부 100%(교과 90 + 비교과(출결) 10)", "status": "confirmed" },
+      "suneungMinimum": { "value": "국·수·영·탐(사/과) 중 2개 영역 합 6등급 이내(2028 신설)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "광운참빛인재 I(면접형) / II(서류형) · SW우수인재",
+      "quota": { "value": "I 250명 · II 208명 · SW 72명", "status": "confirmed" },
+      "method": { "value": "I 1단계 서류 → 2단계 면접 40% / II 서류형", "status": "confirmed" },
+      "suneungMinimum": { "value": "없음", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "논술", "subType": "논술우수자",
+      "quota": { "value": "181명", "status": "confirmed" },
+      "method": { "value": "논술고사 100%", "status": "confirmed" },
+      "suneungMinimum": { "value": "없음", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "일반학생(가·나·다)",
+      "quota": { "value": "764명", "status": "confirmed" },
+      "method": { "value": "수능 위주, 영역별 가산점 폐지", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "naesinReflection": { "value": "학생부 교과 90 + 출결 10(지역균형 기준).", "status": "confirmed" },
+  "changes2028": [
+    { "value": "지역균형(교과) 수능최저 신설(없음 → 2개 합 6), 자율전공학부로 모집단위 변경", "status": "confirmed" },
+    { "value": "학폭 조치사항 반영(학종 6~9호 부적격)", "status": "confirmed" },
+    { "value": "정시 수능 영역별 가산점 폐지·반영비율 변경", "status": "confirmed" }
+  ],
+  "departments": [
+    { "name": "전자공학과", "college": "전자정보공과대학", "track": "교과·논술·정시", "suneungMinimum": { "value": "교과(지역균형) 2개 합 6 / 논술·학종·정시 없음", "status": "confirmed" } },
+    { "name": "컴퓨터정보공학부", "college": "전자정보공과대학", "track": "교과·논술·정시", "suneungMinimum": { "value": "교과(지역균형) 2개 합 6", "status": "confirmed" } },
+    { "name": "소프트웨어학부", "college": "SW융합대학", "track": "교과·논술·정시", "suneungMinimum": { "value": "교과(지역균형) 2개 합 6", "status": "confirmed" } },
+    { "name": "경영학부", "college": "정책법학·경영대학", "track": "교과·논술·정시", "suneungMinimum": { "value": "교과(지역균형) 2개 합 6", "status": "confirmed" } },
+    { "name": "자율전공학부(인문/자연)", "college": "자율전공", "track": "교과·정시", "suneungMinimum": { "value": "교과(지역균형) 2개 합 6", "status": "confirmed" } }
+  ],
+  "officialLinks": [
+    { "name": "광운대학교 입학처", "url": "https://iphak.kw.ac.kr/" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

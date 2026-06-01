@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2028 대입 내비게이터 · 대학별 전형 비교</title>
+    <meta name="description" content="2028학년도 대학입학전형시행계획을 대학별로 비교·분석합니다. 통합형 수능·내신 5등급제 등 개편 핵심과 대학별 차이를 한눈에. 교사·학생·학부모용." />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:site_name" content="2028 대입 내비게이터" />
+    <meta property="og:title" content="2028 대입 내비게이터 — 대학별 전형 비교" />
+    <meta property="og:description" content="통합형 수능·내신 5등급제 등 2028학년도 대입 개편 핵심과 전국 주요 대학 전형을 한눈에. 교사·학생·학부모용." />
+    <meta property="og:image" content="https://youngnakhs.github.io/admission-analyzer/og.png" />
+    <meta property="og:url" content="https://youngnakhs.github.io/admission-analyzer/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="module" crossorigin src="./assets/main-BkjcaW69.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/site-Ck_ArAu4.js">
+    <link rel="modulepreload" crossorigin href="./assets/data-1fpcbxBG.js">
+    <link rel="stylesheet" crossorigin href="./assets/site-rAQZbQ63.css">
+    <link rel="stylesheet" crossorigin href="./assets/main-BYspvJry.css">
+  </head>
+  <body>
+    <main id="main" class="landing">
+      <!-- 3D 성좌 캔버스 (저사양/미지원 시 자동 폴백) -->
+      <div id="scene" class="scene" aria-hidden="true"></div>
+
+      <section class="hero" id="hero">
+        <div class="hero__inner container">
+          <span class="hero__eyebrow fade-in">영락고등학교 1학년부 · 2028 대학입시</span>
+          <h1 class="hero__title fade-in">2028 대입 내비게이터</h1>
+          <p class="hero__lead fade-in">
+            통합형 수능과 내신 5등급제로 크게 바뀌는 <strong>2028학년도 대학입학전형</strong>.<br />
+            전국 주요 대학의 전형을 한곳에서 비교하고, 무엇이 같고 무엇이 다른지 확인하세요.
+          </p>
+          <div class="hero__cta fade-in">
+            <a class="btn btn--primary btn--lg" href="compare.html">대학 비교 시작하기</a>
+            <a class="btn btn--ghost btn--lg" href="reform.html">개편 핵심 보기</a>
+          </div>
+          <div class="hero__hint fade-in" id="sceneHint">
+            <button id="toggle3d" class="text-btn" type="button">✦ 3D 보기 끄기</button>
+            <span class="text-soft">· 별을 드래그해 돌려보고, 대학을 클릭해 보세요</span>
+          </div>
+        </div>
+        <div class="hero__scroll" aria-hidden="true">▾</div>
+      </section>
+
+      <!-- 궤도 설명: 스크롤하면 배경 궤도가 비치는 채로 "궤도가 무엇인지" 안내 -->
+      <section class="orbit-intro" id="orbitIntro" aria-label="궤도 안내">
+        <div class="orbit-intro__panel fade-in">
+          <h2>별 하나가 대학 하나입니다</h2>
+          <p class="lead">
+            지금 보이는 우주의 별들은 전국 주요 대학입니다.<br />
+            별이 차례로 빛나며 어느 대학인지 알려드려요. 직접 별을 드래그해 돌려보거나 클릭하면 그 대학의 상세 정보로 이동합니다.
+          </p>
+        </div>
+        <div class="orbit-keys fade-in">
+          <span class="orbit-key"><span class="dot" style="background:var(--c-seoul,#6f9bff);color:var(--c-seoul,#6f9bff)"></span>색깔 = 대학 분류</span>
+          <span class="orbit-key"><span class="szset"><i class="s"></i><i class="m"></i><i class="l"></i></span>크기 = 모집 규모</span>
+          <span class="orbit-key"><span class="dot" style="background:#9085bf;color:#9085bf"></span>같은 궤도 = 같은 분류 그룹</span>
+        </div>
+        <div class="orbit-cue fade-in"><span class="pulse"></span>규모가 큰 대학부터 차례로 강조됩니다 · 계속 스크롤하면 메뉴가 나옵니다</div>
+      </section>
+
+      <!-- 메뉴 위성 (2D 콘텐츠) -->
+      <section class="section container">
+        <div class="section-head center">
+          <span class="eyebrow">메뉴</span>
+          <h2>어디서부터 볼까요?</h2>
+          <p style="margin-inline:auto">교사·학생·학부모 누구나 이해할 수 있도록 구성했습니다.</p>
+        </div>
+        <div class="bento" id="menuGrid">
+          <a class="card card--hover span-6 menu-card" href="reform.html">
+            <div class="menu-card__icon">🧭</div>
+            <h3>2028 개편 핵심 한눈에</h3>
+            <p class="text-soft">통합형 수능, 내신 5등급제, 수시·정시 변화 등 모든 대학에 공통으로 적용되는 변화를 정리했습니다.</p>
+          </a>
+          <a class="card card--hover span-6 menu-card" href="compare.html">
+            <div class="menu-card__icon">📊</div>
+            <h3>대학별 비교 대시보드</h3>
+            <p class="text-soft">분류·소재지·수능최저·면접 등으로 필터링하고 정렬하며 대학을 한 표에서 비교합니다.</p>
+          </a>
+          <a class="card card--hover span-3 menu-card" href="search.html">
+            <div class="menu-card__icon">🔎</div>
+            <h3>학과 검색</h3>
+            <p class="text-soft">의예·약학·간호·컴퓨터·경영… 모집단위(학과)별 수능최저를 한 곳에서 검색합니다.</p>
+          </a>
+          <a class="card card--hover span-3 menu-card" href="guide.html">
+            <div class="menu-card__icon">📚</div>
+            <h3>전형 가이드·용어집</h3>
+            <p class="text-soft">학생부종합·교과·논술·수능최저… 어려운 입시 용어를 학부모 눈높이로 풀었습니다.</p>
+          </a>
+          <a class="card card--hover span-3 menu-card" href="compare.html#list">
+            <div class="menu-card__icon">🏛️</div>
+            <h3>대학 상세 보기</h3>
+            <p class="text-soft">대학별 전형·수능최저·면접·내신 반영·2028 변화점을 한눈에 확인합니다.</p>
+          </a>
+          <a class="card card--hover span-3 menu-card" href="sources.html">
+            <div class="menu-card__icon">📌</div>
+            <h3>유의사항·면책</h3>
+            <p class="text-soft">이 자료를 활용하실 때의 유의사항과 면책 안내입니다.</p>
+          </a>
+          <a class="card card--hover span-12 menu-card" href="https://youngnakhs.github.io/youngnak-guide/" target="_blank" rel="noopener">
+            <div class="menu-card__icon">🏫</div>
+            <h3>영락고 진로·대입 정보센터 ↗</h3>
+            <p class="text-soft">교육과정 안내·과목 선택·내신 합격예측 등 영락고 학생·학부모를 위한 종합 진로·대입 정보 서비스(새 창)로 이동합니다.</p>
+          </a>
+        </div>
+      </section>
+
+      <!-- 핵심 지표 한눈에 -->
+      <section class="section container">
+        <div class="section-head center">
+          <span class="eyebrow">2028 한눈에</span>
+          <h2>숫자로 보는 2028 대입</h2>
+        </div>
+        <div class="bento" id="statGrid">
+          <!-- JS 주입 -->
+        </div>
+        <p class="center text-soft" style="margin-top:var(--space-5)">
+          <a href="reform.html">개편 핵심 자세히 보기 →</a>
+        </p>
+      </section>
+
+      <!-- 분류 범례 -->
+      <section class="section container">
+        <div class="legend card">
+          <strong>대학 분류</strong>
+          <span class="badge badge--seoul"><span class="cat-dot"></span>인서울 주요대</span>
+          <span class="badge badge--national"><span class="cat-dot"></span>지방거점국립대</span>
+          <span class="badge badge--metro"><span class="cat-dot"></span>수도권 주요대</span>
+          <span class="badge badge--branch"><span class="cat-dot"></span>지방캠퍼스</span>
+        </div>
+      </section>
+    </main>
+
+    <!-- 스크롤하면 히어로 타이틀이 페이드아웃되며 순수 궤도가 드러남 -->
+    <script>
+      (function () {
+        var hero = document.getElementById('hero');
+        if (!hero) return;
+        var ticking = false;
+        function apply() {
+          ticking = false;
+          var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+          var vh = window.innerHeight || 1;
+          var p = Math.min(1, y / (vh * 0.7));
+          hero.style.opacity = String(1 - p);
+          hero.style.transform = 'translateY(' + (-y * 0.18) + 'px)';
+          hero.style.pointerEvents = p > 0.85 ? 'none' : '';
+        }
+        function onScroll() {
+          if (!ticking) { ticking = true; requestAnimationFrame(apply); }
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll, { passive: true });
+        apply();
+      })();
+    </script>
+  </body>
+</html>

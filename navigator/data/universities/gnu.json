@@ -1,0 +1,52 @@
+{
+  "id": "gnu",
+  "name": "경상국립대학교",
+  "category": "지방거점국립대",
+  "region": { "value": "경남 진주시", "status": "confirmed" },
+  "campus": "가좌(+칠암)",
+  "summary": { "susiRatio": 80.3, "jeongsiRatio": 18.7, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 4649 },
+  "highlights": [
+    "총 4,649명 (수시·자율 3,734명 80.3% / 정시 870명 18.7%)",
+    "학생부교과 일반 1,731명·지역인재 194명, 학생부종합 일반 672명",
+    "수능최저는 교과전형(일반·지역인재)에 적용, 의·약·수의는 전 전형 적용"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "일반 / 지역인재",
+      "quota": { "value": "일반 1,731명 · 지역인재 194명", "source": { "name": "경상국립대 2028 시행계획(어디가 공식 모음집)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "교과 위주(반영과목 국·영·수·사/과 계열별)", "status": "confirmed" },
+      "suneungMinimum": { "value": "교과전형(일반·지역인재)에 적용. 일반학과 상위 2개 영역 합 / 의·약·수의는 수학 포함 3개 영역 합", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "일반 / 면접 / 지역인재 / 지역의사",
+      "quota": { "value": "일반(일괄) 672명 · 일반(면접) 100명 · 지역인재 508명 · 지역의사선발 28명", "status": "confirmed" },
+      "method": { "value": "일반 일괄선발 / 면접형 단계별. 지역의사 학생부종합 선발", "status": "confirmed" },
+      "suneungMinimum": { "value": "학생부종합 미적용(단 의·약·수의는 적용)", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "가·나·다군 일반 / 지역인재",
+      "quota": { "value": "870명(18.7%)", "status": "confirmed" },
+      "method": { "value": "수능 위주", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "departments": [
+    { "name": "의예과", "college": "의과대학", "track": "교과·종합·정시", "quota": 108, "suneungMinimum": { "value": "3개 영역 합 — 일반 4 / 지역인재·기초 6(수학 필수, 탐구 2과목 평균)", "status": "confirmed" } },
+    { "name": "약학과", "college": "약학대학", "track": "교과·종합·정시", "quota": 38, "suneungMinimum": { "value": "3개 영역 합 — 일반 5 / 지역 6 / 기초 7", "status": "confirmed" } },
+    { "name": "수의예과", "college": "수의과대학", "track": "교과·종합·정시", "quota": 54, "suneungMinimum": { "value": "3개 영역 합 6", "status": "confirmed" } },
+    { "name": "간호학과", "college": "간호대학", "track": "교과·종합·정시", "quota": 114, "suneungMinimum": { "value": "2개 영역 합 8", "status": "confirmed" } },
+    { "name": "항공우주공학부", "college": "공과대학", "track": "교과·종합·정시", "suneungMinimum": { "value": "2개 영역 합 5", "status": "confirmed" } },
+    { "name": "컴퓨터공학부·일반학과", "college": "전 계열", "track": "교과", "suneungMinimum": { "value": "다수 미적용(교과전형 일부 2개 영역 합)", "status": "confirmed" } }
+  ],
+  "naesinReflection": { "value": "학생부교과 반영과목 국·영·수·사/과 계열별 지정. 수능최저는 교과전형(일반·지역인재)에 적용, 학생부종합 미적용(의·약·수의는 전 전형 적용).", "status": "confirmed" },
+  "changes2028": [
+    { "value": "지역의사 학생부종합 선발, 전형 신설·변경", "status": "confirmed" }
+  ],
+  "officialLinks": [
+    { "name": "경상국립대학교 입학안내", "url": "https://new.gnu.ac.kr/new/main.do" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

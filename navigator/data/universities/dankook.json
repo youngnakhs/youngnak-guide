@@ -1,0 +1,63 @@
+{
+  "id": "dankook",
+  "name": "단국대학교",
+  "category": "수도권 주요대",
+  "region": { "value": "경기 용인(죽전) · 충남 천안", "status": "confirmed" },
+  "campus": "죽전·천안",
+  "summary": { "susiRatio": 62, "jeongsiRatio": 38, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 5146 },
+  "highlights": [
+    "죽전(용인)+천안 2캠퍼스, 의·치·약·간호는 천안",
+    "죽전 논술우수자(300명)·천안 지역균형선발 신설, 광역모집단위 선발 신설",
+    "죽전 수시 62.9%/정시 37.1%, 천안 수시 60.6%/정시 39.4%"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "지역균형선발(신설) / 학생부교과우수자",
+      "quota": { "value": "지역균형 519명(죽전265·천안254) · 교과우수자 351명(천안)", "source": { "name": "단국대 2028 시행계획(어디가 공식 모음집)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "교과 95 + 출결 5", "status": "confirmed" },
+      "suneungMinimum": { "value": "지역균형 죽전 2개 합 6 / 천안 2개 합 8 · 교과우수자 2개 합 8", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "DKU인재 서류형 / 면접형",
+      "quota": { "value": "서류형 528명(죽전232·천안296) · 면접형 252명(죽전203·천안49)", "status": "confirmed" },
+      "method": { "value": "서류형 서류 100% / 면접형 1단계 서류 100%(3배수) → 2단계 1단계 60 + 면접 40", "status": "confirmed" },
+      "suneungMinimum": { "value": "서류형 없음(의·약 제외) / 면접형 의학계열 3개 합 4·약학 3개 합 5", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "논술", "subType": "논술우수자(죽전, 신설)",
+      "quota": { "value": "300명", "status": "confirmed" },
+      "method": { "value": "논술 90 + 교과 10", "status": "confirmed" },
+      "suneungMinimum": { "value": "없음", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "일반학생",
+      "quota": { "value": "죽전 783명 · 천안 788명", "status": "confirmed" },
+      "method": { "value": "수능 위주(의예 등 수능 90 + 학생부 정성 10)", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "naesinReflection": { "value": "지역균형·교과우수자 교과 95 + 비교과(출결) 5. 정시 학생부 정성평가 반영(의예 등).", "status": "confirmed" },
+  "changes2028": [
+    { "value": "광역모집단위 선발전형 신설(죽전 인문/공학계열광역, 천안 율곡혁신칼리지 등)", "status": "confirmed" },
+    { "value": "죽전 논술우수자(300명)·천안 지역균형선발 신설", "status": "confirmed" },
+    { "value": "창업인재전형 폐지, 건축 관련 모집단위 개편", "status": "confirmed" }
+  ],
+  "departments": [
+    { "name": "의예과", "college": "의과대학(천안)", "track": "학생부종합·정시", "suneungMinimum": { "value": "지역메디바이오·면접형 3개 합 4 / 진료권 3개 합 6 / 광역권 3개 합 5", "status": "confirmed" } },
+    { "name": "치의예과", "college": "치과대학(천안)", "track": "학생부종합·정시", "suneungMinimum": { "value": "지역메디바이오 3개 합 4 / 면접형 3개 합 5", "status": "confirmed" } },
+    { "name": "약학과", "college": "약학대학(천안)", "track": "학생부종합·정시", "suneungMinimum": { "value": "지역메디바이오 3개 합 5 / 면접형 3개 합 6", "status": "confirmed" } },
+    { "name": "간호학과", "college": "간호대학(천안)", "track": "학생부·정시", "suneungMinimum": { "value": "모집요강 확인", "status": "needs_review" } },
+    { "name": "소프트웨어학과", "college": "SW융합대학(죽전)", "track": "학생부·논술·정시", "suneungMinimum": { "value": "논술 없음 / 교과 죽전 2개 합 6", "status": "confirmed" } },
+    { "name": "컴퓨터공학과", "college": "SW융합대학(죽전)", "track": "학생부·논술·정시", "suneungMinimum": { "value": "교과 죽전 2개 합 6", "status": "confirmed" } },
+    { "name": "전자전기공학부", "college": "공과대학(죽전)", "track": "학생부·논술·정시", "suneungMinimum": { "value": "교과 죽전 2개 합 6", "status": "confirmed" } },
+    { "name": "경영학부", "college": "경영경제대학(죽전)", "track": "학생부·논술·정시", "suneungMinimum": { "value": "교과 죽전 2개 합 6", "status": "confirmed" } }
+  ],
+  "officialLinks": [
+    { "name": "단국대학교 입학처", "url": "https://ipsi.dankook.ac.kr/" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

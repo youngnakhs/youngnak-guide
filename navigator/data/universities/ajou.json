@@ -1,0 +1,60 @@
+{
+  "id": "ajou",
+  "name": "아주대학교",
+  "category": "수도권 주요대",
+  "region": { "value": "경기 수원시 영통구", "status": "confirmed" },
+  "campus": "단일",
+  "summary": { "susiRatio": 66.3, "jeongsiRatio": 33.7, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 2217 },
+  "highlights": [
+    "정원내 2,217명 (수시 1,469명 66.3% / 정시 748명 33.7%)",
+    "ACE 면접형/서류형 분리, 지역의사선발(7명) 신설",
+    "고교추천 인문계열 수능최저 완화(2개 합 5→6)"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "고교추천",
+      "quota": { "value": "279명", "source": { "name": "아주대 2028 시행계획(어디가 공식 모음집)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "학생부교과 90 + 출결 10, 졸업예정자만 지원", "status": "confirmed" },
+      "suneungMinimum": { "value": "인문 2개 영역 합 6 / 자연 2개 합 5 (인문 5→6 완화)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "ACE 면접형",
+      "quota": { "value": "563명", "status": "confirmed" },
+      "method": { "value": "1단계 서류 100%(4배수) → 2단계 70 + 면접 30", "status": "confirmed" },
+      "suneungMinimum": { "value": "미적용", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "ACE 서류형 / 지역의사선발(신설)",
+      "quota": { "value": "ACE 서류형 201명 · 지역의사선발 7명", "status": "confirmed" },
+      "method": { "value": "서류형 서류 100%(수능최저 적용) / 지역의사선발 2단계 면접", "status": "confirmed" },
+      "suneungMinimum": { "value": "서류형 적용", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "논술", "subType": "논술우수자",
+      "quota": { "value": "224명", "status": "confirmed" },
+      "method": { "value": "논술 90 + 학생부교과 10 (비율 변경)", "status": "confirmed" },
+      "suneungMinimum": { "value": "적용(모집요강 확인)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "나군·다군 일반",
+      "quota": { "value": "748명", "status": "confirmed" },
+      "method": { "value": "수능 100% 중심", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "naesinReflection": { "value": "고교추천 교과 90 + 출결 10. 학종은 서류·면접 평가.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "ACE 면접형/서류형 분리", "status": "confirmed" },
+    { "value": "지역의사선발 신설(7명)", "status": "confirmed" },
+    { "value": "재직자 면접 폐지, 논술 비율 변경, 고교추천 인문 최저 완화", "status": "confirmed" }
+  ],
+  "officialLinks": [
+    { "name": "아주대학교 입학처", "url": "https://www.iajou.ac.kr" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "id": "kangwon",
+  "name": "강원대학교",
+  "category": "지방거점국립대",
+  "region": { "value": "강원 춘천", "status": "confirmed" },
+  "campus": "춘천",
+  "summary": { "susiRatio": 80, "jeongsiRatio": 19.4, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 3363 },
+  "highlights": [
+    "지역교과 → '강원인재'로 명칭 변경, 의예과 '지역의사선발-정성' 전환",
+    "내신 5등급제 반영(교과등급 80% + 성취도 20%), 출결 가감점 신설",
+    "춘천캠퍼스 총 3,363명 (수시 80.0% / 정시 19.4%)"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부종합", "subType": "미래인재(서류·면접)",
+      "quota": { "value": "954명 (서류 462·면접 372·기회균형 115·영농창업 5)", "source": { "name": "강원대 2028 시행계획(공식 PDF)", "url": "https://admission.kangwon.ac.kr/DATA/download/admission/2028c_basic.pdf" }, "asOf": "2026-03", "status": "confirmed" },
+      "method": { "value": "서류형 서류 100% / 면접형 1단계 서류 100% → 2단계 서류 60 + 면접 40", "status": "confirmed" },
+      "suneungMinimum": { "value": "대부분 미적용(의·약 등 일부 적용)", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "학생부교과", "subType": "일반 / 강원인재(지역인재)",
+      "quota": { "value": "1,621명 (일반 742·강원인재 487·지역의사 정성 49 등)", "status": "confirmed" },
+      "method": { "value": "교과 100%(교과등급 80 + 성취도 20). 출결 가감점 신설", "status": "confirmed" },
+      "suneungMinimum": { "value": "강원인재 약학 7등급·의예 5등급(국·수·영·과탐 중 수학포함 3개합) / 일반 약학 8·의예 6. 그 외 다수 학과 미적용", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "가·나군 일반 / 강원인재",
+      "quota": { "value": "일반 632명 + 강원인재 14명(가11·나3)", "status": "confirmed" },
+      "method": { "value": "수능 위주. 영어 백분위 등급간 점수차 조정", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "departments": [
+    { "name": "의예과", "college": "의과대학", "track": "지역의사선발(정성)", "quota": 49, "suneungMinimum": { "value": "3개 영역 합 6(수학 포함). 일반·강원인재 미선발", "status": "confirmed" } },
+    { "name": "수의학과", "college": "수의과대학", "track": "일반-정성·강원인재-정성·미래인재서류", "suneungMinimum": { "value": "수학 포함 3개 영역 합 — 일반 7 / 강원인재 8 / 미래인재서류 8", "status": "confirmed" } },
+    { "name": "약학과", "college": "약학대학", "track": "일반-정성·강원인재-정성", "suneungMinimum": { "value": "3개 영역 합 — 일반 7 / 강원인재 8", "status": "confirmed" } },
+    { "name": "간호학과", "college": "간호대학", "track": "교과·종합", "suneungMinimum": { "value": "2개 영역 합 — 일반 6 / 강원인재 7 / 미래인재서류 7", "status": "confirmed" } },
+    { "name": "일반학과(자연)", "college": "공학·자연", "track": "교과", "suneungMinimum": { "value": "2개 영역 합 — 일반 8 / 강원인재 8", "status": "confirmed" } }
+  ],
+  "naesinReflection": { "value": "내신 5등급제 적용(공통·일반·진로·융합선택), 교과등급 80% + 성취도 20%. 종합전형 학업역량 비중 40→50%. 일반 모집단위 2개 영역 합 / 수의·약·의예 수학 포함 3개 영역 합.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "지역교과 → '강원인재'로 명칭 변경", "status": "confirmed" },
+    { "value": "의예과 '지역의사선발-정성' 전환, 수의·약학 정성평가 전환", "status": "confirmed" },
+    { "value": "학·석사통합·사회배려자 폐지, 출결 가감점 신설", "status": "confirmed" }
+  ],
+  "officialLinks": [
+    { "name": "강원대학교 입학처", "url": "https://wwwk.kangwon.ac.kr/admission/main.do" },
+    { "name": "2028 시행계획 PDF(춘천)", "url": "https://admission.kangwon.ac.kr/DATA/download/admission/2028c_basic.pdf" }
+  ]
+}

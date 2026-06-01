@@ -1,0 +1,67 @@
+{
+  "id": "kyonggi",
+  "name": "경기대학교",
+  "category": "수도권 주요대",
+  "region": { "value": "경기 수원 · 서울제2", "status": "confirmed" },
+  "campus": "수원·서울",
+  "summary": { "susiRatio": 68, "jeongsiRatio": 32, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 3092 },
+  "highlights": [
+    "총 약 3,092명 (수시 2,114 · 정시 978)",
+    "학교장추천 졸업생 지원불가·추천인원 제한 폐지, 특성화고졸업자전형 신설",
+    "의예·약학·간호 미보유"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "교과성적우수자",
+      "quota": { "value": "255명", "source": { "name": "경기대 2028 시행계획(어디가 공식 모음집)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "교과 90 + 출결 10", "status": "confirmed" },
+      "suneungMinimum": { "value": "국·수·영·탐(상위1) 중 2개 영역 합 7 이내(영어 1·2등급=1등급), 한국사 6", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부교과", "subType": "학교장추천",
+      "quota": { "value": "317명", "status": "confirmed" },
+      "method": { "value": "교과 90 + 출결 10", "status": "confirmed" },
+      "suneungMinimum": { "value": "없음", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "KGU학생부종합",
+      "quota": { "value": "680명", "status": "confirmed" },
+      "method": { "value": "1단계 서류 100%(3배수) → 2단계 면접 30%", "status": "confirmed" },
+      "suneungMinimum": { "value": "없음", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "논술", "subType": "논술우수자",
+      "quota": { "value": "239명(언어·사회 134 · 수리 105)", "status": "confirmed" },
+      "method": { "value": "논술 90 + 교과 10", "status": "confirmed" },
+      "suneungMinimum": { "value": "없음", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "일반학생Ⅰ/Ⅱ",
+      "quota": { "value": "일반Ⅰ(가107·나97·다625) · 일반Ⅱ(나31)", "status": "confirmed" },
+      "method": { "value": "일반Ⅰ 수능 100% / 일반Ⅱ 수능 95 + 교과 5", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "naesinReflection": { "value": "졸업예정자·졸업자 모두 3-1학기까지(2027 대비 단축). 보통교과 석차등급 중심, 수시 진로선택 미반영.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "졸업자 교과반영 3-2 → 3-1로 단축", "status": "confirmed" },
+    { "value": "학교장추천 졸업생 지원불가·추천인원 제한 폐지, 특성화고졸업자전형 신설", "status": "confirmed" },
+    { "value": "정시 일반학생 반영비율 변경(국어 35→40%·수학 30→25%), 창업인재전형 폐지", "status": "confirmed" }
+  ],
+  "departments": [
+    { "name": "경영학부", "college": "경영대학", "track": "교과성적우수자", "suneungMinimum": { "value": "2개 영역 합 7", "status": "confirmed" } },
+    { "name": "AI컴퓨터공학부", "college": "AI·SW", "track": "교과성적우수자", "suneungMinimum": { "value": "2개 영역 합 7", "status": "confirmed" } },
+    { "name": "전자공학부", "college": "공과대학", "track": "교과성적우수자", "suneungMinimum": { "value": "2개 영역 합 7", "status": "confirmed" } },
+    { "name": "국어국문학과", "college": "인문대학", "track": "교과성적우수자", "suneungMinimum": { "value": "2개 영역 합 7", "status": "confirmed" } },
+    { "name": "건축학과(5년제)", "college": "공과대학", "track": "교과·종합", "suneungMinimum": { "value": "교과 2개 영역 합 7", "status": "confirmed" } }
+  ],
+  "officialLinks": [
+    { "name": "경기대학교 입학처", "url": "https://ipsi.kyonggi.ac.kr/" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

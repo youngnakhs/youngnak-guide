@@ -1,0 +1,71 @@
+{
+  "id": "gachon",
+  "name": "가천대학교",
+  "category": "수도권 주요대",
+  "region": { "value": "경기 성남시", "status": "confirmed" },
+  "campus": "메디컬·글로벌",
+  "summary": { "susiRatio": null, "jeongsiRatio": null, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": null },
+  "highlights": [
+    "논술전형 대규모 운영(1,054명), 의예·한의예·약학 보유",
+    "학생부우수자 반영방법 변경, 논술 수능최저 강화(2개 합 6)",
+    "정시 영역별 반영비율 변경(4개 영역 5:4:3:2)"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "학생부우수자",
+      "quota": { "value": "426명", "source": { "name": "가천대 2028 시행계획(어디가 공식 모음집)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "교과 100%", "status": "confirmed" },
+      "suneungMinimum": { "value": "인문·자연 2개 영역 합 6 / 의예 3개 각 1 / 약학 3개 합 5 / 한의 2개 각 1", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부교과", "subType": "지역균형",
+      "quota": { "value": "360명", "status": "confirmed" },
+      "method": { "value": "1단계 교과 100%(5배수) → 2단계 면접 50%", "status": "confirmed" },
+      "suneungMinimum": { "value": "없음", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "가천바람개비 / 가천의약학",
+      "quota": { "value": "바람개비 447명 · 의약학 26명", "status": "confirmed" },
+      "method": { "value": "1단계 서류 100%(4배수) → 2단계 면접 50%", "status": "confirmed" },
+      "suneungMinimum": { "value": "바람개비 없음 / 의약학 의예 3개 각 1·약학 3개 합 5", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "논술", "subType": "논술전형",
+      "quota": { "value": "1,054명", "status": "confirmed" },
+      "method": { "value": "논술 100%", "status": "confirmed" },
+      "suneungMinimum": { "value": "인문·자연 2개 합 6(국/수 반영 시 1등급 상향) / 의예 3개 각 1 / 약학 3개 합 5", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "일반전형1 / 일반전형2",
+      "quota": { "value": "일반1 1,042명 · 일반2 241명", "status": "confirmed" },
+      "method": { "value": "일반1 수능 100%(백분위, 4개 영역 5:4:3:2) / 일반2 수능 100%(표준점수, 3개 영역 5:4:3)", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "naesinReflection": { "value": "학생부우수자는 반영교과 중 국·수·영 5과목·사·과 5과목 방식. 5등급제/9등급제 배점표 병행. 지역균형은 사·과 우수 10과목.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "학생부우수자 반영방법 변경(특정과목 미반영 방식)", "status": "confirmed" },
+    { "value": "논술 수능최저 강화(1개 영역 3등급 → 2개 합 6)", "status": "confirmed" },
+    { "value": "정시 영역별 반영비율 변경(4개 영역 5:4:3:2)", "status": "confirmed" }
+  ],
+  "departments": [
+    { "name": "의예과", "college": "의과대학", "track": "학생부교과·논술·종합", "suneungMinimum": { "value": "3개 영역(국·수·영+과탐) 각 1등급", "status": "confirmed" } },
+    { "name": "한의예과", "college": "한의과대학", "track": "논술", "suneungMinimum": { "value": "2개 영역 각 1등급", "status": "confirmed" } },
+    { "name": "약학과", "college": "약학대학", "track": "학생부교과·논술·종합", "suneungMinimum": { "value": "3개 영역 합 5(국·수·영·과탐)", "status": "confirmed" } },
+    { "name": "간호학과", "college": "간호대학", "track": "학생부교과·종합·실기", "suneungMinimum": { "value": "의약학 수능최저 미적용(일반 기준)", "status": "confirmed" } },
+    { "name": "컴퓨터공학과", "college": "IT융합대학", "track": "학생부·논술·정시", "suneungMinimum": { "value": "인문·자연 일반 2개 영역 합 6", "status": "confirmed" } },
+    { "name": "인공지능학과", "college": "IT융합대학", "track": "학생부·논술·정시", "suneungMinimum": { "value": "2개 영역 합 6", "status": "confirmed" } },
+    { "name": "전기공학과", "college": "공과대학", "track": "학생부·논술·정시", "suneungMinimum": { "value": "2개 영역 합 6", "status": "confirmed" } },
+    { "name": "기계공학부", "college": "공과대학", "track": "학생부·논술·정시", "suneungMinimum": { "value": "2개 영역 합 6", "status": "confirmed" } },
+    { "name": "경영학과", "college": "경영대학", "track": "학생부·논술·정시", "suneungMinimum": { "value": "2개 영역 합 6", "status": "confirmed" } }
+  ],
+  "officialLinks": [
+    { "name": "가천대학교 입학처", "url": "https://www.gachon.ac.kr/ipsi/index.jsp" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

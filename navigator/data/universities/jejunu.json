@@ -1,0 +1,51 @@
+{
+  "id": "jejunu",
+  "name": "제주대학교",
+  "category": "지방거점국립대",
+  "region": { "value": "제주특별자치도 제주시", "status": "confirmed" },
+  "campus": "아라",
+  "summary": { "susiRatio": 70.7, "jeongsiRatio": 25.8, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 2490 },
+  "highlights": [
+    "총 2,490명 (수시 1,761명 70.7% / 정시 642명 25.8%, 전형기간자율화 86명 별도)",
+    "정시 비율 25.8% — 지방거점국립대 중 최고 수준",
+    "학생부교과 지역인재 487명(19.6%) 운영"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "일반학생",
+      "quota": { "value": "524명(21.0%)", "source": { "name": "제주대 2028 시행계획(어디가 공식 모음집)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "전 모집단위 학생부교과 100%", "status": "confirmed" },
+      "suneungMinimum": { "value": "적용(야간 제외). 인문·사회·경상 2개 합 9 / 자연·공과 2개 합 10 / 간호 3개 합 11 / 초등 3개 합 8 / 의예 수학포함 3개 합 6 / 수의·약학 수학포함 3개 합 7", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부교과", "subType": "지역인재",
+      "quota": { "value": "487명(19.6%)", "status": "confirmed" },
+      "method": { "value": "학생부교과 100% (체교·스포츠과학은 교과+실기)", "status": "confirmed" },
+      "suneungMinimum": { "value": "적용(의예 지역인재고른기회 수학포함 3개 합 7)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "일반학생",
+      "quota": { "value": "237명(9.5%)", "status": "confirmed" },
+      "method": { "value": "서류 100% (사범·초등·수의예·간호·약학은 1단계 서류 100%(3배수) → 2단계 면접 30%)", "status": "confirmed" },
+      "suneungMinimum": { "value": "미적용", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "나군 / 다군 일반학생",
+      "quota": { "value": "나군 284명 · 다군 342명", "status": "confirmed" },
+      "method": { "value": "수능 100% (체육 수능60+실기40, 예능 수능40+실기60)", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "naesinReflection": { "value": "학생부교과전형은 전 모집단위 교과 100%. 학종은 서류·면접 평가.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "전년 대비 통합 변경표는 문서에 미수록(지원자격 일부 조정) — 세부는 입학처 확인 권장", "status": "needs_review" }
+  ],
+  "officialLinks": [
+    { "name": "제주대학교 입학처", "url": "https://ibsi.jejunu.ac.kr/" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

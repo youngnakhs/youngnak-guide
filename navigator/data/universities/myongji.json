@@ -1,0 +1,53 @@
+{
+  "id": "myongji",
+  "name": "명지대학교",
+  "category": "인서울 주요대",
+  "region": { "value": "서울 서대문(인문) · 용인(자연)", "status": "confirmed" },
+  "campus": "인문(서울)·자연(용인)",
+  "summary": { "susiRatio": 70, "jeongsiRatio": 30, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 2908 },
+  "highlights": [
+    "총 약 2,908명 (수시 2,027 · 정시 881)",
+    "교과 학교장추천·교과면접 및 학종 서류에 수능최저 신규 적용(인문 2합6/자연 2합7)",
+    "정시 수능 90 + 학생부(출결) 10 / 논술전형 없음"
+  ],
+  "admissionTypes": [
+    {
+      "track": "학생부교과", "subType": "학교장추천 / 교과면접",
+      "quota": { "value": "학교장추천 291명 · 교과면접 349명(교과 소계 951)", "source": { "name": "명지대 2028 시행계획(어디가 공식 모음집)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "confirmed" },
+      "method": { "value": "학교장추천 교과 90 + 출결 10 / 교과면접 1단계 교과90+출결10(4배수) → 2단계 1단계 60 + 면접 40", "status": "confirmed" },
+      "suneungMinimum": { "value": "인문 2개 영역 합 6 / 자연 2개 영역 합 7(신설)", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "학생부종합", "subType": "명지인재 면접형 / 서류형",
+      "quota": { "value": "면접형 392명 · 서류형 269명(학종 소계 849)", "status": "confirmed" },
+      "method": { "value": "면접형 1단계 서류 100%(3배수) → 2단계 60 + 면접 40 / 서류형 서류 100%", "status": "confirmed" },
+      "suneungMinimum": { "value": "면접형 없음 / 서류형 인문 2합6·자연 2합7", "status": "confirmed" },
+      "interview": { "value": true, "status": "confirmed" }
+    },
+    {
+      "track": "정시(수능)", "subType": "일반",
+      "quota": { "value": "808명", "status": "confirmed" },
+      "method": { "value": "수능 90 + 학생부(출결) 10", "status": "confirmed" },
+      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
+      "interview": { "value": false, "status": "confirmed" }
+    }
+  ],
+  "naesinReflection": { "value": "공통/일반선택 석차등급, 진로/융합선택 성취도. 학생부 교과 90 + 출결 10.", "status": "confirmed" },
+  "changes2028": [
+    { "value": "전형방법에 학생부(출결) 10% 신규 반영", "status": "confirmed" },
+    { "value": "교과(학교장추천·교과면접)·학종 서류에 수능최저 신규 적용(인문 2합6/자연 2합7)", "status": "confirmed" },
+    { "value": "학사구조 개편(아너칼리지/자율전공학부), 정시 탐구 가산점 변경", "status": "confirmed" }
+  ],
+  "departments": [
+    { "name": "경영학부", "college": "경영대학(서울)", "track": "교과·종합", "suneungMinimum": { "value": "인문 2개 영역 합 6", "status": "confirmed" } },
+    { "name": "인공지능·소프트웨어융합대학", "college": "AI·SW(용인)", "track": "교과·종합", "suneungMinimum": { "value": "자연 2개 영역 합 7", "status": "confirmed" } },
+    { "name": "반도체·ICT", "college": "공과(용인)", "track": "교과·종합", "suneungMinimum": { "value": "자연 2개 영역 합 7", "status": "confirmed" } },
+    { "name": "건축대학", "college": "건축(용인)", "track": "교과·종합", "suneungMinimum": { "value": "자연 2개 영역 합 7", "status": "confirmed" } },
+    { "name": "자율전공학부(인문/자연)", "college": "자율전공", "track": "교과·종합·정시", "suneungMinimum": { "value": "인문 2합6 / 자연 2합7", "status": "confirmed" } }
+  ],
+  "officialLinks": [
+    { "name": "명지대학교 입학처", "url": "https://ipsi.mju.ac.kr/" },
+    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+  ]
+}

@@ -1,0 +1,1926 @@
+{
+  "generatedAt": "2026-06-01",
+  "count": 192,
+  "departments": [
+    {
+      "uni": "가톨릭대학교",
+      "uniId": "catholic",
+      "category": "인서울 주요대",
+      "name": "의예과",
+      "college": "의과대학(서울 성의)",
+      "track": "학종 학교장추천·논술·정시",
+      "suneungMinimum": "3개 영역 합 4 + 한국사 4 (정시 면접 5%)",
+      "review": false
+    },
+    {
+      "uni": "가톨릭대학교",
+      "uniId": "catholic",
+      "category": "인서울 주요대",
+      "name": "약학과",
+      "college": "약학대학(성심)",
+      "track": "학종·논술",
+      "suneungMinimum": "3개 영역 합 5 (농어촌 3개 합 7)",
+      "review": false
+    },
+    {
+      "uni": "가톨릭대학교",
+      "uniId": "catholic",
+      "category": "인서울 주요대",
+      "name": "간호학과",
+      "college": "간호대학(성심)",
+      "track": "교과·논술",
+      "suneungMinimum": "3개 영역 합 7",
+      "review": false
+    },
+    {
+      "uni": "가톨릭대학교",
+      "uniId": "catholic",
+      "category": "인서울 주요대",
+      "name": "경영학부",
+      "college": "경영대학(성심)",
+      "track": "교과·논술",
+      "suneungMinimum": "2개 영역 합 7",
+      "review": false
+    },
+    {
+      "uni": "가톨릭대학교",
+      "uniId": "catholic",
+      "category": "인서울 주요대",
+      "name": "컴퓨터정보공학부",
+      "college": "정보공학(성심)",
+      "track": "교과·논술",
+      "suneungMinimum": "2개 영역 합 7",
+      "review": false
+    },
+    {
+      "uni": "가톨릭대학교",
+      "uniId": "catholic",
+      "category": "인서울 주요대",
+      "name": "자유전공학부",
+      "college": "자유전공(성심)",
+      "track": "교과·종합",
+      "suneungMinimum": "교과 2개 영역 합 7 / 학종 없음",
+      "review": false
+    },
+    {
+      "uni": "중앙대학교",
+      "uniId": "cau",
+      "category": "인서울 주요대",
+      "name": "의학부",
+      "college": "의과대학",
+      "track": "학종Up·논술·정시",
+      "suneungMinimum": "국·수·영·탐 등급합(공식 PDF 표 셀 공란) + 한국사 4 — 원문 확인 필요",
+      "review": true
+    },
+    {
+      "uni": "중앙대학교",
+      "uniId": "cau",
+      "category": "인서울 주요대",
+      "name": "약학부",
+      "college": "약학대학",
+      "track": "지역균형·학종Up·논술",
+      "suneungMinimum": "4개 영역 등급 합 5 이내 + 한국사 4",
+      "review": false
+    },
+    {
+      "uni": "중앙대학교",
+      "uniId": "cau",
+      "category": "인서울 주요대",
+      "name": "간호학과",
+      "college": "적십자간호대학",
+      "track": "지역균형·학종Up·논술",
+      "suneungMinimum": "지역균형 3개 합 7 / 학종Up·논술 3개 합 6",
+      "review": false
+    },
+    {
+      "uni": "중앙대학교",
+      "uniId": "cau",
+      "category": "인서울 주요대",
+      "name": "소프트웨어학부",
+      "college": "소프트웨어대학",
+      "track": "교과·종합·논술·정시",
+      "suneungMinimum": "지역균형 3개 합 7 / 학종Up·논술 3개 합 6",
+      "review": false
+    },
+    {
+      "uni": "중앙대학교",
+      "uniId": "cau",
+      "category": "인서울 주요대",
+      "name": "경영학부",
+      "college": "경영경제대학",
+      "track": "교과·종합·논술·정시",
+      "suneungMinimum": "지역균형 3개 합 7 / 학종Up·논술 3개 합 6",
+      "review": false
+    },
+    {
+      "uni": "충북대학교",
+      "uniId": "cbnu",
+      "category": "지방거점국립대",
+      "name": "의예과",
+      "college": "의과대학",
+      "track": "학생부교과",
+      "suneungMinimum": "상위 3개 영역 등급 합 5 이내",
+      "review": false
+    },
+    {
+      "uni": "충북대학교",
+      "uniId": "cbnu",
+      "category": "지방거점국립대",
+      "name": "약학과·제약학과",
+      "college": "약학대학",
+      "track": "학생부교과",
+      "suneungMinimum": "상위 3개 영역 합 7 이내",
+      "review": false
+    },
+    {
+      "uni": "충북대학교",
+      "uniId": "cbnu",
+      "category": "지방거점국립대",
+      "name": "수의예과",
+      "college": "수의과대학",
+      "track": "학생부교과",
+      "suneungMinimum": "상위 3개 영역 합 8 이내",
+      "review": false
+    },
+    {
+      "uni": "충북대학교",
+      "uniId": "cbnu",
+      "category": "지방거점국립대",
+      "name": "간호학과",
+      "college": "의과대학",
+      "track": "학생부교과",
+      "suneungMinimum": "상위 3개 영역 합 10 이내",
+      "review": false
+    },
+    {
+      "uni": "충북대학교",
+      "uniId": "cbnu",
+      "category": "지방거점국립대",
+      "name": "경영·공과·자연 등",
+      "college": "전 계열",
+      "track": "학생부교과",
+      "suneungMinimum": "상위 2개 영역 합 8 이내",
+      "review": false
+    },
+    {
+      "uni": "단국대학교",
+      "uniId": "dankook",
+      "category": "수도권 주요대",
+      "name": "의예과",
+      "college": "의과대학(천안)",
+      "track": "학생부종합·정시",
+      "suneungMinimum": "지역메디바이오·면접형 3개 합 4 / 진료권 3개 합 6 / 광역권 3개 합 5",
+      "review": false
+    },
+    {
+      "uni": "단국대학교",
+      "uniId": "dankook",
+      "category": "수도권 주요대",
+      "name": "치의예과",
+      "college": "치과대학(천안)",
+      "track": "학생부종합·정시",
+      "suneungMinimum": "지역메디바이오 3개 합 4 / 면접형 3개 합 5",
+      "review": false
+    },
+    {
+      "uni": "단국대학교",
+      "uniId": "dankook",
+      "category": "수도권 주요대",
+      "name": "약학과",
+      "college": "약학대학(천안)",
+      "track": "학생부종합·정시",
+      "suneungMinimum": "지역메디바이오 3개 합 5 / 면접형 3개 합 6",
+      "review": false
+    },
+    {
+      "uni": "단국대학교",
+      "uniId": "dankook",
+      "category": "수도권 주요대",
+      "name": "간호학과",
+      "college": "간호대학(천안)",
+      "track": "학생부·정시",
+      "suneungMinimum": "모집요강 확인",
+      "review": true
+    },
+    {
+      "uni": "단국대학교",
+      "uniId": "dankook",
+      "category": "수도권 주요대",
+      "name": "소프트웨어학과",
+      "college": "SW융합대학(죽전)",
+      "track": "학생부·논술·정시",
+      "suneungMinimum": "논술 없음 / 교과 죽전 2개 합 6",
+      "review": false
+    },
+    {
+      "uni": "단국대학교",
+      "uniId": "dankook",
+      "category": "수도권 주요대",
+      "name": "컴퓨터공학과",
+      "college": "SW융합대학(죽전)",
+      "track": "학생부·논술·정시",
+      "suneungMinimum": "교과 죽전 2개 합 6",
+      "review": false
+    },
+    {
+      "uni": "단국대학교",
+      "uniId": "dankook",
+      "category": "수도권 주요대",
+      "name": "전자전기공학부",
+      "college": "공과대학(죽전)",
+      "track": "학생부·논술·정시",
+      "suneungMinimum": "교과 죽전 2개 합 6",
+      "review": false
+    },
+    {
+      "uni": "단국대학교",
+      "uniId": "dankook",
+      "category": "수도권 주요대",
+      "name": "경영학부",
+      "college": "경영경제대학(죽전)",
+      "track": "학생부·논술·정시",
+      "suneungMinimum": "교과 죽전 2개 합 6",
+      "review": false
+    },
+    {
+      "uni": "가천대학교",
+      "uniId": "gachon",
+      "category": "수도권 주요대",
+      "name": "의예과",
+      "college": "의과대학",
+      "track": "학생부교과·논술·종합",
+      "suneungMinimum": "3개 영역(국·수·영+과탐) 각 1등급",
+      "review": false
+    },
+    {
+      "uni": "가천대학교",
+      "uniId": "gachon",
+      "category": "수도권 주요대",
+      "name": "한의예과",
+      "college": "한의과대학",
+      "track": "논술",
+      "suneungMinimum": "2개 영역 각 1등급",
+      "review": false
+    },
+    {
+      "uni": "가천대학교",
+      "uniId": "gachon",
+      "category": "수도권 주요대",
+      "name": "약학과",
+      "college": "약학대학",
+      "track": "학생부교과·논술·종합",
+      "suneungMinimum": "3개 영역 합 5(국·수·영·과탐)",
+      "review": false
+    },
+    {
+      "uni": "가천대학교",
+      "uniId": "gachon",
+      "category": "수도권 주요대",
+      "name": "간호학과",
+      "college": "간호대학",
+      "track": "학생부교과·종합·실기",
+      "suneungMinimum": "의약학 수능최저 미적용(일반 기준)",
+      "review": false
+    },
+    {
+      "uni": "가천대학교",
+      "uniId": "gachon",
+      "category": "수도권 주요대",
+      "name": "컴퓨터공학과",
+      "college": "IT융합대학",
+      "track": "학생부·논술·정시",
+      "suneungMinimum": "인문·자연 일반 2개 영역 합 6",
+      "review": false
+    },
+    {
+      "uni": "가천대학교",
+      "uniId": "gachon",
+      "category": "수도권 주요대",
+      "name": "인공지능학과",
+      "college": "IT융합대학",
+      "track": "학생부·논술·정시",
+      "suneungMinimum": "2개 영역 합 6",
+      "review": false
+    },
+    {
+      "uni": "가천대학교",
+      "uniId": "gachon",
+      "category": "수도권 주요대",
+      "name": "전기공학과",
+      "college": "공과대학",
+      "track": "학생부·논술·정시",
+      "suneungMinimum": "2개 영역 합 6",
+      "review": false
+    },
+    {
+      "uni": "가천대학교",
+      "uniId": "gachon",
+      "category": "수도권 주요대",
+      "name": "기계공학부",
+      "college": "공과대학",
+      "track": "학생부·논술·정시",
+      "suneungMinimum": "2개 영역 합 6",
+      "review": false
+    },
+    {
+      "uni": "가천대학교",
+      "uniId": "gachon",
+      "category": "수도권 주요대",
+      "name": "경영학과",
+      "college": "경영대학",
+      "track": "학생부·논술·정시",
+      "suneungMinimum": "2개 영역 합 6",
+      "review": false
+    },
+    {
+      "uni": "경상국립대학교",
+      "uniId": "gnu",
+      "category": "지방거점국립대",
+      "name": "의예과",
+      "college": "의과대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "3개 영역 합 — 일반 4 / 지역인재·기초 6(수학 필수, 탐구 2과목 평균)",
+      "review": false
+    },
+    {
+      "uni": "경상국립대학교",
+      "uniId": "gnu",
+      "category": "지방거점국립대",
+      "name": "약학과",
+      "college": "약학대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "3개 영역 합 — 일반 5 / 지역 6 / 기초 7",
+      "review": false
+    },
+    {
+      "uni": "경상국립대학교",
+      "uniId": "gnu",
+      "category": "지방거점국립대",
+      "name": "수의예과",
+      "college": "수의과대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "3개 영역 합 6",
+      "review": false
+    },
+    {
+      "uni": "경상국립대학교",
+      "uniId": "gnu",
+      "category": "지방거점국립대",
+      "name": "간호학과",
+      "college": "간호대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "2개 영역 합 8",
+      "review": false
+    },
+    {
+      "uni": "경상국립대학교",
+      "uniId": "gnu",
+      "category": "지방거점국립대",
+      "name": "항공우주공학부",
+      "college": "공과대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "2개 영역 합 5",
+      "review": false
+    },
+    {
+      "uni": "경상국립대학교",
+      "uniId": "gnu",
+      "category": "지방거점국립대",
+      "name": "컴퓨터공학부·일반학과",
+      "college": "전 계열",
+      "track": "교과",
+      "suneungMinimum": "다수 미적용(교과전형 일부 2개 영역 합)",
+      "review": false
+    },
+    {
+      "uni": "한양대학교",
+      "uniId": "hanyang",
+      "category": "인서울 주요대",
+      "name": "의예과",
+      "college": "의과대학",
+      "track": "학업형·면접형·논술·정시",
+      "suneungMinimum": "3개 영역 등급합 4 이내(탐구 2과목 평균)",
+      "review": false
+    },
+    {
+      "uni": "한양대학교",
+      "uniId": "hanyang",
+      "category": "인서울 주요대",
+      "name": "간호학과",
+      "college": "간호대학",
+      "track": "추천·학업형·논술·정시",
+      "suneungMinimum": "학업형 3개 영역 합 7(인문/자연별)",
+      "review": false
+    },
+    {
+      "uni": "한양대학교",
+      "uniId": "hanyang",
+      "category": "인서울 주요대",
+      "name": "컴퓨터소프트웨어학부",
+      "college": "공과대학",
+      "track": "추천·학업형·면접형·논술·정시",
+      "suneungMinimum": "추천 수학포함 3개 각 3등급 / 학업형 3개 합 7",
+      "review": false
+    },
+    {
+      "uni": "한양대학교",
+      "uniId": "hanyang",
+      "category": "인서울 주요대",
+      "name": "경영학부",
+      "college": "경영대학",
+      "track": "추천·학업형·면접형·논술·정시",
+      "suneungMinimum": "추천 3개 각 3등급 / 학업형 3개 합 7",
+      "review": false
+    },
+    {
+      "uni": "한국외국어대학교",
+      "uniId": "hufs",
+      "category": "인서울 주요대",
+      "name": "ELLT학과",
+      "college": "영어대학(서울)",
+      "track": "교과·종합",
+      "suneungMinimum": "2개 영역 등급 합 5 이내(탐구 통합사회/과학 1)",
+      "review": false
+    },
+    {
+      "uni": "한국외국어대학교",
+      "uniId": "hufs",
+      "category": "인서울 주요대",
+      "name": "경영학부",
+      "college": "경영대학(서울)",
+      "track": "교과·종합·논술",
+      "suneungMinimum": "2개 영역 합 5 이내",
+      "review": false
+    },
+    {
+      "uni": "한국외국어대학교",
+      "uniId": "hufs",
+      "category": "인서울 주요대",
+      "name": "경제학부",
+      "college": "사회과학대학(서울)",
+      "track": "교과·종합·논술",
+      "suneungMinimum": "2개 영역 합 5 이내",
+      "review": false
+    },
+    {
+      "uni": "한국외국어대학교",
+      "uniId": "hufs",
+      "category": "인서울 주요대",
+      "name": "컴퓨터공학부",
+      "college": "공과대학(글로벌)",
+      "track": "교과·SW면접·정시",
+      "suneungMinimum": "2개 영역 합 6 이내",
+      "review": false
+    },
+    {
+      "uni": "인천대학교",
+      "uniId": "incheon",
+      "category": "수도권 주요대",
+      "name": "동북아국제통상전공",
+      "college": "글로벌Trade&Service",
+      "track": "교과성적우수자",
+      "suneungMinimum": "2개 영역 합 6(강화)",
+      "review": false
+    },
+    {
+      "uni": "인천대학교",
+      "uniId": "incheon",
+      "category": "수도권 주요대",
+      "name": "컴퓨터공학부",
+      "college": "인공지능대학",
+      "track": "교과성적우수자",
+      "suneungMinimum": "2개 영역 합 7",
+      "review": false
+    },
+    {
+      "uni": "인천대학교",
+      "uniId": "incheon",
+      "category": "수도권 주요대",
+      "name": "경영학부",
+      "college": "경영대학",
+      "track": "교과성적우수자",
+      "suneungMinimum": "2개 영역 합 7",
+      "review": false
+    },
+    {
+      "uni": "인천대학교",
+      "uniId": "incheon",
+      "category": "수도권 주요대",
+      "name": "전자공학부",
+      "college": "공과대학",
+      "track": "교과성적우수자",
+      "suneungMinimum": "2개 영역 합 7",
+      "review": false
+    },
+    {
+      "uni": "인천대학교",
+      "uniId": "incheon",
+      "category": "수도권 주요대",
+      "name": "자유전공학부",
+      "college": "자유전공",
+      "track": "학종 서류형(신설)",
+      "suneungMinimum": "없음",
+      "review": false
+    },
+    {
+      "uni": "전남대학교",
+      "uniId": "jnu",
+      "category": "지방거점국립대",
+      "name": "의학과",
+      "college": "의과대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "3개 영역 합 — 지역인재 5 / 지역균형 6 / 고교생활우수자Ⅰ 5 / 지역의사·농어촌 6",
+      "review": false
+    },
+    {
+      "uni": "전남대학교",
+      "uniId": "jnu",
+      "category": "지방거점국립대",
+      "name": "치의학전문대학원(학·석사통합)",
+      "college": "치의학",
+      "track": "교과·종합",
+      "suneungMinimum": "3개 영역 합 5/6/7/6(전형별)",
+      "review": false
+    },
+    {
+      "uni": "전남대학교",
+      "uniId": "jnu",
+      "category": "지방거점국립대",
+      "name": "약학부",
+      "college": "약학대학",
+      "track": "교과·종합",
+      "suneungMinimum": "수학 포함 3개 영역 합 — 일반 6 / 지역인재 7 / 지역균형 8",
+      "review": false
+    },
+    {
+      "uni": "전남대학교",
+      "uniId": "jnu",
+      "category": "지방거점국립대",
+      "name": "수의예과",
+      "college": "수의과대학",
+      "track": "교과·종합",
+      "suneungMinimum": "수학 포함 3개 영역 합 6/7/8(전형별)",
+      "review": false
+    },
+    {
+      "uni": "전남대학교",
+      "uniId": "jnu",
+      "category": "지방거점국립대",
+      "name": "간호학과",
+      "college": "간호대학",
+      "track": "교과·종합",
+      "suneungMinimum": "일반 9 / 지역인재 10 / 그 외 미적용",
+      "review": false
+    },
+    {
+      "uni": "전남대학교",
+      "uniId": "jnu",
+      "category": "지방거점국립대",
+      "name": "경영학부",
+      "college": "경영대학",
+      "track": "교과·종합",
+      "suneungMinimum": "2개 영역 합 9/10(간호·경영 그룹)",
+      "review": false
+    },
+    {
+      "uni": "전남대학교",
+      "uniId": "jnu",
+      "category": "지방거점국립대",
+      "name": "공과·자연·인문 등",
+      "college": "전 계열",
+      "track": "교과·종합",
+      "suneungMinimum": "2개 영역 합 — 일반 7 / 지역인재 8",
+      "review": false
+    },
+    {
+      "uni": "강원대학교",
+      "uniId": "kangwon",
+      "category": "지방거점국립대",
+      "name": "의예과",
+      "college": "의과대학",
+      "track": "지역의사선발(정성)",
+      "suneungMinimum": "3개 영역 합 6(수학 포함). 일반·강원인재 미선발",
+      "review": false
+    },
+    {
+      "uni": "강원대학교",
+      "uniId": "kangwon",
+      "category": "지방거점국립대",
+      "name": "수의학과",
+      "college": "수의과대학",
+      "track": "일반-정성·강원인재-정성·미래인재서류",
+      "suneungMinimum": "수학 포함 3개 영역 합 — 일반 7 / 강원인재 8 / 미래인재서류 8",
+      "review": false
+    },
+    {
+      "uni": "강원대학교",
+      "uniId": "kangwon",
+      "category": "지방거점국립대",
+      "name": "약학과",
+      "college": "약학대학",
+      "track": "일반-정성·강원인재-정성",
+      "suneungMinimum": "3개 영역 합 — 일반 7 / 강원인재 8",
+      "review": false
+    },
+    {
+      "uni": "강원대학교",
+      "uniId": "kangwon",
+      "category": "지방거점국립대",
+      "name": "간호학과",
+      "college": "간호대학",
+      "track": "교과·종합",
+      "suneungMinimum": "2개 영역 합 — 일반 6 / 강원인재 7 / 미래인재서류 7",
+      "review": false
+    },
+    {
+      "uni": "강원대학교",
+      "uniId": "kangwon",
+      "category": "지방거점국립대",
+      "name": "일반학과(자연)",
+      "college": "공학·자연",
+      "track": "교과",
+      "suneungMinimum": "2개 영역 합 — 일반 8 / 강원인재 8",
+      "review": false
+    },
+    {
+      "uni": "한국항공대학교",
+      "uniId": "kau",
+      "category": "수도권 주요대",
+      "name": "항공운항학과",
+      "college": "항공·경영대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "2개 영역 합 6(신체검사 합격자 중 최종선발)",
+      "review": false
+    },
+    {
+      "uni": "한국항공대학교",
+      "uniId": "kau",
+      "category": "수도권 주요대",
+      "name": "스마트드론공학과",
+      "college": "공과대학",
+      "track": "교과·논술·정시",
+      "suneungMinimum": "2개 영역 합 6",
+      "review": false
+    },
+    {
+      "uni": "한국항공대학교",
+      "uniId": "kau",
+      "category": "수도권 주요대",
+      "name": "AI자율주행시스템공학과",
+      "college": "AI융합대학",
+      "track": "교과·논술·정시",
+      "suneungMinimum": "2개 영역 합 6",
+      "review": false
+    },
+    {
+      "uni": "한국항공대학교",
+      "uniId": "kau",
+      "category": "수도권 주요대",
+      "name": "경영학부",
+      "college": "항공·경영대학",
+      "track": "교과·논술·정시",
+      "suneungMinimum": "2개 영역 합 6",
+      "review": false
+    },
+    {
+      "uni": "한국항공대학교",
+      "uniId": "kau",
+      "category": "수도권 주요대",
+      "name": "자유전공학부",
+      "college": "자유전공",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "2개 영역 합 6",
+      "review": false
+    },
+    {
+      "uni": "경희대학교",
+      "uniId": "khu",
+      "category": "인서울 주요대",
+      "name": "의예과",
+      "college": "의과대학(서울)",
+      "track": "교과·종합·논술·정시",
+      "suneungMinimum": "3개 영역 합 4 + 한국사 5",
+      "review": false
+    },
+    {
+      "uni": "경희대학교",
+      "uniId": "khu",
+      "category": "인서울 주요대",
+      "name": "한의예과",
+      "college": "한의과대학",
+      "track": "교과·종합·논술·정시",
+      "suneungMinimum": "3개 영역 합 4 + 한국사 5",
+      "review": false
+    },
+    {
+      "uni": "경희대학교",
+      "uniId": "khu",
+      "category": "인서울 주요대",
+      "name": "치의예과",
+      "college": "치과대학",
+      "track": "교과·종합·논술·정시",
+      "suneungMinimum": "3개 영역 합 4 + 한국사 5",
+      "review": false
+    },
+    {
+      "uni": "경희대학교",
+      "uniId": "khu",
+      "category": "인서울 주요대",
+      "name": "약학과",
+      "college": "약학대학",
+      "track": "교과·종합·논술·정시",
+      "suneungMinimum": "3개 영역 합 4 + 한국사 5",
+      "review": false
+    },
+    {
+      "uni": "경희대학교",
+      "uniId": "khu",
+      "category": "인서울 주요대",
+      "name": "간호학과",
+      "college": "간호과학대학",
+      "track": "교과·종합·논술·정시",
+      "suneungMinimum": "인문/자연 2개 영역 합 5 + 한국사 5",
+      "review": false
+    },
+    {
+      "uni": "경희대학교",
+      "uniId": "khu",
+      "category": "인서울 주요대",
+      "name": "경영학과",
+      "college": "경영대학(서울)",
+      "track": "교과·종합·논술·정시",
+      "suneungMinimum": "2개 영역 합 5 + 한국사 5",
+      "review": false
+    },
+    {
+      "uni": "경희대학교",
+      "uniId": "khu",
+      "category": "인서울 주요대",
+      "name": "컴퓨터공학부",
+      "college": "전자정보대학(국제)",
+      "track": "교과·종합·논술·정시",
+      "suneungMinimum": "2개 영역 합 5 + 한국사 5",
+      "review": false
+    },
+    {
+      "uni": "경북대학교",
+      "uniId": "knu",
+      "category": "지방거점국립대",
+      "name": "의예과",
+      "college": "의과대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "수학 포함 3개 영역 합 4 이내(탐구 2과목 평균)",
+      "review": false
+    },
+    {
+      "uni": "경북대학교",
+      "uniId": "knu",
+      "category": "지방거점국립대",
+      "name": "치의예과",
+      "college": "치과대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "수학 포함 3개 영역 합 4 이내",
+      "review": false
+    },
+    {
+      "uni": "경북대학교",
+      "uniId": "knu",
+      "category": "지방거점국립대",
+      "name": "수의예과",
+      "college": "수의과대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "수학 포함 3개 영역 합 5 이내",
+      "review": false
+    },
+    {
+      "uni": "경북대학교",
+      "uniId": "knu",
+      "category": "지방거점국립대",
+      "name": "약학과",
+      "college": "약학대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "수학 포함 3개 영역 합 5 이내",
+      "review": false
+    },
+    {
+      "uni": "경북대학교",
+      "uniId": "knu",
+      "category": "지방거점국립대",
+      "name": "간호학과",
+      "college": "간호대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "상위 2개 영역 합 5 이내",
+      "review": false
+    },
+    {
+      "uni": "경북대학교",
+      "uniId": "knu",
+      "category": "지방거점국립대",
+      "name": "경영학부",
+      "college": "경상대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "상위 2개 영역 합 5 이내",
+      "review": false
+    },
+    {
+      "uni": "경북대학교",
+      "uniId": "knu",
+      "category": "지방거점국립대",
+      "name": "컴퓨터학부",
+      "college": "IT대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "수학 포함 2개 영역 합 5 이내",
+      "review": false
+    },
+    {
+      "uni": "경북대학교",
+      "uniId": "knu",
+      "category": "지방거점국립대",
+      "name": "전자공학부",
+      "college": "IT대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "수학 포함 2개 영역 합 6 이내(공과)",
+      "review": false
+    },
+    {
+      "uni": "국민대학교",
+      "uniId": "kookmin",
+      "category": "인서울 주요대",
+      "name": "경영학부",
+      "college": "경상대학",
+      "track": "교과·논술",
+      "suneungMinimum": "2개 영역 합 6",
+      "review": false
+    },
+    {
+      "uni": "국민대학교",
+      "uniId": "kookmin",
+      "category": "인서울 주요대",
+      "name": "소프트웨어학부",
+      "college": "SW융합대학",
+      "track": "교과·논술",
+      "suneungMinimum": "2개 영역 합 6",
+      "review": false
+    },
+    {
+      "uni": "국민대학교",
+      "uniId": "kookmin",
+      "category": "인서울 주요대",
+      "name": "자동차공학과",
+      "college": "창의공과대학",
+      "track": "교과·논술",
+      "suneungMinimum": "2개 영역 합 6",
+      "review": false
+    },
+    {
+      "uni": "국민대학교",
+      "uniId": "kookmin",
+      "category": "인서울 주요대",
+      "name": "건축학부",
+      "college": "건축대학",
+      "track": "교과·논술",
+      "suneungMinimum": "2개 영역 합 6",
+      "review": false
+    },
+    {
+      "uni": "국민대학교",
+      "uniId": "kookmin",
+      "category": "인서울 주요대",
+      "name": "교육학과",
+      "college": "사범대학",
+      "track": "교과·종합",
+      "suneungMinimum": "교과 2개 영역 합 6 / 학종 없음",
+      "review": false
+    },
+    {
+      "uni": "고려대학교",
+      "uniId": "korea",
+      "category": "인서울 주요대",
+      "name": "의학과",
+      "college": "의과대학",
+      "track": "교과추천·학업우수·계열적합·정시",
+      "suneungMinimum": "4개 영역 합 5 이내 및 한국사 4(교과추천·학업우수 공통)",
+      "review": false
+    },
+    {
+      "uni": "고려대학교",
+      "uniId": "korea",
+      "category": "인서울 주요대",
+      "name": "간호학과",
+      "college": "간호대학",
+      "track": "교과추천·학업우수·계열적합",
+      "suneungMinimum": "학교추천 미적용 / 학업우수 4개 합 9 + 한국사 4",
+      "review": false
+    },
+    {
+      "uni": "고려대학교",
+      "uniId": "korea",
+      "category": "인서울 주요대",
+      "name": "컴퓨터학과",
+      "college": "정보대학",
+      "track": "교과추천·학업우수·계열적합·논술",
+      "suneungMinimum": "학업우수 4개 합 9 / 논술 4개 합 8 + 한국사 4 / 계열적합 미적용",
+      "review": false
+    },
+    {
+      "uni": "고려대학교",
+      "uniId": "korea",
+      "category": "인서울 주요대",
+      "name": "경영학과",
+      "college": "경영대학",
+      "track": "교과추천·학업우수·계열적합",
+      "suneungMinimum": "학업우수 4개 합 9 + 한국사 4 / 학교추천·계열적합 미적용",
+      "review": false
+    },
+    {
+      "uni": "고려대학교",
+      "uniId": "korea",
+      "category": "인서울 주요대",
+      "name": "전기전자공학부",
+      "college": "공과대학",
+      "track": "교과추천·학업우수·계열적합",
+      "suneungMinimum": "학업우수 4개 합 9",
+      "review": false
+    },
+    {
+      "uni": "광운대학교",
+      "uniId": "kwangwoon",
+      "category": "인서울 주요대",
+      "name": "전자공학과",
+      "college": "전자정보공과대학",
+      "track": "교과·논술·정시",
+      "suneungMinimum": "교과(지역균형) 2개 합 6 / 논술·학종·정시 없음",
+      "review": false
+    },
+    {
+      "uni": "광운대학교",
+      "uniId": "kwangwoon",
+      "category": "인서울 주요대",
+      "name": "컴퓨터정보공학부",
+      "college": "전자정보공과대학",
+      "track": "교과·논술·정시",
+      "suneungMinimum": "교과(지역균형) 2개 합 6",
+      "review": false
+    },
+    {
+      "uni": "광운대학교",
+      "uniId": "kwangwoon",
+      "category": "인서울 주요대",
+      "name": "소프트웨어학부",
+      "college": "SW융합대학",
+      "track": "교과·논술·정시",
+      "suneungMinimum": "교과(지역균형) 2개 합 6",
+      "review": false
+    },
+    {
+      "uni": "광운대학교",
+      "uniId": "kwangwoon",
+      "category": "인서울 주요대",
+      "name": "경영학부",
+      "college": "정책법학·경영대학",
+      "track": "교과·논술·정시",
+      "suneungMinimum": "교과(지역균형) 2개 합 6",
+      "review": false
+    },
+    {
+      "uni": "광운대학교",
+      "uniId": "kwangwoon",
+      "category": "인서울 주요대",
+      "name": "자율전공학부(인문/자연)",
+      "college": "자율전공",
+      "track": "교과·정시",
+      "suneungMinimum": "교과(지역균형) 2개 합 6",
+      "review": false
+    },
+    {
+      "uni": "경기대학교",
+      "uniId": "kyonggi",
+      "category": "수도권 주요대",
+      "name": "경영학부",
+      "college": "경영대학",
+      "track": "교과성적우수자",
+      "suneungMinimum": "2개 영역 합 7",
+      "review": false
+    },
+    {
+      "uni": "경기대학교",
+      "uniId": "kyonggi",
+      "category": "수도권 주요대",
+      "name": "AI컴퓨터공학부",
+      "college": "AI·SW",
+      "track": "교과성적우수자",
+      "suneungMinimum": "2개 영역 합 7",
+      "review": false
+    },
+    {
+      "uni": "경기대학교",
+      "uniId": "kyonggi",
+      "category": "수도권 주요대",
+      "name": "전자공학부",
+      "college": "공과대학",
+      "track": "교과성적우수자",
+      "suneungMinimum": "2개 영역 합 7",
+      "review": false
+    },
+    {
+      "uni": "경기대학교",
+      "uniId": "kyonggi",
+      "category": "수도권 주요대",
+      "name": "국어국문학과",
+      "college": "인문대학",
+      "track": "교과성적우수자",
+      "suneungMinimum": "2개 영역 합 7",
+      "review": false
+    },
+    {
+      "uni": "경기대학교",
+      "uniId": "kyonggi",
+      "category": "수도권 주요대",
+      "name": "건축학과(5년제)",
+      "college": "공과대학",
+      "track": "교과·종합",
+      "suneungMinimum": "교과 2개 영역 합 7",
+      "review": false
+    },
+    {
+      "uni": "명지대학교",
+      "uniId": "myongji",
+      "category": "인서울 주요대",
+      "name": "경영학부",
+      "college": "경영대학(서울)",
+      "track": "교과·종합",
+      "suneungMinimum": "인문 2개 영역 합 6",
+      "review": false
+    },
+    {
+      "uni": "명지대학교",
+      "uniId": "myongji",
+      "category": "인서울 주요대",
+      "name": "인공지능·소프트웨어융합대학",
+      "college": "AI·SW(용인)",
+      "track": "교과·종합",
+      "suneungMinimum": "자연 2개 영역 합 7",
+      "review": false
+    },
+    {
+      "uni": "명지대학교",
+      "uniId": "myongji",
+      "category": "인서울 주요대",
+      "name": "반도체·ICT",
+      "college": "공과(용인)",
+      "track": "교과·종합",
+      "suneungMinimum": "자연 2개 영역 합 7",
+      "review": false
+    },
+    {
+      "uni": "명지대학교",
+      "uniId": "myongji",
+      "category": "인서울 주요대",
+      "name": "건축대학",
+      "college": "건축(용인)",
+      "track": "교과·종합",
+      "suneungMinimum": "자연 2개 영역 합 7",
+      "review": false
+    },
+    {
+      "uni": "명지대학교",
+      "uniId": "myongji",
+      "category": "인서울 주요대",
+      "name": "자율전공학부(인문/자연)",
+      "college": "자율전공",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "인문 2합6 / 자연 2합7",
+      "review": false
+    },
+    {
+      "uni": "부산대학교",
+      "uniId": "pusan",
+      "category": "지방거점국립대",
+      "name": "의예과",
+      "college": "의과대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "수학 포함 3개 영역 등급 합 4 이내(탐구 2과목 평균)",
+      "review": false
+    },
+    {
+      "uni": "부산대학교",
+      "uniId": "pusan",
+      "category": "지방거점국립대",
+      "name": "치의학전문대학원(학·석사통합)",
+      "college": "치의학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "수학 포함 3개 영역 합 4 이내",
+      "review": false
+    },
+    {
+      "uni": "부산대학교",
+      "uniId": "pusan",
+      "category": "지방거점국립대",
+      "name": "약학부",
+      "college": "약학대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "수학 포함 3개 영역 합 4 이내",
+      "review": false
+    },
+    {
+      "uni": "부산대학교",
+      "uniId": "pusan",
+      "category": "지방거점국립대",
+      "name": "간호학과",
+      "college": "간호대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "수학 포함 2개 영역 합 5 이내",
+      "review": false
+    },
+    {
+      "uni": "부산대학교",
+      "uniId": "pusan",
+      "category": "지방거점국립대",
+      "name": "경영학과",
+      "college": "경영대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "상위 3개 영역 등급 합 7 이내",
+      "review": false
+    },
+    {
+      "uni": "부산대학교",
+      "uniId": "pusan",
+      "category": "지방거점국립대",
+      "name": "자연·공과계열",
+      "college": "자연·공과대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "수학 포함 2개 영역 합 5 이내",
+      "review": false
+    },
+    {
+      "uni": "부산대학교",
+      "uniId": "pusan",
+      "category": "지방거점국립대",
+      "name": "탐구전형(신설)",
+      "college": "전 계열",
+      "track": "학생부교과",
+      "suneungMinimum": "없음(현장녹화 면접)",
+      "review": false
+    },
+    {
+      "uni": "세종대학교",
+      "uniId": "sejong",
+      "category": "인서울 주요대",
+      "name": "경영학부",
+      "college": "경영경제대학",
+      "track": "교과·논술",
+      "suneungMinimum": "2개 영역 합 5",
+      "review": false
+    },
+    {
+      "uni": "세종대학교",
+      "uniId": "sejong",
+      "category": "인서울 주요대",
+      "name": "컴퓨터공학과",
+      "college": "소프트웨어융합대학",
+      "track": "교과·논술",
+      "suneungMinimum": "2개 영역 합 5",
+      "review": false
+    },
+    {
+      "uni": "세종대학교",
+      "uniId": "sejong",
+      "category": "인서울 주요대",
+      "name": "반도체시스템공학과",
+      "college": "공과대학",
+      "track": "교과·논술",
+      "suneungMinimum": "2개 영역 합 5",
+      "review": false
+    },
+    {
+      "uni": "세종대학교",
+      "uniId": "sejong",
+      "category": "인서울 주요대",
+      "name": "지능기전공학부",
+      "college": "공과대학",
+      "track": "교과·논술",
+      "suneungMinimum": "2개 영역 합 5",
+      "review": false
+    },
+    {
+      "uni": "세종대학교",
+      "uniId": "sejong",
+      "category": "인서울 주요대",
+      "name": "호텔관광외식경영학부",
+      "college": "호텔관광대학",
+      "track": "교과·논술",
+      "suneungMinimum": "2개 영역 합 5",
+      "review": false
+    },
+    {
+      "uni": "성균관대학교",
+      "uniId": "skku",
+      "category": "인서울 주요대",
+      "name": "의예과",
+      "college": "의과대학",
+      "track": "학생부종합·논술·정시",
+      "suneungMinimum": "논술 4개 영역 합 5 이내(모집요강 확인 권장)",
+      "review": true
+    },
+    {
+      "uni": "성균관대학교",
+      "uniId": "skku",
+      "category": "인서울 주요대",
+      "name": "글로벌경영학과",
+      "college": "경영대학",
+      "track": "교과·종합·논술·정시",
+      "suneungMinimum": "교과(추천인재) 3개 영역 합 6~7",
+      "review": false
+    },
+    {
+      "uni": "성균관대학교",
+      "uniId": "skku",
+      "category": "인서울 주요대",
+      "name": "소프트웨어학과",
+      "college": "소프트웨어융합대학",
+      "track": "교과·종합·논술·정시",
+      "suneungMinimum": "교과(추천인재) 3개 영역 합 6~7 / 논술 자연 3개 합 5",
+      "review": false
+    },
+    {
+      "uni": "성균관대학교",
+      "uniId": "skku",
+      "category": "인서울 주요대",
+      "name": "반도체시스템공학과",
+      "college": "정보통신대학",
+      "track": "교과·종합·논술·정시",
+      "suneungMinimum": "교과(추천인재) 3개 영역 합 6~7",
+      "review": false
+    },
+    {
+      "uni": "서울대학교",
+      "uniId": "snu",
+      "category": "인서울 주요대",
+      "name": "의예과",
+      "college": "의과대학",
+      "track": "학생부종합·정시",
+      "suneungMinimum": "없음(전 모집단위 미적용)",
+      "review": false
+    },
+    {
+      "uni": "서울대학교",
+      "uniId": "snu",
+      "category": "인서울 주요대",
+      "name": "치의학과",
+      "college": "치의학대학원",
+      "track": "학생부종합·정시",
+      "suneungMinimum": "없음",
+      "review": false
+    },
+    {
+      "uni": "서울대학교",
+      "uniId": "snu",
+      "category": "인서울 주요대",
+      "name": "수의예과",
+      "college": "수의과대학",
+      "track": "학생부종합·정시",
+      "suneungMinimum": "없음",
+      "review": false
+    },
+    {
+      "uni": "서울대학교",
+      "uniId": "snu",
+      "category": "인서울 주요대",
+      "name": "약학계열",
+      "college": "약학대학",
+      "track": "학생부종합·정시",
+      "suneungMinimum": "없음",
+      "review": false
+    },
+    {
+      "uni": "서울대학교",
+      "uniId": "snu",
+      "category": "인서울 주요대",
+      "name": "간호대학",
+      "college": "간호대학",
+      "track": "학생부종합·정시",
+      "suneungMinimum": "없음",
+      "review": false
+    },
+    {
+      "uni": "서울대학교",
+      "uniId": "snu",
+      "category": "인서울 주요대",
+      "name": "경영대학",
+      "college": "경영대학",
+      "track": "학생부종합·정시",
+      "suneungMinimum": "없음",
+      "review": false
+    },
+    {
+      "uni": "서울대학교",
+      "uniId": "snu",
+      "category": "인서울 주요대",
+      "name": "컴퓨터공학부",
+      "college": "공과대학",
+      "track": "학생부종합·정시",
+      "suneungMinimum": "없음",
+      "review": false
+    },
+    {
+      "uni": "서강대학교",
+      "uniId": "sogang",
+      "category": "인서울 주요대",
+      "name": "경영학부",
+      "college": "경영대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "지역균형 4개 중 3개 각 3등급 / 일반Ⅱ·논술 3개 합 7",
+      "review": false
+    },
+    {
+      "uni": "서강대학교",
+      "uniId": "sogang",
+      "category": "인서울 주요대",
+      "name": "경제학과",
+      "college": "경제대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "지역균형 3개 각 3등급 / 일반Ⅱ·논술 3개 합 7",
+      "review": false
+    },
+    {
+      "uni": "서강대학교",
+      "uniId": "sogang",
+      "category": "인서울 주요대",
+      "name": "컴퓨터공학과",
+      "college": "공과대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "지역균형 3개 각 3등급 / 일반Ⅱ·논술 3개 합 7",
+      "review": false
+    },
+    {
+      "uni": "서강대학교",
+      "uniId": "sogang",
+      "category": "인서울 주요대",
+      "name": "전자공학과",
+      "college": "공과대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "지역균형 3개 각 3등급 / 논술 3개 합 7",
+      "review": false
+    },
+    {
+      "uni": "서강대학교",
+      "uniId": "sogang",
+      "category": "인서울 주요대",
+      "name": "화공생명공학과",
+      "college": "공과대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "지역균형 3개 각 3등급 / 논술 3개 합 7",
+      "review": false
+    },
+    {
+      "uni": "서강대학교",
+      "uniId": "sogang",
+      "category": "인서울 주요대",
+      "name": "국어국문학과",
+      "college": "인문대학",
+      "track": "교과·종합·정시",
+      "suneungMinimum": "지역균형 3개 각 3등급 / 일반Ⅰ 미적용",
+      "review": false
+    },
+    {
+      "uni": "숭실대학교",
+      "uniId": "soongsil",
+      "category": "인서울 주요대",
+      "name": "경영학부",
+      "college": "경영대학",
+      "track": "교과·논술",
+      "suneungMinimum": "2개 영역 합 6",
+      "review": false
+    },
+    {
+      "uni": "숭실대학교",
+      "uniId": "soongsil",
+      "category": "인서울 주요대",
+      "name": "컴퓨터학부",
+      "college": "IT대학",
+      "track": "교과·논술",
+      "suneungMinimum": "2개 영역 합 6",
+      "review": false
+    },
+    {
+      "uni": "숭실대학교",
+      "uniId": "soongsil",
+      "category": "인서울 주요대",
+      "name": "AI융합학부",
+      "college": "IT대학",
+      "track": "교과·논술",
+      "suneungMinimum": "2개 영역 합 6",
+      "review": false
+    },
+    {
+      "uni": "숭실대학교",
+      "uniId": "soongsil",
+      "category": "인서울 주요대",
+      "name": "전자정보공학부",
+      "college": "공과대학",
+      "track": "교과·논술",
+      "suneungMinimum": "2개 영역 합 6",
+      "review": false
+    },
+    {
+      "uni": "숭실대학교",
+      "uniId": "soongsil",
+      "category": "인서울 주요대",
+      "name": "국어국문학과",
+      "college": "인문대학",
+      "track": "교과·논술",
+      "suneungMinimum": "2개 영역 합 6",
+      "review": false
+    },
+    {
+      "uni": "성신여자대학교",
+      "uniId": "sungshin",
+      "category": "인서울 주요대",
+      "name": "간호학과",
+      "college": "간호대학",
+      "track": "교과·논술",
+      "suneungMinimum": "2개 영역 합 7",
+      "review": false
+    },
+    {
+      "uni": "성신여자대학교",
+      "uniId": "sungshin",
+      "category": "인서울 주요대",
+      "name": "경영학부",
+      "college": "지식산업대학",
+      "track": "교과·논술",
+      "suneungMinimum": "2개 영역 합 7",
+      "review": false
+    },
+    {
+      "uni": "성신여자대학교",
+      "uniId": "sungshin",
+      "category": "인서울 주요대",
+      "name": "컴퓨터공학과",
+      "college": "공과대학",
+      "track": "교과·논술",
+      "suneungMinimum": "2개 영역 합 7",
+      "review": false
+    },
+    {
+      "uni": "성신여자대학교",
+      "uniId": "sungshin",
+      "category": "인서울 주요대",
+      "name": "AI융합학부",
+      "college": "공과대학",
+      "track": "교과·논술",
+      "suneungMinimum": "2개 영역 합 7",
+      "review": false
+    },
+    {
+      "uni": "성신여자대학교",
+      "uniId": "sungshin",
+      "category": "인서울 주요대",
+      "name": "창의융합학부(자유전공)",
+      "college": "창의융합",
+      "track": "교과·종합",
+      "suneungMinimum": "교과 2개 영역 합 7 / 학종 없음",
+      "review": false
+    },
+    {
+      "uni": "한국공학대학교",
+      "uniId": "tukorea",
+      "category": "수도권 주요대",
+      "name": "컴퓨터공학부",
+      "college": "공과대학",
+      "track": "교과우수자",
+      "suneungMinimum": "2개 영역 합 8",
+      "review": false
+    },
+    {
+      "uni": "한국공학대학교",
+      "uniId": "tukorea",
+      "category": "수도권 주요대",
+      "name": "전자공학부",
+      "college": "공과대학",
+      "track": "교과우수자",
+      "suneungMinimum": "2개 영역 합 8",
+      "review": false
+    },
+    {
+      "uni": "한국공학대학교",
+      "uniId": "tukorea",
+      "category": "수도권 주요대",
+      "name": "반도체공학부",
+      "college": "공과대학",
+      "track": "교과우수자",
+      "suneungMinimum": "2개 영역 합 8",
+      "review": false
+    },
+    {
+      "uni": "한국공학대학교",
+      "uniId": "tukorea",
+      "category": "수도권 주요대",
+      "name": "기계공학과",
+      "college": "공과대학",
+      "track": "교과우수자",
+      "suneungMinimum": "2개 영역 합 8",
+      "review": false
+    },
+    {
+      "uni": "한국공학대학교",
+      "uniId": "tukorea",
+      "category": "수도권 주요대",
+      "name": "경영학부",
+      "college": "경영대학",
+      "track": "교과우수자",
+      "suneungMinimum": "2개 영역 합 8",
+      "review": false
+    },
+    {
+      "uni": "연세대학교",
+      "uniId": "yonsei",
+      "category": "인서울 주요대",
+      "name": "의예과",
+      "college": "의과대학",
+      "track": "추천·종합·정시",
+      "suneungMinimum": "1등급 2개 이상(수학 포함)",
+      "review": false
+    },
+    {
+      "uni": "연세대학교",
+      "uniId": "yonsei",
+      "category": "인서울 주요대",
+      "name": "치의예과",
+      "college": "치과대학",
+      "track": "추천·종합·정시",
+      "suneungMinimum": "1등급 2개 이상(수학 포함)",
+      "review": false
+    },
+    {
+      "uni": "연세대학교",
+      "uniId": "yonsei",
+      "category": "인서울 주요대",
+      "name": "약학과",
+      "college": "약학대학",
+      "track": "추천·종합·논술·정시",
+      "suneungMinimum": "1등급 2개 이상(수학 포함) / 논술 3개 합 5(국·수 포함)",
+      "review": false
+    },
+    {
+      "uni": "연세대학교",
+      "uniId": "yonsei",
+      "category": "인서울 주요대",
+      "name": "간호학과",
+      "college": "간호대학",
+      "track": "추천·종합·정시",
+      "suneungMinimum": "인문 또는 자연 일반 기준 충족(통합)",
+      "review": false
+    },
+    {
+      "uni": "연세대학교",
+      "uniId": "yonsei",
+      "category": "인서울 주요대",
+      "name": "경영학과",
+      "college": "경영대학",
+      "track": "추천·종합·논술·정시",
+      "suneungMinimum": "인문 2개 합 4(국·수 중 1 포함), 영어 3, 한국사 4 / 논술 3개 합 6",
+      "review": false
+    },
+    {
+      "uni": "연세대학교",
+      "uniId": "yonsei",
+      "category": "인서울 주요대",
+      "name": "첨단컴퓨팅학부",
+      "college": "공과대학",
+      "track": "추천·종합·논술·정시",
+      "suneungMinimum": "자연 2개 합 5(수학 포함) / 논술 3개 합 6",
+      "review": false
+    },
+    {
+      "uni": "연세대학교",
+      "uniId": "yonsei",
+      "category": "인서울 주요대",
+      "name": "전기전자공학부",
+      "college": "공과대학",
+      "track": "추천·종합·논술·정시",
+      "suneungMinimum": "자연 2개 합 5(수학 포함)",
+      "review": false
+    },
+    {
+      "uni": "가톨릭대학교",
+      "uniId": "catholic",
+      "category": "인서울 주요대",
+      "name": "의예",
+      "college": "",
+      "track": "학생부종합-잠재능력우수자(서류/면접) · 학교장추천",
+      "suneungMinimum": "대부분 없음 / 학교장추천 약학 3개 합 5·의예 3개 합 4+한국사 4",
+      "review": false
+    },
+    {
+      "uni": "가톨릭대학교",
+      "uniId": "catholic",
+      "category": "인서울 주요대",
+      "name": "약학",
+      "college": "",
+      "track": "학생부종합-잠재능력우수자(서류/면접) · 학교장추천",
+      "suneungMinimum": "대부분 없음 / 학교장추천 약학 3개 합 5·의예 3개 합 4+한국사 4",
+      "review": false
+    },
+    {
+      "uni": "가톨릭대학교",
+      "uniId": "catholic",
+      "category": "인서울 주요대",
+      "name": "간호",
+      "college": "",
+      "track": "논술-논술전형",
+      "suneungMinimum": "약학 3개 합 5 / 의예 3개 합 4+한국사 4 / 간호 3개 합 7 (그 외 없음)",
+      "review": false
+    },
+    {
+      "uni": "중앙대학교",
+      "uniId": "cau",
+      "category": "인서울 주요대",
+      "name": "약학",
+      "college": "",
+      "track": "학생부교과-지역균형",
+      "suneungMinimum": "3개 영역 등급합 7 (약학부 4개 합 5)",
+      "review": false
+    },
+    {
+      "uni": "충북대학교",
+      "uniId": "cbnu",
+      "category": "지방거점국립대",
+      "name": "간호",
+      "college": "",
+      "track": "학생부교과-정원내 / 정원외",
+      "suneungMinimum": "의·약·수의·간호만 상위 3개 영역 합 / 그 외 상위 2개 영역 합 8 이내",
+      "review": false
+    },
+    {
+      "uni": "단국대학교",
+      "uniId": "dankook",
+      "category": "수도권 주요대",
+      "name": "의학",
+      "college": "",
+      "track": "학생부종합-DKU인재 서류형 / 면접형",
+      "suneungMinimum": "서류형 없음(의·약 제외) / 면접형 의학계열 3개 합 4·약학 3개 합 5",
+      "review": false
+    },
+    {
+      "uni": "단국대학교",
+      "uniId": "dankook",
+      "category": "수도권 주요대",
+      "name": "약학",
+      "college": "",
+      "track": "학생부종합-DKU인재 서류형 / 면접형",
+      "suneungMinimum": "서류형 없음(의·약 제외) / 면접형 의학계열 3개 합 4·약학 3개 합 5",
+      "review": false
+    },
+    {
+      "uni": "이화여자대학교",
+      "uniId": "ewha",
+      "category": "인서울 주요대",
+      "name": "의예",
+      "college": "",
+      "track": "학생부종합-미래인재 — 서류형",
+      "suneungMinimum": "3개 영역 합 7(의예 5 / 약학 6 / 스크랜튼 5 / 국제 국어포함 3개 합 7+영어 2등급)",
+      "review": false
+    },
+    {
+      "uni": "이화여자대학교",
+      "uniId": "ewha",
+      "category": "인서울 주요대",
+      "name": "약학",
+      "college": "",
+      "track": "학생부종합-미래인재 — 서류형",
+      "suneungMinimum": "3개 영역 합 7(의예 5 / 약학 6 / 스크랜튼 5 / 국제 국어포함 3개 합 7+영어 2등급)",
+      "review": false
+    },
+    {
+      "uni": "이화여자대학교",
+      "uniId": "ewha",
+      "category": "인서울 주요대",
+      "name": "스크랜튼",
+      "college": "",
+      "track": "학생부종합-미래인재 — 서류형",
+      "suneungMinimum": "3개 영역 합 7(의예 5 / 약학 6 / 스크랜튼 5 / 국제 국어포함 3개 합 7+영어 2등급)",
+      "review": false
+    },
+    {
+      "uni": "가천대학교",
+      "uniId": "gachon",
+      "category": "수도권 주요대",
+      "name": "의예",
+      "college": "",
+      "track": "학생부교과-학생부우수자",
+      "suneungMinimum": "인문·자연 2개 영역 합 6 / 의예 3개 각 1 / 약학 3개 합 5 / 한의 2개 각 1",
+      "review": false
+    },
+    {
+      "uni": "가천대학교",
+      "uniId": "gachon",
+      "category": "수도권 주요대",
+      "name": "약학",
+      "college": "",
+      "track": "학생부교과-학생부우수자",
+      "suneungMinimum": "인문·자연 2개 영역 합 6 / 의예 3개 각 1 / 약학 3개 합 5 / 한의 2개 각 1",
+      "review": false
+    },
+    {
+      "uni": "한양대학교",
+      "uniId": "hanyang",
+      "category": "인서울 주요대",
+      "name": "의예",
+      "college": "",
+      "track": "학생부종합-학업형(서류형 폐지·통합)",
+      "suneungMinimum": "신설 — 자연·상경 3개 영역(수학 포함) 합 7 / 인문 3개 합 7 / 의예 4개 합 4",
+      "review": false
+    },
+    {
+      "uni": "제주대학교",
+      "uniId": "jejunu",
+      "category": "지방거점국립대",
+      "name": "의예",
+      "college": "",
+      "track": "학생부교과-일반학생",
+      "suneungMinimum": "적용(야간 제외). 인문·사회·경상 2개 합 9 / 자연·공과 2개 합 10 / 간호 3개 합 11 / 초등 3개 합 8 / 의예 수학포함 3개 합 6 / 수의·약학 수학포함 3개 합 7",
+      "review": false
+    },
+    {
+      "uni": "제주대학교",
+      "uniId": "jejunu",
+      "category": "지방거점국립대",
+      "name": "약학",
+      "college": "",
+      "track": "학생부교과-일반학생",
+      "suneungMinimum": "적용(야간 제외). 인문·사회·경상 2개 합 9 / 자연·공과 2개 합 10 / 간호 3개 합 11 / 초등 3개 합 8 / 의예 수학포함 3개 합 6 / 수의·약학 수학포함 3개 합 7",
+      "review": false
+    },
+    {
+      "uni": "제주대학교",
+      "uniId": "jejunu",
+      "category": "지방거점국립대",
+      "name": "간호",
+      "college": "",
+      "track": "학생부교과-일반학생",
+      "suneungMinimum": "적용(야간 제외). 인문·사회·경상 2개 합 9 / 자연·공과 2개 합 10 / 간호 3개 합 11 / 초등 3개 합 8 / 의예 수학포함 3개 합 6 / 수의·약학 수학포함 3개 합 7",
+      "review": false
+    },
+    {
+      "uni": "전남대학교",
+      "uniId": "jnu",
+      "category": "지방거점국립대",
+      "name": "의학",
+      "college": "",
+      "track": "학생부교과-일반",
+      "suneungMinimum": "의과 3개 영역 합 5 / 치의학 5 / 수의·약학 6 / 간호·경영 9 / 공과·인문·자연 2개 영역 합 7 이내",
+      "review": false
+    },
+    {
+      "uni": "전남대학교",
+      "uniId": "jnu",
+      "category": "지방거점국립대",
+      "name": "치의학",
+      "college": "",
+      "track": "학생부교과-일반",
+      "suneungMinimum": "의과 3개 영역 합 5 / 치의학 5 / 수의·약학 6 / 간호·경영 9 / 공과·인문·자연 2개 영역 합 7 이내",
+      "review": false
+    },
+    {
+      "uni": "전남대학교",
+      "uniId": "jnu",
+      "category": "지방거점국립대",
+      "name": "약학",
+      "college": "",
+      "track": "학생부교과-일반",
+      "suneungMinimum": "의과 3개 영역 합 5 / 치의학 5 / 수의·약학 6 / 간호·경영 9 / 공과·인문·자연 2개 영역 합 7 이내",
+      "review": false
+    },
+    {
+      "uni": "전남대학교",
+      "uniId": "jnu",
+      "category": "지방거점국립대",
+      "name": "간호",
+      "college": "",
+      "track": "학생부교과-일반",
+      "suneungMinimum": "의과 3개 영역 합 5 / 치의학 5 / 수의·약학 6 / 간호·경영 9 / 공과·인문·자연 2개 영역 합 7 이내",
+      "review": false
+    },
+    {
+      "uni": "강원대학교",
+      "uniId": "kangwon",
+      "category": "지방거점국립대",
+      "name": "의예",
+      "college": "",
+      "track": "학생부교과-일반 / 강원인재(지역인재)",
+      "suneungMinimum": "강원인재 약학 7등급·의예 5등급(국·수·영·과탐 중 수학포함 3개합) / 일반 약학 8·의예 6. 그 외 다수 학과 미적용",
+      "review": false
+    },
+    {
+      "uni": "강원대학교",
+      "uniId": "kangwon",
+      "category": "지방거점국립대",
+      "name": "약학",
+      "college": "",
+      "track": "학생부교과-일반 / 강원인재(지역인재)",
+      "suneungMinimum": "강원인재 약학 7등급·의예 5등급(국·수·영·과탐 중 수학포함 3개합) / 일반 약학 8·의예 6. 그 외 다수 학과 미적용",
+      "review": false
+    },
+    {
+      "uni": "경북대학교",
+      "uniId": "knu",
+      "category": "지방거점국립대",
+      "name": "의예",
+      "college": "",
+      "track": "학생부교과-교과우수자 / 지역인재",
+      "suneungMinimum": "의예·치의예 수학포함 3개합 4 / 수의예·약학 3개합 5(탐구2) / 일반학과 2개합 5~6. 생태환경대·과학기술대·자율미래인재학부 미적용",
+      "review": false
+    },
+    {
+      "uni": "경북대학교",
+      "uniId": "knu",
+      "category": "지방거점국립대",
+      "name": "치의예",
+      "college": "",
+      "track": "학생부교과-교과우수자 / 지역인재",
+      "suneungMinimum": "의예·치의예 수학포함 3개합 4 / 수의예·약학 3개합 5(탐구2) / 일반학과 2개합 5~6. 생태환경대·과학기술대·자율미래인재학부 미적용",
+      "review": false
+    },
+    {
+      "uni": "경북대학교",
+      "uniId": "knu",
+      "category": "지방거점국립대",
+      "name": "약학",
+      "college": "",
+      "track": "학생부교과-교과우수자 / 지역인재",
+      "suneungMinimum": "의예·치의예 수학포함 3개합 4 / 수의예·약학 3개합 5(탐구2) / 일반학과 2개합 5~6. 생태환경대·과학기술대·자율미래인재학부 미적용",
+      "review": false
+    },
+    {
+      "uni": "경북대학교",
+      "uniId": "knu",
+      "category": "지방거점국립대",
+      "name": "수의예",
+      "college": "",
+      "track": "학생부교과-교과우수자 / 지역인재",
+      "suneungMinimum": "의예·치의예 수학포함 3개합 4 / 수의예·약학 3개합 5(탐구2) / 일반학과 2개합 5~6. 생태환경대·과학기술대·자율미래인재학부 미적용",
+      "review": false
+    },
+    {
+      "uni": "고려대학교 세종",
+      "uniId": "korea-sejong",
+      "category": "지방캠퍼스",
+      "name": "약학",
+      "college": "",
+      "track": "학생부교과-학생부교과",
+      "suneungMinimum": "국·수·영·탐(상위1) 중 1개 영역 3등급 이내 (약학과 3개 합 5)",
+      "review": false
+    },
+    {
+      "uni": "고려대학교",
+      "uniId": "korea",
+      "category": "인서울 주요대",
+      "name": "의학",
+      "college": "",
+      "track": "학생부교과-학교추천",
+      "suneungMinimum": "인문·자연 적용하지 않음(폐지). 의학과만 4개 영역 합 5 및 한국사 4",
+      "review": false
+    },
+    {
+      "uni": "성균관대학교",
+      "uniId": "skku",
+      "category": "인서울 주요대",
+      "name": "의예",
+      "college": "",
+      "track": "논술-언어형 / 수리형",
+      "suneungMinimum": "적용(인문·사회 3합6 / 자연·공학·약학 3합5 / 의예 4개 합5)",
+      "review": false
+    },
+    {
+      "uni": "성균관대학교",
+      "uniId": "skku",
+      "category": "인서울 주요대",
+      "name": "약학",
+      "college": "",
+      "track": "논술-언어형 / 수리형",
+      "suneungMinimum": "적용(인문·사회 3합6 / 자연·공학·약학 3합5 / 의예 4개 합5)",
+      "review": false
+    },
+    {
+      "uni": "숙명여자대학교",
+      "uniId": "sookmyung",
+      "category": "인서울 주요대",
+      "name": "약학",
+      "college": "",
+      "track": "학생부교과-지역균형선발",
+      "suneungMinimum": "약학부만 3개 영역 합 5, 그 외 미적용",
+      "review": false
+    },
+    {
+      "uni": "연세대학교",
+      "uniId": "yonsei",
+      "category": "인서울 주요대",
+      "name": "약학",
+      "college": "",
+      "track": "논술-논술전형",
+      "suneungMinimum": "신설 — 국·수·사·과 중 3개 등급합 6 이내(국·수 포함), 영어 3등급, 한국사 4등급 (약학과 3개 합 5)",
+      "review": false
+    }
+  ]
+}
