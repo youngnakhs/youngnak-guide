@@ -5,11 +5,11 @@ import{a as R,b as j,m as S,c as E,u as B,i as C}from"./site-Ck_ArAu4.js";import
         </div>
         <dl class="kv-list">${i||'<p class="text-soft">세부 정보 확인 필요</p>'}</dl>
       </article>`}).join(""),m=(s.changes2028||[]).map(t=>`<li>${l(t)} ${p(t)?'<span class="badge badge--review">확인 필요</span>':""}${u(t)}</li>`).join(""),h=([]).map(t=>`<a class="btn btn--ghost" href="${t.url}" target="_blank" rel="noopener">${t.name} ↗</a>`).join(""),g=(s.highlights||[]).map(t=>`<li>${t}</li>`).join(""),v=s.departments||[];function x(t){const i=l(t.suneungMinimum),c=i?`${i}${p(t.suneungMinimum)?' <span class="badge badge--review">확인 필요</span>':""}`:'<span class="text-faint">–</span>',o=l(t.quota);return`<tr data-name="${(t.name+" "+(t.college||"")).toLowerCase()}">
-      <td><strong>${t.name}</strong></td>
-      <td>${t.college||'<span class="text-faint">–</span>'}</td>
-      <td>${t.track||'<span class="text-faint">–</span>'}</td>
-      <td>${o??'<span class="text-faint">–</span>'}</td>
-      <td>${c}</td>
+      <td class="d-name"><strong>${t.name}</strong></td>
+      <td data-label="단과대학">${t.college||'<span class="text-faint">–</span>'}</td>
+      <td data-label="전형">${t.track||'<span class="text-faint">–</span>'}</td>
+      <td data-label="모집인원">${o??'<span class="text-faint">–</span>'}</td>
+      <td data-label="수능최저">${c}</td>
     </tr>`}const M=v.length?`<section class="section no-print" style="padding-top:0" id="deptSection">
         <div class="section-head">
           <h2>모집단위(학과)별 수능최저</h2>
