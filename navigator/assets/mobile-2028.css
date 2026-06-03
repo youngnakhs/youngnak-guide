@@ -1,0 +1,103 @@
+/* ============================================================
+   모바일 최적화 — 2028 대입 내비게이터
+   모든 규칙은 (max-width:760px) 안에서만 적용 → PC/데스크탑 레이아웃 영향 없음
+   ============================================================ */
+
+/* 모바일 정렬 드롭다운은 기본(데스크탑)에서 숨김 — @media 안에서 다시 켭니다 */
+#mobileSortGroup{ display:none; }
+
+@media (max-width: 760px){
+
+  /* ---------- 1) 비교 대시보드 표 → 카드형 ---------- */
+  #compareTable thead{ display:none; }
+  #compareTable,
+  #compareTable tbody{ display:block; width:100%; }
+  #compareTable caption{ display:block; width:100%; padding:0 0 var(--space-3); }
+  .table-wrap{ overflow:visible; border:0; box-shadow:none; background:transparent; }
+
+  #compareTable tbody tr[data-id]{
+    display:block; position:relative;
+    background:var(--bg-elev);
+    border:1px solid var(--surface-border);
+    border-radius:var(--radius-md);
+    box-shadow:var(--shadow-sm);
+    padding:var(--space-4) var(--space-4) var(--space-3);
+    margin-bottom:var(--space-3);
+  }
+  /* 카드 모드에선 줄무늬·호버 배경 해제 */
+  #compareTable tbody tr:nth-child(2n){ background:var(--bg-elev); }
+  #compareTable tbody tr:hover{ background:var(--bg-elev); }
+
+  /* 일반 항목: 좌측 라벨 + 우측 값 */
+  #compareTable tbody tr[data-id] td{
+    display:flex; justify-content:space-between; align-items:baseline;
+    gap:var(--space-4);
+    border:0; padding:.34em 0;
+    white-space:normal; text-align:right;
+    font-size:.92rem;
+  }
+  #compareTable tbody tr[data-id] td::before{
+    content:attr(data-label);
+    color:var(--text-faint); font-weight:var(--fw-semibold);
+    text-align:left; white-space:nowrap; flex:0 0 auto;
+  }
+
+  /* 대학명 = 카드 제목 */
+  #compareTable tbody tr[data-id] td.c-name{
+    display:block; text-align:left;
+    padding:0 46px .15em 0;
+    font-size:1.1rem; line-height:1.25;
+  }
+  #compareTable tbody tr[data-id] td.c-name strong{ font-weight:var(--fw-extra); }
+  #compareTable tbody tr[data-id] td.c-name::before{ display:none; }
+
+  /* 분류 배지 = 제목 아래 구분선 */
+  #compareTable tbody tr[data-id] td.c-cat{
+    display:block; text-align:left;
+    padding:0 0 .55em; margin-bottom:.5em;
+    border-bottom:1px solid var(--surface-border);
+  }
+  #compareTable tbody tr[data-id] td.c-cat::before{ display:none; }
+
+  /* 담기 체크박스 = 카드 우상단 (터치 영역 확대) */
+  #compareTable tbody tr[data-id] td.td-pick{
+    position:absolute; top:var(--space-4); right:var(--space-4);
+    width:auto; padding:0;
+  }
+  #compareTable tbody tr[data-id] td.td-pick::before{ display:none; }
+  #compareTable tbody tr[data-id] td.td-pick input.pick{ width:22px; height:22px; }
+
+  /* 결과 없음 행 */
+  #compareTable tbody tr td[colspan]{ display:block; text-align:center; }
+  #compareTable tbody tr td[colspan]::before{ display:none; }
+
+  /* 모바일 정렬 드롭다운 표시 + 필터바 세로 정리 */
+  #mobileSortGroup{ display:flex; }
+  .filterbar{ flex-direction:column; align-items:stretch; gap:var(--space-3); }
+  .filter-group{ width:100%; }
+  .filterbar .filter-input{ min-width:0; width:100%; }
+  .filterbar .chips{ flex-wrap:wrap; }
+  .filterbar #resetBtn{ width:100%; }
+
+  /* ---------- 2) 터치 영역 · 버튼 ---------- */
+  .btn{ min-height:44px; }
+  .btn:hover{ transform:none; }        /* 터치 기기에서 hover 들썩임 제거 */
+  .card--hover:hover{ transform:none; }
+  .navbar__links a{ min-height:44px; display:flex; align-items:center; }
+
+  /* ---------- 3) 히어로 CTA·검색 누르기 쉽게 ---------- */
+  .hero__cta{ width:100%; }
+  .hero__cta .btn{ flex:1 1 auto; justify-content:center; }
+  .hero__search{ width:100%; }
+  .hero__search .btn{ width:100%; }
+
+  /* ---------- 4) 나란히 비교 매트릭스 폭 완화 ---------- */
+  .compare-matrix td,
+  .compare-matrix thead th{ min-width:140px; }
+}
+
+/* 아주 좁은 화면 */
+@media (max-width: 400px){
+  #compareTable tbody tr[data-id] td{ font-size:.88rem; }
+  #compareTable tbody tr[data-id] td.c-name{ font-size:1.05rem; }
+}
