@@ -6,6 +6,20 @@
 /* 모바일 정렬 드롭다운은 기본(데스크탑)에서 숨김 — @media 안에서 다시 켭니다 */
 #mobileSortGroup{ display:none; }
 
+/* ============================================================
+   한글 줄바꿈(단어 단위) — PC·모바일 공통
+   브라우저 기본값은 한글을 글자 사이 아무 데서나 끊어 "입시입니/다"처럼
+   단어 중간에서 줄바꿈됨. keep-all로 단어 단위 줄바꿈, 긴 영문/숫자는
+   overflow-wrap:anywhere로 필요할 때만 분할.
+   ============================================================ */
+h1, h2, h3, h4, h5, h6,
+p, li, dt, dd, caption, td, figcaption, blockquote,
+.hero__title, .hero__lead, .section-head p,
+.menu-card h3, .menu-card p, .card h3, .card p{
+  word-break:keep-all;
+  overflow-wrap:anywhere;
+}
+
 @media (max-width: 760px){
 
   /* ============================================================
@@ -162,12 +176,6 @@
   /* ---------- 나란히 비교 매트릭스 폭 완화 ---------- */
   .compare-matrix td,
   .compare-matrix thead th{ min-width:140px; }
-
-  /* ---------- 한글 줄바꿈: 단어 중간에서 끊기지 않게 (내비게/이터 방지) ---------- */
-  h1, h2, h3, h4,
-  .hero__title, .hero__lead, .section-head p,
-  .menu-card h3, .menu-card p, .card h3,
-  p, li, dt, dd{ word-break:keep-all; overflow-wrap:anywhere; }
 }
 
 /* 아주 좁은 화면 */
