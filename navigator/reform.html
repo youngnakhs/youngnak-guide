@@ -160,6 +160,52 @@
 
       <!-- ▲▲ 보강 끝 ▲▲ -->
 
+      <!-- ② 고1 준비 로드맵 -->
+      <section class="section container" id="roadmap">
+        <div class="section-head">
+          <span class="eyebrow">준비 로드맵</span>
+          <h2>지금부터, 무엇을 준비할까</h2>
+          <p>학년·학기별로 해야 할 일을 체크리스트로 정리했어요. 체크하면 내 진행 상황이 저장됩니다. (일반 가이드 — 자세한 건 1학년부 안내를 우선하세요.)</p>
+        </div>
+        <div class="roadmap">
+          <div class="rm-card">
+            <div class="rm-card__head"><span class="rm-card__when">고1</span><span class="rm-card__tag">지금</span></div>
+            <ul class="rm-list" data-rm="h1">
+              <li><label><input type="checkbox"><span>과목 선택 전략 세우기(진로·전형 연계)</span></label></li>
+              <li><label><input type="checkbox"><span>모든 과목 내신 관리 — 5등급제 적응</span></label></li>
+              <li><label><input type="checkbox"><span>도전 과목에서 성취도 A 목표</span></label></li>
+              <li><label><input type="checkbox"><span>수행평가·세특(세부능력 특기사항) 챙기기</span></label></li>
+              <li><label><input type="checkbox"><span>통합형 수능 기초 다지기(국어·수학·탐구)</span></label></li>
+              <li><label><input type="checkbox"><span>모의고사로 약점 파악·관심 계열 탐색</span></label></li>
+            </ul>
+            <div class="rm-progress" data-prog="h1"></div>
+          </div>
+          <div class="rm-card">
+            <div class="rm-card__head"><span class="rm-card__when">고2</span><span class="rm-card__tag">심화</span></div>
+            <ul class="rm-list" data-rm="h2">
+              <li><label><input type="checkbox"><span>선택과목 본격 이수·성취도 관리</span></label></li>
+              <li><label><input type="checkbox"><span>세특 심화 — 진로·전공과 연결</span></label></li>
+              <li><label><input type="checkbox"><span>수능 공부 본격화(약점 보완)</span></label></li>
+              <li><label><input type="checkbox"><span>수시·정시 유불리 점검</span></label></li>
+              <li><label><input type="checkbox"><span>지원 대학·전형 후보 좁히기</span></label></li>
+            </ul>
+            <div class="rm-progress" data-prog="h2"></div>
+          </div>
+          <div class="rm-card">
+            <div class="rm-card__head"><span class="rm-card__when">고3</span><span class="rm-card__tag">실전</span></div>
+            <ul class="rm-list" data-rm="h3">
+              <li><label><input type="checkbox"><span>수능최저 충족 전략 확정</span></label></li>
+              <li><label><input type="checkbox"><span>수시 지원(최대 6장) vs 정시 설계</span></label></li>
+              <li><label><input type="checkbox"><span>학생부 마무리 점검(서류 평가 대비)</span></label></li>
+              <li><label><input type="checkbox"><span>면접 준비(해당 전형)</span></label></li>
+              <li><label><input type="checkbox"><span>원서 접수·지원 전략 최종 점검</span></label></li>
+            </ul>
+            <div class="rm-progress" data-prog="h3"></div>
+          </div>
+        </div>
+        <p class="diag__note" style="margin-top:var(--space-4)">💡 학부모님께: 정기 상담, 입학처 공지 확인, 그리고 메인의 ‘영락고 진로·대입 정보센터(내신 합격예측 등)’를 함께 활용해 주세요.</p>
+      </section>
+
       <!-- 일정 타임라인 -->
       <section class="section container">
         <div class="section-head">
@@ -169,10 +215,45 @@
         <ol class="timeline" id="timeline"></ol>
       </section>
 
-      <section class="section container container--narrow center">
-        <a class="btn btn--primary btn--lg" href="compare.html">이제 대학별로 비교해볼까요? →</a>
+      <!-- ⑤ 다음 단계 -->
+      <section class="section container">
+        <div class="next-steps">
+          <span class="next-steps__label">다음 단계<small>개편 핵심을 봤다면</small></span>
+          <div class="next-steps__links">
+            <a class="btn btn--primary" href="index.html#diag">내 내신으로 보기 →</a>
+            <a class="btn btn--ghost" href="compare.html">대학 비교 →</a>
+          </div>
+        </div>
       </section>
     </main>
 
+    <!-- ② 고1 로드맵 체크리스트 (진행 상황 localStorage 저장) -->
+    <script>
+      (function () {
+        var lists = document.querySelectorAll('.rm-list[data-rm]');
+        if (!lists.length) return;
+        lists.forEach(function (ul) {
+          var id = ul.getAttribute('data-rm'), key = 'rm-' + id;
+          var boxes = ul.querySelectorAll('input[type=checkbox]');
+          var prog = document.querySelector('[data-prog="' + id + '"]');
+          var saved = {};
+          try { saved = JSON.parse(localStorage.getItem(key) || '{}'); } catch (e) {}
+          function update() {
+            var done = 0;
+            boxes.forEach(function (b) { if (b.checked) done++; });
+            if (prog) prog.textContent = '진행 ' + done + ' / ' + boxes.length;
+          }
+          boxes.forEach(function (b, i) {
+            if (saved[i]) b.checked = true;
+            b.addEventListener('change', function () {
+              saved[i] = b.checked;
+              try { localStorage.setItem(key, JSON.stringify(saved)); } catch (e) {}
+              update();
+            });
+          });
+          update();
+        });
+      })();
+    </script>
   </body>
 </html>
