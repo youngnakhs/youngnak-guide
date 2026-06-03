@@ -96,7 +96,46 @@
   #compareTable tbody tr td[colspan]::before,
   #deptTable tbody tr td[colspan]::before{ display:none; }
 
-  /* ---------- 카드화하지 않는 표(reform 환산표 등): 가로 스크롤 정돈 ---------- */
+  /* ============================================================
+     reform 환산표 카드형 (정적 표: 컬럼 라벨을 nth-child로 부여)
+     ============================================================ */
+  .table-wrap:has(.t-cards){ overflow:visible; border:0; box-shadow:none; background:transparent; }
+  .t-cards thead{ display:none; }
+  .t-cards, .t-cards tbody{ display:block; width:100%; }
+  .t-cards caption{ display:block; width:100%; padding:0 0 var(--space-3); margin:0; }
+  .t-cards tbody tr{
+    display:block; position:relative;
+    background:var(--bg-elev); border:1px solid var(--surface-border);
+    border-radius:var(--radius-md); box-shadow:var(--shadow-sm);
+    padding:var(--space-4) var(--space-4) var(--space-3); margin-bottom:var(--space-3);
+  }
+  .t-cards tbody tr:nth-child(2n){ background:var(--bg-elev); }
+  .t-cards tbody tr td{
+    display:flex; justify-content:space-between; align-items:baseline; gap:var(--space-4);
+    border:0; padding:.34em 0; white-space:normal; text-align:right; font-size:.92rem; min-width:0;
+  }
+  .t-cards tbody tr td::before{
+    color:var(--text-faint); font-weight:var(--fw-semibold);
+    text-align:left; white-space:nowrap; flex:0 0 auto;
+  }
+  /* 첫 칸 = 제목(내신 평균) */
+  .t-cards tbody tr td:first-child{
+    display:block; text-align:left; font-size:1.1rem; line-height:1.25;
+    border-bottom:1px solid var(--surface-border); margin-bottom:.5em; padding:0 0 .5em;
+  }
+  .t-cards tbody tr td:first-child::before{ display:none; }
+  .t-cards tbody tr td:first-child b{ font-weight:var(--fw-extra); }
+  /* 5열 환산표 라벨 */
+  .t-cards-5 tbody tr td:nth-child(2)::before{ content:"옛 9등급 환산"; }
+  .t-cards-5 tbody tr td:nth-child(3)::before{ content:"누적 상위 %"; }
+  .t-cards-5 tbody tr td:nth-child(4)::before{ content:"대학군"; }
+  .t-cards-5 tbody tr td:nth-child(5){ display:block; text-align:left; }   /* 긴 텍스트는 라벨 위·값 아래 */
+  .t-cards-5 tbody tr td:nth-child(5)::before{ content:"어림잡는 대학"; display:block; margin-bottom:.2em; }
+  /* 3열 환산표 라벨 */
+  .t-cards-3 tbody tr td:nth-child(2)::before{ content:"누적 상위 %"; }
+  .t-cards-3 tbody tr td:nth-child(3)::before{ content:"옛 9등급 환산"; }
+
+  /* ---------- 그 밖의 표: 가로 스크롤 정돈 ---------- */
   .table-wrap{ -webkit-overflow-scrolling:touch; }
   table.data th, table.data td{ padding:.55em .65em; }   /* 모바일에서 셀 여백 축소(카드표는 위에서 재정의) */
 
