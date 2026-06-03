@@ -242,7 +242,7 @@
       })();
     </script>
 
-    <!-- ① 내신 진단 위젯 로직 (개편핵심 환산표 데이터 재사용) -->
+    <!-- ① 내신 진단 위젯 로직 (환산표 기준 + 실제 대학 데이터 연동) -->
     <script>
       (function () {
         var grade = document.getElementById('diagGrade');
@@ -251,14 +251,30 @@
         var dept = document.getElementById('diagDept');
         var out = document.getElementById('diagResult');
         var BANDS = [
-          { max: 1.2, name: '인서울 최상위', old: '약 1.3~1.8', pct: '1~4%', unis: '서울대 · 연세대 · 고려대 · 서강대 · 성균관대 · 한양대 · 중앙대 · 경희대 주요 학과', tip: '정성(학생부·면접)까지 갖추면 최상위 소신 지원이 열려요.' },
-          { max: 1.5, name: '인서울 상위', old: '약 1.9~2.4', pct: '5~9%', unis: '이화여대 · 건국대 · 동국대 · 홍익대 · 숙명여대 · 서울시립대, 부산대 · 경북대 상위 학과', tip: '수능최저를 충족하면 실질 경쟁률이 크게 낮아집니다.' },
-          { max: 1.9, name: '수도권·인서울 중위', old: '약 2.5~3.0', pct: '10~16%', unis: '국민대 · 숭실대 · 세종대 · 단국대(죽전) · 아주대 · 인하대 · 서울과학기술대 · 성신여대', tip: '교과와 학생부종합을 함께 노리면 지원 폭이 넓어져요.' },
-          { max: 2.5, name: '수도권·거점국립', old: '약 3.1~4.0', pct: '17~33%', unis: '가천대 · 경기대 · 인천대 · 광운대 · 명지대 · 상명대 · 가톨릭대, 거점 국립대', tip: '거점국립대·수도권 인기학과가 현실적 목표권입니다.' },
-          { max: 3.0, name: '수도권 외곽·지역', old: '약 4.1~4.8', pct: '34~52%', unis: '강남대 · 수원대 · 안양대 · 을지대 · 평택대 · 대진대 · 한경국립대, 지역 강소대학', tip: '관심 분야 강소·특성화 학과를 함께 살펴보세요.' },
-          { max: 9, name: '지역·특성화', old: '약 4.8~6.1', pct: '52~82%', unis: '수도권 외곽·지역 사립대, 특성화 학과(간호 · 조리 · 항공정비 등)', tip: '학과 특성화·취업 연계를 기준으로 넓게 탐색해 보세요.' }
+          { max: 1.2, name: '인서울 최상위', old: '약 1.3~1.8', pct: '1~4%', list: ['서울대', '연세대', '고려대', '서강대', '성균관대', '한양대', '중앙대', '경희대'], extra: '주요 학과', tip: '정성(학생부·면접)까지 갖추면 최상위 소신 지원이 열려요.' },
+          { max: 1.5, name: '인서울 상위', old: '약 1.9~2.4', pct: '5~9%', list: ['이화여대', '건국대', '동국대', '홍익대', '숙명여대', '서울시립대', '부산대', '경북대'], extra: '상위 학과', tip: '수능최저를 충족하면 실질 경쟁률이 크게 낮아집니다.' },
+          { max: 1.9, name: '수도권·인서울 중위', old: '약 2.5~3.0', pct: '10~16%', list: ['국민대', '숭실대', '세종대', '단국대(죽전)', '아주대', '인하대', '서울과학기술대', '성신여대'], extra: '', tip: '교과와 학생부종합을 함께 노리면 지원 폭이 넓어져요.' },
+          { max: 2.5, name: '수도권·거점국립', old: '약 3.1~4.0', pct: '17~33%', list: ['가천대', '경기대', '인천대', '광운대', '명지대', '상명대', '가톨릭대'], extra: '거점 국립대 · 수도권 인기 학과', tip: '거점국립대·수도권 인기학과가 현실적 목표권입니다.' },
+          { max: 3.0, name: '수도권 외곽·지역', old: '약 4.1~4.8', pct: '34~52%', list: ['강남대', '수원대', '안양대', '을지대', '평택대', '대진대', '한경국립대'], extra: '지역 강소대학', tip: '관심 분야 강소·특성화 학과를 함께 살펴보세요.' },
+          { max: 9, name: '지역·특성화', old: '약 4.8~6.1', pct: '52~82%', list: [], extra: '수도권 외곽·지역 사립대, 특성화 학과(간호 · 조리 · 항공정비 등)', tip: '학과 특성화·취업 연계를 기준으로 넓게 탐색해 보세요.' }
         ];
         function esc(s) { return (s || '').replace(/[<>&"]/g, function (c) { return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c]; }); }
+        function norm(s) { return s.replace(/\(.*?\)/g, '').replace(/\s/g, '').replace(/여자대학교$/, '여대').replace(/대학교$/, '대').replace(/학교$/, ''); }
+        var uniMap = null;
+        fetch('./data/index.json').then(function (r) { return r.json(); }).then(function (d) {
+          uniMap = {}; (d.universities || []).forEach(function (u) { uniMap[norm(u.name)] = u.id; });
+          render();
+        }).catch(function () { /* 데이터 못 불러오면 텍스트로 표시 */ });
+        function unisHtml(b) {
+          var parts = (b.list || []).map(function (nm) {
+            var id = uniMap && uniMap[norm(nm)];
+            return id
+              ? '<a class="diag-uni" href="university.html?id=' + encodeURIComponent(id) + '">' + esc(nm) + '</a>'
+              : '<span class="diag-uni diag-uni--plain">' + esc(nm) + '</span>';
+          });
+          if (b.extra) parts.push('<span class="diag-extra">' + esc(b.extra) + '</span>');
+          return parts.length ? '<div class="diag-unis">' + parts.join('') + '</div>' : '';
+        }
         function render() {
           var g = parseFloat(grade.value); val.textContent = g.toFixed(1);
           var b = BANDS.find(function (x) { return g <= x.max; }) || BANDS[BANDS.length - 1];
@@ -268,9 +284,9 @@
           out.innerHTML =
             '<div class="diag__band">' + g.toFixed(1) + '등급 · ' + esc(b.name) + '</div>' +
             '<div class="diag__meta"><span>옛 9등급 환산 <b>' + esc(b.old) + '</b></span><span>누적 상위 <b>' + esc(b.pct) + '</b></span></div>' +
-            '<div class="diag__unis"><b>어림잡아 노려볼 만한 대학</b><br>' + esc(b.unis) + '</div>' +
+            '<div class="diag__unis"><b>어림잡아 노려볼 만한 대학</b> <span class="diag__hint">(이름을 누르면 상세로)</span>' + unisHtml(b) + '</div>' +
             '<div class="diag__unis" style="margin-top:.6em;color:var(--text-soft)">💡 ' + esc(b.tip) + '</div>' +
-            '<div class="diag__cta"><a class="btn btn--primary" href="compare.html#list">이 대학들 비교해보기 →</a>' +
+            '<div class="diag__cta"><a class="btn btn--primary" href="compare.html#list">전체 대학 비교 →</a>' +
             '<a class="btn btn--ghost" href="' + href + '">' + label + '</a></div>';
         }
         grade.addEventListener('input', render);
