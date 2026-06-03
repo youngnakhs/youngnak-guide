@@ -3,6 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <script>try{var t=localStorage.getItem("adm2028-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+    <script>try{if(localStorage.getItem("nav-intro-seen")!=="1")document.documentElement.classList.add("intro-active")}catch(e){}</script>
+    <style>
+      /* 입장 인트로: 궤도를 먼저 보여주고, 약 3초 뒤 히어로 글자 등장 (첫 방문만) */
+      .hero__inner{ transition:opacity .9s ease, transform .9s ease, visibility .9s; }
+      html.intro-active .hero__inner{ opacity:0; visibility:hidden; transform:translateY(16px); pointer-events:none; }
+      html.intro-active .hero__scroll{ opacity:0; }
+      .intro-cue{
+        position:fixed; left:50%; bottom:16%; transform:translate(-50%,0);
+        z-index:6; display:flex; flex-direction:column; align-items:center; gap:.55em;
+        text-align:center; color:#eaf0ff; pointer-events:none;
+        opacity:0; visibility:hidden; transition:opacity .8s ease, visibility .8s;
+      }
+      html.intro-active .intro-cue{ opacity:1; visibility:visible; }
+      .intro-cue__axes{ font-size:1.7rem; line-height:1; animation:introSpin 2.6s linear infinite; }
+      .intro-cue__badge{
+        display:inline-flex; align-items:center; gap:.5em;
+        padding:.62em 1.15em; border-radius:999px;
+        background:rgba(10,14,28,.55); border:1px solid rgba(255,255,255,.20);
+        -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+        font-weight:700; font-size:1rem; white-space:nowrap;
+      }
+      .intro-cue__sub{ font-size:.82rem; color:#aeb8da; }
+      @keyframes introSpin{ to{ transform:rotate(360deg); } }
+      @media (prefers-reduced-motion:reduce){ .intro-cue__axes{ animation:none; } }
+    </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>2028 대입 내비게이터 · 대학별 전형 비교</title>
     <meta name="description" content="2028학년도 대학입학전형시행계획을 대학별로 비교·분석합니다. 통합형 수능·내신 5등급제 등 개편 핵심과 대학별 차이를 한눈에. 교사·학생·학부모용." />
@@ -27,6 +52,13 @@
     <main id="main" class="landing">
       <!-- 3D 성좌 캔버스 (저사양/미지원 시 자동 폴백) -->
       <div id="scene" class="scene" aria-hidden="true"></div>
+
+      <!-- 입장 인트로 안내 (궤도를 먼저 인지시키는 동안 표시, 약 3초 뒤 사라짐) -->
+      <div class="intro-cue" aria-hidden="true">
+        <span class="intro-cue__axes">✦</span>
+        <span class="intro-cue__badge">드래그해서 별자리를 사방으로 돌려보세요</span>
+        <span class="intro-cue__sub">전국 주요 대학이 별이 되어 떠 있어요 · 잠시 후 안내가 시작됩니다</span>
+      </div>
 
       <section class="hero" id="hero">
         <div class="hero__inner container">
@@ -163,6 +195,24 @@
         window.addEventListener('scroll', onScroll, { passive: true });
         window.addEventListener('resize', onScroll, { passive: true });
         apply();
+      })();
+    </script>
+
+    <!-- 입장 인트로: 궤도를 먼저 인지시킨 뒤 약 3초 후 히어로 글자 등장 (첫 방문만, 스크롤하면 즉시) -->
+    <script>
+      (function () {
+        var root = document.documentElement;
+        if (!root.classList.contains('intro-active')) return;   // 재방문/미지원 시 인트로 없음
+        var done = false;
+        function reveal() {
+          if (done) return; done = true;
+          root.classList.remove('intro-active');
+          try { localStorage.setItem('nav-intro-seen', '1'); } catch (e) {}
+          window.removeEventListener('scroll', onScroll);
+        }
+        function onScroll() { if ((window.pageYOffset || 0) > 4) reveal(); }  // 스크롤하면 바로 등장(안 가둠)
+        window.addEventListener('scroll', onScroll, { passive: true });
+        setTimeout(reveal, 3000);                                            // 약 3초 뒤 자동 등장
       })();
     </script>
   </body>
