@@ -247,3 +247,17 @@ p, li, dt, dd, caption, td, figcaption, blockquote,
 /* ---------- P2-A: 레전드 인코딩 설명 (색=궤도 중복 명시 + 별 크기 의미) ---------- */
 .legend__hint{ display:block; width:100%; margin-top:var(--space-1); font-size:var(--fs-xs); color:var(--text-soft); }
 .legend__hint small{ color:var(--text-faint); font-size:inherit; }
+
+/* ---------- 수능최저 실데이터 연동 (진단 위젯) ---------- */
+.diag__minwrap{ margin-top:.8em; padding:.8em 1em; border-radius:var(--radius-md,12px); background:rgba(111,155,255,.08); font-size:var(--fs-sm); }
+.diag__minsum{ margin:.45em 0 .55em; color:var(--text-soft); }
+.diag__minsum .min-all{ color:#1d8a4e; } .diag__minsum .min-some{ color:#b07d10; }
+.diag__minsum .min-none{ color:#c0392b; } .diag__minsum .min-free{ color:var(--text-soft); }
+.diag-min{ display:inline-flex; align-items:center; gap:.35em; padding:.32em .75em; border-radius:999px; font-size:var(--fs-xs); font-weight:600; text-decoration:none; border:1px solid transparent; margin:.15em .2em .15em 0; }
+.diag-min--all{ background:rgba(29,138,78,.12); color:#1d8a4e; border-color:rgba(29,138,78,.3); }
+.diag-min--some{ background:rgba(176,125,16,.12); color:#b07d10; border-color:rgba(176,125,16,.3); }
+.diag-min--none{ background:rgba(192,57,43,.10); color:#c0392b; border-color:rgba(192,57,43,.28); }
+.diag-min--free{ background:rgba(120,130,160,.12); color:var(--text-soft); border-color:rgba(120,130,160,.3); }
+.diag-min--na{ background:transparent; color:var(--text-faint); border-color:var(--surface-border,rgba(0,0,0,.12)); }
+.diag-min:hover{ filter:brightness(1.08); text-decoration:none; }
+.diag__minnote{ margin-top:.6em; font-size:var(--fs-xs); color:var(--text-faint); }

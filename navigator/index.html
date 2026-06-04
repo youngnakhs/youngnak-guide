@@ -307,6 +307,56 @@
           uniMap = {}; (d.universities || []).forEach(function (u) { uniMap[norm(u.name)] = u.id; });
           render();
         }).catch(function () { /* 데이터 못 불러오면 텍스트로 표시 */ });
+        // 수능최저 실데이터 연동: 학과별 최저 DB(departments.json)와 매칭해 충족 가능성 어림 판정
+        var DEPTS = null;
+        fetch('./data/departments.json').then(function (r) { return r.json(); }).then(function (d) {
+          DEPTS = (d.departments || []).map(function (it) { it._min = parseMin(it.suneungMinimum); return it; });
+          render();
+        }).catch(function () { /* 미로드 시 연동 섹션 생략 */ });
+        function parseMin(t) {
+          if (!t) return null;
+          var reqs = [], m;
+          var re = /(\d)\s*개[^\/·\n]*?합\s*(\d+)/g;
+          while ((m = re.exec(t))) reqs.push({ n: +m[1], s: +m[2] });
+          var re2 = /(\d)\s*개[^\/\n]*?각\s*(\d)\s*등급/g;
+          while ((m = re2.exec(t))) reqs.push({ n: +m[1], s: (+m[1]) * (+m[2]) });
+          if ((m = /1등급\s*(\d)\s*개/.exec(t))) reqs.push({ n: +m[1], s: +m[1] });
+          if (!reqs.length) return /없음|미적용/.test(t) ? { free: true } : null;
+          return { reqs: reqs };
+        }
+        function judgeMin(g, p) {
+          if (!p) return null;
+          if (p.free) return 'free';
+          var met = p.reqs.filter(function (r) { return g <= r.s / r.n + 1e-9; }).length;
+          return met === p.reqs.length ? 'all' : (met > 0 ? 'some' : 'none');
+        }
+        var MIN_BADGE = { all: ['✓ 충족 가능', 'all'], some: ['△ 일부 전형만', 'some'], none: ['✗ 미충족', 'none'], free: ['○ 최저 없음', 'free'] };
+        function minHtml(sg, kw) {
+          if (!DEPTS) return '';
+          var cnt = { all: 0, some: 0, none: 0, free: 0 };
+          DEPTS.forEach(function (it) { var j = judgeMin(sg, it._min); if (j) cnt[j]++; });
+          var html = '<div class="diag__minsum">수능 ' + sg.toFixed(1) + '등급 기준, 등록된 주요 모집단위 ' + DEPTS.length + '곳 중 ' +
+            '<b class="min-all">✓ ' + cnt.all + '곳 충족 가능</b> · <b class="min-some">△ ' + cnt.some + '곳 일부 전형만</b> · ' +
+            '<b class="min-none">✗ ' + cnt.none + '곳 미충족</b> · <b class="min-free">○ ' + cnt.free + '곳 최저 없음</b></div>';
+          if (kw) {
+            var hit = DEPTS.filter(function (it) {
+              return (it.name || '').indexOf(kw) >= 0 || (it.uni || '').indexOf(kw) >= 0 || (it.college || '').indexOf(kw) >= 0;
+            }).slice(0, 12);
+            if (hit.length) {
+              html += '<div class="diag-unis">' + hit.map(function (it) {
+                var j = judgeMin(sg, it._min);
+                var bd = j ? MIN_BADGE[j] : ['? 기준 확인', 'na'];
+                return '<a class="diag-min diag-min--' + bd[1] + '" href="university.html?id=' + encodeURIComponent(it.uniId) + '"' +
+                  ' title="' + esc(it.suneungMinimum || '') + ' (' + esc(it.track || '') + ')">' +
+                  esc(norm(it.uni)) + ' ' + esc(it.name) + ' <b>' + bd[0] + '</b></a>';
+              }).join('') + '</div>';
+            } else {
+              html += '<div class="diag__hint" style="margin-top:.4em">“' + esc(kw) + '” 관련 등록 모집단위가 없어요 — 학과 검색에서 더 찾아보세요.</div>';
+            }
+          }
+          html += '<div class="diag__minnote">※ 평균 등급 기반 <b>어림 판정</b>입니다. 실제 충족은 영역별 등급 조합·탐구 과목 수·필수 영역에 따라 달라지니, 칩에 마우스를 올려 원문 기준을 확인하고 모집요강으로 최종 확인하세요.</div>';
+          return '<div class="diag__minwrap"><b>수능최저 충족 가능성</b> <span class="diag__hint">(실제 대학별 기준 대조)</span>' + html + '</div>';
+        }
         function unisHtml(b) {
           var parts = (b.list || []).map(function (nm) {
             var id = uniMap && uniMap[norm(nm)];
@@ -334,6 +384,7 @@
             '<div class="diag__unis"><b>수시로 어림잡아 노려볼 만한 대학</b> <span class="diag__hint">(이름을 누르면 상세로)</span>' + unisHtml(b) + '</div>' +
             '<div class="diag__unis" style="margin-top:.6em;color:var(--text-soft)">💡 ' + esc(b.tip) + '</div>' +
             '<div class="diag__suneung"><b>수능 ' + sg.toFixed(1) + '등급이면</b> — ' + esc(s.fit) + '<div style="margin-top:.4em;color:var(--text-soft)">💡 ' + esc(s.tip) + '</div></div>' +
+            minHtml(sg, d) +
             '<div class="diag__cta"><a class="btn btn--primary" href="compare.html#list">전체 대학 비교 →</a>' +
             '<a class="btn btn--ghost" href="' + href + '">' + label + '</a></div>';
         }
