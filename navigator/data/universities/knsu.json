@@ -3,8 +3,12 @@
   "name": "한국체육대학교",
   "category": "인서울 주요대",
   "region": {
-    "value": "서울 송파구",
-    "status": "needs_review"
+    "value": "서울 송파구(오륜동)",
+    "source": {
+      "name": "한국체대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-30)",
+      "url": "https://www.knsu.ac.kr/ipsi/plan/plan.do"
+    },
+    "status": "confirmed"
   },
   "campus": "오륜동",
   "summary": {
@@ -24,27 +28,48 @@
       "track": "2028 전형 개요",
       "subType": "워크벤치 요약 이식",
       "quota": {
-        "value": "각 입학처 모집요강 확인",
-        "status": "needs_review"
+        "value": "총 603명: 체육특기자 235·경기입상실적 45·실기우수 29·교과성적우수 56·정시 일반 151·수능우수 14 + 기회균형 등",
+        "source": {
+          "name": "한국체대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://www.knsu.ac.kr/ipsi/plan/plan.do"
+        },
+        "status": "confirmed",
+        "asOf": "2026-04"
       },
       "method": {
-        "value": "수시 303+정시 232(가군)+정원외 등 총 603. 수시 체육특기자·경기입상·실기우수자·교과성적우수자. 정시 가군 일반·수능성적우수자",
-        "status": "needs_review"
+        "value": "수시 303 + 정시 가군 232 + 정원외. 정시는 전 모집단위 가군",
+        "source": {
+          "name": "한국체대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://www.knsu.ac.kr/ipsi/plan/plan.do"
+        },
+        "status": "confirmed"
       },
       "suneungMinimum": {
-        "value": "교과성적우수자 학과별: 사회체육·운동건강·특수체육 2개합 6(각 4), 노인체육 3개합 10, 스포츠산업·청소년 3개 각 4. 정시 대부분 3개 각 6",
-        "status": "needs_review"
+        "value": "교과성적우수자 학과별: 사회체육 등 2개 합 6·각 4 / 노인체육복지 3개 합 10 / 스포츠산업 등 3개 이상 각 4. 정시 대부분 3개 영역 이상 각 6등급 이내",
+        "source": {
+          "name": "한국체대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://www.knsu.ac.kr/ipsi/plan/plan.do"
+        },
+        "status": "confirmed"
       },
       "interview": {
-        "value": "학종 PDF 미명시(체대 특성). 면접은 특수체육·공연예술·외국인·재외국민 등 일부. 인성·전공적성·한국어. 60점 미만/불참 시 불합격",
-        "status": "needs_review"
+        "value": "일부 전형·학과만 면접(특수교육·외국인·재외국민·공연예술 등). 불참·60점 미만 불합격",
+        "source": {
+          "name": "한국체대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://www.knsu.ac.kr/ipsi/plan/plan.do"
+        },
+        "status": "confirmed"
       }
     }
   ],
   "departments": [],
   "naesinReflection": {
-    "value": "교과성적우수자 학생부 실질반영률 약 59.3%(정량). 학과별 1등급-5등급 점수차 상이(공연예술 700→140, 특수체육 700→620). 학년별 30:30:40",
-    "status": "needs_review"
+    "value": "교과 80%+출석 20%, 학년비 30:30:40. 실질반영률 교과성적우수 59.3%·특기자류 5.1%. 학과별 등급 점수차 상이",
+    "source": {
+      "name": "한국체대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-30)",
+      "url": "https://www.knsu.ac.kr/ipsi/plan/plan.do"
+    },
+    "status": "confirmed"
   },
   "changes2028": [],
   "officialLinks": [

@@ -3,10 +3,14 @@
   "name": "한국성서대학교",
   "category": "인서울 주요대",
   "region": {
-    "value": "서울 노원구",
-    "status": "needs_review"
+    "value": "서울 노원구(상계동)",
+    "source": {
+      "name": "한국성서대 공식 캠퍼스 안내",
+      "url": "https://www.bible.ac.kr/ko/intro/campus"
+    },
+    "status": "confirmed"
   },
-  "campus": "월계동",
+  "campus": "상계동",
   "summary": {
     "susiRatio": null,
     "jeongsiRatio": null,

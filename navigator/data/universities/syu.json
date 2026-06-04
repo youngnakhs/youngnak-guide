@@ -3,8 +3,12 @@
   "name": "삼육대학교",
   "category": "인서울 주요대",
   "region": {
-    "value": "서울 노원구",
-    "status": "needs_review"
+    "value": "서울 노원구(공릉동)",
+    "source": {
+      "name": "삼육대 2028학년도 대학입학전형계획 주요사항(입학처, 2026-04-30)",
+      "url": "https://ipsi.syu.ac.kr/upload_data/mojib/RF(0)_260430153242.pdf"
+    },
+    "status": "confirmed"
   },
   "campus": "공릉동",
   "summary": {
@@ -24,27 +28,48 @@
       "track": "2028 전형 개요",
       "subType": "워크벤치 요약 이식",
       "quota": {
-        "value": "각 입학처 모집요강 확인",
-        "status": "needs_review"
+        "value": "정원내 1,155명(수시 895·정시 260), 정원외 포함 총 1,325명",
+        "source": {
+          "name": "삼육대 2028학년도 대학입학전형계획 주요사항(입학처, 2026-04-30)",
+          "url": "https://ipsi.syu.ac.kr/upload_data/mojib/RF(0)_260430153242.pdf"
+        },
+        "status": "confirmed",
+        "asOf": "2026-04"
       },
       "method": {
-        "value": "정원내 1,155(수시 895+정시 260). 학교장추천·세움인재(종합)·논술·재림교회목회자추천·S/W인재·기회균형·예체능·신학특별·실기 등. 창의융합 자유전공 93+미래융합 자유전공 148",
-        "status": "needs_review"
+        "value": "학교장추천(교과) 107·세움인재(종합) 258·논술우수자(약술형) 251·재림교회목회자추천·S/W인재·기회균형·실기 등. 창의융합자유전공 93·미래융합자유전공 148",
+        "source": {
+          "name": "삼육대 2028학년도 대학입학전형계획 주요사항(입학처, 2026-04-30)",
+          "url": "https://ipsi.syu.ac.kr/upload_data/mojib/RF(0)_260430153242.pdf"
+        },
+        "status": "confirmed"
       },
       "suneungMinimum": {
-        "value": "학교장추천 일반학과 2개합 7, 간호·물리치료 2개합 6, 약학 3개합 5(과탐). 재림교회목회자추천 1개 4(간호·물치 3). 논술 1개 3. 예체능·세움인재·기회균형 미적용",
-        "status": "needs_review"
+        "value": "학교장추천: 일반 2개 합 7·간호/물치 2개 합 6·약학 3개 합 5(국영수+과탐1). 논술: 일반 1개 영역 3등급·약학 3개 합 5. 재림추천: 일반 1개 4등급·간호/물치 1개 3등급. 세움인재 일반 없음·약학 3개 합 5. 실기 없음",
+        "source": {
+          "name": "삼육대 2028학년도 대학입학전형계획 주요사항(입학처, 2026-04-30)",
+          "url": "https://ipsi.syu.ac.kr/upload_data/mojib/RF(0)_260430153242.pdf"
+        },
+        "status": "confirmed"
       },
       "interview": {
-        "value": "종합(세움인재·S/W인재·기회균형Ⅰ·Ⅱ·특수교육) 1단계 서류100(4배수), 2단계 서류60+면접40. <b>신학특별 필기(성경)+면접</b>. 학교장추천·논술·실기 면접 없음",
-        "status": "needs_review"
+        "value": "종합계열(세움인재 등): 1단계 서류 100(4배수) → 2단계 서류 60+면접 40. 신학특별: 서류 48+면접 32+성경필기 20. 학교장추천·논술·실기 면접 없음",
+        "source": {
+          "name": "삼육대 2028학년도 대학입학전형계획 주요사항(입학처, 2026-04-30)",
+          "url": "https://ipsi.syu.ac.kr/upload_data/mojib/RF(0)_260430153242.pdf"
+        },
+        "status": "confirmed"
       }
     }
   ],
   "departments": [],
   "naesinReflection": {
-    "value": "학교장추천·농어촌·특성화고 등 교과 정량(석차+성취도·이수학점). 종합 학업·진로·공동체 정성. 환산 <b>1등급 100 / 2등급 99 / 3등급 98 / 4등급 90 / 5등급 70</b>",
-    "status": "needs_review"
+    "value": "환산 <b>1등급 100/2등급 99/3등급 98/4등급 90/5등급 70</b>. N수생(9등급제) 표준점수→5등급 변환. 약학과 9등급제 별도, 종합은 정성평가",
+    "source": {
+      "name": "삼육대 2028학년도 대학입학전형계획 주요사항(입학처, 2026-04-30)",
+      "url": "https://ipsi.syu.ac.kr/upload_data/mojib/RF(0)_260430153242.pdf"
+    },
+    "status": "confirmed"
   },
   "changes2028": [],
   "officialLinks": [

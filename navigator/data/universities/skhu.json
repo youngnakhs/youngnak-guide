@@ -3,8 +3,12 @@
   "name": "성공회대학교",
   "category": "인서울 주요대",
   "region": {
-    "value": "서울 구로구",
-    "status": "needs_review"
+    "value": "서울 구로구(항동)",
+    "source": {
+      "name": "성공회대 2028학년도 입학전형 시행계획(입학처, 2026-04-30)",
+      "url": "https://enter.skhu.ac.kr/enter/6201/subview.do"
+    },
+    "status": "confirmed"
   },
   "campus": "항동",
   "summary": {
@@ -24,27 +28,48 @@
       "track": "2028 전형 개요",
       "subType": "워크벤치 요약 이식",
       "quota": {
-        "value": "각 입학처 모집요강 확인",
-        "status": "needs_review"
+        "value": "총 510명: 수시 정원내 391 + 정시 75(가19·나25·다31) + 정원외 44",
+        "source": {
+          "name": "성공회대 2028학년도 입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://enter.skhu.ac.kr/enter/6201/subview.do"
+        },
+        "status": "confirmed",
+        "asOf": "2026-04"
       },
       "method": {
-        "value": "수시 391+정원외 25+북한 10+재외 9, 정시 75(총 510). 자유전공학부 105. 수시 학생부교과(교과·사회기여·국가보훈·특성화·기회균형·농어촌)·학종(열린인재·대안학교)",
-        "status": "needs_review"
+        "value": "학종 열린인재 196+대안학교 15 / 교과 교과성적 151+국가보훈 8+사회기여배려 10+특성화고 11. 자유전공학부 105(열린인재 86+정시 19)",
+        "source": {
+          "name": "성공회대 2028학년도 입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://enter.skhu.ac.kr/enter/6201/subview.do"
+        },
+        "status": "confirmed"
       },
       "suneungMinimum": {
-        "value": "<b>모든 수시·정시 전형 수능최저 없음</b>",
-        "status": "needs_review"
+        "value": "전 전형(수시·정시) 수능최저 없음",
+        "source": {
+          "name": "성공회대 2028학년도 입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://enter.skhu.ac.kr/enter/6201/subview.do"
+        },
+        "status": "confirmed"
       },
       "interview": {
-        "value": "학생부교과 학생부 100% 면접 없음. 학종 열린인재·대안학교 서류60+면접40. 전공적합성·역량·발전가능성 5구간 정성, 평가위원 2명",
-        "status": "needs_review"
+        "value": "교과 학생부 100% 면접 없음. 학종 서류 60+면접 40 일괄(평가위원 2인, 5구간 정성). 정시 수능 100%",
+        "source": {
+          "name": "성공회대 2028학년도 입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://enter.skhu.ac.kr/enter/6201/subview.do"
+        },
+        "status": "confirmed"
       }
     }
   ],
   "departments": [],
   "naesinReflection": {
-    "value": "학생부 600점(기본 480+12과목). 환산 <b>1등급 10 / 2등급 9 / 3등급 8 / 4등급 6 / 5등급 4</b>(12과목 누적 산출). 성취도 5단계는 A=1등급 등 환산. 국·영·수·사(한국사)·과",
-    "status": "needs_review"
+    "value": "지정교과(국·영·수·사[한국사]·과) 상위 12과목, 600점=기본 480+과목당 최고 10·최저 4. 환산 <b>1등급 10/2등급 9/3등급 8/4등급 6/5등급 4</b>",
+    "source": {
+      "name": "성공회대 2028학년도 입학전형 시행계획(입학처, 2026-04-30)",
+      "url": "https://enter.skhu.ac.kr/enter/6201/subview.do"
+    },
+    "status": "confirmed"
   },
   "changes2028": [],
   "officialLinks": [

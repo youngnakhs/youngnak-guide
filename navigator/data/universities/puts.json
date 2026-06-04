@@ -3,8 +3,12 @@
   "name": "장로회신학대학교",
   "category": "인서울 주요대",
   "region": {
-    "value": "서울 광진구",
-    "status": "needs_review"
+    "value": "서울 광진구(광장동)",
+    "source": {
+      "name": "장로회신학대 2028학년도 입학 전형시행계획(입학처, 2026-04-30)",
+      "url": "https://www.puts.ac.kr/www/board/view.general.asp?seq=244&bd_name=boarddb_board05"
+    },
+    "status": "confirmed"
   },
   "campus": "광장동",
   "summary": {
@@ -24,27 +28,48 @@
       "track": "2028 전형 개요",
       "subType": "워크벤치 요약 이식",
       "quota": {
-        "value": "각 입학처 모집요강 확인",
-        "status": "needs_review"
+        "value": "정원내 150명(수시 139·정시 11)",
+        "source": {
+          "name": "장로회신학대 2028학년도 입학 전형시행계획(입학처, 2026-04-30)",
+          "url": "https://www.puts.ac.kr/www/board/view.general.asp?seq=244&bd_name=boarddb_board05"
+        },
+        "status": "confirmed",
+        "asOf": "2026-04"
       },
       "method": {
-        "value": "수시 139(93%)·정시 11(7%, 총 150). 자유전공·신학·기독교교육·교회음악. 수시 성경고사성적우수자·학생부우수자·사회기여및배려자·드림(PUTS인재)·교회음악 실기",
-        "status": "needs_review"
+        "value": "자유전공 18·신학과 32·기독교교육 50·교회음악 39. 전형: 성경고사우수·학생부우수자(교과)·사회기여배려(종합)·드림PUTS인재(종합)·실기. 정시 나군/다군(교회음악)",
+        "source": {
+          "name": "장로회신학대 2028학년도 입학 전형시행계획(입학처, 2026-04-30)",
+          "url": "https://www.puts.ac.kr/www/board/view.general.asp?seq=244&bd_name=boarddb_board05"
+        },
+        "status": "confirmed"
       },
       "suneungMinimum": {
-        "value": "<b>모든 수시 전형 수능최저 미적용</b>. 정시(나군) 자유전공·신학·기독교교육 4개 중 상위 3개 백분위(영어 등급 변환)",
-        "status": "needs_review"
+        "value": "모든 수시 미적용. 정시 나군: 국·수·영·통합사/과/직업 4개 중 상위 3개 백분위. 다군: 국어 50+영어 50+실기 80",
+        "source": {
+          "name": "장로회신학대 2028학년도 입학 전형시행계획(입학처, 2026-04-30)",
+          "url": "https://www.puts.ac.kr/www/board/view.general.asp?seq=244&bd_name=boarddb_board05"
+        },
+        "status": "confirmed"
       },
       "interview": {
-        "value": "학생부우수자 학생부80+면접20. 사회기여·드림(PUTS) 서류60+면접40. 학생부종합 학업·진로·공동체 정성평가",
-        "status": "needs_review"
+        "value": "학생부우수자: 교과 80+서류 20 — 면접 없음. 사회기여·드림: 면접 40+서류 60. 성경고사우수자: 성경고사 80+서류 20. 재외국민 면접 100%",
+        "source": {
+          "name": "장로회신학대 2028학년도 입학 전형시행계획(입학처, 2026-04-30)",
+          "url": "https://www.puts.ac.kr/www/board/view.general.asp?seq=244&bd_name=boarddb_board05"
+        },
+        "status": "confirmed"
       }
     }
   ],
   "departments": [],
   "naesinReflection": {
-    "value": "학생부우수자 640점. 5등급은 석차80+성취20, 9등급은 석차100. 환산 <b>1등급 100 / 2등급 90 / 3등급 80 / 4등급 70 / 5등급 60</b>. 국·수·영·사·과",
-    "status": "needs_review"
+    "value": "학생부우수자 교과 640점. 5등급제: 석차등급 80+성취도 20 / 9등급제: 석차 100. 환산 <b>1등급 100/2등급 90/3등급 80/4등급 70/5등급 60</b>",
+    "source": {
+      "name": "장로회신학대 2028학년도 입학 전형시행계획(입학처, 2026-04-30)",
+      "url": "https://www.puts.ac.kr/www/board/view.general.asp?seq=244&bd_name=boarddb_board05"
+    },
+    "status": "confirmed"
   },
   "changes2028": [],
   "officialLinks": [

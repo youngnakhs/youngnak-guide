@@ -3,10 +3,14 @@
   "name": "강서대학교",
   "category": "인서울 주요대",
   "region": {
-    "value": "서울 양천구",
-    "status": "needs_review"
+    "value": "서울 강서구(화곡동)",
+    "source": {
+      "name": "강서대 2028학년도 대학입학전형계획(입학처, 2026-04-30)",
+      "url": "https://entrance.gangseo.ac.kr/kcui/boardView?menuCode=MC0803&boardNum=1530"
+    },
+    "status": "confirmed"
   },
-  "campus": "신월동",
+  "campus": "화곡동",
   "summary": {
     "susiRatio": 87.7,
     "jeongsiRatio": 12.3,
@@ -24,27 +28,48 @@
       "track": "2028 전형 개요",
       "subType": "워크벤치 요약 이식",
       "quota": {
-        "value": "각 입학처 모집요강 확인",
-        "status": "needs_review"
+        "value": "정원내 277명: 수시 교과(일반 103·교과우수 106·사회통합 11)+실기 25, 정시 수능(나3·다24)+실기 5. 간호 49·G2빅데이터경영 58·사회복지 60 등",
+        "source": {
+          "name": "강서대 2028학년도 대학입학전형계획(입학처, 2026-04-30)",
+          "url": "https://entrance.gangseo.ac.kr/kcui/boardView?menuCode=MC0803&boardNum=1530"
+        },
+        "status": "confirmed",
+        "asOf": "2026-04"
       },
       "method": {
-        "value": "정원내 277(수시 243+정시 34). 학생부교과위주(일반·교과우수·사회통합)+실기/실적(실용음악) +정시 수능·실기. 자유전공/무전공 PDF 명시 없음",
-        "status": "needs_review"
+        "value": "일반학생 단계별(간호 7배수·그외 10배수), 교과우수자·사회통합 일괄합산",
+        "source": {
+          "name": "강서대 2028학년도 대학입학전형계획(입학처, 2026-04-30)",
+          "url": "https://entrance.gangseo.ac.kr/kcui/boardView?menuCode=MC0803&boardNum=1530"
+        },
+        "status": "confirmed"
       },
       "suneungMinimum": {
-        "value": "<b>간호학과만 수시 전형 수능 최저 적용</b>: 국·수·영·탐(1) <b>2개 합 8</b>. 그 외 학과 미적용",
-        "status": "needs_review"
+        "value": "간호학과 수시 전 전형만: 국수영탐(상위1) 중 2개 합 8 이내. 그 외 미적용",
+        "source": {
+          "name": "강서대 2028학년도 대학입학전형계획(입학처, 2026-04-30)",
+          "url": "https://entrance.gangseo.ac.kr/kcui/boardView?menuCode=MC0803&boardNum=1530"
+        },
+        "status": "confirmed"
       },
       "interview": {
-        "value": "학종 PDF 미명시(교과·실기 중심). 일반학생(단계별) 1단계 학생부100, 2단계 학생부80+면접20. 교과우수·사회통합 면접 없음. 면접 5분 내외 인성·학업의지",
-        "status": "needs_review"
+        "value": "일반학생·사회통합: 학생부 80+면접 20. 교과우수자: 학생부 100 면접 없음. 면접 5분(위원 3:수험생 1)",
+        "source": {
+          "name": "강서대 2028학년도 대학입학전형계획(입학처, 2026-04-30)",
+          "url": "https://entrance.gangseo.ac.kr/kcui/boardView?menuCode=MC0803&boardNum=1530"
+        },
+        "status": "confirmed"
       }
     }
   ],
   "departments": [],
   "naesinReflection": {
-    "value": "학생부 교과 100%(비교과 미반영). 환산 <b>1등급 1,000 / 2등급 970 / 3등급 930 / 4등급 880 / 5등급 700</b>. 9등급제(2027.2 이전) 별도",
-    "status": "needs_review"
+    "value": "교과 100%(비교과 미반영), 1·2학년 100%. 5등급 환산 <b>1,000/970/930/880/700</b>. 9등급제(2027.2 이전 졸업) 별도표",
+    "source": {
+      "name": "강서대 2028학년도 대학입학전형계획(입학처, 2026-04-30)",
+      "url": "https://entrance.gangseo.ac.kr/kcui/boardView?menuCode=MC0803&boardNum=1530"
+    },
+    "status": "confirmed"
   },
   "changes2028": [],
   "officialLinks": [

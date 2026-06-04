@@ -2,9 +2,18 @@
   "id": "ewha",
   "name": "이화여자대학교",
   "category": "인서울 주요대",
-  "region": { "value": "서울 서대문구", "status": "confirmed" },
+  "region": {
+    "value": "서울 서대문구",
+    "status": "confirmed"
+  },
   "campus": "단일",
-  "summary": { "susiRatio": null, "jeongsiRatio": 36.4, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": null },
+  "summary": {
+    "susiRatio": null,
+    "jeongsiRatio": 36.4,
+    "hasSuneungMinimum": true,
+    "hasInterview": true,
+    "totalQuota": null
+  },
   "highlights": [
     "정시 비율 약 36.4% (수시 인원·총정원은 원문 개요 확인 필요)",
     "교과전형 고교추천 — 서류평가(교과 정성평가) 100%, 고교별 추천 최대 20명",
@@ -12,47 +21,180 @@
   ],
   "admissionTypes": [
     {
-      "track": "학생부교과", "subType": "고교추천",
-      "quota": { "value": "확인 필요(개요 그래픽 페이지)", "source": { "name": "이화여대 2028 시행계획(어디가 공식 모음집, OCR 확인)", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }, "asOf": "2026-04-30", "status": "needs_review" },
-      "method": { "value": "서류평가(교과 정성평가) 100%, 고교별 추천 최대 20명", "status": "confirmed" },
-      "suneungMinimum": { "value": "3개 영역 등급 합 7 이내", "status": "confirmed" },
-      "interview": { "value": false, "status": "confirmed" }
+      "track": "학생부교과",
+      "subType": "고교추천",
+      "quota": {
+        "value": "377명(학생부 85+서류 15)",
+        "source": {
+          "name": "이화여대 2028학년도 입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://admission.ewha.ac.kr/common/download.File.asp?strRealFileName=/upload/BBS0004/20260430100032838YL7.PDF"
+        },
+        "status": "confirmed"
+      },
+      "method": {
+        "value": "서류평가(교과 정성평가) 100%, 고교별 추천 최대 20명",
+        "status": "confirmed"
+      },
+      "suneungMinimum": {
+        "value": "3개 영역 등급 합 7 이내",
+        "status": "confirmed"
+      },
+      "interview": {
+        "value": false,
+        "status": "confirmed"
+      }
     },
     {
-      "track": "학생부종합", "subType": "미래인재 — 서류형",
-      "quota": { "value": "확인 필요", "status": "needs_review" },
-      "method": { "value": "서류평가 100%", "status": "confirmed" },
-      "suneungMinimum": { "value": "3개 영역 합 7(의예 5 / 약학 6 / 스크랜튼 5 / 국제 국어포함 3개 합 7+영어 2등급)", "status": "confirmed" },
-      "interview": { "value": false, "status": "confirmed" }
+      "track": "학생부종합",
+      "subType": "미래인재 — 서류형",
+      "quota": {
+        "value": "931명(서류 100)",
+        "source": {
+          "name": "이화여대 2028학년도 입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://admission.ewha.ac.kr/common/download.File.asp?strRealFileName=/upload/BBS0004/20260430100032838YL7.PDF"
+        },
+        "status": "confirmed"
+      },
+      "method": {
+        "value": "서류평가 100%",
+        "status": "confirmed"
+      },
+      "suneungMinimum": {
+        "value": "3개 영역 합 7(의예 5 / 약학 6 / 스크랜튼 5 / 국제 국어포함 3개 합 7+영어 2등급)",
+        "status": "confirmed"
+      },
+      "interview": {
+        "value": false,
+        "status": "confirmed"
+      }
     },
     {
-      "track": "학생부종합", "subType": "미래인재 — 면접형",
-      "quota": { "value": "확인 필요", "status": "needs_review" },
-      "method": { "value": "1단계 서류 → 2단계 1단계 80 + 면접 20 (1,000점)", "status": "confirmed" },
-      "suneungMinimum": { "value": "미적용", "status": "confirmed" },
-      "interview": { "value": true, "status": "confirmed" }
+      "track": "학생부종합",
+      "subType": "미래인재 — 면접형",
+      "quota": {
+        "value": "181명",
+        "source": {
+          "name": "이화여대 2028학년도 입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://admission.ewha.ac.kr/common/download.File.asp?strRealFileName=/upload/BBS0004/20260430100032838YL7.PDF"
+        },
+        "status": "confirmed"
+      },
+      "method": {
+        "value": "1단계 서류 100% → 2단계 1단계 70% + 면접 30%",
+        "source": {
+          "name": "이화여대 2028학년도 입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://admission.ewha.ac.kr/common/download.File.asp?strRealFileName=/upload/BBS0004/20260430100032838YL7.PDF"
+        },
+        "status": "confirmed"
+      },
+      "suneungMinimum": {
+        "value": "미적용",
+        "status": "confirmed"
+      },
+      "interview": {
+        "value": true,
+        "status": "confirmed"
+      }
     },
     {
-      "track": "논술", "subType": "논술전형",
-      "quota": { "value": "확인 필요", "status": "needs_review" },
-      "method": { "value": "논술 위주(언어논술Ⅰ/Ⅱ·수리논술Ⅰ/Ⅱ)", "status": "confirmed" },
-      "suneungMinimum": { "value": "3개 영역 합 7(의예 5 / 약학 6 / 스크랜튼 5)", "status": "confirmed" },
-      "interview": { "value": false, "status": "confirmed" }
+      "track": "논술",
+      "subType": "논술전형",
+      "quota": {
+        "value": "296명(논술 100)",
+        "source": {
+          "name": "이화여대 2028학년도 입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://admission.ewha.ac.kr/common/download.File.asp?strRealFileName=/upload/BBS0004/20260430100032838YL7.PDF"
+        },
+        "status": "confirmed"
+      },
+      "method": {
+        "value": "논술 위주(언어논술Ⅰ/Ⅱ·수리논술Ⅰ/Ⅱ)",
+        "status": "confirmed"
+      },
+      "suneungMinimum": {
+        "value": "3개 영역 합 7(의예 5 / 약학 6 / 스크랜튼 5)",
+        "status": "confirmed"
+      },
+      "interview": {
+        "value": false,
+        "status": "confirmed"
+      }
     },
     {
-      "track": "정시(수능)", "subType": "수능전형(가·나·다군)",
-      "quota": { "value": "확인 필요", "status": "needs_review" },
-      "method": { "value": "수능 위주", "status": "confirmed" },
-      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
-      "interview": { "value": false, "status": "confirmed" }
+      "track": "정시(수능)",
+      "subType": "수능전형(가·나·다군)",
+      "quota": {
+        "value": "465명(수능 100). 정시 소계 1,191명(36.4%)·수시 2,085명(63.6%)",
+        "source": {
+          "name": "이화여대 2028학년도 입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://admission.ewha.ac.kr/common/download.File.asp?strRealFileName=/upload/BBS0004/20260430100032838YL7.PDF"
+        },
+        "status": "confirmed"
+      },
+      "method": {
+        "value": "수능 위주",
+        "status": "confirmed"
+      },
+      "suneungMinimum": {
+        "value": "해당 없음(정시)",
+        "status": "confirmed"
+      },
+      "interview": {
+        "value": false,
+        "status": "confirmed"
+      }
+    },
+    {
+      "track": "정시(수능)",
+      "subType": "수능-학생부전형(신설)",
+      "quota": {
+        "value": "358명",
+        "source": {
+          "name": "이화여대 2028학년도 입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://admission.ewha.ac.kr/common/download.File.asp?strRealFileName=/upload/BBS0004/20260430100032838YL7.PDF"
+        },
+        "status": "confirmed"
+      },
+      "method": {
+        "value": "수능 85% + 서류 15%",
+        "source": {
+          "name": "이화여대 2028학년도 입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://admission.ewha.ac.kr/common/download.File.asp?strRealFileName=/upload/BBS0004/20260430100032838YL7.PDF"
+        },
+        "status": "confirmed"
+      },
+      "suneungMinimum": {
+        "value": "해당 없음(정시)",
+        "status": "confirmed"
+      },
+      "interview": {
+        "value": false,
+        "status": "confirmed"
+      }
     }
   ],
-  "naesinReflection": { "value": "교과전형 고교추천에 교과 정성평가 100% 반영.", "status": "confirmed" },
+  "naesinReflection": {
+    "value": "교과전형 고교추천에 교과 정성평가 100% 반영.",
+    "status": "confirmed"
+  },
   "changes2028": [
-    { "value": "전년 대비 변경표는 개요 페이지(그래픽)라 자동 판독 불가 — 입학처 공식 자료 확인 필요", "status": "needs_review" }
+    {
+      "value": "①고교추천에 서류(교과 정성) 15% 도입 ②정시 '수능-학생부전형' 신설(358명, 수능85+서류15) ③정시 모집군 개편(나군 통합선발, 전자전기·국제학부 등 군 이동)",
+      "source": {
+        "name": "이화여대 2028학년도 입학전형 시행계획(입학처, 2026-04-30)",
+        "url": "https://admission.ewha.ac.kr/common/download.File.asp?strRealFileName=/upload/BBS0004/20260430100032838YL7.PDF"
+      },
+      "status": "confirmed"
+    }
   ],
   "officialLinks": [
-    { "name": "이화여자대학교 입학처", "url": "https://admission.ewha.ac.kr" },
-    { "name": "어디가 2028 시행계획 모음집", "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811" }
+    {
+      "name": "이화여자대학교 입학처",
+      "url": "https://admission.ewha.ac.kr"
+    },
+    {
+      "name": "어디가 2028 시행계획 모음집",
+      "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
+    }
   ]
 }

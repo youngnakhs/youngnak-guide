@@ -2,9 +2,18 @@
   "id": "skku",
   "name": "성균관대학교",
   "category": "인서울 주요대",
-  "region": { "value": "서울 종로구(명륜) · 수원(율전)", "status": "confirmed" },
+  "region": {
+    "value": "서울 종로구(명륜) · 수원(율전)",
+    "status": "confirmed"
+  },
   "campus": "명륜·율전",
-  "summary": { "susiRatio": 57.1, "jeongsiRatio": 41.2, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 4144 },
+  "summary": {
+    "susiRatio": 57.1,
+    "jeongsiRatio": 41.2,
+    "hasSuneungMinimum": true,
+    "hasInterview": true,
+    "totalQuota": 4144
+  },
   "highlights": [
     "총 4,144명 (수시 2,367명 / 정시 1,757명)",
     "학종 면접형(성균인재) 모집단위 확대(199→222명, 사회과학·공학 추가)",
@@ -12,54 +21,175 @@
   ],
   "admissionTypes": [
     {
-      "track": "학생부교과", "subType": "추천인재",
-      "quota": { "value": "415명", "source": { "name": "성균관대 2028 신입학 전형시행계획(공식 PDF)", "url": "https://admission.skku.edu/" }, "asOf": "2026-04-30", "status": "confirmed" },
-      "method": { "value": "정량평가 70(공통35+선택35) + 정성평가 30 (2027 정량80+정성20에서 변경), 졸업예정자만 지원", "status": "confirmed" },
-      "suneungMinimum": { "value": "5개 중 3개 영역 등급합 6~7 이내(모집단위별)", "status": "confirmed" },
-      "interview": { "value": false, "status": "confirmed" }
+      "track": "학생부교과",
+      "subType": "추천인재",
+      "quota": {
+        "value": "415명",
+        "source": {
+          "name": "성균관대 2028 신입학 전형시행계획(공식 PDF)",
+          "url": "https://admission.skku.edu/"
+        },
+        "asOf": "2026-04-30",
+        "status": "confirmed"
+      },
+      "method": {
+        "value": "정량평가 70(공통35+선택35) + 정성평가 30 (2027 정량80+정성20에서 변경), 졸업예정자만 지원",
+        "status": "confirmed"
+      },
+      "suneungMinimum": {
+        "value": "5개 중 3개 영역 등급합 6~7 이내(모집단위별)",
+        "status": "confirmed"
+      },
+      "interview": {
+        "value": false,
+        "status": "confirmed"
+      }
     },
     {
-      "track": "학생부종합", "subType": "융합인재(서류형)",
-      "quota": { "value": "305명", "status": "confirmed" },
-      "method": { "value": "학생부 100%", "status": "confirmed" },
-      "suneungMinimum": { "value": "3개 영역 등급합 6 이내", "status": "confirmed" },
-      "interview": { "value": false, "status": "confirmed" }
+      "track": "학생부종합",
+      "subType": "융합인재(서류형)",
+      "quota": {
+        "value": "305명",
+        "status": "confirmed"
+      },
+      "method": {
+        "value": "학생부 100%",
+        "status": "confirmed"
+      },
+      "suneungMinimum": {
+        "value": "3개 영역 등급합 6 이내",
+        "status": "confirmed"
+      },
+      "interview": {
+        "value": false,
+        "status": "confirmed"
+      }
     },
     {
-      "track": "학생부종합", "subType": "성균인재(면접형)",
-      "quota": { "value": "222명(지역인재 4 포함)", "status": "confirmed" },
-      "method": { "value": "1단계 학생부 100% → 2단계 70 + 면접 30", "status": "confirmed" },
-      "suneungMinimum": { "value": "미적용", "status": "confirmed" },
-      "interview": { "value": true, "status": "confirmed" }
+      "track": "학생부종합",
+      "subType": "성균인재(면접형)",
+      "quota": {
+        "value": "222명(지역인재 4 포함)",
+        "status": "confirmed"
+      },
+      "method": {
+        "value": "1단계 학생부 100% → 2단계 70 + 면접 30",
+        "status": "confirmed"
+      },
+      "suneungMinimum": {
+        "value": "미적용",
+        "status": "confirmed"
+      },
+      "interview": {
+        "value": true,
+        "status": "confirmed"
+      }
     },
     {
-      "track": "논술", "subType": "언어형 / 수리형",
-      "quota": { "value": "언어형 156명 · 수리형 220명", "status": "confirmed" },
-      "method": { "value": "논술 100%", "status": "confirmed" },
-      "suneungMinimum": { "value": "적용(인문·사회 3합6 / 자연·공학·약학 3합5 / 의예 4개 합5)", "status": "confirmed" },
-      "interview": { "value": false, "status": "confirmed" }
+      "track": "논술",
+      "subType": "언어형 / 수리형",
+      "quota": {
+        "value": "언어형 156명 · 수리형 220명",
+        "status": "confirmed"
+      },
+      "method": {
+        "value": "논술 100%",
+        "status": "confirmed"
+      },
+      "suneungMinimum": {
+        "value": "적용(인문·사회 3합6 / 자연·공학·약학 3합5 / 의예 4개 합5)",
+        "status": "confirmed"
+      },
+      "interview": {
+        "value": false,
+        "status": "confirmed"
+      }
     },
     {
-      "track": "정시(수능)", "subType": "일반형 / 특화형(신설)",
-      "quota": { "value": "일반형 1,307명 + 특화형 150명", "status": "confirmed" },
-      "method": { "value": "일반형 수능 100% / 특화형 국+탐, 수+탐 영역 특화", "status": "confirmed" },
-      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
-      "interview": { "value": false, "status": "confirmed" }
+      "track": "정시(수능)",
+      "subType": "일반형 / 특화형(신설)",
+      "quota": {
+        "value": "일반형 1,307명 + 특화형 150명",
+        "status": "confirmed"
+      },
+      "method": {
+        "value": "일반형 수능 100% / 특화형 국+탐, 수+탐 영역 특화",
+        "status": "confirmed"
+      },
+      "suneungMinimum": {
+        "value": "해당 없음(정시)",
+        "status": "confirmed"
+      },
+      "interview": {
+        "value": false,
+        "status": "confirmed"
+      }
     }
   ],
   "departments": [
-    { "name": "의예과", "college": "의과대학", "track": "학생부종합·논술·정시", "suneungMinimum": { "value": "논술 4개 영역 합 5 이내(모집요강 확인 권장)", "status": "needs_review" } },
-    { "name": "글로벌경영학과", "college": "경영대학", "track": "교과·종합·논술·정시", "suneungMinimum": { "value": "교과(추천인재) 3개 영역 합 6~7", "status": "confirmed" } },
-    { "name": "소프트웨어학과", "college": "소프트웨어융합대학", "track": "교과·종합·논술·정시", "suneungMinimum": { "value": "교과(추천인재) 3개 영역 합 6~7 / 논술 자연 3개 합 5", "status": "confirmed" } },
-    { "name": "반도체시스템공학과", "college": "정보통신대학", "track": "교과·종합·논술·정시", "suneungMinimum": { "value": "교과(추천인재) 3개 영역 합 6~7", "status": "confirmed" } }
+    {
+      "name": "의예과",
+      "college": "의과대학",
+      "track": "학생부종합·논술·정시",
+      "suneungMinimum": {
+        "value": "논술: 국·수·영·탐(2과목 평균) 4개 영역 등급합 5 이내(한국사 등급 조건 없음 — 정시 감점 반영)",
+        "source": {
+          "name": "성균관대 2028학년도 입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://admission.skku.edu/admission/html/ipsi/noticeView.html?idx=59465"
+        },
+        "status": "confirmed"
+      }
+    },
+    {
+      "name": "글로벌경영학과",
+      "college": "경영대학",
+      "track": "교과·종합·논술·정시",
+      "suneungMinimum": {
+        "value": "교과(추천인재) 3개 영역 합 6~7",
+        "status": "confirmed"
+      }
+    },
+    {
+      "name": "소프트웨어학과",
+      "college": "소프트웨어융합대학",
+      "track": "교과·종합·논술·정시",
+      "suneungMinimum": {
+        "value": "교과(추천인재) 3개 영역 합 6~7 / 논술 자연 3개 합 5",
+        "status": "confirmed"
+      }
+    },
+    {
+      "name": "반도체시스템공학과",
+      "college": "정보통신대학",
+      "track": "교과·종합·논술·정시",
+      "suneungMinimum": {
+        "value": "교과(추천인재) 3개 영역 합 6~7",
+        "status": "confirmed"
+      }
+    }
   ],
-  "naesinReflection": { "value": "교과전형 정성평가 30%로 확대(원점수·과목평균·성취도 분포 활용). 탐구영역 사·과탐 분리 적용. 약·수의·치의 미보유.", "status": "confirmed" },
+  "naesinReflection": {
+    "value": "교과전형 정성평가 30%로 확대(원점수·과목평균·성취도 분포 활용). 탐구영역 사·과탐 분리 적용. 약·수의·치의 미보유.",
+    "status": "confirmed"
+  },
   "changes2028": [
-    { "value": "학종 면접형 모집단위 확대(199→222명)", "status": "confirmed" },
-    { "value": "추천인재 정량/정성 비율 변경(70/30), 졸업예정자만 지원", "status": "confirmed" },
-    { "value": "정시 일반형/특화형 분리, 탐구 사·과탐 분리 적용", "status": "confirmed" }
+    {
+      "value": "학종 면접형 모집단위 확대(199→222명)",
+      "status": "confirmed"
+    },
+    {
+      "value": "추천인재 정량/정성 비율 변경(70/30), 졸업예정자만 지원",
+      "status": "confirmed"
+    },
+    {
+      "value": "정시 일반형/특화형 분리, 탐구 사·과탐 분리 적용",
+      "status": "confirmed"
+    }
   ],
   "officialLinks": [
-    { "name": "성균관대학교 입학처", "url": "https://admission.skku.edu/" }
+    {
+      "name": "성균관대학교 입학처",
+      "url": "https://admission.skku.edu/"
+    }
   ]
 }

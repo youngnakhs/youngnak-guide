@@ -3,8 +3,12 @@
   "name": "서울교육대학교",
   "category": "인서울 주요대",
   "region": {
-    "value": "서울 서초구",
-    "status": "needs_review"
+    "value": "서울 서초구(서초동)",
+    "source": {
+      "name": "서울교대 2028학년도 대학입학 전형계획 주요사항(입학처, 2026-04-30)",
+      "url": "https://admission.snue.ac.kr/admission/na/ntt/selectNttList.do?mi=3376&bbsId=3073"
+    },
+    "status": "confirmed"
   },
   "campus": "서초동",
   "summary": {
@@ -24,27 +28,48 @@
       "track": "2028 전형 개요",
       "subType": "워크벤치 요약 이식",
       "quota": {
-        "value": "각 입학처 모집요강 확인",
-        "status": "needs_review"
+        "value": "정원내 355명(수시 245·정시 110): 학교장추천 40·교직인성우수자 150·기회균형 45·정시 일반 110",
+        "source": {
+          "name": "서울교대 2028학년도 대학입학 전형계획 주요사항(입학처, 2026-04-30)",
+          "url": "https://admission.snue.ac.kr/admission/na/ntt/selectNttList.do?mi=3376&bbsId=3073"
+        },
+        "status": "confirmed",
+        "asOf": "2026-04"
       },
       "method": {
-        "value": "수시(학교장추천교과·교직인성우수자종합·기회균형Ⅰ·Ⅱ·기타특별)+정시(나군 일반). 학교장추천 1단계 교과70+정성30, 2단계 1단계80+면접20",
-        "status": "needs_review"
+        "value": "학교장추천(교과): 1단계(2배수) 교과 70+교과정성 30 → 2단계 1단계 80+면접 20. 학종(교직인성·기회균형): 2단계 1단계 50+면접 50. 정시 나군",
+        "source": {
+          "name": "서울교대 2028학년도 대학입학 전형계획 주요사항(입학처, 2026-04-30)",
+          "url": "https://admission.snue.ac.kr/admission/na/ntt/selectNttList.do?mi=3376&bbsId=3073"
+        },
+        "status": "confirmed"
       },
       "suneungMinimum": {
-        "value": "교직인성우수자: 국·수·영·탐(사/과 택) <b>2개합 6</b>+한국사 4. 기회균형Ⅰ·Ⅱ: 2개합 8+한국사 4. 정시: 영어 3등급+한국사 4",
-        "status": "needs_review"
+        "value": "교직인성우수자: 국수영탐 2개 합 6 + 한국사 4. 기회균형Ⅰ: 2개 합 8 + 한국사 4. 학교장추천·기회균형Ⅱ 미적용. 정시: 영어 3등급 + 한국사 4등급",
+        "source": {
+          "name": "서울교대 2028학년도 대학입학 전형계획 주요사항(입학처, 2026-04-30)",
+          "url": "https://admission.snue.ac.kr/admission/na/ntt/selectNttList.do?mi=3376&bbsId=3073"
+        },
+        "status": "confirmed"
       },
       "interview": {
-        "value": "<b>교대 특성상 전 전형 면접 필수</b>. 학교장추천 면접 20%, 교직인성·기회균형Ⅰ 면접 50%, 기회균형Ⅱ·재외·북한이탈 면접 100%",
-        "status": "needs_review"
+        "value": "전 전형 면접: 학교장추천 20%·교직인성/기회균형Ⅰ·Ⅱ 50%·기타(재외국민·북한이탈) 100%·정시 20%",
+        "source": {
+          "name": "서울교대 2028학년도 대학입학 전형계획 주요사항(입학처, 2026-04-30)",
+          "url": "https://admission.snue.ac.kr/admission/na/ntt/selectNttList.do?mi=3376&bbsId=3073"
+        },
+        "status": "confirmed"
       }
     }
   ],
   "departments": [],
   "naesinReflection": {
-    "value": "학교장추천 교과 정량70+정성평가30 혼합. 종합(교직인성·기회균형) 서류 100% 정성. 5등급제 환산표 PDF 미공개",
-    "status": "needs_review"
+    "value": "학교장추천 1단계: 교과 정량 70%(1~3-1학기 전 과목, 가중치 없음) + 교과 정성 30%(세특 포함). 학종 서류 100% 정성. 환산표는 모집요강에서 공개 예정",
+    "source": {
+      "name": "서울교대 2028학년도 대학입학 전형계획 주요사항(입학처, 2026-04-30)",
+      "url": "https://admission.snue.ac.kr/admission/na/ntt/selectNttList.do?mi=3376&bbsId=3073"
+    },
+    "status": "confirmed"
   },
   "changes2028": [],
   "officialLinks": [

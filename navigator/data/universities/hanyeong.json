@@ -3,8 +3,12 @@
   "name": "서울한영대학교",
   "category": "인서울 주요대",
   "region": {
-    "value": "서울 구로구",
-    "status": "needs_review"
+    "value": "서울 구로구(개봉동)",
+    "source": {
+      "name": "서울한영대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-30)",
+      "url": "https://ipsi.shyu.ac.kr/fro_end/html/dep_05/5000.php?bbs_idx=3310"
+    },
+    "status": "confirmed"
   },
   "campus": "개봉동",
   "summary": {
@@ -24,27 +28,48 @@
       "track": "2028 전형 개요",
       "subType": "워크벤치 요약 이식",
       "quota": {
-        "value": "각 입학처 모집요강 확인",
-        "status": "needs_review"
+        "value": "정원내 180명: 수시 144(신학 12·상담심리 36·아동보육 32·사회복지 36·재활복지 28) + 정시 나군 36",
+        "source": {
+          "name": "서울한영대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://ipsi.shyu.ac.kr/fro_end/html/dep_05/5000.php?bbs_idx=3310"
+        },
+        "status": "confirmed",
+        "asOf": "2026-04"
       },
       "method": {
-        "value": "수시(학생부교과) 일반·국가보훈·만학도, 정원외 기초·농어촌·장애인. 정시(나군) 일반·기초·농어촌. 자유전공/무전공 PDF 미명시. 모집인원 PDF 미공개",
-        "status": "needs_review"
+        "value": "수시 학생부교과(일반·만학도·국가보훈) + 정시 나군 수능위주. 5개 학과 체제",
+        "source": {
+          "name": "서울한영대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://ipsi.shyu.ac.kr/fro_end/html/dep_05/5000.php?bbs_idx=3310"
+        },
+        "status": "confirmed"
       },
       "suneungMinimum": {
-        "value": "<b>수시 수능최저 없음</b>. 정시 수능: 국어30+영어30+탐구30(통사·통과·직업 중 1)+한국사10",
-        "status": "needs_review"
+        "value": "수시 수능최저 없음. 정시: 국어 30+영어 30+탐구 30(통사·통과·직업 중 1과목)+한국사 10",
+        "source": {
+          "name": "서울한영대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://ipsi.shyu.ac.kr/fro_end/html/dep_05/5000.php?bbs_idx=3310"
+        },
+        "status": "confirmed"
       },
       "interview": {
-        "value": "수시 학생부(교과) 장애인등은 학생부60+면접40. 그 외 일반·보훈·만학도·기초·농어촌은 학생부 100% 면접 없음",
-        "status": "needs_review"
+        "value": "장애인등대상자(정원외)만 학생부 60+면접 40. 그 외 수시 학생부 100%, 정시 수능 100%",
+        "source": {
+          "name": "서울한영대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://ipsi.shyu.ac.kr/fro_end/html/dep_05/5000.php?bbs_idx=3310"
+        },
+        "status": "confirmed"
       }
     }
   ],
   "departments": [],
   "naesinReflection": {
-    "value": "수시 학생부 교과80+비교과(출결)20. 학년별 1학년20·2학년30·3학년50. 국·수·영·사·과. 등급별 점수 PDF 미공개",
-    "status": "needs_review"
+    "value": "교과 80+출결 20, 학년비 20:30:50. 반영교과 국·수·영·사(역사/도덕)·과",
+    "source": {
+      "name": "서울한영대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-30)",
+      "url": "https://ipsi.shyu.ac.kr/fro_end/html/dep_05/5000.php?bbs_idx=3310"
+    },
+    "status": "confirmed"
   },
   "changes2028": [],
   "officialLinks": [

@@ -2,9 +2,18 @@
   "id": "knu",
   "name": "경북대학교",
   "category": "지방거점국립대",
-  "region": { "value": "대구 북구", "status": "confirmed" },
+  "region": {
+    "value": "대구 북구",
+    "status": "confirmed"
+  },
   "campus": "대구",
-  "summary": { "susiRatio": 81.5, "jeongsiRatio": 18.5, "hasSuneungMinimum": true, "hasInterview": true, "totalQuota": 5586 },
+  "summary": {
+    "susiRatio": 81.5,
+    "jeongsiRatio": 18.5,
+    "hasSuneungMinimum": true,
+    "hasInterview": true,
+    "totalQuota": 5586
+  },
   "highlights": [
     "총 5,586명 (수시 81.5% / 정시 18.5%)",
     "통합형 수능 반영(탐구 일반학과 1과목·의약학 2과목)",
@@ -12,52 +21,207 @@
   ],
   "admissionTypes": [
     {
-      "track": "학생부교과", "subType": "교과우수자 / 지역인재",
-      "quota": { "value": "교과우수자 1,395명·지역인재 597명·사회통합 119명", "source": { "name": "경북대 2028 시행계획(공식 PDF)", "url": "https://ipsi1.knu.ac.kr/upload_data/mojib/20260507101817_15.pdf" }, "asOf": "2026-04", "status": "confirmed" },
-      "method": { "value": "교과 80 + 교과이수충실도 20", "status": "confirmed" },
-      "suneungMinimum": { "value": "의예·치의예 수학포함 3개합 4 / 수의예·약학 3개합 5(탐구2) / 일반학과 2개합 5~6. 생태환경대·과학기술대·자율미래인재학부 미적용", "status": "confirmed" },
-      "interview": { "value": false, "status": "confirmed" }
+      "track": "학생부교과",
+      "subType": "교과우수자 / 지역인재",
+      "quota": {
+        "value": "교과우수자 1,395명·지역인재 597명·사회통합 119명",
+        "source": {
+          "name": "경북대 2028 시행계획(공식 PDF)",
+          "url": "https://ipsi1.knu.ac.kr/upload_data/mojib/20260507101817_15.pdf"
+        },
+        "asOf": "2026-04",
+        "status": "confirmed"
+      },
+      "method": {
+        "value": "교과 80 + 교과이수충실도 20",
+        "status": "confirmed"
+      },
+      "suneungMinimum": {
+        "value": "의예·치의예 수학포함 3개합 4 / 수의예·약학 3개합 5(탐구2) / 일반학과 2개합 5~6. 생태환경대·과학기술대·자율미래인재학부 미적용",
+        "status": "confirmed"
+      },
+      "interview": {
+        "value": false,
+        "status": "confirmed"
+      }
     },
     {
-      "track": "학생부종합", "subType": "일반학생 / 지역인재 / 지역의사선발",
-      "quota": { "value": "일반학생 911명·지역인재 360명·지역의사선발 33명·농어촌 190명 등", "status": "confirmed" },
-      "method": { "value": "일반학생 서류 100% / 지역인재 1단계 서류 100% → 2단계 70 + 면접 30", "status": "confirmed" },
-      "suneungMinimum": { "value": "전형·모집단위별 상이(모집요강 확인)", "status": "needs_review" },
-      "interview": { "value": true, "status": "confirmed" }
+      "track": "학생부종합",
+      "subType": "일반학생 / 지역인재 / 지역의사선발",
+      "quota": {
+        "value": "일반학생 911명·지역인재 360명·지역의사선발 33명·농어촌 190명 등",
+        "status": "confirmed"
+      },
+      "method": {
+        "value": "일반학생 서류 100% / 지역인재 1단계 서류 100% → 2단계 70 + 면접 30",
+        "status": "confirmed"
+      },
+      "suneungMinimum": {
+        "value": "일반학과는 교과와 동일(IT대 수학포함 2개 합5 / 경상·사범·간호·행정·자율전공 2개 합5 / 공대·첨단기술융합 수학포함 2개 합6 / 인문·사회·자연·농생대·생활대 2개 합6). 의예·치의예: 수학포함 3개 합4(탐구 2과목 평균). 수의예·약학 3개 합5. 일반학과 지역인재 미적용",
+        "source": {
+          "name": "경북대 2028학년도 대학입학전형 시행계획(안)(입학처, 2026-04)",
+          "url": "https://ipsi1.knu.ac.kr/upload_data/mojib/20260507101817_15.pdf"
+        },
+        "status": "confirmed"
+      },
+      "interview": {
+        "value": true,
+        "status": "confirmed"
+      }
     },
     {
-      "track": "논술", "subType": "논술(AAT)",
-      "quota": { "value": "551명", "status": "confirmed" },
-      "method": { "value": "논술 70 + 교과 30", "status": "confirmed" },
-      "suneungMinimum": { "value": "모집요강 확인", "status": "needs_review" },
-      "interview": { "value": false, "status": "confirmed" }
+      "track": "논술",
+      "subType": "논술(AAT)",
+      "quota": {
+        "value": "551명",
+        "status": "confirmed"
+      },
+      "method": {
+        "value": "논술 70 + 교과 30",
+        "status": "confirmed"
+      },
+      "suneungMinimum": {
+        "value": "적용: 일반학과 교과와 동일군(2개 합5~6). 의예·치의예 수학포함 3개 합4, 수의예·약학 3개 합5, 모바일공학 3개 합5, 미술·디자인 1개 영역 4등급",
+        "source": {
+          "name": "경북대 2028학년도 대학입학전형 시행계획(안)(입학처, 2026-04)",
+          "url": "https://ipsi1.knu.ac.kr/upload_data/mojib/20260507101817_15.pdf"
+        },
+        "status": "confirmed"
+      },
+      "interview": {
+        "value": false,
+        "status": "confirmed"
+      }
     },
     {
-      "track": "정시(수능)", "subType": "가·나군",
-      "quota": { "value": "가군 535명·나군 499명", "status": "confirmed" },
-      "method": { "value": "수능 90 + 교과 10. 의예과 인적성면접", "status": "confirmed" },
-      "suneungMinimum": { "value": "해당 없음(정시)", "status": "confirmed" },
-      "interview": { "value": false, "status": "confirmed" }
+      "track": "정시(수능)",
+      "subType": "가·나군",
+      "quota": {
+        "value": "가군 535명·나군 499명",
+        "status": "confirmed"
+      },
+      "method": {
+        "value": "수능 90 + 교과 10. 의예과 인적성면접",
+        "status": "confirmed"
+      },
+      "suneungMinimum": {
+        "value": "해당 없음(정시)",
+        "status": "confirmed"
+      },
+      "interview": {
+        "value": false,
+        "status": "confirmed"
+      }
     }
   ],
   "departments": [
-    { "name": "의예과", "college": "의과대학", "track": "교과·종합·정시", "quota": 143, "suneungMinimum": { "value": "수학 포함 3개 영역 합 4 이내(탐구 2과목 평균)", "status": "confirmed" } },
-    { "name": "치의예과", "college": "치과대학", "track": "교과·종합·정시", "quota": 62, "suneungMinimum": { "value": "수학 포함 3개 영역 합 4 이내", "status": "confirmed" } },
-    { "name": "수의예과", "college": "수의과대학", "track": "교과·종합·정시", "quota": 57, "suneungMinimum": { "value": "수학 포함 3개 영역 합 5 이내", "status": "confirmed" } },
-    { "name": "약학과", "college": "약학대학", "track": "교과·종합·정시", "quota": 35, "suneungMinimum": { "value": "수학 포함 3개 영역 합 5 이내", "status": "confirmed" } },
-    { "name": "간호학과", "college": "간호대학", "track": "교과·종합·정시", "quota": 115, "suneungMinimum": { "value": "상위 2개 영역 합 5 이내", "status": "confirmed" } },
-    { "name": "경영학부", "college": "경상대학", "track": "교과·종합·정시", "quota": 165, "suneungMinimum": { "value": "상위 2개 영역 합 5 이내", "status": "confirmed" } },
-    { "name": "컴퓨터학부", "college": "IT대학", "track": "교과·종합·정시", "quota": 107, "suneungMinimum": { "value": "수학 포함 2개 영역 합 5 이내", "status": "confirmed" } },
-    { "name": "전자공학부", "college": "IT대학", "track": "교과·종합·정시", "quota": 306, "suneungMinimum": { "value": "수학 포함 2개 영역 합 6 이내(공과)", "status": "confirmed" } }
+    {
+      "name": "의예과",
+      "college": "의과대학",
+      "track": "교과·종합·정시",
+      "quota": 143,
+      "suneungMinimum": {
+        "value": "수학 포함 3개 영역 합 4 이내(탐구 2과목 평균)",
+        "status": "confirmed"
+      }
+    },
+    {
+      "name": "치의예과",
+      "college": "치과대학",
+      "track": "교과·종합·정시",
+      "quota": 62,
+      "suneungMinimum": {
+        "value": "수학 포함 3개 영역 합 4 이내",
+        "status": "confirmed"
+      }
+    },
+    {
+      "name": "수의예과",
+      "college": "수의과대학",
+      "track": "교과·종합·정시",
+      "quota": 57,
+      "suneungMinimum": {
+        "value": "수학 포함 3개 영역 합 5 이내",
+        "status": "confirmed"
+      }
+    },
+    {
+      "name": "약학과",
+      "college": "약학대학",
+      "track": "교과·종합·정시",
+      "quota": 35,
+      "suneungMinimum": {
+        "value": "수학 포함 3개 영역 합 5 이내",
+        "status": "confirmed"
+      }
+    },
+    {
+      "name": "간호학과",
+      "college": "간호대학",
+      "track": "교과·종합·정시",
+      "quota": 115,
+      "suneungMinimum": {
+        "value": "상위 2개 영역 합 5 이내",
+        "status": "confirmed"
+      }
+    },
+    {
+      "name": "경영학부",
+      "college": "경상대학",
+      "track": "교과·종합·정시",
+      "quota": 165,
+      "suneungMinimum": {
+        "value": "상위 2개 영역 합 5 이내",
+        "status": "confirmed"
+      }
+    },
+    {
+      "name": "컴퓨터학부",
+      "college": "IT대학",
+      "track": "교과·종합·정시",
+      "quota": 107,
+      "suneungMinimum": {
+        "value": "수학 포함 2개 영역 합 5 이내",
+        "status": "confirmed"
+      }
+    },
+    {
+      "name": "전자공학부",
+      "college": "IT대학",
+      "track": "교과·종합·정시",
+      "quota": 306,
+      "suneungMinimum": {
+        "value": "수학 포함 2개 영역 합 6 이내(공과)",
+        "status": "confirmed"
+      }
+    }
   ],
-  "naesinReflection": { "value": "교과전형은 교과 80 + 교과이수충실도 20. 통합형 수능에 따라 탐구는 일반학과 1과목·의약학 2과목 반영. 생태환경·과학기술·자율미래인재학부는 수능최저 미적용.", "status": "confirmed" },
+  "naesinReflection": {
+    "value": "교과전형은 교과 80 + 교과이수충실도 20. 통합형 수능에 따라 탐구는 일반학과 1과목·의약학 2과목 반영. 생태환경·과학기술·자율미래인재학부는 수능최저 미적용.",
+    "status": "confirmed"
+  },
   "changes2028": [
-    { "value": "통합형 수능 반영(통합사회·통합과학)", "status": "confirmed" },
-    { "value": "지역인재 자격 강화 — 의·치·약·간호는 비수도권 중학교 이수 + 지역거주 요건", "status": "confirmed" },
-    { "value": "학교폭력 조치 감점 반영", "status": "confirmed" }
+    {
+      "value": "통합형 수능 반영(통합사회·통합과학)",
+      "status": "confirmed"
+    },
+    {
+      "value": "지역인재 자격 강화 — 의·치·약·간호는 비수도권 중학교 이수 + 지역거주 요건",
+      "status": "confirmed"
+    },
+    {
+      "value": "학교폭력 조치 감점 반영",
+      "status": "confirmed"
+    }
   ],
   "officialLinks": [
-    { "name": "경북대학교 입학처", "url": "https://ipsi1.knu.ac.kr/plan/?m_type=SUSI" },
-    { "name": "2028 시행계획 PDF", "url": "https://ipsi1.knu.ac.kr/upload_data/mojib/20260507101817_15.pdf" }
+    {
+      "name": "경북대학교 입학처",
+      "url": "https://ipsi1.knu.ac.kr/plan/?m_type=SUSI"
+    },
+    {
+      "name": "2028 시행계획 PDF",
+      "url": "https://ipsi1.knu.ac.kr/upload_data/mojib/20260507101817_15.pdf"
+    }
   ]
 }

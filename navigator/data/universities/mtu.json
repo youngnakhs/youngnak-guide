@@ -3,8 +3,12 @@
   "name": "감리교신학대학교",
   "category": "인서울 주요대",
   "region": {
-    "value": "서울 서대문구",
-    "status": "needs_review"
+    "value": "서울 서대문구(냉천동)",
+    "source": {
+      "name": "감리교신학대 공식 주소",
+      "url": "https://www.mtu.ac.kr/mtu/c1/sub6_1.jsp"
+    },
+    "status": "confirmed"
   },
   "campus": "냉천동",
   "summary": {

@@ -3,8 +3,12 @@
   "name": "총신대학교",
   "category": "인서울 주요대",
   "region": {
-    "value": "서울 동작구",
-    "status": "needs_review"
+    "value": "서울 동작구(사당동)",
+    "source": {
+      "name": "총신대 2028학년도 대학입학전형시행계획(입학처, 2026-04-30)",
+      "url": "https://admission.csu.ac.kr/?m1=page&menu_id=3346"
+    },
+    "status": "confirmed"
   },
   "campus": "사당동",
   "summary": {
@@ -24,27 +28,48 @@
       "track": "2028 전형 개요",
       "subType": "워크벤치 요약 이식",
       "quota": {
-        "value": "각 입학처 모집요강 확인",
-        "status": "needs_review"
+        "value": "정원내 307명(수시 267·정시 40)",
+        "source": {
+          "name": "총신대 2028학년도 대학입학전형시행계획(입학처, 2026-04-30)",
+          "url": "https://admission.csu.ac.kr/?m1=page&menu_id=3346"
+        },
+        "status": "confirmed",
+        "asOf": "2026-04"
       },
       "method": {
-        "value": "수시 267(87%)·정시 40(13%, 총 307). 학생부교과(교과우수자)·학종(목회자추천 27·코람데오인재 119·총신고른기회·대안학교)·실기/실적(성경지식·외국어·실기우수자 31). 자율전공학부 운영",
-        "status": "needs_review"
+        "value": "교과우수자 46·목회자추천 27·코람데오인재 119·총신고른기회 27·대안학교 10·성경지식우수 4·외국어우수 3·실기우수 31. 정시 CS인재(가군 17·다군 23). 자율전공학부 운영",
+        "source": {
+          "name": "총신대 2028학년도 대학입학전형시행계획(입학처, 2026-04-30)",
+          "url": "https://admission.csu.ac.kr/?m1=page&menu_id=3346"
+        },
+        "status": "confirmed"
       },
       "suneungMinimum": {
-        "value": "<b>모든 수시 전형 수능최저 없음</b>. 정시 CS인재(가군) 국/수 우수 백분위 40+영어환산 30+탐구 1과목 30-한국사 감점",
-        "status": "needs_review"
+        "value": "모든 수시 전형 수능최저 없음. 정시 가군: 국/수 우수 40+영어 30+탐구(1과목) 30, 한국사 감점. 다군(교회음악): 국어 50+영어 50",
+        "source": {
+          "name": "총신대 2028학년도 대학입학전형시행계획(입학처, 2026-04-30)",
+          "url": "https://admission.csu.ac.kr/?m1=page&menu_id=3346"
+        },
+        "status": "confirmed"
       },
       "interview": {
-        "value": "학종 코람데오·총신고른기회·대안학교 1단계 서류100(3배수), 2단계 1단계70+면접30. 교과우수자·성경지식우수자 면접 없음. 외국어우수자 1단계 서류 정성40+정량60, 2단계 면접30",
-        "status": "needs_review"
+        "value": "학종: 1단계 서류 100(3배수) → 2단계 70+면접 30. 목회자추천 일괄 서류 70+면접 30. 성경지식우수자 면접 40+서류 60. 교과우수자 면접 없음",
+        "source": {
+          "name": "총신대 2028학년도 대학입학전형시행계획(입학처, 2026-04-30)",
+          "url": "https://admission.csu.ac.kr/?m1=page&menu_id=3346"
+        },
+        "status": "confirmed"
       }
     }
   ],
   "departments": [],
   "naesinReflection": {
-    "value": "교과우수자 교과90+비교과(출결)10, 국·영·수·사·과. 2028 졸업자는 공통·일반·진로·융합선택 석차+성취도, 등급별 5~50점 감점",
-    "status": "needs_review"
+    "value": "교과 90+출결 10, 전학년 100%, 국영수사과. 2028 이후: 석차등급+성취도 환산(감점 5~50점). 2027 이전: 석차 90+진로선택 성취도 10",
+    "source": {
+      "name": "총신대 2028학년도 대학입학전형시행계획(입학처, 2026-04-30)",
+      "url": "https://admission.csu.ac.kr/?m1=page&menu_id=3346"
+    },
+    "status": "confirmed"
   },
   "changes2028": [],
   "officialLinks": [
