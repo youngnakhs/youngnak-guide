@@ -96,6 +96,7 @@
           document.getElementById('printBtn').addEventListener('click', function () { window.print(); });
         }
         // 번들이 #uniContent를 채울 때까지 대기(최대 ~6초)
+        if (!id) { mountPrintOnly(); return; }   // id 없으면 본문 기다릴 것 없이 인쇄 버튼만 즉시
         var tries = 0;
         var timer = setInterval(function () {
           tries++;
