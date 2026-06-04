@@ -8,8 +8,8 @@
     "지방캠퍼스"
   ],
   "dataStatus": {
-    "confirmed": 1146,
-    "needsReview": 31
+    "confirmed": 1157,
+    "needsReview": 20
   },
   "universities": [
     {
@@ -39,11 +39,11 @@
       "region": "서울 광진구",
       "campus": "서울",
       "summary": {
-        "susiRatio": null,
-        "jeongsiRatio": null,
+        "susiRatio": 57,
+        "jeongsiRatio": 43,
         "hasSuneungMinimum": true,
         "hasInterview": false,
-        "totalQuota": null
+        "totalQuota": 3430
       },
       "officialLinks": [
         {
@@ -199,11 +199,11 @@
       "region": "서울 관악구",
       "campus": "관악",
       "summary": {
-        "susiRatio": 65.7,
-        "jeongsiRatio": 34.3,
+        "susiRatio": 69,
+        "jeongsiRatio": 31,
         "hasSuneungMinimum": false,
         "hasInterview": true,
-        "totalQuota": null
+        "totalQuota": 3603
       },
       "officialLinks": [
         {
@@ -743,7 +743,7 @@
         "jeongsiRatio": null,
         "hasSuneungMinimum": true,
         "hasInterview": true,
-        "totalQuota": null
+        "totalQuota": 3960
       },
       "officialLinks": [
         {

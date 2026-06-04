@@ -199,8 +199,8 @@
       "name": "간호학과",
       "college": "간호대학(천안)",
       "track": "학생부·정시",
-      "suneungMinimum": "모집요강 확인",
-      "review": true
+      "suneungMinimum": "교과우수자(천안) 2개 영역 합 5 / 지역균형선발(천안) 2개 합 8",
+      "review": false
     },
     {
       "uni": "단국대학교",
@@ -1219,8 +1219,8 @@
       "name": "의예과",
       "college": "의과대학",
       "track": "학생부종합·논술·정시",
-      "suneungMinimum": "논술 4개 영역 합 5 이내(모집요강 확인 권장)",
-      "review": true
+      "suneungMinimum": "논술 4개 영역 합 5 이내(탐구 2과목 평균, 한국사 등급 조건 없음)",
+      "review": false
     },
     {
       "uni": "성균관대학교",

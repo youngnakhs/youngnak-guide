@@ -321,6 +321,12 @@
           var re2 = /(\d)\s*개[^\/\n]*?각\s*(\d)\s*등급/g;
           while ((m = re2.exec(t))) reqs.push({ n: +m[1], s: (+m[1]) * (+m[2]) });
           if ((m = /1등급\s*(\d)\s*개/.exec(t))) reqs.push({ n: +m[1], s: +m[1] });
+          // 변형: "3개 영역 합 — 일반 4 / 지역인재 6" (트랙별 나열)
+          var m3 = /(\d)\s*개\s*영역?\s*합\s*[—–-]\s*([^.;]*)/.exec(t);
+          if (m3) { (m3[2].replace(/\([^)]*\)/g, '').match(/\d+/g) || []).forEach(function (x) { if (+x >= +m3[1] && +x <= +m3[1] * 9) reqs.push({ n: +m3[1], s: +x }); }); }
+          // 변형: "2합6" 축약형
+          var re4 = /(\d)\s*합\s*(\d+)/g;
+          while ((m = re4.exec(t))) reqs.push({ n: +m[1], s: +m[2] });
           if (!reqs.length) return /없음|미적용/.test(t) ? { free: true } : null;
           return { reqs: reqs };
         }

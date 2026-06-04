@@ -8,41 +8,44 @@
   },
   "campus": "서울",
   "summary": {
-    "susiRatio": null,
-    "jeongsiRatio": null,
+    "susiRatio": 57,
+    "jeongsiRatio": 43,
     "hasSuneungMinimum": true,
     "hasInterview": true,
-    "totalQuota": null
+    "totalQuota": 3430
   },
   "highlights": [
     "학종은 단계별(면접 30% 유지)·일괄합산(서류 70+교과 30) 두 트랙 모두 2027과 동일",
     "논술 출제유형을 '통합'으로 일원화",
-    "정시 수능 80 + 학생부(정성) 20 도입(자유전공학부 지원자 대상)"
+    "정시 단과대학 자유전공: 수능 90 + 학생부(정성) 10(정식 시행계획에서 조정)"
   ],
   "admissionTypes": [
     {
       "track": "학생부종합",
-      "subType": "(단계별·일괄합산)",
+      "subType": "KU자기추천",
       "quota": {
-        "value": "확인 필요",
+        "value": "920명(2027 903명에서 +17 확대)",
         "source": {
-          "name": "건국대 2028 변경안(2025-09-29 게시)",
-          "url": "https://enter.konkuk.ac.kr"
+          "name": "건국대 2028학년도 입학전형 시행계획(입학처, 2026-04)",
+          "url": "https://enter.konkuk.ac.kr/submenu.do?menuurl=6gpLdShH58MEErqn9YefMA%3d%3d&"
         },
-        "asOf": "2025-09",
-        "status": "needs_review"
+        "status": "confirmed"
       },
       "method": {
-        "value": "단계별: 1단계 서류 100%(3배수) → 2단계 1단계 70% + 면접 30% / 일괄합산: 서류 70% + 학생부 교과(정량) 30% — 2027학년도와 동일",
+        "value": "1단계 서류 100%(3배수) → 2단계 1단계 70% + 면접 30%",
         "source": {
-          "name": "건국대 2028학년도 입학전형 변경안(입학처, 2025-05-02)",
-          "url": "https://enter.konkuk.ac.kr"
+          "name": "건국대 2028학년도 입학전형 시행계획(입학처, 2026-04)",
+          "url": "https://enter.konkuk.ac.kr/submenu.do?menuurl=6gpLdShH58MEErqn9YefMA%3d%3d&"
         },
         "status": "confirmed"
       },
       "suneungMinimum": {
-        "value": "확인 필요",
-        "status": "needs_review"
+        "value": "미적용(시행계획 명시 ×)",
+        "source": {
+          "name": "건국대 2028학년도 입학전형 시행계획(입학처, 2026-04)",
+          "url": "https://enter.konkuk.ac.kr/submenu.do?menuurl=6gpLdShH58MEErqn9YefMA%3d%3d&"
+        },
+        "status": "confirmed"
       },
       "interview": {
         "value": true,
@@ -57,8 +60,12 @@
       "track": "논술",
       "subType": "논술위주",
       "quota": {
-        "value": "확인 필요",
-        "status": "needs_review"
+        "value": "328명(KU논술)",
+        "source": {
+          "name": "건국대 2028학년도 입학전형 시행계획(입학처, 2026-04)",
+          "url": "https://enter.konkuk.ac.kr/submenu.do?menuurl=6gpLdShH58MEErqn9YefMA%3d%3d&"
+        },
+        "status": "confirmed"
       },
       "method": {
         "value": "논술 100%. 출제유형 인문/통합/자연 3종 → '통합' 일원화(국어+통합사회 1문항, 수학 3문항)",
@@ -69,10 +76,10 @@
         "status": "confirmed"
       },
       "suneungMinimum": {
-        "value": "적용(2028 세부 등급 기준은 모집요강에서 확정)",
+        "value": "적용: 인문/자연 3개 영역 등급 합 8 이내(탐구 상위 1과목) / 수의예과 3개 합 4(탐구 2과목 평균) — 국·수·영·탐·한국사 전 영역 응시",
         "source": {
-          "name": "건국대 2028학년도 입학전형 변경안(입학처, 2025-05-02)",
-          "url": "https://enter.konkuk.ac.kr"
+          "name": "건국대 2028학년도 입학전형 시행계획(입학처, 2026-04)",
+          "url": "https://enter.konkuk.ac.kr/submenu.do?menuurl=6gpLdShH58MEErqn9YefMA%3d%3d&"
         },
         "status": "confirmed"
       },
@@ -89,14 +96,18 @@
       "track": "정시(수능)",
       "subType": "수능위주",
       "quota": {
-        "value": "확인 필요",
-        "status": "needs_review"
+        "value": "1,072명(KU일반: 학과/학부 846 + 단과대학 자유전공 226)",
+        "source": {
+          "name": "건국대 2028학년도 입학전형 시행계획(입학처, 2026-04)",
+          "url": "https://enter.konkuk.ac.kr/submenu.do?menuurl=6gpLdShH58MEErqn9YefMA%3d%3d&"
+        },
+        "status": "confirmed"
       },
       "method": {
-        "value": "수능 80% + 학생부(정성) 20% — 정성평가는 단과대 자유전공학부 지원자 대상(기존 수능 100%에서 변경)",
+        "value": "학과/학부: 수능 100% / 단과대학 자유전공: 수능 90% + 학생부(교과정성) 10%",
         "source": {
-          "name": "건국대 2028학년도 입학전형 변경안(입학처, 2025-05-02)",
-          "url": "https://enter.konkuk.ac.kr"
+          "name": "건국대 2028학년도 입학전형 시행계획(입학처, 2026-04)",
+          "url": "https://enter.konkuk.ac.kr/submenu.do?menuurl=6gpLdShH58MEErqn9YefMA%3d%3d&"
         },
         "status": "confirmed"
       },
@@ -115,10 +126,10 @@
     }
   ],
   "naesinReflection": {
-    "value": "정시에 학생부 정성평가 20% 도입(자유전공학부 지원자 대상). 학종 일괄합산의 교과 정량 30%는 2027과 동일 유지.",
+    "value": "정시 단과대학 자유전공에 학생부 정성평가 10% 도입(변경안 20%에서 조정). 학종 KU자기추천은 서류 정성평가.",
     "source": {
-      "name": "건국대 2028학년도 입학전형 변경안(입학처, 2025-05-02)",
-      "url": "https://enter.konkuk.ac.kr"
+      "name": "건국대 2028학년도 입학전형 시행계획(입학처, 2026-04)",
+      "url": "https://enter.konkuk.ac.kr/submenu.do?menuurl=6gpLdShH58MEErqn9YefMA%3d%3d&"
     },
     "status": "confirmed"
   },
@@ -132,10 +143,10 @@
       "status": "confirmed"
     },
     {
-      "value": "정시 학생부 정성평가 20% 도입(단과대 자유전공학부 지원자 대상)",
+      "value": "정시 학생부 정성평가 10% 도입(단과대학 자유전공) — 변경안의 20%에서 정식 시행계획 10%로 조정",
       "source": {
-        "name": "건국대 2028학년도 입학전형 변경안(입학처, 2025-05-02)",
-        "url": "https://enter.konkuk.ac.kr"
+        "name": "건국대 2028학년도 입학전형 시행계획(입학처, 2026-04)",
+        "url": "https://enter.konkuk.ac.kr/submenu.do?menuurl=6gpLdShH58MEErqn9YefMA%3d%3d&"
       },
       "status": "confirmed"
     }
