@@ -3,8 +3,12 @@
   "name": "동덕여자대학교",
   "category": "인서울 주요대",
   "region": {
-    "value": "서울 성북구",
-    "status": "needs_review"
+    "value": "서울 성북구(하월곡동)",
+    "source": {
+      "name": "동덕여대 공식 위치안내",
+      "url": "https://www.dongduk.ac.kr/www/contents/kor-location01.do"
+    },
+    "status": "confirmed"
   },
   "campus": "월곡동",
   "summary": {
@@ -24,47 +28,88 @@
       "track": "2028 전형 개요",
       "subType": "워크벤치 요약 이식",
       "quota": {
-        "value": "각 입학처 모집요강 확인",
-        "status": "needs_review"
+        "value": "수시 1,010(정원내)+114(정원외) / 정시 569+83 — 정원내 총 1,579명",
+        "source": {
+          "name": "동덕여대 2028학년도 신입학 대학입학전형 시행계획(입학처, 2026-04-29)",
+          "url": "https://ipsi.dongduk.ac.kr/ipsi/contents/admhelper-notice.do?schM=view&id=91744"
+        },
+        "asOf": "2026-04",
+        "status": "confirmed"
       },
       "method": {
-        "value": "수시 1,010(정원내)+114(정원외)·정시 569+83. 학종 동덕창의리더 208·기회균형 12·교과우수자 181·논술 232·실기 359. 자율전공학부 94·인문사회 125·자연정보 43(ARETE교양대학)",
-        "status": "needs_review"
+        "value": "학종 동덕창의리더 208·기회균형 12(+특성화고졸재직자 6)·교과우수자 181·논술우수자 232·실기/실적 359. ARETE교양대학: 자율전공학부 94·인문사회융합 125·자연정보융합 43",
+        "source": {
+          "name": "동덕여대 2028학년도 신입학 대학입학전형 시행계획(입학처, 2026-04-29)",
+          "url": "https://ipsi.dongduk.ac.kr/ipsi/contents/admhelper-notice.do?schM=view&id=91744"
+        },
+        "status": "confirmed"
       },
       "suneungMinimum": {
-        "value": "교과우수자·논술(약학 제외): 국·영·수·탐(1) 중 <b>2개 영역 합 7</b>(2027 6→7 완화). 약학과(교과우수·동덕창의): 국·수·탐(과) 3개 영역 합 5(6→5 강화)",
-        "status": "needs_review"
+        "value": "교과우수자·논술(약학 제외): 국·영·수·탐(상위1) 중 <b>2개 합 7</b>(2027 6→7 완화). 약학과(교과우수·동덕창의): 국·수·과탐 3개 합 5(6→5 강화)",
+        "source": {
+          "name": "동덕여대 2028학년도 신입학 대학입학전형 시행계획(입학처, 2026-04-29)",
+          "url": "https://ipsi.dongduk.ac.kr/ipsi/contents/admhelper-notice.do?schM=view&id=91744"
+        },
+        "status": "confirmed"
       },
       "interview": {
-        "value": "동덕창의리더 1단계 서류100(3배수), 2단계 서류40+<b>면접60</b>. 기회균형·특성화고졸 서류 100%. 교과우수자·논술·실기 면접 없음",
-        "status": "needs_review"
+        "value": "동덕창의리더: 1단계 서류 100%(3배수) → 2단계 1단계 40+면접 60. 교과우수자·논술 일괄합산 100%(면접 없음)",
+        "source": {
+          "name": "동덕여대 2028학년도 신입학 대학입학전형 시행계획(입학처, 2026-04-29)",
+          "url": "https://ipsi.dongduk.ac.kr/ipsi/contents/admhelper-notice.do?schM=view&id=91744"
+        },
+        "status": "confirmed"
       }
     }
   ],
   "departments": [],
   "naesinReflection": {
-    "value": "교과: 학생부교과 100%, 최고 1,000·최저 400점(5등급 환산표 PDF 미공개, 평균 석차등급 산출식만). 학종은 서류 100% 정성",
-    "status": "needs_review"
+    "value": "교과: 학생부교과 100% 일괄합산(최고 1,000·최저 400점). 5등급 환산표 공개: <b>1등급 100 / 2등급 95 / 3등급 86 / 4등급 70 / 5등급 40</b>. 학종 서류 100% 정성",
+    "source": {
+      "name": "동덕여대 2028학년도 신입학 대학입학전형 시행계획(입학처, 2026-04-29)",
+      "url": "https://ipsi.dongduk.ac.kr/ipsi/contents/admhelper-notice.do?schM=view&id=91744"
+    },
+    "status": "confirmed"
   },
   "changes2028": [
     {
-      "value": "2027 6→7 완화",
-      "status": "needs_review"
+      "value": "수능최저 완화: 교과우수자(약학 제외)·논술 2개 합 6→7",
+      "source": {
+        "name": "동덕여대 2028학년도 신입학 대학입학전형 시행계획(입학처, 2026-04-29)",
+        "url": "https://ipsi.dongduk.ac.kr/ipsi/contents/admhelper-notice.do?schM=view&id=91744"
+      },
+      "status": "confirmed"
     },
     {
-      "value": "회화 인물소묘 폐지",
-      "status": "needs_review"
+      "value": "정시 실기 회화전공 인물소묘 폐지",
+      "source": {
+        "name": "동덕여대 2028학년도 신입학 대학입학전형 시행계획(입학처, 2026-04-29)",
+        "url": "https://ipsi.dongduk.ac.kr/ipsi/contents/admhelper-notice.do?schM=view&id=91744"
+      },
+      "status": "confirmed"
     },
     {
-      "value": "6→5 강화",
-      "status": "needs_review"
+      "value": "약학과 수능최저 강화: 3개 합 6→5",
+      "source": {
+        "name": "동덕여대 2028학년도 신입학 대학입학전형 시행계획(입학처, 2026-04-29)",
+        "url": "https://ipsi.dongduk.ac.kr/ipsi/contents/admhelper-notice.do?schM=view&id=91744"
+      },
+      "status": "confirmed"
     },
     {
-      "value": "학폭 감점 강화",
-      "status": "needs_review"
+      "value": "학폭 감점 강화: 4~5호 30→100점, 6~7호 100→200점, 8호 200→300점",
+      "source": {
+        "name": "동덕여대 2028학년도 신입학 대학입학전형 시행계획(입학처, 2026-04-29)",
+        "url": "https://ipsi.dongduk.ac.kr/ipsi/contents/admhelper-notice.do?schM=view&id=91744"
+      },
+      "status": "confirmed"
     }
   ],
   "officialLinks": [
+    {
+      "name": "동덕여자대학교 입학처",
+      "url": "https://ipsi.dongduk.ac.kr"
+    },
     {
       "name": "어디가 2028 대학별 전형계획 모음집",
       "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"

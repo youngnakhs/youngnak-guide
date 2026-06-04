@@ -3,8 +3,12 @@
   "name": "추계예술대학교",
   "category": "인서울 주요대",
   "region": {
-    "value": "서울 서대문구",
-    "status": "needs_review"
+    "value": "서울 서대문구(북아현동)",
+    "source": {
+      "name": "추계예술대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-23)",
+      "url": "https://enter.chugye.ac.kr/BoardView.do?menuSeq=122&dataSeq=486&idx=1618456578"
+    },
+    "status": "confirmed"
   },
   "campus": "북아현동",
   "summary": {
@@ -24,35 +28,72 @@
       "track": "2028 전형 개요",
       "subType": "워크벤치 요약 이식",
       "quota": {
-        "value": "각 입학처 모집요강 확인",
-        "status": "needs_review"
+        "value": "정원내 250명(수시 117·정시 133) + 정원외 46명",
+        "source": {
+          "name": "추계예술대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-23)",
+          "url": "https://enter.chugye.ac.kr/BoardView.do?menuSeq=122&dataSeq=486&idx=1618456578"
+        },
+        "asOf": "2026-04",
+        "status": "confirmed"
       },
       "method": {
-        "value": "정원내 250(수시 117(48%)·정시 133(52%)). 실기/실적(일반·수상실적), 교과 미래인재(콘텐츠창작학부 10명). 정시 가·나·다군 분산",
-        "status": "needs_review"
+        "value": "정원내 250명: 수시 117(47.6%)·정시 133(52.4%). 수시=실기/실적 일반학생 103 + 수상실적특기자 4 + 학생부교과 미래인재(콘텐츠창작학부) 10. 정시 가·나·다군 분산",
+        "source": {
+          "name": "추계예술대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-23)",
+          "url": "https://enter.chugye.ac.kr/BoardView.do?menuSeq=122&dataSeq=486&idx=1618456578"
+        },
+        "status": "confirmed"
       },
       "suneungMinimum": {
-        "value": "전 전형 수능최저 미적용. 정시는 수능 점수 반영(국어·영어 백분위, 한국사 응시필수·미반영)",
-        "status": "needs_review"
+        "value": "전 전형 수능최저 미적용. 정시는 수능 반영(국어·영어 백분위 환산, 한국사 응시필수·성적 미반영)",
+        "source": {
+          "name": "추계예술대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-23)",
+          "url": "https://enter.chugye.ac.kr/BoardView.do?menuSeq=122&dataSeq=486&idx=1618456578"
+        },
+        "status": "confirmed"
       },
       "interview": {
-        "value": "학종 PDF 미명시. 미래인재(콘텐츠창작) 2단계 면접 60%. 그 외 면접 미실시. 수상실적특기자 서류 100%(본교 인정 문예대회)",
-        "status": "needs_review"
+        "value": "미래인재(콘텐츠창작학부): 1단계 학생부 100%(3배수) → 2단계 학생부 40+면접 60. 수상실적특기자(문예창작과) 서류 100%. 그 외 전형 면접 미실시",
+        "source": {
+          "name": "추계예술대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-23)",
+          "url": "https://enter.chugye.ac.kr/BoardView.do?menuSeq=122&dataSeq=486&idx=1618456578"
+        },
+        "status": "confirmed"
       }
     }
   ],
   "departments": [],
   "naesinReflection": {
-    "value": "미술창작 학생부 20+실기 80(국어·영어). 콘텐츠창작(미래인재) 학생부100(1단계)→40+면접60(2단계, 국·영·수). 환산 <b>1등급 100 / 2등급 95 / 3등급 85 / 4등급 50 / 5등급 0</b>",
-    "status": "needs_review"
+    "value": "미술창작학부(실기 일반학생): 학생부 20+실기 80(반영교과 국어·영어). 콘텐츠창작학부(미래인재): 1단계 학생부 100 → 2단계 40+면접 60(국·영·수). 5등급제 환산: <b>1등급 100 / 2등급 95 / 3등급 85 / 4등급 50 / 5등급 0</b>",
+    "source": {
+      "name": "추계예술대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-23)",
+      "url": "https://enter.chugye.ac.kr/BoardView.do?menuSeq=122&dataSeq=486&idx=1618456578"
+    },
+    "status": "confirmed"
   },
   "changes2028": [
     {
-      "value": "작곡 정시 피아노 폐지",
-      "status": "needs_review"
+      "value": "작곡과 정시 피아노 실기시험 폐지(수시 피아노 실기는 유지)",
+      "source": {
+        "name": "추계예술대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-23)",
+        "url": "https://enter.chugye.ac.kr/BoardView.do?menuSeq=122&dataSeq=486&idx=1618456578"
+      },
+      "status": "confirmed"
+    },
+    {
+      "value": "미술창작학부 전공 분리(동양화/서양화/판화미디어), 정시 서해5도 특별전형 신설",
+      "source": {
+        "name": "추계예술대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-23)",
+        "url": "https://enter.chugye.ac.kr/BoardView.do?menuSeq=122&dataSeq=486&idx=1618456578"
+      },
+      "status": "confirmed"
     }
   ],
   "officialLinks": [
+    {
+      "name": "추계예술대학교 입학처",
+      "url": "https://enter.chugye.ac.kr"
+    },
     {
       "name": "어디가 2028 대학별 전형계획 모음집",
       "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"

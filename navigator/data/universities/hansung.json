@@ -3,8 +3,12 @@
   "name": "한성대학교",
   "category": "인서울 주요대",
   "region": {
-    "value": "서울 성북구",
-    "status": "needs_review"
+    "value": "서울 성북구(삼선동)",
+    "source": {
+      "name": "한성대 공식 주소·한국민족문화대백과",
+      "url": "https://encykorea.aks.ac.kr/Article/E0061725"
+    },
+    "status": "confirmed"
   },
   "campus": "삼선동",
   "summary": {
@@ -48,8 +52,12 @@
   },
   "changes2028": [
     {
-      "value": "2028 논술전형 신설",
-      "status": "needs_review"
+      "value": "2028 논술전형(약술형) 99명 신설, 수능최저 없음",
+      "source": {
+        "name": "괜찮은뉴스 — 2028 대입시행계획 논술전형 증가(2026)",
+        "url": "https://www.nextplay.kr/news/articleView.html?idxno=8728"
+      },
+      "status": "confirmed"
     }
   ],
   "officialLinks": [

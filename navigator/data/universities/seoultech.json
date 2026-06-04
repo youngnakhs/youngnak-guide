@@ -3,8 +3,12 @@
   "name": "서울과학기술대학교",
   "category": "인서울 주요대",
   "region": {
-    "value": "서울 노원구",
-    "status": "needs_review"
+    "value": "서울 노원구(공릉동)",
+    "source": {
+      "name": "서울과기대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-30)",
+      "url": "https://admission.seoultech.ac.kr/cms/FR_BBS_CON/BoardView.do?SITE_NO=2&MENU_ID=380&BOARD_SEQ=3&CONTENTS_NO=1&BBS_SEQ=512"
+    },
+    "status": "confirmed"
   },
   "campus": "공릉동",
   "summary": {
@@ -24,35 +28,64 @@
       "track": "2028 전형 개요",
       "subType": "워크벤치 요약 이식",
       "quota": {
-        "value": "각 입학처 모집요강 확인",
-        "status": "needs_review"
+        "value": "총 2,519명(정원내 2,273·정원외 246) — 수시 1,743·정시 776",
+        "source": {
+          "name": "서울과기대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://admission.seoultech.ac.kr/cms/FR_BBS_CON/BoardView.do?SITE_NO=2&MENU_ID=380&BOARD_SEQ=3&CONTENTS_NO=1&BBS_SEQ=512"
+        },
+        "asOf": "2026-04",
+        "status": "confirmed"
       },
       "method": {
-        "value": "수시 69.2%(1,743)·정시 30.8%(776). 교과 고교추천 393·학종 서울텍인재 599·서울텍미래 106·논술 150·실기 72. ST자유전공학부·미래융합대학",
-        "status": "needs_review"
+        "value": "수시 69.2%(1,743)·정시 30.8%(776). 고교추천 393·서울텍인재 599·서울텍미래 106·논술 150·실기 72. 정시 가군 321·나군 269·다군 124(농어촌 정시 62 별도). 2027 대비 고교추천 ▽128·서울텍인재 ▲109",
+        "source": {
+          "name": "서울과기대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://admission.seoultech.ac.kr/cms/FR_BBS_CON/BoardView.do?SITE_NO=2&MENU_ID=380&BOARD_SEQ=3&CONTENTS_NO=1&BBS_SEQ=512"
+        },
+        "status": "confirmed"
       },
       "suneungMinimum": {
-        "value": "고교추천: 국·수·영·탐(1) 중 <b>2개 영역 합 6등급</b>. 학생부종합·논술·실기·특성화고졸 미적용",
-        "status": "needs_review"
+        "value": "고교추천: 국·수·영·탐(1과목) 중 상위 <b>2개 영역 합 6등급</b> 이내(전 계열 공통). 학종·논술·실기·특성화고졸 미적용",
+        "source": {
+          "name": "서울과기대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://admission.seoultech.ac.kr/cms/FR_BBS_CON/BoardView.do?SITE_NO=2&MENU_ID=380&BOARD_SEQ=3&CONTENTS_NO=1&BBS_SEQ=512"
+        },
+        "status": "confirmed"
       },
       "interview": {
-        "value": "서울텍인재·서울텍미래·기회균형 1단계 서류100(3배수), 2단계 서류70+면접30. 군위탁 일괄 서류70+면접30. 블라인드",
-        "status": "needs_review"
+        "value": "학종(서울텍인재·서울텍미래·기회균형): 1단계 서류 100(3배수) → 2단계 1단계 70+면접 30. 군위탁 일괄 서류 70+면접 30. 블라인드 면접",
+        "source": {
+          "name": "서울과기대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-30)",
+          "url": "https://admission.seoultech.ac.kr/cms/FR_BBS_CON/BoardView.do?SITE_NO=2&MENU_ID=380&BOARD_SEQ=3&CONTENTS_NO=1&BBS_SEQ=512"
+        },
+        "status": "confirmed"
       }
     }
   ],
   "departments": [],
   "naesinReflection": {
-    "value": "교과: 일괄 학생부교과 100%(계열별 국·수·영+사·과·한국사 지정). 환산 <b>1등급 1,000 / 2등급 990 / 3등급 977 / 4등급 967 / 5등급 0</b>(4→5 절벽)",
-    "status": "needs_review"
+    "value": "고교추천 일괄 학생부교과 100. 반영교과: 자연 국·수·영·과 / 인문 국·수·영·사·한국사 / ST자유전공·건축학 국·수·영·사·과·한국사. 환산 <b>1등급 1,000 / 2등급 990 / 3등급 977 / 4등급 967 / 5등급 0</b>(4→5 절벽)",
+    "source": {
+      "name": "서울과기대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-30)",
+      "url": "https://admission.seoultech.ac.kr/cms/FR_BBS_CON/BoardView.do?SITE_NO=2&MENU_ID=380&BOARD_SEQ=3&CONTENTS_NO=1&BBS_SEQ=512"
+    },
+    "status": "confirmed"
   },
   "changes2028": [
     {
-      "value": "양자융합물리학과 신설",
-      "status": "needs_review"
+      "value": "양자융합물리학과 신설 예정(에너지바이오대학) — 모집인원은 모집요강에서 확정",
+      "source": {
+        "name": "서울과기대 2028학년도 대학입학전형 시행계획(입학처, 2026-04-30)",
+        "url": "https://admission.seoultech.ac.kr/cms/FR_BBS_CON/BoardView.do?SITE_NO=2&MENU_ID=380&BOARD_SEQ=3&CONTENTS_NO=1&BBS_SEQ=512"
+      },
+      "status": "confirmed"
     }
   ],
   "officialLinks": [
+    {
+      "name": "서울과학기술대학교 입학처",
+      "url": "https://admission.seoultech.ac.kr"
+    },
     {
       "name": "어디가 2028 대학별 전형계획 모음집",
       "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"

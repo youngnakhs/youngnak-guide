@@ -3,8 +3,12 @@
   "name": "덕성여자대학교",
   "category": "인서울 주요대",
   "region": {
-    "value": "서울 도봉구",
-    "status": "needs_review"
+    "value": "서울 도봉구(쌍문동)",
+    "source": {
+      "name": "덕성여대 2028학년도 신입학 전형계획 주요사항(입학처, 2026-04-13)",
+      "url": "https://enter.duksung.ac.kr/notice/view.php?bn=6924&m_type=ALL"
+    },
+    "status": "confirmed"
   },
   "campus": "쌍문동",
   "summary": {
@@ -24,39 +28,72 @@
       "track": "2028 전형 개요",
       "subType": "워크벤치 요약 이식",
       "quota": {
-        "value": "각 입학처 모집요강 확인",
-        "status": "needs_review"
+        "value": "수시 740 + 정시 477(정원내 1,217) + 정원외 학종 기회균형Ⅰ 63명",
+        "source": {
+          "name": "덕성여대 2028학년도 신입학 전형계획 주요사항(입학처, 2026-04-13)",
+          "url": "https://enter.duksung.ac.kr/notice/view.php?bn=6924&m_type=ALL"
+        },
+        "asOf": "2026-04",
+        "status": "confirmed"
       },
       "method": {
-        "value": "수시 740(정원내)·정시 477. 교과 고교추천 160·학종 덕성인재Ⅰ 107·Ⅱ 237·기회균형 50·논술 115·미술실기 71. 미래인재대학 자유전공학부 259(가상현실·데이터사이언스·AI신약 각 40)",
-        "status": "needs_review"
+        "value": "수시 740·정시 477(정원내). 고교추천 160·덕성인재Ⅰ 107·덕성인재Ⅱ 237·기회균형Ⅰ 26+Ⅱ 24·논술 115·미술실기 71. 정시 가군 142·나군 235·다군 100. 미래인재대학 자유전공학부 입학정원 259(자유전공 160+가상현실·데이터사이언스·AI신약 각 40)",
+        "source": {
+          "name": "덕성여대 2028학년도 신입학 전형계획 주요사항(입학처, 2026-04-13)",
+          "url": "https://enter.duksung.ac.kr/notice/view.php?bn=6924&m_type=ALL"
+        },
+        "status": "confirmed"
       },
       "suneungMinimum": {
-        "value": "고교추천 일반: 국·수·영·사·과(1) 중 <b>2개 합 7</b>(제2외·한문→영어 대체 가능). 약학과 수학 포함 3개 합 5(사·과 평균). 덕성인재Ⅱ 약학 3개 합 6",
-        "status": "needs_review"
+        "value": "고교추천(글로벌융합·과기대): 국·수·영·사·과탐(상위1) 중 <b>2개 합 7</b>(제2외/한문→영어 대체 가능). 약학과(고교추천·논술): 수학 포함 3개 합 5(탐구 2과목 평균). 덕성인재Ⅱ 약학: 수학 포함 3개 합 6. 논술(글로벌·과기): 2개 합 7. 덕성인재Ⅰ·기회균형·미술실기 미적용",
+        "source": {
+          "name": "덕성여대 2028학년도 신입학 전형계획 주요사항(입학처, 2026-04-13)",
+          "url": "https://enter.duksung.ac.kr/notice/view.php?bn=6924&m_type=ALL"
+        },
+        "status": "confirmed"
       },
       "interview": {
-        "value": "덕성인재Ⅰ(서류형) 서류 100%. 덕성인재Ⅱ(약학·가상현실·데이터·AI신약) 1단계 서류100(3~4배수), 2단계 1단계60+면접40. 기회균형 서류 100%",
-        "status": "needs_review"
+        "value": "덕성인재Ⅰ(서류형) 서류 100% 면접 없음. 덕성인재Ⅱ(서류및면접형) 1단계 서류 100%(글로벌·과기·자유전공 4배수, 약학·유아교육·신설3학과 3배수) → 2단계 1단계 60+면접 40. 기회균형Ⅰ·Ⅱ 서류 100%",
+        "source": {
+          "name": "덕성여대 2028학년도 신입학 전형계획 주요사항(입학처, 2026-04-13)",
+          "url": "https://enter.duksung.ac.kr/notice/view.php?bn=6924&m_type=ALL"
+        },
+        "status": "confirmed"
       }
     }
   ],
   "departments": [],
   "naesinReflection": {
-    "value": "교과 고교추천 학생부(교과90+출결10), 석차등급+성취도, 모집단위 연계 진로선택 가산점. 학종 서류 100% 정성. 5등급 환산표 PDF 미공개",
-    "status": "needs_review"
+    "value": "고교추천: 학생부(교과 90+출결 10), 석차등급·성취도 활용, 모집단위 연계 진로선택과목 이수학점 가산(총점의 3%), 융합선택 제외. 환산점수 공개: 1등급 99.5·2등급 97.5·3등급 95·4등급 85·5등급 80(성취도 A 99.5·B 97.5·C 85). 학종 서류 100% 정성",
+    "source": {
+      "name": "덕성여대 2028학년도 신입학 전형계획 주요사항(입학처, 2026-04-13)",
+      "url": "https://enter.duksung.ac.kr/notice/view.php?bn=6924&m_type=ALL"
+    },
+    "status": "confirmed"
   },
   "changes2028": [
     {
-      "value": "학생부교과 기회균형 폐지→학생부종합으로 통합",
-      "status": "needs_review"
+      "value": "학생부교과 기회균형전형 폐지 → 정원내·외 모두 학생부종합으로 선발",
+      "source": {
+        "name": "덕성여대 2028학년도 신입학 전형계획 주요사항(입학처, 2026-04-13)",
+        "url": "https://enter.duksung.ac.kr/notice/view.php?bn=6924&m_type=ALL"
+      },
+      "status": "confirmed"
     },
     {
-      "value": "학생부교과 기회균형 폐지",
-      "status": "needs_review"
+      "value": "수시·정시 전체에 진로선택과목 이수학점 가산점 신설, 학폭 기재자 교과·논술 추천 제외",
+      "source": {
+        "name": "덕성여대 2028학년도 신입학 전형계획 주요사항(입학처, 2026-04-13)",
+        "url": "https://enter.duksung.ac.kr/notice/view.php?bn=6924&m_type=ALL"
+      },
+      "status": "confirmed"
     }
   ],
   "officialLinks": [
+    {
+      "name": "덕성여자대학교 입학처",
+      "url": "https://enter.duksung.ac.kr"
+    },
     {
       "name": "어디가 2028 대학별 전형계획 모음집",
       "url": "https://www.adiga.kr/uct/ces/archiveView.do?menuId=PCUCTCES1000&prtlBbsId=24811"
