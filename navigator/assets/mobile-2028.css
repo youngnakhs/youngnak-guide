@@ -243,3 +243,7 @@ p, li, dt, dd, caption, td, figcaption, blockquote,
 .rm-list input{ margin-top:.2em; width:18px; height:18px; accent-color:var(--accent); flex-shrink:0; }
 .rm-list input:checked + span{ color:var(--text-faint); text-decoration:line-through; }
 .rm-progress{ margin-top:var(--space-3); font-size:var(--fs-sm); color:var(--text-soft); font-weight:var(--fw-semibold); }
+
+/* ---------- P2-A: 레전드 인코딩 설명 (색=궤도 중복 명시 + 별 크기 의미) ---------- */
+.legend__hint{ display:block; width:100%; margin-top:var(--space-1); font-size:var(--fs-xs); color:var(--text-soft); }
+.legend__hint small{ color:var(--text-faint); font-size:inherit; }
