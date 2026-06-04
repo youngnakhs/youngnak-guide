@@ -31,6 +31,7 @@
           <span class="eyebrow">대시보드</span>
           <h1>대학별 비교</h1>
           <p class="text-soft">분류·소재지·수능최저·면접 여부로 걸러보고, 열 제목을 눌러 정렬하세요. 대학을 클릭하면 상세를 볼 수 있습니다.</p>
+          <p><button id="printBtn" type="button" class="btn btn--ghost">🖨 비교표 인쇄 / PDF 저장</button></p>
         </div>
       </header>
 
@@ -87,5 +88,24 @@
     <!-- 비교 담기 트레이 (JS 주입) -->
     <div id="compareTray" class="compare-tray" hidden></div>
 
+    <!-- 인쇄/PDF (상담용): 필터·차트·트레이는 숨기고 결과 표만 출력 -->
+    <style>
+      #printBtn{ cursor:pointer; }
+      @media print {
+        .navbar, nav, .footer, footer, .filterbar, #filterBar, .compare-tray,
+        #catChart, #minChart, #intChart, .next-steps, #printBtn { display:none !important; }
+        .bento:has(canvas){ display:none !important; }
+        body{ background:#fff !important; }
+        .container{ max-width:none !important; }
+        table.data{ font-size:11px; }
+        @page { margin:12mm; size:landscape; }
+      }
+    </style>
+    <script>
+      (function () {
+        var b = document.getElementById('printBtn');
+        if (b) b.addEventListener('click', function () { window.print(); });
+      })();
+    </script>
   </body>
 </html>
