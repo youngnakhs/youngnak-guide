@@ -25,7 +25,8 @@
   </head>
   <body>
     <main id="main" class="container">
-      <p style="margin-top:var(--space-5)"><a href="compare.html">← 대학 비교로 돌아가기</a></p>
+      <p class="uni-back" style="margin-top:var(--space-5)"><a href="compare.html">← 대학 비교로 돌아가기</a></p>
+      <div id="uniToolbar" class="uni-toolbar" hidden></div>
       <div id="uniContent"></div>
       <!-- ⑤ 다음 단계 -->
       <div style="margin-top:var(--space-6)">
@@ -38,5 +39,70 @@
         </div>
       </div>
     </main>
+
+    <!-- 관심 대학 담기 + 인쇄/PDF (상담용) -->
+    <style>
+      .uni-toolbar{ display:flex; flex-wrap:wrap; gap:var(--space-3); margin:var(--space-4) 0; }
+      .uni-toolbar .btn{ cursor:pointer; }
+      .btn--fav.is-on{ background:rgba(111,155,255,.18); border-color:rgba(111,155,255,.5); }
+      @media print {
+        .navbar, nav, .footer, footer, .next-steps, .uni-toolbar, .uni-back, .hero__scroll, #scene { display:none !important; }
+        body, #main { background:#fff !important; }
+        #main.container, .container { max-width:none !important; padding:0 !important; margin:0 !important; }
+        a { text-decoration:none !important; color:#000 !important; }
+        @page { margin:14mm; }
+      }
+    </style>
+    <script>
+      (function () {
+        var KEY = 'nav-fav-unis';
+        var bar = document.getElementById('uniToolbar');
+        var content = document.getElementById('uniContent');
+        if (!bar || !content) return;
+        var id = new URLSearchParams(location.search).get('id');
+        function load() { try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch (e) { return []; } }
+        function save(a) { try { localStorage.setItem(KEY, JSON.stringify(a)); } catch (e) {} }
+        function uniName() {
+          var h1 = content.querySelector('h1');
+          if (h1 && h1.textContent.trim()) return h1.textContent.trim();
+          return (document.title || '').split(' · ')[0].trim();
+        }
+        function build() {
+          if (!id) { mountPrintOnly(); return; }
+          var name = uniName();
+          if (!name) { mountPrintOnly(); return; }
+          var on = load().some(function (u) { return u.id === id; });
+          bar.innerHTML =
+            '<button id="favBtn" type="button" class="btn btn--ghost btn--fav' + (on ? ' is-on' : '') + '">' +
+              (on ? '⭐ 담긴 대학 (해제)' : '☆ 관심 대학 담기') + '</button>' +
+            '<button id="printBtn" type="button" class="btn btn--ghost">🖨 인쇄 / PDF 저장</button>';
+          bar.hidden = false;
+          var favBtn = document.getElementById('favBtn');
+          favBtn.addEventListener('click', function () {
+            var list = load();
+            if (list.some(function (u) { return u.id === id; })) {
+              save(list.filter(function (u) { return u.id !== id; }));
+              favBtn.classList.remove('is-on'); favBtn.textContent = '☆ 관심 대학 담기';
+            } else {
+              list.push({ id: id, name: name }); save(list);
+              favBtn.classList.add('is-on'); favBtn.textContent = '⭐ 담긴 대학 (해제)';
+            }
+          });
+          document.getElementById('printBtn').addEventListener('click', function () { window.print(); });
+        }
+        function mountPrintOnly() {
+          bar.innerHTML = '<button id="printBtn" type="button" class="btn btn--ghost">🖨 인쇄 / PDF 저장</button>';
+          bar.hidden = false;
+          document.getElementById('printBtn').addEventListener('click', function () { window.print(); });
+        }
+        // 번들이 #uniContent를 채울 때까지 대기(최대 ~6초)
+        var tries = 0;
+        var timer = setInterval(function () {
+          tries++;
+          if (content.querySelector('h1')) { clearInterval(timer); build(); }
+          else if (tries > 60) { clearInterval(timer); mountPrintOnly(); }
+        }, 100);
+      })();
+    </script>
   </body>
 </html>
