@@ -8,8 +8,8 @@
     "지방캠퍼스"
   ],
   "dataStatus": {
-    "confirmed": 966,
-    "needsReview": 204
+    "confirmed": 1006,
+    "needsReview": 166
   },
   "universities": [
     {
@@ -219,11 +219,11 @@
       "region": "서울 동대문구(전농동)",
       "campus": "단일",
       "summary": {
-        "susiRatio": null,
-        "jeongsiRatio": null,
+        "susiRatio": 56,
+        "jeongsiRatio": 44,
         "hasSuneungMinimum": true,
         "hasInterview": true,
-        "totalQuota": null
+        "totalQuota": 1904
       },
       "officialLinks": [
         {
