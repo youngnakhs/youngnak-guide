@@ -119,22 +119,29 @@ def draw_text(word, x, y, col, sc=2):
         cx += (w + 1) * sc
 draw_text("LIONS", 21, 64, WHITE, sc=2)
 
-# 팔 (소매 → 가운데 휴대폰)
-poly([(16, 74), (28, 74), (46, 98), (42, 105), (28, 100)], SKIN)
-poly([(68, 74), (80, 74), (54, 100), (50, 105), (50, 98)], SKIN)
-d.line((18, 76, 42, 100), fill=SKIN_S)
-d.line((78, 76, 54, 100), fill=SKIN_S)
-# 손 + 손가락
-ell((38, 92, 49, 106), SKIN)
-ell((47, 92, 58, 106), SKIN)
-for fx in (40, 43, 46):
-    d.line((fx, 98, fx, 105), fill=SKIN_S)
-for fx in (50, 53, 56):
-    d.line((fx, 98, fx, 105), fill=SKIN_S)
-# 휴대폰
-rrect((42, 90, 54, 99), 2, PHONE)
-d.rectangle((43, 91, 53, 98), fill=PHONE_E)
-d.rectangle((44, 92, 52, 97), fill=PHONE_S)
+# 팔 (양옆으로 자연스럽게 내림)
+# 왼팔 (아래팔)
+poly([(16, 75), (28, 75), (26, 106), (15, 104)], SKIN)
+d.rectangle((23, 78, 26, 104), fill=SKIN_S)      # 바깥 음영
+d.rectangle((16, 78, 18, 102), fill=SKIN_H)      # 안쪽 하이라이트
+# 왼손 (살짝 주먹 쥔 형태)
+ell((14, 102, 28, 116), SKIN)
+d.rectangle((14, 103, 28, 108), fill=SKIN)
+d.arc((14, 100, 28, 112), 0, 180, fill=SKIN_S)   # 손등 라인
+for fx in (17, 20, 23):                           # 손가락 구분
+    d.line((fx, 110, fx, 115), fill=SKIN_S)
+d.rectangle((25, 105, 27, 110), fill=SKIN_S)      # 엄지쪽 음영
+# 오른팔
+poly([(68, 75), (80, 75), (81, 104), (70, 106)], SKIN)
+d.rectangle((70, 78, 73, 104), fill=SKIN_S)
+d.rectangle((78, 78, 80, 102), fill=SKIN_H)
+# 오른손
+ell((68, 102, 82, 116), SKIN)
+d.rectangle((68, 103, 82, 108), fill=SKIN)
+d.arc((68, 100, 82, 112), 0, 180, fill=SKIN_S)
+for fx in (73, 76, 79):
+    d.line((fx, 110, fx, 115), fill=SKIN_S)
+d.rectangle((69, 105, 71, 110), fill=SKIN_S)
 
 # =========================================================
 # 목
