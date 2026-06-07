@@ -1,186 +1,185 @@
 #!/usr/bin/env python3
-"""고해상도 전신 픽셀 캐릭터 - 삼성 라이온즈 유니폼 인물."""
+"""고해상도 전신 픽셀 캐릭터 - 삼성 라이온즈 유니폼 인물 (비율 보정판)."""
 from PIL import Image, ImageDraw
 
-# 로직 해상도 (1px = 픽셀아트 1도트)
-W, H = 64, 104
-SCALE = 9
+W, H = 96, 178
+SCALE = 6
 img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
 d = ImageDraw.Draw(img)
 
 # ---- 팔레트 ----
 NAVY   = (28, 41, 74)
-NAVY_D = (18, 27, 52)
-NAVY_L = (44, 60, 100)
+NAVY_D = (17, 26, 50)
+NAVY_L = (46, 63, 104)
 SKIN   = (240, 198, 145)
-SKIN_S = (212, 165, 110)
-SKIN_H = (250, 215, 170)
-HAIR   = (35, 27, 20)
-LENS   = (26, 26, 32)
-LENS_H = (70, 72, 84)
+SKIN_S = (210, 162, 108)
+SKIN_H = (250, 216, 172)
+HAIR   = (32, 25, 18)
+LENS   = (24, 24, 30)
+LENS_H = (78, 80, 92)
 BLUE   = (29, 84, 184)
-BLUE_S = (20, 58, 132)
-BLUE_H = (58, 116, 214)
-WHITE  = (244, 246, 250)
-WHT_S  = (208, 214, 224)
+BLUE_S = (19, 56, 130)
+BLUE_H = (60, 120, 216)
+WHITE  = (245, 247, 251)
+WHT_S  = (206, 212, 222)
 SHRT   = (236, 236, 238)
-SHRT_S = (198, 200, 206)
-PHONE  = (210, 214, 220)
-PHONE_E= (90, 96, 104)
+SHRT_S = (196, 198, 204)
+SHRT_H = (250, 250, 252)
+PHONE  = (208, 212, 218)
+PHONE_E= (88, 94, 102)
+PHONE_S= (150, 156, 164)
 GREEN  = (0, 140, 69)
 RED    = (206, 43, 55)
-SHOE   = (240, 242, 246)
-SHOE_S = (60, 62, 70)
-CX = 32  # 중심선
+SHOE   = (242, 244, 248)
+SHOE_S = (52, 54, 62)
+CX = 48
 
-def rrect(box, r, fill):
-    d.rounded_rectangle(box, radius=r, fill=fill)
-def ell(box, fill):
-    d.ellipse(box, fill=fill)
-def poly(pts, fill):
-    d.polygon(pts, fill=fill)
+def rrect(box, r, fill): d.rounded_rectangle(box, radius=r, fill=fill)
+def ell(box, fill):      d.ellipse(box, fill=fill)
+def poly(pts, fill):     d.polygon(pts, fill=fill)
 
 # =========================================================
-# 다리 + 신발 (뒤에서 앞 순서)
+# 다리 + 신발
 # =========================================================
-# 허벅지/종아리
-for sx in (-9, 3):  # 왼/오른 다리 시작 오프셋
-    lx = CX + sx
-    rrect((lx, 70, lx+6, 92), 2, SKIN)
-    d.rectangle((lx+4, 72, lx+6, 92), fill=SKIN_S)  # 다리 음영
-# 무릎 살짝
-# 신발 (운동화)
-for sx in (-10, 2):
-    lx = CX + sx
-    rrect((lx, 90, lx+8, 97), 2, SHOE)
-    d.rectangle((lx, 95, lx+8, 97), fill=SHOE_S)  # 밑창
-    d.line((lx+1, 92, lx+7, 92), fill=WHT_S)
+for (x0, x1) in [(36, 47), (49, 60)]:
+    rrect((x0, 122, x1, 162), 3, SKIN)
+    d.rectangle((x1-2, 124, x1, 160), fill=SKIN_S)   # 종아리 바깥 음영
+    d.rectangle((x0, 124, x0+1, 158), fill=SKIN_H)   # 안쪽 하이라이트
+    ell((x0, 138, x1, 146), SKIN_H)                  # 무릎 하이라이트
+    d.rectangle((x0, 144, x1, 146), fill=SKIN)
+# 신발 (운동화 + 끈 + 밑창)
+for (x0, x1, toe) in [(33, 49, 1), (47, 63, 1)]:
+    rrect((x0, 158, x1, 169), 3, SHOE)
+    d.rectangle((x0+toe, 167, x1, 172), fill=SHOE_S)      # 밑창
+    rrect((x0+1, 168, x1, 172), 2, SHOE_S)
+    d.line((x0+2, 162, x1-2, 162), fill=WHT_S)            # 갑피 라인
+    for ly in (159, 161, 163):                            # 끈
+        d.line((x0+5, ly, x1-5, ly), fill=WHT_S)
+    ell((x0, 160, x0+6, 168), SHOE)                       # 발등
 
 # =========================================================
 # 반바지 (흰색, 통넓음)
 # =========================================================
-poly([(17,58),(47,58),(49,74),(34,72),(30,72),(15,74)], SHRT)
-d.rectangle((31, 60, 33, 73), fill=SHRT_S)       # 가운데 솔기
-poly([(38,59),(47,59),(49,74),(40,73)], SHRT_S)  # 오른쪽 음영
+poly([(27, 100), (69, 100), (73, 130), (51, 127), (45, 127), (23, 130)], SHRT)
+d.rectangle((45, 102, 51, 128), fill=SHRT_S)                 # 가운데 솔기
+poly([(58, 101), (69, 100), (73, 130), (60, 128)], SHRT_S)   # 오른쪽 음영
+poly([(27, 100), (34, 100), (29, 126), (24, 128)], SHRT_H)   # 왼쪽 하이라이트
+d.line((28, 128, 44, 126), fill=WHT_S)                       # 밑단
+d.line((52, 126, 72, 129), fill=WHT_S)
 # 이탈리아 패치 (왼쪽 허벅지)
-d.rectangle((19, 64, 21, 69), fill=GREEN)
-d.rectangle((21, 64, 23, 69), fill=WHITE)
-d.rectangle((23, 64, 25, 69), fill=RED)
+d.rectangle((30, 110, 33, 120), fill=GREEN)
+d.rectangle((33, 110, 36, 120), fill=WHITE)
+d.rectangle((36, 110, 39, 120), fill=RED)
+d.rectangle((30, 110, 39, 111), fill=WHT_S)
 
 # =========================================================
 # 유니폼 상의 (헐렁한 핏)
 # =========================================================
 # 몸통
-poly([(20,40),(44,40),(50,52),(50,62),(46,66),(18,66),(14,62),(14,52)], BLUE)
-# 어깨/소매
-rrect((8, 40, 22, 54), 4, BLUE)    # 왼 소매
-rrect((42, 40, 56, 54), 4, BLUE)   # 오른 소매
-d.rectangle((8, 50, 22, 54), fill=BLUE_S)
-d.rectangle((42, 50, 56, 54), fill=BLUE_S)
+poly([(30, 50), (66, 50), (77, 72), (77, 100), (70, 108),
+      (26, 108), (19, 100), (19, 72)], BLUE)
+# 소매
+rrect((13, 50, 33, 76), 6, BLUE)
+rrect((63, 50, 83, 76), 6, BLUE)
+d.rectangle((13, 71, 33, 76), fill=BLUE_S)
+d.rectangle((63, 71, 83, 76), fill=BLUE_S)
+d.line((14, 74, 32, 74), fill=WHITE)            # 소매 흰 라인
+d.line((64, 74, 82, 74), fill=WHITE)
 # 음영 (오른쪽/아래)
-poly([(40,42),(50,52),(50,62),(46,66),(40,66)], BLUE_S)
-poly([(18,62),(46,66),(18,66)], BLUE_S)
-# 하이라이트 (왼쪽)
-poly([(20,41),(26,41),(20,58),(15,54),(15,52)], BLUE_H)
-# 소매 흰 라인
-d.line((9, 53, 21, 53), fill=WHITE)
-d.line((43, 53, 55, 53), fill=WHITE)
+poly([(60, 52), (77, 72), (77, 100), (70, 108), (58, 108)], BLUE_S)
+poly([(26, 102), (70, 108), (26, 108)], BLUE_S)
+# 하이라이트 (왼쪽 어깨)
+poly([(30, 52), (37, 52), (27, 78), (21, 74)], BLUE_H)
+# 단추 플래킷
+d.line((48, 56, 48, 104), fill=BLUE_S)
+for by in range(60, 104, 9):
+    d.point((48, by), fill=WHITE)
+# V넥 칼라
+poly([(39, 50), (57, 50), (48, 62)], WHITE)
+poly([(42, 50), (54, 50), (48, 58)], BLUE_S)
+# SAMSUNG 가슴 라인
+d.rectangle((40, 55, 56, 56), fill=WHT_S)
 
-# V넥 칼라 (흰색)
-poly([(26,40),(38,40),(32,48)], WHITE)
-poly([(28,40),(36,40),(32,45)], BLUE_S)  # 안쪽 그림자
-
-# 가슴 SAMSUNG 작은 라인
-d.rectangle((27, 44, 37, 45), fill=WHT_S)
-
-# =========================================================
-# 팔 (소매에서 내려와 가운데 휴대폰 잡기)
-# =========================================================
-# 왼팔
-poly([(11,53),(17,53),(28,62),(26,66),(20,64)], SKIN)
-# 오른팔
-poly([(47,53),(53,53),(44,64),(38,66),(36,62)], SKIN)
-d.line((12,54,26,63), fill=SKIN_S)
-
-# 손
-ell((24, 60, 31, 67), SKIN)
-ell((33, 60, 40, 67), SKIN)
-# 휴대폰
-rrect((28, 61, 36, 67), 1, PHONE)
-d.rectangle((29, 62, 35, 66), fill=PHONE_E)
-d.rectangle((30, 63, 34, 65), fill=(150,156,164))
-
-# =========================================================
-# LIONS 워드마크 (흰색, 가슴)
-# =========================================================
+# LIONS 워드마크 (팔보다 먼저 그려 가슴 위쪽에 배치)
 FONT = {
- 'L':["10000","10000","10000","10000","11111"],
- 'I':["111","010","010","010","111"],
- 'O':["01110","10001","10001","10001","01110"],
- 'N':["1001","1101","1011","1001","1001"],
- 'S':["0111","1000","0110","0001","1110"],
+ 'L':["10000","10000","10000","10000","10000","11111"],
+ 'I':["111","010","010","010","010","111"],
+ 'O':["01110","10001","10001","10001","10001","01110"],
+ 'N':["10001","11001","10101","10011","10001","10001"],
+ 'S':["01111","10000","01110","00001","00001","11110"],
 }
-def draw_text(word, x, y, col):
+def draw_text(word, x, y, col, sc=2):
     cx = x
     for ch in word:
-        pat = FONT[ch]
-        w = len(pat[0])
-        for yy in range(5):
+        pat = FONT[ch]; w = len(pat[0])
+        for yy in range(6):
             for xx in range(w):
                 if pat[yy][xx] == '1':
-                    d.point((cx+xx, y+yy), fill=col)
-        cx += w + 1
-draw_text("LIONS", 17, 50, WHITE)
+                    d.rectangle((cx+xx*sc, y+yy*sc, cx+xx*sc+sc-1, y+yy*sc+sc-1), fill=col)
+        cx += (w + 1) * sc
+draw_text("LIONS", 21, 64, WHITE, sc=2)
+
+# 팔 (소매 → 가운데 휴대폰)
+poly([(16, 74), (28, 74), (46, 98), (42, 105), (28, 100)], SKIN)
+poly([(68, 74), (80, 74), (54, 100), (50, 105), (50, 98)], SKIN)
+d.line((18, 76, 42, 100), fill=SKIN_S)
+d.line((78, 76, 54, 100), fill=SKIN_S)
+# 손 + 손가락
+ell((38, 92, 49, 106), SKIN)
+ell((47, 92, 58, 106), SKIN)
+for fx in (40, 43, 46):
+    d.line((fx, 98, fx, 105), fill=SKIN_S)
+for fx in (50, 53, 56):
+    d.line((fx, 98, fx, 105), fill=SKIN_S)
+# 휴대폰
+rrect((42, 90, 54, 99), 2, PHONE)
+d.rectangle((43, 91, 53, 98), fill=PHONE_E)
+d.rectangle((44, 92, 52, 97), fill=PHONE_S)
 
 # =========================================================
 # 목
 # =========================================================
-d.rectangle((28, 33, 36, 41), fill=SKIN)
-d.rectangle((28, 33, 36, 36), fill=SKIN_S)  # 턱 그림자
+d.rectangle((42, 44, 54, 54), fill=SKIN)
+d.rectangle((42, 44, 54, 47), fill=SKIN_S)     # 턱 그림자
+d.rectangle((51, 44, 54, 54), fill=SKIN_S)
 
 # =========================================================
 # 머리 / 얼굴
 # =========================================================
-ell((19, 12, 45, 38), SKIN)         # 얼굴
-poly([(40,16),(45,22),(43,32),(38,34)], SKIN_S)  # 얼굴 우측 음영
-# 귀
-ell((17, 22, 21, 28), SKIN)
-ell((43, 22, 47, 28), SKIN)
-
+ell((33, 16, 63, 48), SKIN)
+poly([(56, 22), (63, 30), (60, 44), (52, 47)], SKIN_S)   # 우측 얼굴 음영
+ell((30, 30, 36, 40), SKIN); ell((60, 30, 66, 40), SKIN) # 귀
+d.point((33, 35), fill=SKIN_S); d.point((63, 35), fill=SKIN_S)
 # 선글라스
-rrect((20, 19, 31, 25), 2, LENS)
-rrect((33, 19, 44, 25), 2, LENS)
-d.rectangle((31, 21, 33, 22), fill=LENS)        # 브릿지
-d.line((21, 20, 25, 20), fill=LENS_H)           # 렌즈 반사
-d.line((34, 20, 38, 20), fill=LENS_H)
-d.line((18, 21, 20, 21), fill=LENS)             # 안경 다리
-d.line((44, 21, 46, 21), fill=LENS)
-
-# 입
-d.rectangle((29, 30, 35, 31), fill=SKIN_S)
-d.line((30, 31, 34, 31), fill=(150,90,70))
+rrect((34, 30, 47, 39), 3, LENS)
+rrect((49, 30, 62, 39), 3, LENS)
+d.rectangle((47, 32, 49, 34), fill=LENS)          # 브릿지
+d.line((36, 32, 41, 32), fill=LENS_H)             # 렌즈 반사
+d.line((51, 32, 56, 32), fill=LENS_H)
+d.line((31, 33, 34, 33), fill=LENS)               # 안경 다리
+d.line((62, 33, 65, 33), fill=LENS)
+# 코 / 입
+d.line((47, 40, 47, 43), fill=SKIN_S)
+d.rectangle((43, 44, 53, 45), fill=SKIN_S)
+d.line((45, 45, 51, 45), fill=(150, 92, 72))
 
 # =========================================================
 # 모자
 # =========================================================
-# 크라운 (머리에 맞는 돔)
-d.ellipse((18, 3, 46, 21), fill=NAVY)
-d.rectangle((18, 12, 46, 18), fill=NAVY)
-# 챙 (앞으로 숙인 납작한 형태)
-poly([(16,17),(48,17),(46,21),(18,21)], NAVY_D)
-d.ellipse((16, 17, 48, 23), fill=NAVY_D)
-# 모자 음영/하이라이트
-d.pieslice((18, 1, 46, 21), 200, 270, fill=NAVY_L)  # 왼쪽 하이라이트
-d.pieslice((18, 1, 46, 21), 300, 350, fill=NAVY_D)  # 오른쪽 음영
-# 로고 (흰 마크 단순화)
-d.rectangle((30, 7, 34, 10), fill=WHITE)
-d.point((29, 9), fill=WHITE)
-d.point((35, 9), fill=WHITE)
+ell((31, 6, 65, 32), NAVY)                 # 크라운
+d.rectangle((31, 18, 65, 27), fill=NAVY)
+poly([(28, 26), (68, 26), (66, 31), (30, 31)], NAVY_D)   # 챙
+ell((28, 26, 68, 35), NAVY_D)
+d.pieslice((31, 6, 65, 32), 200, 260, fill=NAVY_L)       # 좌측 하이라이트
+d.pieslice((31, 6, 65, 32), 295, 348, fill=NAVY_D)       # 우측 음영
+d.rectangle((45, 11, 51, 16), fill=WHITE)                # 로고
+d.point((44, 15), fill=WHITE); d.point((51, 15), fill=WHITE)
+d.point((47, 10), fill=WHITE); d.point((49, 10), fill=WHITE)
 
 # =========================================================
-# 외곽선 자동 생성 (실루엣 주변 1px 어둡게)
+# 외곽선 자동 생성
 # =========================================================
-OUTLINE = (22, 24, 30, 255)
+OUTLINE = (20, 22, 28, 255)
 px = img.load()
 opaque = [[px[x, y][3] > 0 for y in range(H)] for x in range(W)]
 edges = []
@@ -191,8 +190,7 @@ for x in range(W):
         for dx, dy in ((1,0),(-1,0),(0,1),(0,-1)):
             nx, ny = x+dx, y+dy
             if 0 <= nx < W and 0 <= ny < H and opaque[nx][ny]:
-                edges.append((x, y))
-                break
+                edges.append((x, y)); break
 for (x, y) in edges:
     px[x, y] = OUTLINE
 
