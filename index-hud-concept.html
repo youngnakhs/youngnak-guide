@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>영락 커맨드센터 — 진로·대입 정보센터 [HUD 시안]</title>
+<meta name="description" content="J.A.R.V.I.S. 스타일 HUD 컨셉 시안 — 영락고등학교 진로·대입 정보센터">
+<style>
+/* ════════════════════════════════════════════════════════════
+   영락 커맨드센터 — HUD / J.A.R.V.I.S. 컨셉 시안
+   인스타 레퍼런스(kryntixstudio Iron Man HUD)를 학교 브랜드로 재해석
+   · 다크 SF + 스캔라인 + 텔레메트리 + 스크롤 기반 리빌
+   · 학교 브랜드 그린(#3cb878) 유지 + 시안(cyan) HUD 글로우
+   ════════════════════════════════════════════════════════════ */
+:root{
+  --green:#3cb878; --green-lt:#72d4a0; --green-dk:#1f7a49;
+  --cyan:#5fe3ff; --cyan-dk:#1a8fa8;
+  --bg:#05100c; --bg2:#08160f; --panel:rgba(10,28,20,.55);
+  --line:rgba(95,227,255,.18); --line2:rgba(60,184,120,.30);
+  --txt:#d6f5e6; --dim:#6f9a86; --muted:#3f6354;
+  --warn:#ffcf5f;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{
+  font-family:'Noto Sans KR',sans-serif;
+  background:var(--bg); color:var(--txt);
+  overflow-x:hidden; min-height:100vh;
+  letter-spacing:.2px;
+}
+.mono{font-family:'DM Mono','SFMono-Regular',ui-monospace,Consolas,monospace;}
+
+/* ── 배경 레이어: 그리드 + 글로우 + 스캔라인 ── */
+.bg-layer{position:fixed;inset:0;z-index:-3;
+  background:
+    radial-gradient(1200px 800px at 75% -10%, rgba(60,184,120,.18), transparent 60%),
+    radial-gradient(900px 700px at 10% 110%, rgba(95,227,255,.10), transparent 60%),
+    linear-gradient(180deg,var(--bg),var(--bg2));
+}
+.bg-grid{position:fixed;inset:0;z-index:-2;opacity:.5;
+  background-image:
+    linear-gradient(var(--line) 1px,transparent 1px),
+    linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:46px 46px;
+  -webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 35%,#000,transparent 90%);
+          mask-image:radial-gradient(ellipse 70% 60% at 50% 35%,#000,transparent 90%);
+  animation:gridpan 28s linear infinite;
+}
+@keyframes gridpan{to{background-position:46px 46px;}}
+.bg-scan{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.35;
+  background:repeating-linear-gradient(0deg,transparent 0 2px,rgba(0,0,0,.22) 2px 4px);
+  mix-blend-mode:multiply;}
+.bg-sweep{position:fixed;left:0;right:0;height:140px;z-index:-1;pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(95,227,255,.07),transparent);
+  animation:sweep 7s linear infinite;}
+@keyframes sweep{0%{top:-15%}100%{top:115%}}
+
+/* ── 부팅 오버레이 ── */
+#boot{position:fixed;inset:0;z-index:9999;background:#04100b;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
+  transition:opacity .8s ease,visibility .8s;}
+#boot.done{opacity:0;visibility:hidden;}
+.boot-ring{width:120px;height:120px;border-radius:50%;position:relative;
+  border:2px solid rgba(95,227,255,.15);}
+.boot-ring::before,.boot-ring::after{content:'';position:absolute;inset:-2px;border-radius:50%;
+  border:2px solid transparent;}
+.boot-ring::before{border-top-color:var(--cyan);animation:spin 1s linear infinite;}
+.boot-ring::after{inset:10px;border-bottom-color:var(--green);animation:spin 1.6s linear infinite reverse;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.boot-core{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:12px;color:var(--cyan);font-weight:700;}
+.boot-log{font-size:12.5px;color:var(--dim);min-height:20px;letter-spacing:1px;}
+.boot-log b{color:var(--green-lt);}
+
+/* ── 고정 HUD 프레임 ── */
+.hud-frame{position:fixed;inset:14px;z-index:120;pointer-events:none;}
+.hud-corner{position:absolute;width:34px;height:34px;border:2px solid var(--cyan);opacity:.65;}
+.hud-corner.tl{top:0;left:0;border-right:0;border-bottom:0;}
+.hud-corner.tr{top:0;right:0;border-left:0;border-bottom:0;}
+.hud-corner.bl{bottom:0;left:0;border-right:0;border-top:0;}
+.hud-corner.br{bottom:0;right:0;border-left:0;border-top:0;}
+.hud-vlabel{position:fixed;top:50%;transform-origin:center;font-size:10px;letter-spacing:4px;
+  color:var(--muted);z-index:120;pointer-events:none;}
+.hud-vlabel.l{left:-2px;transform:translateY(-50%) rotate(-90deg);}
+.hud-vlabel.r{right:-2px;transform:translateY(-50%) rotate(90deg);}
+
+/* 스크롤 진행 ── 우측 텔레메트리 */
+.scroll-rail{position:fixed;right:26px;top:50%;transform:translateY(-50%);z-index:120;
+  display:flex;flex-direction:column;align-items:flex-end;gap:10px;pointer-events:none;}
+.scroll-pct{font-size:11px;color:var(--cyan);letter-spacing:1px;}
+.scroll-bar{width:3px;height:160px;background:rgba(95,227,255,.15);border-radius:3px;overflow:hidden;}
+.scroll-fill{width:100%;height:0%;background:linear-gradient(var(--cyan),var(--green));box-shadow:0 0 10px var(--cyan);}
+
+/* ── 상단 텔레메트리 바 ── */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:130;height:54px;
+  display:flex;align-items:center;gap:16px;padding:0 30px;
+  background:linear-gradient(180deg,rgba(4,16,11,.92),rgba(4,16,11,.4));
+  border-bottom:1px solid var(--line);backdrop-filter:blur(8px);}
+.tb-emblem{width:34px;height:34px;filter:drop-shadow(0 0 6px rgba(95,227,255,.5));}
+.tb-name{font-weight:800;font-size:15px;letter-spacing:1px;}
+.tb-name span{color:var(--cyan);}
+.tb-sub{font-size:10px;color:var(--dim);letter-spacing:2px;margin-top:1px;}
+.tb-spacer{flex:1;}
+.tb-stat{font-size:11px;color:var(--dim);display:flex;align-items:center;gap:7px;}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);
+  animation:pulse 1.6s ease-in-out infinite;}
+@keyframes pulse{50%{opacity:.35;}}
+.tb-clock{color:var(--cyan);}
+@media(max-width:680px){.tb-stat.hide-sm{display:none;}.topbar{padding:0 16px;gap:10px;}}
+
+/* ── 공통 레이아웃 ── */
+.wrap{max-width:1180px;margin:0 auto;padding:0 26px;position:relative;z-index:10;}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:3px;
+  color:var(--cyan);border:1px solid var(--line);border-radius:30px;padding:5px 14px;}
+.eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--cyan);
+  box-shadow:0 0 8px var(--cyan);}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;padding-top:54px;}
+.hero-inner{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;width:100%;}
+.hero-l h1{font-size:clamp(34px,5.2vw,64px);line-height:1.12;font-weight:800;margin:20px 0 14px;}
+.hero-l h1 .hl{color:var(--green-lt);text-shadow:0 0 24px rgba(60,184,120,.5);}
+.hero-spirit{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 22px;}
+.hs{font-size:12px;letter-spacing:3px;color:var(--cyan);border:1px solid var(--line);
+  border-radius:6px;padding:6px 14px;background:rgba(95,227,255,.05);}
+.hero-sub{color:var(--dim);font-size:15px;line-height:1.85;max-width:480px;}
+.hero-cta{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap;}
+.btn{display:inline-flex;align-items:center;gap:9px;font-size:14px;font-weight:700;
+  padding:14px 24px;border-radius:8px;text-decoration:none;cursor:pointer;transition:.25s;
+  border:1px solid var(--line2);}
+.btn-primary{background:linear-gradient(135deg,var(--green),var(--green-dk));color:#04150d;
+  box-shadow:0 0 24px rgba(60,184,120,.35);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 36px rgba(60,184,120,.6);}
+.btn-ghost{color:var(--cyan);background:rgba(95,227,255,.05);}
+.btn-ghost:hover{background:rgba(95,227,255,.14);}
+
+/* 리액터 / 교표 HUD ── */
+.reactor{position:relative;width:min(420px,80vw);aspect-ratio:1;margin:0 auto;}
+.reactor .ring{position:absolute;inset:0;border-radius:50%;border:1px solid var(--line);}
+.reactor .ring.r2{inset:9%;border:1px dashed var(--line2);animation:spin 24s linear infinite;}
+.reactor .ring.r3{inset:18%;border:2px solid rgba(95,227,255,.25);animation:spin 16s linear infinite reverse;}
+.reactor .ring.r4{inset:27%;border:1px solid var(--line2);}
+.reactor .tick{position:absolute;inset:3%;border-radius:50%;
+  background:
+    repeating-conic-gradient(from 0deg,var(--line) 0 1deg,transparent 1deg 9deg);
+  -webkit-mask:radial-gradient(circle,transparent 0 47%,#000 47% 50%,transparent 50%);
+          mask:radial-gradient(circle,transparent 0 47%,#000 47% 50%,transparent 50%);
+  animation:spin 40s linear infinite;}
+.reactor .emblem{position:absolute;inset:30%;display:flex;align-items:center;justify-content:center;}
+.reactor .emblem img{width:100%;filter:drop-shadow(0 0 16px rgba(60,184,120,.6));}
+.reactor .glow{position:absolute;inset:24%;border-radius:50%;
+  background:radial-gradient(circle,rgba(60,184,120,.35),transparent 70%);
+  animation:pulse 3s ease-in-out infinite;}
+.reactor .blip{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--cyan);
+  box-shadow:0 0 12px var(--cyan);top:50%;left:50%;margin:-4px;
+  animation:orbit 9s linear infinite;}
+@keyframes orbit{from{transform:rotate(0) translateX(180px) rotate(0);}to{transform:rotate(360deg) translateX(180px) rotate(-360deg);}}
+/* 코너 readout */
+.read{position:absolute;font-size:9.5px;letter-spacing:1px;color:var(--dim);}
+.read b{color:var(--cyan);}
+.read.a{top:4%;left:0;}.read.b{top:4%;right:0;text-align:right;}
+.read.c{bottom:4%;left:0;}.read.d{bottom:4%;right:0;text-align:right;}
+
+.hero-scrollcue{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--dim);font-size:10px;
+  letter-spacing:3px;animation:bob 2s ease-in-out infinite;}
+@keyframes bob{50%{transform:translate(-50%,7px);}}
+.hero-scrollcue i{width:14px;height:14px;border-right:2px solid var(--cyan);
+  border-bottom:2px solid var(--cyan);transform:rotate(45deg);}
+
+/* ── 섹션 헤더 ── */
+.sec{padding:90px 0;position:relative;}
+.sec-head{margin-bottom:42px;}
+.sec-head h2{font-size:clamp(26px,3.6vw,40px);font-weight:800;margin:14px 0 8px;}
+.sec-head p{color:var(--dim);font-size:14px;}
+.sec-no{font-size:11px;color:var(--muted);letter-spacing:3px;}
+
+/* ── 시스템 모듈 카드 ── */
+.modules{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+@media(max-width:900px){.modules{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){.modules{grid-template-columns:1fr;}}
+.mod{position:relative;display:block;text-decoration:none;color:inherit;
+  background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  padding:24px 22px 20px;overflow:hidden;backdrop-filter:blur(6px);transition:.28s;}
+.mod::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(95,227,255,.06),transparent 50%);opacity:0;transition:.28s;}
+.mod::after{content:'';position:absolute;top:-50%;left:-60%;width:40%;height:200%;
+  background:linear-gradient(90deg,transparent,rgba(95,227,255,.18),transparent);
+  transform:skewX(-18deg);transition:.5s;}
+.mod:hover{border-color:var(--cyan);transform:translateY(-5px);
+  box-shadow:0 18px 50px rgba(0,0,0,.5),0 0 0 1px rgba(95,227,255,.25);}
+.mod:hover::before{opacity:1;}
+.mod:hover::after{left:130%;}
+.mod-corner{position:absolute;width:14px;height:14px;border:1.5px solid var(--cyan);opacity:.4;}
+.mod-corner.tl{top:8px;left:8px;border-right:0;border-bottom:0;}
+.mod-corner.br{bottom:8px;right:8px;border-left:0;border-top:0;}
+.mod-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+.mod-id{font-size:11px;color:var(--muted);letter-spacing:2px;}
+.mod-status{font-size:9.5px;letter-spacing:1px;color:var(--green);display:flex;align-items:center;gap:5px;}
+.mod-status .dot{width:6px;height:6px;}
+.mod-ico{font-size:30px;display:block;margin-bottom:14px;filter:drop-shadow(0 0 10px rgba(95,227,255,.4));}
+.mod h3{font-size:18px;font-weight:800;line-height:1.35;margin-bottom:10px;}
+.mod p{font-size:12.5px;color:var(--dim);line-height:1.7;margin-bottom:18px;min-height:64px;}
+.mod-foot{display:flex;justify-content:space-between;align-items:center;
+  border-top:1px solid var(--line);padding-top:14px;}
+.mod-meta{font-size:10.5px;color:var(--muted);letter-spacing:1px;}
+.mod-go{font-size:12px;color:var(--cyan);font-weight:700;transition:.25s;}
+.mod:hover .mod-go{transform:translateX(4px);}
+.tag{font-size:9.5px;letter-spacing:1px;padding:3px 8px;border-radius:4px;border:1px solid var(--line2);
+  color:var(--green-lt);background:rgba(60,184,120,.08);}
+
+/* ── 상징/스피릿 텔레메트리 ── */
+.spirit{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px;}
+@media(max-width:620px){.spirit{grid-template-columns:repeat(2,1fr);}}
+.sp{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px 16px;
+  text-align:center;transition:.28s;position:relative;overflow:hidden;}
+.sp:hover{transform:translateY(-4px);border-color:var(--cyan);}
+.sp .v{font-size:22px;font-weight:800;color:var(--green-lt);margin-bottom:4px;}
+.sp .k{font-size:11px;color:var(--dim);letter-spacing:1px;}
+.sp .bar{height:3px;border-radius:3px;background:rgba(95,227,255,.12);margin-top:12px;overflow:hidden;}
+.sp .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--cyan));
+  transition:width 1.4s ease;}
+.motto{margin:0 0 30px;padding:26px;border:1px solid var(--line2);border-radius:12px;
+  background:linear-gradient(135deg,rgba(60,184,120,.10),transparent);text-align:center;}
+.motto .l{font-size:11px;letter-spacing:3px;color:var(--cyan);}
+.motto .t{font-size:clamp(20px,3.2vw,30px);font-weight:800;margin-top:8px;}
+
+/* 스펙 그리드 */
+.specs{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+@media(max-width:620px){.specs{grid-template-columns:repeat(2,1fr);}}
+.spec{background:var(--bg2);padding:20px 16px;}
+.spec .k{font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:8px;}
+.spec .v{font-size:16px;font-weight:700;color:var(--txt);}
+.spec .v small{font-size:11px;color:var(--dim);font-weight:400;}
+
+/* ── 푸터 ── */
+.foot{border-top:1px solid var(--line);padding:40px 0 60px;margin-top:40px;}
+.foot .wrap{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;}
+.foot-name{font-weight:800;letter-spacing:1px;}
+.foot-name span{color:var(--cyan);}
+.foot small{color:var(--muted);font-size:11px;display:block;margin-top:6px;line-height:1.7;}
+.foot .ver{font-size:10px;color:var(--muted);letter-spacing:2px;text-align:right;}
+
+/* 시안 배지 */
+.concept-badge{position:fixed;bottom:18px;left:18px;z-index:140;
+  font-size:10px;letter-spacing:2px;color:var(--warn);border:1px solid rgba(255,207,95,.4);
+  background:rgba(255,207,95,.08);border-radius:30px;padding:6px 14px;backdrop-filter:blur(6px);}
+
+/* ── 스크롤 리빌 ── */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .8s cubic-bezier(.2,.7,.3,1),transform .8s cubic-bezier(.2,.7,.3,1);}
+.reveal.in{opacity:1;transform:none;}
+.reveal.d1{transition-delay:.06s;}.reveal.d2{transition-delay:.12s;}
+.reveal.d3{transition-delay:.18s;}.reveal.d4{transition-delay:.24s;}
+.reveal.d5{transition-delay:.30s;}.reveal.d6{transition-delay:.36s;}
+@media(prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none;}
+  .bg-grid,.bg-sweep,.reactor .ring,.reactor .tick,.reactor .blip{animation:none;}
+}
+@media(max-width:860px){
+  .hero-inner{grid-template-columns:1fr;text-align:center;gap:24px;}
+  .hero-sub{margin:0 auto;}.hero-spirit,.hero-cta{justify-content:center;}
+  .reactor{order:-1;width:min(300px,70vw);}
+  .scroll-rail,.hud-vlabel{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+<div class="bg-grid"></div>
+<div class="bg-scan"></div>
+<div class="bg-sweep"></div>
+
+<!-- 부팅 시퀀스 -->
+<div id="boot">
+  <div class="boot-ring"><div class="boot-core mono">YR-OS</div></div>
+  <div class="boot-log mono" id="bootlog">SYSTEM BOOT...</div>
+</div>
+
+<!-- 고정 HUD 프레임 -->
+<div class="hud-frame">
+  <span class="hud-corner tl"></span><span class="hud-corner tr"></span>
+  <span class="hud-corner bl"></span><span class="hud-corner br"></span>
+</div>
+<div class="hud-vlabel l mono">YOUNGNAK · CAREER OS</div>
+<div class="hud-vlabel r mono" id="vclock">--:--:--</div>
+
+<div class="scroll-rail">
+  <div class="scroll-pct mono" id="pct">00%</div>
+  <div class="scroll-bar"><div class="scroll-fill" id="fill"></div></div>
+  <div class="scroll-pct mono" style="color:var(--muted)">SCAN</div>
+</div>
+
+<!-- 상단 텔레메트리 -->
+<header class="topbar">
+  <img class="tb-emblem" src="assets/emblem.png" alt="영락고 교표">
+  <div>
+    <div class="tb-name">영락 <span>커맨드센터</span></div>
+    <div class="tb-sub mono">CAREER · ADMISSION CONTROL</div>
+  </div>
+  <div class="tb-spacer"></div>
+  <div class="tb-stat hide-sm mono"><span class="dot"></span>ALL SYSTEMS ONLINE</div>
+  <div class="tb-stat mono"><span style="color:var(--muted)">T+</span><span class="tb-clock" id="clock">00:00:00</span></div>
+</header>
+
+<!-- ════ HERO ════ -->
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div class="hero-l">
+      <span class="eyebrow mono reveal">진로 · 대입 정보센터 · v2028</span>
+      <h1 class="reveal d1"><span class="hl">하나님을 공경</span>하고<br>이웃을 <span class="hl">사랑</span>하자</h1>
+      <div class="hero-spirit reveal d2">
+        <span class="hs">은혜</span><span class="hs">진리</span>
+        <span class="hs">사랑</span><span class="hs">봉사</span>
+      </div>
+      <p class="hero-sub reveal d3">
+        AI 챗봇 · 합격예측기 · 2028 시행계획 · 선택과목 나침반까지.<br>
+        진로와 대입의 모든 데이터를 하나의 커맨드센터에서 제어하세요.
+      </p>
+      <div class="hero-cta reveal d4">
+        <a class="btn btn-primary" href="#modules">시스템 진입 <span>→</span></a>
+        <a class="btn btn-ghost" href="kakao-chatbot.html">영락봇 호출</a>
+      </div>
+    </div>
+
+    <div class="hero-r reveal d2">
+      <div class="reactor">
+        <div class="tick"></div>
+        <div class="ring r2"></div><div class="ring r3"></div><div class="ring r4"></div>
+        <div class="glow"></div>
+        <div class="emblem"><img src="assets/emblem.png" alt="영락고등학교 교표"></div>
+        <div class="blip"></div>
+        <div class="read a mono">EST <b>1959</b></div>
+        <div class="read b mono">STU <b>536</b></div>
+        <div class="read c mono">교목 <b>개잎갈나무</b></div>
+        <div class="read d mono">교화 <b>백합</b></div>
+      </div>
+    </div>
+  </div>
+  <a class="hero-scrollcue mono" href="#modules">SCROLL<i></i></a>
+</section>
+
+<!-- ════ 시스템 모듈 ════ -->
+<section class="sec" id="modules">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-no mono">// 01 — SERVICE MODULES</div>
+      <h2>무엇을 도와드릴까요?</h2>
+      <p>영락고 진로·대입 지원 6개 시스템 모듈이 가동 중입니다.</p>
+    </div>
+    <div class="modules">
+
+      <a class="mod reveal d1" href="kakao-chatbot.html">
+        <span class="mod-corner tl"></span><span class="mod-corner br"></span>
+        <div class="mod-top"><span class="mod-id mono">MOD-01</span><span class="mod-status mono"><span class="dot"></span>ONLINE</span></div>
+        <span class="mod-ico">💬</span>
+        <h3>진로·입시 챗봇<br>영락봇</h3>
+        <p>카카오톡 스타일 챗봇으로 입시 정보·성적 상담·과목 선택을 실시간 안내받으세요.</p>
+        <div class="mod-foot"><span class="tag">AI 상담</span><span class="mod-go mono">RUN →</span></div>
+      </a>
+
+      <a class="mod reveal d2" href="admission-search.html">
+        <span class="mod-corner tl"></span><span class="mod-corner br"></span>
+        <div class="mod-top"><span class="mod-id mono">MOD-02</span><span class="mod-status mono"><span class="dot"></span>ONLINE</span></div>
+        <span class="mod-ico">🎯</span>
+        <h3>수시 내신<br>합격예측기</h3>
+        <p>2023~2025 전국 대학 수시 합격 데이터로 내 내신 등급에 맞는 대학·학과를 스캔합니다.</p>
+        <div class="mod-foot"><span class="tag">2023–2025 DATA</span><span class="mod-go mono">RUN →</span></div>
+      </a>
+
+      <a class="mod reveal d3" href="admission-plan-2028.html">
+        <span class="mod-corner tl"></span><span class="mod-corner br"></span>
+        <div class="mod-top"><span class="mod-id mono">MOD-03</span><span class="mod-status mono"><span class="dot"></span>ONLINE</span></div>
+        <span class="mod-ico">📋</span>
+        <h3>2028 대학입학<br>시행계획</h3>
+        <p>서울·수도권·거점국립대 49개교의 2028 전형 변화를 한눈에. 5등급제·통합수능 첫해 핵심.</p>
+        <div class="mod-foot"><span class="tag">현 고2 대상</span><span class="mod-go mono">RUN →</span></div>
+      </a>
+
+      <a class="mod reveal d4" href="subject-guide.html">
+        <span class="mod-corner tl"></span><span class="mod-corner br"></span>
+        <div class="mod-top"><span class="mod-id mono">MOD-04</span><span class="mod-status mono"><span class="dot"></span>ONLINE</span></div>
+        <span class="mod-ico">🧭</span>
+        <h3>선택과목<br>나침반</h3>
+        <p>진로와 관심 분야에 따라 어떤 과목을 선택할지 단계별로 안내. 나만의 교육과정을 설계하세요.</p>
+        <div class="mod-foot"><span class="tag">2022 개정</span><span class="mod-go mono">RUN →</span></div>
+      </a>
+
+      <a class="mod reveal d5" href="curriculum-guide.html">
+        <span class="mod-corner tl"></span><span class="mod-corner br"></span>
+        <div class="mod-top"><span class="mod-id mono">MOD-05</span><span class="mod-status mono"><span class="dot"></span>ONLINE</span></div>
+        <span class="mod-ico">📚</span>
+        <h3>2022 개정<br>교육과정 안내</h3>
+        <p>새 교육과정의 핵심 변화를 정리. 공통·선택과목·고교학점제 구조를 한눈에 이해하세요.</p>
+        <div class="mod-foot"><span class="tag">학부모 필독</span><span class="mod-go mono">RUN →</span></div>
+      </a>
+
+      <a class="mod reveal d6" href="navigator/index.html">
+        <span class="mod-corner tl"></span><span class="mod-corner br"></span>
+        <div class="mod-top"><span class="mod-id mono">MOD-06</span><span class="mod-status mono"><span class="dot"></span>ONLINE</span></div>
+        <span class="mod-ico">🪐</span>
+        <h3>2028 대입<br>내비게이터</h3>
+        <p>통합형 수능·내신 5등급제로 바뀌는 2028 대입. 수도권 주요 대학 전형을 3D 궤도에서 비교.</p>
+        <div class="mod-foot"><span class="tag">3D ORBIT</span><span class="mod-go mono">RUN →</span></div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ════ 학교 정신/상징 ════ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-no mono">// 02 — SCHOOL IDENTITY</div>
+      <h2>영락고등학교의 정신과 상징</h2>
+      <p>1959년부터 이어온 영락의 가치, 네 가지 좌표.</p>
+    </div>
+
+    <div class="motto reveal">
+      <div class="l mono">교훈 · MOTTO</div>
+      <div class="t">하나님을 공경하고 이웃을 사랑하자</div>
+    </div>
+
+    <div class="spirit">
+      <div class="sp reveal d1"><div class="v">은혜</div><div class="k mono">GRACE</div><div class="bar"><i data-w="92"></i></div></div>
+      <div class="sp reveal d2"><div class="v">진리</div><div class="k mono">TRUTH</div><div class="bar"><i data-w="88"></i></div></div>
+      <div class="sp reveal d3"><div class="v">사랑</div><div class="k mono">LOVE</div><div class="bar"><i data-w="96"></i></div></div>
+      <div class="sp reveal d4"><div class="v">봉사</div><div class="k mono">SERVE</div><div class="bar"><i data-w="90"></i></div></div>
+    </div>
+
+    <div class="specs reveal" style="margin-top:26px">
+      <div class="spec"><div class="k mono">EST · 개교</div><div class="v">1959 <small>04.09</small></div></div>
+      <div class="spec"><div class="k mono">교목 · TREE</div><div class="v">개잎갈나무</div></div>
+      <div class="spec"><div class="k mono">교화 · FLOWER</div><div class="v">백합</div></div>
+      <div class="spec"><div class="k mono">학생 · STUDENTS</div><div class="v">536 <small>명</small></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ 푸터 ════ -->
+<footer class="foot">
+  <div class="wrap">
+    <div>
+      <div class="foot-name">영락 <span>커맨드센터</span></div>
+      <small>영락고등학교 진로·대입 정보센터 · 학교법인 영락학원<br>※ 본 페이지는 J.A.R.V.I.S. HUD 컨셉 시안입니다.</small>
+    </div>
+    <div class="ver mono">YR-OS v2028.6<br>RENDER OK</div>
+  </div>
+</footer>
+
+<div class="concept-badge mono">◆ HUD 컨셉 시안 — 실제 적용 전 미리보기</div>
+
+<script>
+/* ── 부팅 시퀀스 ── */
+(function(){
+  var log=document.getElementById('bootlog');
+  var lines=['SYSTEM BOOT...','LOADING CAREER DATABASE...','AUTH: 영락고등학교 <b>OK</b>',
+             'MODULES 01–06 <b>ONLINE</b>','J.A.R.V.I.S. INTERFACE READY'];
+  var i=0;
+  var t=setInterval(function(){
+    if(i<lines.length){log.innerHTML=lines[i++];}
+    else{clearInterval(t);document.getElementById('boot').classList.add('done');startReveal();}
+  },360);
+  // 안전장치
+  setTimeout(function(){document.getElementById('boot').classList.add('done');},3000);
+})();
+
+/* ── 스크롤 리빌 ── */
+function startReveal(){
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        var bars=e.target.querySelectorAll('.bar i');
+        bars.forEach(function(b){b.style.width=(b.dataset.w||80)+'%';});
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:.15});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+}
+
+/* ── 시계 / 텔레메트리 ── */
+function pad(n){return String(n).padStart(2,'0');}
+setInterval(function(){
+  var d=new Date(),t=pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds());
+  document.getElementById('clock').textContent=t;
+  document.getElementById('vclock').textContent=t;
+},1000);
+
+/* ── 스크롤 진행 게이지 ── */
+var fill=document.getElementById('fill'),pct=document.getElementById('pct');
+window.addEventListener('scroll',function(){
+  var h=document.documentElement,sc=h.scrollHeight-h.clientHeight;
+  var p=sc>0?Math.round(h.scrollTop/sc*100):0;
+  fill.style.height=p+'%';pct.textContent=pad(p)+'%';
+},{passive:true});
+</script>
+</body>
+</html>
