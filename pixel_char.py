@@ -1,120 +1,207 @@
 #!/usr/bin/env python3
-"""삼성 라이온즈 유니폼을 입은 인물 픽셀 캐릭터 생성기."""
-from PIL import Image
+"""고해상도 전신 픽셀 캐릭터 - 삼성 라이온즈 유니폼 인물."""
+from PIL import Image, ImageDraw
 
-# 색상 팔레트
-PAL = {
-    '.': None,                  # 투명
-    'N': (27, 42, 74),          # 모자 네이비
-    'n': (15, 24, 48),          # 모자 챙/그림자
-    'W': (245, 246, 250),       # 흰색
-    'S': (240, 196, 138),       # 피부
-    's': (214, 162, 102),       # 피부 그림자
-    'H': (33, 26, 20),          # 머리카락
-    'K': (24, 24, 28),          # 선글라스
-    'B': (29, 80, 179),         # 유니폼 파랑
-    'b': (20, 55, 130),         # 유니폼 진한 파랑
-    'P': (205, 210, 216),       # 휴대폰
-    'p': (120, 126, 134),       # 휴대폰 테두리
-    'L': (234, 234, 234),       # 반바지 흰색
-    'l': (203, 203, 203),       # 반바지 그림자
-    'G': (0, 140, 69),          # 이탈리아 초록
-    'R': (206, 43, 55),         # 이탈리아 빨강
-    'D': (60, 60, 60),          # 신발/어두운
+# 로직 해상도 (1px = 픽셀아트 1도트)
+W, H = 64, 104
+SCALE = 9
+img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+d = ImageDraw.Draw(img)
+
+# ---- 팔레트 ----
+NAVY   = (28, 41, 74)
+NAVY_D = (18, 27, 52)
+NAVY_L = (44, 60, 100)
+SKIN   = (240, 198, 145)
+SKIN_S = (212, 165, 110)
+SKIN_H = (250, 215, 170)
+HAIR   = (35, 27, 20)
+LENS   = (26, 26, 32)
+LENS_H = (70, 72, 84)
+BLUE   = (29, 84, 184)
+BLUE_S = (20, 58, 132)
+BLUE_H = (58, 116, 214)
+WHITE  = (244, 246, 250)
+WHT_S  = (208, 214, 224)
+SHRT   = (236, 236, 238)
+SHRT_S = (198, 200, 206)
+PHONE  = (210, 214, 220)
+PHONE_E= (90, 96, 104)
+GREEN  = (0, 140, 69)
+RED    = (206, 43, 55)
+SHOE   = (240, 242, 246)
+SHOE_S = (60, 62, 70)
+CX = 32  # 중심선
+
+def rrect(box, r, fill):
+    d.rounded_rectangle(box, radius=r, fill=fill)
+def ell(box, fill):
+    d.ellipse(box, fill=fill)
+def poly(pts, fill):
+    d.polygon(pts, fill=fill)
+
+# =========================================================
+# 다리 + 신발 (뒤에서 앞 순서)
+# =========================================================
+# 허벅지/종아리
+for sx in (-9, 3):  # 왼/오른 다리 시작 오프셋
+    lx = CX + sx
+    rrect((lx, 70, lx+6, 92), 2, SKIN)
+    d.rectangle((lx+4, 72, lx+6, 92), fill=SKIN_S)  # 다리 음영
+# 무릎 살짝
+# 신발 (운동화)
+for sx in (-10, 2):
+    lx = CX + sx
+    rrect((lx, 90, lx+8, 97), 2, SHOE)
+    d.rectangle((lx, 95, lx+8, 97), fill=SHOE_S)  # 밑창
+    d.line((lx+1, 92, lx+7, 92), fill=WHT_S)
+
+# =========================================================
+# 반바지 (흰색, 통넓음)
+# =========================================================
+poly([(17,58),(47,58),(49,74),(34,72),(30,72),(15,74)], SHRT)
+d.rectangle((31, 60, 33, 73), fill=SHRT_S)       # 가운데 솔기
+poly([(38,59),(47,59),(49,74),(40,73)], SHRT_S)  # 오른쪽 음영
+# 이탈리아 패치 (왼쪽 허벅지)
+d.rectangle((19, 64, 21, 69), fill=GREEN)
+d.rectangle((21, 64, 23, 69), fill=WHITE)
+d.rectangle((23, 64, 25, 69), fill=RED)
+
+# =========================================================
+# 유니폼 상의 (헐렁한 핏)
+# =========================================================
+# 몸통
+poly([(20,40),(44,40),(50,52),(50,62),(46,66),(18,66),(14,62),(14,52)], BLUE)
+# 어깨/소매
+rrect((8, 40, 22, 54), 4, BLUE)    # 왼 소매
+rrect((42, 40, 56, 54), 4, BLUE)   # 오른 소매
+d.rectangle((8, 50, 22, 54), fill=BLUE_S)
+d.rectangle((42, 50, 56, 54), fill=BLUE_S)
+# 음영 (오른쪽/아래)
+poly([(40,42),(50,52),(50,62),(46,66),(40,66)], BLUE_S)
+poly([(18,62),(46,66),(18,66)], BLUE_S)
+# 하이라이트 (왼쪽)
+poly([(20,41),(26,41),(20,58),(15,54),(15,52)], BLUE_H)
+# 소매 흰 라인
+d.line((9, 53, 21, 53), fill=WHITE)
+d.line((43, 53, 55, 53), fill=WHITE)
+
+# V넥 칼라 (흰색)
+poly([(26,40),(38,40),(32,48)], WHITE)
+poly([(28,40),(36,40),(32,45)], BLUE_S)  # 안쪽 그림자
+
+# 가슴 SAMSUNG 작은 라인
+d.rectangle((27, 44, 37, 45), fill=WHT_S)
+
+# =========================================================
+# 팔 (소매에서 내려와 가운데 휴대폰 잡기)
+# =========================================================
+# 왼팔
+poly([(11,53),(17,53),(28,62),(26,66),(20,64)], SKIN)
+# 오른팔
+poly([(47,53),(53,53),(44,64),(38,66),(36,62)], SKIN)
+d.line((12,54,26,63), fill=SKIN_S)
+
+# 손
+ell((24, 60, 31, 67), SKIN)
+ell((33, 60, 40, 67), SKIN)
+# 휴대폰
+rrect((28, 61, 36, 67), 1, PHONE)
+d.rectangle((29, 62, 35, 66), fill=PHONE_E)
+d.rectangle((30, 63, 34, 65), fill=(150,156,164))
+
+# =========================================================
+# LIONS 워드마크 (흰색, 가슴)
+# =========================================================
+FONT = {
+ 'L':["10000","10000","10000","10000","11111"],
+ 'I':["111","010","010","010","111"],
+ 'O':["01110","10001","10001","10001","01110"],
+ 'N':["1001","1101","1011","1001","1001"],
+ 'S':["0111","1000","0110","0001","1110"],
 }
+def draw_text(word, x, y, col):
+    cx = x
+    for ch in word:
+        pat = FONT[ch]
+        w = len(pat[0])
+        for yy in range(5):
+            for xx in range(w):
+                if pat[yy][xx] == '1':
+                    d.point((cx+xx, y+yy), fill=col)
+        cx += w + 1
+draw_text("LIONS", 17, 50, WHITE)
 
-GRID = [
-    "................................",
-    "................................",
-    "..........NNNNNNNNNNNN..........",
-    ".........NNNNNNNNNNNNNN.........",
-    "........NNNNNWWNNNNNNNNN........",
-    "........NNNNWWWWNNNNNNNN........",
-    "........NNNNNNNNNNNNNNNN........",
-    ".....nnnnnnnnnnnnnnnnnnnnnn.....",
-    ".....nnnnnnnnnnnnnnnnnnnnnn.....",
-    "...........SSSSSSSSSS...........",
-    "..........SSSSSSSSSSSS..........",
-    "..........KKKKKKKKKKKK..........",
-    "..........KKKKKKKKKKKK..........",
-    "..........SSSSSSSSSSSS..........",
-    "...........SSSSSSSSSS...........",
-    "...........SsSSSSSSsS...........",
-    "............SSSSSSSS............",
-    ".............SSSSSS.............",
-    ".............SSSSSS.............",
-    ".......BBBBBBBBBBBBBBBBBB.......",
-    "......BBBBBBBBBBBBBBBBBBBB......",
-    ".....BBBBBBBBBWWWWBBBBBBBBB.....",
-    "....BBBBBBBBBBWWWWBBBBBBBBBB....",
-    "....BBBBBBBBBBBBBBBBBBBBBBBB....",
-    "....BB@@@@@@@@@@@@@@@@@@@BB.....",
-    "....BB@@@@@@@@@@@@@@@@@@@BB.....",
-    "....BB@@@@@@@@@@@@@@@@@@@BB.....",
-    "....BBBBBBBBBBBBBBBBBBBBBBBB....",
-    "....BBBBBBBBSSSSSSSSBBBBBBBB....",
-    "....BBBBBBBSPPPPPPPPSBBBBBBB....",
-    "....BBBBBBBSPpppppppPSBBBBBB....",
-    "....BBBBBBBSSSSSSSSSSBBBBBBB....",
-    ".....BBBBBBBBBBBBBBBBBBBBBB.....",
-    "......BBBBBBBBBBBBBBBBBBBB......",
-    ".......BBBBBBBBBBBBBBBBBB.......",
-    "........LLLLLLLLLLLLLLLL........",
-    "........LLLLLLLLLLLLLLLL........",
-    "........LLGRLLLLLLLLLLLL........",
-    "........LLlLLLLLLLLLLlLL........",
-    "........LLLLLLLL.LLLLLLL........",
-    "........SSSSSSS...SSSSSSS.......",
-    "........SSSSSSS...SSSSSSS.......",
-    "........SSSSSSS...SSSSSSS.......",
-    ".......DDDDDDD....DDDDDDDD......",
-]
+# =========================================================
+# 목
+# =========================================================
+d.rectangle((28, 33, 36, 41), fill=SKIN)
+d.rectangle((28, 33, 36, 36), fill=SKIN_S)  # 턱 그림자
 
-# '@' 영역(유니폼 가슴)에 흰색 "LIONS" 글자 오버레이 (3x3 미니폰트)
-FONT3 = {
-    'L': ["100", "100", "111"],
-    'I': ["111", "010", "111"],
-    'O': ["111", "101", "111"],
-    'N': ["101", "111", "101"],
-    'S': ["111", "010", "111"],
-}
-def stamp_letters():
-    band_rows = [i for i, r in enumerate(GRID) if '@' in r]
-    top = band_rows[0]
-    # '@' -> 'B'(파랑 배경)로 치환
-    for i in band_rows:
-        GRID[i] = GRID[i].replace('@', 'B')
-    grid = [list(r) for r in GRID]
-    starts = [6, 10, 14, 18, 22]  # 각 글자 시작 열
-    for ch, sx in zip("LIONS", starts):
-        pat = FONT3[ch]
-        for dy in range(3):
-            for dx in range(3):
-                if pat[dy][dx] == '1':
-                    grid[top + dy][sx + dx] = 'W'
-    for i in range(len(GRID)):
-        GRID[i] = "".join(grid[i])
-stamp_letters()
+# =========================================================
+# 머리 / 얼굴
+# =========================================================
+ell((19, 12, 45, 38), SKIN)         # 얼굴
+poly([(40,16),(45,22),(43,32),(38,34)], SKIN_S)  # 얼굴 우측 음영
+# 귀
+ell((17, 22, 21, 28), SKIN)
+ell((43, 22, 47, 28), SKIN)
 
-CELL = 14  # 픽셀당 크기
+# 선글라스
+rrect((20, 19, 31, 25), 2, LENS)
+rrect((33, 19, 44, 25), 2, LENS)
+d.rectangle((31, 21, 33, 22), fill=LENS)        # 브릿지
+d.line((21, 20, 25, 20), fill=LENS_H)           # 렌즈 반사
+d.line((34, 20, 38, 20), fill=LENS_H)
+d.line((18, 21, 20, 21), fill=LENS)             # 안경 다리
+d.line((44, 21, 46, 21), fill=LENS)
 
-W = len(GRID[0]) * CELL
-H = len(GRID) * CELL
-img = Image.new("RGBA", (W, H), (255, 255, 255, 0))
+# 입
+d.rectangle((29, 30, 35, 31), fill=SKIN_S)
+d.line((30, 31, 34, 31), fill=(150,90,70))
+
+# =========================================================
+# 모자
+# =========================================================
+# 크라운 (머리에 맞는 돔)
+d.ellipse((18, 3, 46, 21), fill=NAVY)
+d.rectangle((18, 12, 46, 18), fill=NAVY)
+# 챙 (앞으로 숙인 납작한 형태)
+poly([(16,17),(48,17),(46,21),(18,21)], NAVY_D)
+d.ellipse((16, 17, 48, 23), fill=NAVY_D)
+# 모자 음영/하이라이트
+d.pieslice((18, 1, 46, 21), 200, 270, fill=NAVY_L)  # 왼쪽 하이라이트
+d.pieslice((18, 1, 46, 21), 300, 350, fill=NAVY_D)  # 오른쪽 음영
+# 로고 (흰 마크 단순화)
+d.rectangle((30, 7, 34, 10), fill=WHITE)
+d.point((29, 9), fill=WHITE)
+d.point((35, 9), fill=WHITE)
+
+# =========================================================
+# 외곽선 자동 생성 (실루엣 주변 1px 어둡게)
+# =========================================================
+OUTLINE = (22, 24, 30, 255)
 px = img.load()
-
-for y, row in enumerate(GRID):
-    for x, ch in enumerate(row):
-        color = PAL.get(ch)
-        if color is None:
+opaque = [[px[x, y][3] > 0 for y in range(H)] for x in range(W)]
+edges = []
+for x in range(W):
+    for y in range(H):
+        if opaque[x][y]:
             continue
-        for dy in range(CELL):
-            for dx in range(CELL):
-                px[x * CELL + dx, y * CELL + dy] = color + (255,)
+        for dx, dy in ((1,0),(-1,0),(0,1),(0,-1)):
+            nx, ny = x+dx, y+dy
+            if 0 <= nx < W and 0 <= ny < H and opaque[nx][ny]:
+                edges.append((x, y))
+                break
+for (x, y) in edges:
+    px[x, y] = OUTLINE
 
-img.save("pixel-character.png")
-# 미리보기용 흰 배경 버전
-bg = Image.new("RGBA", (W, H), (247, 249, 252, 255))
-bg.alpha_composite(img)
+# =========================================================
+# 출력
+# =========================================================
+big = img.resize((W*SCALE, H*SCALE), Image.NEAREST)
+big.save("pixel-character.png")
+bg = Image.new("RGBA", big.size, (246, 248, 251, 255))
+bg.alpha_composite(big)
 bg.convert("RGB").save("pixel-character-preview.png")
-print(f"saved {W}x{H}")
+print(f"saved {W*SCALE}x{H*SCALE}")
