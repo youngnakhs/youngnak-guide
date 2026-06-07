@@ -13,11 +13,16 @@
    · 학교 브랜드 그린(#3cb878) 유지 + 시안(cyan) HUD 글로우
    ════════════════════════════════════════════════════════════ */
 :root{
-  --green:#3cb878; --green-lt:#72d4a0; --green-dk:#1f7a49;
-  --cyan:#5fe3ff; --cyan-dk:#1a8fa8;
-  --bg:#05100c; --bg2:#08160f; --panel:rgba(10,28,20,.55);
-  --line:rgba(95,227,255,.18); --line2:rgba(60,184,120,.30);
-  --txt:#d6f5e6; --dim:#6f9a86; --muted:#3f6354;
+  /* 브랜드 그린 — 상태/정체성 전용 (절제) */
+  --green:#34d27e; --green-lt:#6fe3a6; --green-dk:#1f7a49;
+  /* 쿨 — HUD 구조선 */
+  --cyan:#5fd8ff; --cyan-dk:#1c7d99;
+  /* 웜 — 강조/액션 (J.A.R.V.I.S. 골드) */
+  --amber:#ffb43a; --amber-lt:#ffd27a; --amber-dk:#e0901f;
+  /* 중성 다크 베이스 (초록기 제거) */
+  --bg:#070b12; --bg2:#0b1019; --panel:rgba(17,24,36,.55);
+  --line:rgba(95,216,255,.16); --line2:rgba(255,180,58,.26);
+  --txt:#dbe6f3; --dim:#7c8aa0; --muted:#48556a;
   --warn:#ffcf5f;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -33,8 +38,8 @@ body{
 /* ── 배경 레이어: 그리드 + 글로우 + 스캔라인 ── */
 .bg-layer{position:fixed;inset:0;z-index:-3;
   background:
-    radial-gradient(1200px 800px at 75% -10%, rgba(60,184,120,.18), transparent 60%),
-    radial-gradient(900px 700px at 10% 110%, rgba(95,227,255,.10), transparent 60%),
+    radial-gradient(1100px 760px at 82% -8%, rgba(255,180,58,.15), transparent 58%),  /* 웜 조명 */
+    radial-gradient(940px 720px at 4% 112%, rgba(95,216,255,.13), transparent 60%),   /* 쿨 조명 */
     linear-gradient(180deg,var(--bg),var(--bg2));
 }
 .bg-grid{position:fixed;inset:0;z-index:-2;opacity:.5;
@@ -89,7 +94,7 @@ body{
   display:flex;flex-direction:column;align-items:flex-end;gap:10px;pointer-events:none;}
 .scroll-pct{font-size:11px;color:var(--cyan);letter-spacing:1px;}
 .scroll-bar{width:3px;height:160px;background:rgba(95,227,255,.15);border-radius:3px;overflow:hidden;}
-.scroll-fill{width:100%;height:0%;background:linear-gradient(var(--cyan),var(--green));box-shadow:0 0 10px var(--cyan);}
+.scroll-fill{width:100%;height:0%;background:linear-gradient(var(--cyan),var(--amber));box-shadow:0 0 10px rgba(95,216,255,.6);}
 
 /* ── 상단 텔레메트리 바 ── */
 .topbar{position:fixed;top:0;left:0;right:0;z-index:130;height:54px;
@@ -119,7 +124,7 @@ body{
 .hero{min-height:100vh;display:flex;align-items:center;position:relative;padding-top:54px;}
 .hero-inner{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;width:100%;}
 .hero-l h1{font-size:clamp(34px,5.2vw,64px);line-height:1.12;font-weight:800;margin:20px 0 14px;}
-.hero-l h1 .hl{color:var(--green-lt);text-shadow:0 0 24px rgba(60,184,120,.5);}
+.hero-l h1 .hl{color:var(--amber-lt);text-shadow:0 0 22px rgba(255,180,58,.35);}
 .hero-spirit{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 22px;}
 .hs{font-size:12px;letter-spacing:3px;color:var(--cyan);border:1px solid var(--line);
   border-radius:6px;padding:6px 14px;background:rgba(95,227,255,.05);}
@@ -128,9 +133,9 @@ body{
 .btn{display:inline-flex;align-items:center;gap:9px;font-size:14px;font-weight:700;
   padding:14px 24px;border-radius:8px;text-decoration:none;cursor:pointer;transition:.25s;
   border:1px solid var(--line2);}
-.btn-primary{background:linear-gradient(135deg,var(--green),var(--green-dk));color:#04150d;
-  box-shadow:0 0 24px rgba(60,184,120,.35);}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 36px rgba(60,184,120,.6);}
+.btn-primary{background:linear-gradient(135deg,var(--amber),var(--amber-dk));color:#1a1206;
+  border-color:rgba(255,180,58,.5);box-shadow:0 6px 22px rgba(255,180,58,.28);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,180,58,.45);}
 .btn-ghost{color:var(--cyan);background:rgba(95,227,255,.05);}
 .btn-ghost:hover{background:rgba(95,227,255,.14);}
 
@@ -138,7 +143,7 @@ body{
 .reactor{position:relative;width:min(420px,80vw);aspect-ratio:1;margin:0 auto;}
 .reactor .ring{position:absolute;inset:0;border-radius:50%;border:1px solid var(--line);}
 .reactor .ring.r2{inset:9%;border:1px dashed var(--line2);animation:spin 24s linear infinite;}
-.reactor .ring.r3{inset:18%;border:2px solid rgba(95,227,255,.25);animation:spin 16s linear infinite reverse;}
+.reactor .ring.r3{inset:18%;border:2px solid rgba(255,180,58,.30);animation:spin 16s linear infinite reverse;}
 .reactor .ring.r4{inset:27%;border:1px solid var(--line2);}
 .reactor .tick{position:absolute;inset:3%;border-radius:50%;
   background:
@@ -147,17 +152,17 @@ body{
           mask:radial-gradient(circle,transparent 0 47%,#000 47% 50%,transparent 50%);
   animation:spin 40s linear infinite;}
 .reactor .emblem{position:absolute;inset:30%;display:flex;align-items:center;justify-content:center;}
-.reactor .emblem img{width:100%;filter:drop-shadow(0 0 16px rgba(60,184,120,.6));}
+.reactor .emblem img{width:100%;filter:drop-shadow(0 0 14px rgba(95,216,255,.45));}
 .reactor .glow{position:absolute;inset:24%;border-radius:50%;
-  background:radial-gradient(circle,rgba(60,184,120,.35),transparent 70%);
+  background:radial-gradient(circle,rgba(95,216,255,.22),rgba(255,180,58,.10),transparent 72%);
   animation:pulse 3s ease-in-out infinite;}
-.reactor .blip{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--cyan);
-  box-shadow:0 0 12px var(--cyan);top:50%;left:50%;margin:-4px;
+.reactor .blip{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--amber);
+  box-shadow:0 0 12px var(--amber);top:50%;left:50%;margin:-4px;
   animation:orbit 9s linear infinite;}
 @keyframes orbit{from{transform:rotate(0) translateX(180px) rotate(0);}to{transform:rotate(360deg) translateX(180px) rotate(-360deg);}}
 /* 코너 readout */
 .read{position:absolute;font-size:9.5px;letter-spacing:1px;color:var(--dim);}
-.read b{color:var(--cyan);}
+.read b{color:var(--amber-lt);}
 .read.a{top:4%;left:0;}.read.b{top:4%;right:0;text-align:right;}
 .read.c{bottom:4%;left:0;}.read.d{bottom:4%;right:0;text-align:right;}
 
@@ -198,16 +203,22 @@ body{
 .mod-id{font-size:11px;color:var(--muted);letter-spacing:2px;}
 .mod-status{font-size:9.5px;letter-spacing:1px;color:var(--green);display:flex;align-items:center;gap:5px;}
 .mod-status .dot{width:6px;height:6px;}
-.mod-ico{font-size:30px;display:block;margin-bottom:14px;filter:drop-shadow(0 0 10px rgba(95,227,255,.4));}
+.mod-ico{display:block;margin-bottom:16px;width:38px;height:38px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--line);background:rgba(95,216,255,.05);}
+.mod-ico svg{width:21px;height:21px;fill:none;stroke:var(--cyan);stroke-width:1.6;
+  stroke-linecap:round;stroke-linejoin:round;}
+.mod-ico .acc{stroke:var(--amber);}
+.mod:hover .mod-ico{border-color:var(--amber);background:rgba(255,180,58,.07);}
 .mod h3{font-size:18px;font-weight:800;line-height:1.35;margin-bottom:10px;}
 .mod p{font-size:12.5px;color:var(--dim);line-height:1.7;margin-bottom:18px;min-height:64px;}
 .mod-foot{display:flex;justify-content:space-between;align-items:center;
   border-top:1px solid var(--line);padding-top:14px;}
 .mod-meta{font-size:10.5px;color:var(--muted);letter-spacing:1px;}
-.mod-go{font-size:12px;color:var(--cyan);font-weight:700;transition:.25s;}
-.mod:hover .mod-go{transform:translateX(4px);}
-.tag{font-size:9.5px;letter-spacing:1px;padding:3px 8px;border-radius:4px;border:1px solid var(--line2);
-  color:var(--green-lt);background:rgba(60,184,120,.08);}
+.mod-go{font-size:12px;color:var(--amber);font-weight:700;transition:.25s;letter-spacing:.5px;}
+.mod:hover .mod-go{transform:translateX(4px);color:var(--amber-lt);}
+.tag{font-size:9.5px;letter-spacing:1px;padding:3px 8px;border-radius:4px;border:1px solid var(--line);
+  color:var(--cyan);background:rgba(95,216,255,.06);}
 
 /* ── 상징/스피릿 텔레메트리 ── */
 .spirit{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px;}
@@ -354,7 +365,7 @@ body{
       <a class="mod reveal d1" href="kakao-chatbot.html">
         <span class="mod-corner tl"></span><span class="mod-corner br"></span>
         <div class="mod-top"><span class="mod-id mono">MOD-01</span><span class="mod-status mono"><span class="dot"></span>ONLINE</span></div>
-        <span class="mod-ico">💬</span>
+        <span class="mod-ico"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-4 3.5V16H4z"/><path class="acc" d="M8.5 10.5h0M12 10.5h0M15.5 10.5h0" stroke-width="2.4"/></svg></span>
         <h3>진로·입시 챗봇<br>영락봇</h3>
         <p>카카오톡 스타일 챗봇으로 입시 정보·성적 상담·과목 선택을 실시간 안내받으세요.</p>
         <div class="mod-foot"><span class="tag">AI 상담</span><span class="mod-go mono">RUN →</span></div>
@@ -363,7 +374,7 @@ body{
       <a class="mod reveal d2" href="admission-search.html">
         <span class="mod-corner tl"></span><span class="mod-corner br"></span>
         <div class="mod-top"><span class="mod-id mono">MOD-02</span><span class="mod-status mono"><span class="dot"></span>ONLINE</span></div>
-        <span class="mod-ico">🎯</span>
+        <span class="mod-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle class="acc" cx="12" cy="12" r="1.3"/></svg></span>
         <h3>수시 내신<br>합격예측기</h3>
         <p>2023~2025 전국 대학 수시 합격 데이터로 내 내신 등급에 맞는 대학·학과를 스캔합니다.</p>
         <div class="mod-foot"><span class="tag">2023–2025 DATA</span><span class="mod-go mono">RUN →</span></div>
@@ -372,7 +383,7 @@ body{
       <a class="mod reveal d3" href="admission-plan-2028.html">
         <span class="mod-corner tl"></span><span class="mod-corner br"></span>
         <div class="mod-top"><span class="mod-id mono">MOD-03</span><span class="mod-status mono"><span class="dot"></span>ONLINE</span></div>
-        <span class="mod-ico">📋</span>
+        <span class="mod-ico"><svg viewBox="0 0 24 24"><rect x="5" y="4.5" width="14" height="16" rx="2"/><path class="acc" d="M9 4.5h6v3H9z"/><path d="M8.5 11h7M8.5 14.5h5"/></svg></span>
         <h3>2028 대학입학<br>시행계획</h3>
         <p>서울·수도권·거점국립대 49개교의 2028 전형 변화를 한눈에. 5등급제·통합수능 첫해 핵심.</p>
         <div class="mod-foot"><span class="tag">현 고2 대상</span><span class="mod-go mono">RUN →</span></div>
@@ -381,7 +392,7 @@ body{
       <a class="mod reveal d4" href="subject-guide.html">
         <span class="mod-corner tl"></span><span class="mod-corner br"></span>
         <div class="mod-top"><span class="mod-id mono">MOD-04</span><span class="mod-status mono"><span class="dot"></span>ONLINE</span></div>
-        <span class="mod-ico">🧭</span>
+        <span class="mod-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path class="acc" d="M15.5 8.5l-2.2 4.8L8.5 15.5l2.2-4.8z"/></svg></span>
         <h3>선택과목<br>나침반</h3>
         <p>진로와 관심 분야에 따라 어떤 과목을 선택할지 단계별로 안내. 나만의 교육과정을 설계하세요.</p>
         <div class="mod-foot"><span class="tag">2022 개정</span><span class="mod-go mono">RUN →</span></div>
@@ -390,7 +401,7 @@ body{
       <a class="mod reveal d5" href="curriculum-guide.html">
         <span class="mod-corner tl"></span><span class="mod-corner br"></span>
         <div class="mod-top"><span class="mod-id mono">MOD-05</span><span class="mod-status mono"><span class="dot"></span>ONLINE</span></div>
-        <span class="mod-ico">📚</span>
+        <span class="mod-ico"><svg viewBox="0 0 24 24"><path d="M12 6.5C10 5 7 5 5 6v12c2-1 5-1 7 .5"/><path class="acc" d="M12 6.5C14 5 17 5 19 6v12c-2-1-5-1-7 .5"/><path d="M12 6.5v12"/></svg></span>
         <h3>2022 개정<br>교육과정 안내</h3>
         <p>새 교육과정의 핵심 변화를 정리. 공통·선택과목·고교학점제 구조를 한눈에 이해하세요.</p>
         <div class="mod-foot"><span class="tag">학부모 필독</span><span class="mod-go mono">RUN →</span></div>
@@ -399,7 +410,7 @@ body{
       <a class="mod reveal d6" href="navigator/index.html">
         <span class="mod-corner tl"></span><span class="mod-corner br"></span>
         <div class="mod-top"><span class="mod-id mono">MOD-06</span><span class="mod-status mono"><span class="dot"></span>ONLINE</span></div>
-        <span class="mod-ico">🪐</span>
+        <span class="mod-ico"><svg viewBox="0 0 24 24"><circle class="acc" cx="12" cy="12" r="4"/><ellipse cx="12" cy="12" rx="10" ry="3.6" transform="rotate(-25 12 12)"/></svg></span>
         <h3>2028 대입<br>내비게이터</h3>
         <p>통합형 수능·내신 5등급제로 바뀌는 2028 대입. 수도권 주요 대학 전형을 3D 궤도에서 비교.</p>
         <div class="mod-foot"><span class="tag">3D ORBIT</span><span class="mod-go mono">RUN →</span></div>
