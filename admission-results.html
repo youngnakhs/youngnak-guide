@@ -5,26 +5,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>2026학년도 수시 입시결과 분석</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy:#0d2b4e;--navy-light:#1a3f70;--navy-pale:#e8eef7;
-    --green:#27ae60;--green-pale:#d5f5e3;
+    --navy:#1f7a49;--navy-light:#2ea865;--navy-pale:#eaf7f1;
+    --green:#3cb878;--green-pale:#d5f5e3;
     --orange:#e67e22;--orange-pale:#fef5e7;
     --red:#e74c3c;--red-pale:#fdecea;
     --blue:#2980b9;--blue-pale:#eaf4fb;
     --accent:#e8a020;--white:#ffffff;
-    --gray:#f4f6fa;--text:#1a1a2e;--sub:#5a6a7e;--border:#d0daea;
-    --shadow:0 2px 12px rgba(13,43,78,0.10);
+    --gray:#f2fbf6;--text:#1a2e24;--sub:#3d6b52;--border:#c8e8d8;
+    --shadow:0 2px 12px rgba(31,122,73,0.12);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f0f4fa;color:var(--text);font-size:14px;line-height:1.6;}
-  .page-header{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-light) 100%);color:#fff;padding:40px 0 28px;text-align:center;box-shadow:0 4px 20px rgba(13,43,78,0.25);}
-  .page-header h1{font-size:26px;font-weight:800;}
-  .page-header p{margin-top:8px;opacity:.75;font-size:13px;}
+  body{font-family:'Noto Sans KR','Apple SD Gothic Neo',sans-serif;background:#f5faf7;color:var(--text);font-size:14px;line-height:1.6;}
+  .site-back{display:block;background:#fff;border-bottom:2px solid var(--navy);color:var(--navy);text-decoration:none;font-size:13px;font-weight:700;padding:12px 20px;font-family:'Noto Serif KR',serif;}
+  .site-back:hover{background:var(--green-pale);}
+  .page-header{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-light) 100%);color:#fff;padding:40px 0 28px;text-align:center;box-shadow:0 4px 20px rgba(31,122,73,0.25);}
+  .page-header h1{font-family:'Noto Serif KR',serif;font-size:26px;font-weight:900;letter-spacing:-.01em;}
+  .page-header p{margin-top:8px;opacity:.8;font-size:13px;}
   .container{max-width:1200px;margin:0 auto;padding:30px 20px;}
   .section{background:#fff;border-radius:16px;box-shadow:var(--shadow);margin-bottom:30px;overflow:hidden;}
   .sec-hd{background:var(--navy);color:#fff;padding:16px 24px;display:flex;align-items:center;gap:10px;}
-  .sec-hd h2{font-size:17px;font-weight:700;}
+  .sec-hd h2{font-family:'Noto Serif KR',serif;font-size:17px;font-weight:700;}
   .badge{background:var(--accent);color:var(--navy);font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;}
   .sec-bd{padding:24px;}
   .note{background:var(--navy-pale);border-left:4px solid var(--navy);padding:10px 16px;border-radius:0 8px 8px 0;font-size:12px;color:var(--sub);margin-bottom:20px;}
@@ -241,6 +244,7 @@
 </style>
 </head>
 <body>
+<a href="index.html" class="site-back">← 영락고 진로·대입 정보센터</a>
 <button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
 
 <div class="page-header">

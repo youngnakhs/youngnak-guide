@@ -556,6 +556,33 @@ setTimeout(function(){clearInterval(t);},15000);
 
 </head>
 <body>
+  <div id="ynk-gate" style="position:fixed;inset:0;z-index:2147483647;background:linear-gradient(135deg,#1f7a49,#2ea865);display:flex;align-items:center;justify-content:center;font-family:'Noto Sans KR','Apple SD Gothic Neo',sans-serif;">
+    <div style="background:#fff;border-radius:18px;padding:36px 30px;width:300px;max-width:88vw;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3);">
+      <div style="font-size:34px;margin-bottom:10px;">🔒</div>
+      <div style="font-weight:800;font-size:17px;color:#1a2e24;margin-bottom:6px;">고1 상담자료</div>
+      <div style="font-size:12px;color:#3d6b52;margin-bottom:18px;line-height:1.6;">열람 비밀번호를 입력하세요.</div>
+      <input id="ynk-pw" type="password" inputmode="numeric" autocomplete="off" placeholder="비밀번호"
+        style="width:100%;padding:12px;border:1.5px solid #c8e8d8;border-radius:10px;font-size:16px;text-align:center;letter-spacing:4px;outline:none;" />
+      <div id="ynk-err" style="color:#e74c3c;font-size:12px;height:16px;margin-top:8px;"></div>
+      <button id="ynk-ok" style="width:100%;margin-top:8px;padding:12px;border:none;border-radius:10px;background:#1f7a49;color:#fff;font-size:15px;font-weight:700;cursor:pointer;">입장</button>
+    </div>
+  </div>
+  <script>
+  (function(){
+    var KEY='ynk_go1_ok', PW='1003';
+    var g=document.getElementById('ynk-gate');
+    if(sessionStorage.getItem(KEY)==='1'){ g.parentNode.removeChild(g); return; }
+    document.documentElement.style.overflow='hidden';
+    var pw=document.getElementById('ynk-pw'), ok=document.getElementById('ynk-ok'), err=document.getElementById('ynk-err');
+    function go(){
+      if(pw.value===PW){ sessionStorage.setItem(KEY,'1'); document.documentElement.style.overflow=''; g.parentNode.removeChild(g); }
+      else { err.textContent='비밀번호가 올바르지 않습니다.'; pw.value=''; pw.focus(); }
+    }
+    ok.addEventListener('click',go);
+    pw.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); go(); } });
+    setTimeout(function(){ pw.focus(); }, 50);
+  })();
+  </script>
   <div id="__bundler_thumbnail">
 <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
 <rect x="240" y="180" width="720" height="440" rx="32" fill="#ffffff" stroke="#d6d4e0" stroke-width="2"></rect>
