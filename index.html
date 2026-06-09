@@ -209,6 +209,13 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
   color:var(--green-dk); font-size:14px; transition:all .25s;
 }
 .menu-card:hover .c-arrow{background:var(--green);color:#fff;border-color:var(--green);transform:translateX(3px);}
+.menu-card.dual{cursor:default;}
+.menu-card.dual:hover{transform:none;box-shadow:0 6px 24px rgba(60,184,120,.10);}
+.c-dual{display:flex;gap:10px;margin-top:16px;}
+.dual-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px 8px;border:1.5px solid var(--border);border-radius:12px;text-decoration:none;color:var(--green-dk);background:var(--green-pale);transition:background .18s,border-color .18s,transform .15s;}
+.dual-btn:hover{background:var(--green);color:#fff;border-color:var(--green);transform:translateY(-2px);}
+.dual-btn b{font-size:14px;font-weight:800;}
+.dual-btn span{font-size:10px;opacity:.85;font-family:'DM Mono',monospace;letter-spacing:.5px;}
 
 /* ══ 학교상징 ══ */
 .symbol-section{
@@ -434,25 +441,30 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
       <div class="c-foot"><span class="c-meta">학생·학부모용</span><span class="c-arrow">→</span></div>
     </a>
 
-    <a href="admission-predictor.html" class="menu-card reveal rd2">
+    <div class="menu-card reveal rd2 dual">
       <div class="card-tbar"></div>
       <div class="c-head"><span class="c-num">04</span><span class="c-tag tag-admission">예측 도구</span></div>
       <span class="c-icon">🎯</span>
       <h3 class="c-title">내신<br>합격예측</h3>
-      <p class="c-desc">내 내신 등급으로 지원 가능한 대학을 찾아보세요. 현 고2·고3은 9등급(2023~25 데이터), 현 고1은 5등급제(2028) 기준으로 안내합니다.</p>
-      <div class="c-foot"><span class="c-meta">학생·학부모용</span><span class="c-arrow">→</span></div>
-    </a>
+      <p class="c-desc">내 내신 등급으로 지원 가능한 대학을 찾아보세요. 학년에 맞는 도구를 골라 바로 이용하세요.</p>
+      <div class="c-dual">
+        <a href="admission-search.html" class="dual-btn"><b>9등급 예측기</b><span>고2·고3</span></a>
+        <a href="grade-predictor.html" class="dual-btn"><b>5등급 대학찾기</b><span>고1·학부모</span></a>
+      </div>
+    </div>
 
-    <a href="navigator/index.html" class="menu-card reveal rd3">
+    <div class="menu-card reveal rd3 dual">
       <div class="card-tbar"></div>
       <div class="c-head"><span class="c-num">05</span><span class="c-tag tag-career">2028 전형</span></div>
       <span class="c-icon">🪐</span>
-      <h3 class="c-title">2028 대입<br>내비게이터</h3>
-      <p class="c-desc">통합형 수능·내신 5등급제로 바뀌는 2028 대입. 수도권 주요 대학의 전형 변화(시행계획)와 등급대별 지원 가능 대학을 3D 궤도에서 한눈에 비교하세요.</p>
-      <div class="c-foot"><span class="c-meta">학생·학부모용</span><span class="c-arrow">→</span></div>
-    </a>
+      <h3 class="c-title">2028<br>대입 전형</h3>
+      <p class="c-desc">통합수능·5등급제로 바뀌는 2028 대입. 상세 요강과 3D 비교 도구를 함께 확인하세요.</p>
+      <div class="c-dual">
+        <a href="admission-plan-2028.html" class="dual-btn"><b>시행계획</b><span>요강 워크벤치</span></a>
+        <a href="navigator/index.html" class="dual-btn"><b>내비게이터</b><span>3D 비교</span></a>
+      </div>
+    </div>
   </div>
-  <p style="text-align:center;margin:8px 0 0;"><a href="admission-plan-2028.html" style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text-dim);text-decoration:none;border-bottom:1px dashed var(--border2);padding-bottom:2px;">▸ 2028 전형 시행계획 워크벤치 · 상세 요강 →</a></p>
 </section>
 
 <!-- ══ 학교상징 ══ -->
