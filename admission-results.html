@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026학년도 수시 입시결과 분석</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root {
+    --navy:#0d2b4e;--navy-light:#1a3f70;--navy-pale:#e8eef7;
+    --green:#27ae60;--green-pale:#d5f5e3;
+    --orange:#e67e22;--orange-pale:#fef5e7;
+    --red:#e74c3c;--red-pale:#fdecea;
+    --blue:#2980b9;--blue-pale:#eaf4fb;
+    --accent:#e8a020;--white:#ffffff;
+    --gray:#f4f6fa;--text:#1a1a2e;--sub:#5a6a7e;--border:#d0daea;
+    --shadow:0 2px 12px rgba(13,43,78,0.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:#f0f4fa;color:var(--text);font-size:14px;line-height:1.6;}
+  .page-header{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-light) 100%);color:#fff;padding:40px 0 28px;text-align:center;box-shadow:0 4px 20px rgba(13,43,78,0.25);}
+  .page-header h1{font-size:26px;font-weight:800;}
+  .page-header p{margin-top:8px;opacity:.75;font-size:13px;}
+  .container{max-width:1200px;margin:0 auto;padding:30px 20px;}
+  .section{background:#fff;border-radius:16px;box-shadow:var(--shadow);margin-bottom:30px;overflow:hidden;}
+  .sec-hd{background:var(--navy);color:#fff;padding:16px 24px;display:flex;align-items:center;gap:10px;}
+  .sec-hd h2{font-size:17px;font-weight:700;}
+  .badge{background:var(--accent);color:var(--navy);font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;}
+  .sec-bd{padding:24px;}
+  .note{background:var(--navy-pale);border-left:4px solid var(--navy);padding:10px 16px;border-radius:0 8px 8px 0;font-size:12px;color:var(--sub);margin-bottom:20px;}
+
+  /* 요약 카드 */
+  .card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;}
+  .stat-card{background:var(--gray);border-radius:12px;padding:18px 14px;text-align:center;border:1px solid var(--border);}
+  .stat-card.hi{background:var(--navy);border-color:var(--navy);}
+  .stat-card .lbl{font-size:11px;color:var(--sub);margin-bottom:5px;}
+  .stat-card.hi .lbl{color:rgba(255,255,255,.7);}
+  .stat-card .val{font-size:30px;font-weight:800;color:var(--navy);}
+  .stat-card.hi .val{color:var(--accent);}
+  .stat-card .sub{font-size:11px;color:var(--sub);margin-top:3px;}
+  .stat-card.hi .sub{color:rgba(255,255,255,.6);}
+  .type-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:18px;}
+  .type-card{background:var(--navy-pale);border-radius:10px;padding:12px;text-align:center;border:1px solid var(--border);}
+  .type-card .tn{font-size:12px;font-weight:700;color:var(--navy);}
+  .type-card .tr{font-size:20px;font-weight:800;color:var(--blue);margin:3px 0;}
+  .type-card .td{font-size:11px;color:var(--sub);}
+
+  /* ── 개선된 막대 차트 ── */
+  .chart-legend{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px;align-items:center;}
+  .chart-legend .lg-item{display:flex;align-items:center;gap:6px;font-size:12px;}
+  .lg-dot{width:12px;height:12px;border-radius:3px;flex-shrink:0;}
+  .lg-line{width:20px;height:0;border-top:2.5px dashed #e74c3c;}
+
+  .grade-table{width:100%;border-collapse:collapse;}
+  .grade-table thead th{background:var(--navy);color:#fff;padding:9px 10px;font-size:12px;font-weight:600;white-space:nowrap;text-align:left;}
+  .grade-table thead th:first-child{width:110px;}
+  .grade-table thead th.center{text-align:center;}
+  .grade-table tbody tr{border-bottom:1px solid var(--border);}
+  .grade-table tbody tr:hover{background:var(--navy-pale);}
+  .grade-table td{padding:8px 10px;vertical-align:middle;}
+  .grade-table td.univ-name{font-size:13px;font-weight:700;color:var(--navy);white-space:nowrap;}
+
+  .bar-cell{position:relative;padding:6px 10px;}
+  .bar-track{position:relative;height:22px;background:#edf0f5;border-radius:4px;overflow:visible;}
+  .bar-fill{height:100%;border-radius:4px;position:relative;min-width:4px;transition:width .3s;}
+  .bar-fill.strength{background:linear-gradient(90deg,#27ae60,#2ecc71);}   /* 컷보다 낮은 성적으로 합격 = 학교 강점 */
+  .bar-fill.near{background:linear-gradient(90deg,#e67e22,#f39c12);}       /* 컷 근처 */
+  .bar-fill.highgrade{background:linear-gradient(90deg,#2980b9,#3498db);}  /* 컷보다 좋은 성적으로 합격 = 우수 학생 */
+  .bar-fill.fail-danger{background:linear-gradient(90deg,#c0392b,#e74c3c);}  /* 좋은 성적인데 불합격 = 주의 */
+  .bar-fill.fail-near{background:linear-gradient(90deg,#d35400,#e67e22);}    /* 컷 근처 불합격 = 경계 */
+  .bar-fill.fail-normal{background:linear-gradient(90deg,#7f8c8d,#95a5a6);}  /* 예상된 불합격 */
+  .bar-fill .bar-val{position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:700;color:#fff;white-space:nowrap;}
+  .bar-fill .bar-val.outside{right:-38px;color:var(--text);}
+  .cutoff-line{position:absolute;top:-3px;bottom:-3px;width:2px;background:#e74c3c;z-index:2;}
+  .cutoff-label{position:absolute;top:-18px;font-size:9px;color:#e74c3c;white-space:nowrap;transform:translateX(-50%);}
+  .bar-empty{color:var(--sub);font-size:12px;padding-left:4px;}
+  .gap-badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:10px;white-space:nowrap;}
+  .gap-badge.good{background:var(--green-pale);color:#1a8a45;}
+  .gap-badge.near{background:var(--orange-pale);color:#b7770d;}
+  .gap-badge.over{background:var(--blue-pale);color:#1a6fa0;}
+  .gap-badge.na{background:#f0f0f0;color:#999;}
+  .gap-badge.fail-danger{background:var(--red-pale);color:#c0392b;}
+  .gap-badge.fail-near{background:var(--orange-pale);color:#d35400;}
+  .gap-badge.fail-normal{background:#f0f0f0;color:#666;}
+  .fail-badge-danger{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:10px;background:var(--red-pale);color:#c0392b;}
+  .fail-badge-near{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:10px;background:var(--orange-pale);color:#d35400;}
+  .fail-badge-normal{display:inline-block;font-size:11px;font-weight:700;padding:2px 7px;border-radius:10px;background:#f0f0f0;color:#666;}
+  .cnt-badge{font-size:11px;color:var(--sub);}
+
+  /* 강점 카드 */
+  .strength-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;}
+  .sc{border-radius:12px;padding:16px;border:2px solid var(--border);position:relative;overflow:hidden;}
+  .sc::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;}
+  .sc.gh{border-color:#27ae60;}.sc.gh::before{background:#27ae60;}
+  .sc.gm{border-color:#f39c12;}.sc.gm::before{background:#f39c12;}
+  .sc.gl{border-color:#3498db;}.sc.gl::before{background:#3498db;}
+  .sc.special{border-color:#dc2626!important;opacity:.88;}.sc.special::before{background:#dc2626!important;}
+  .special .sc-gb{background:#fef2f2!important;color:#b91c1c!important;}
+  .warn-banner{background:#fef2f2;border:1px solid #fca5a5;border-radius:6px;padding:8px 10px;font-size:11px;color:#b91c1c;margin-top:10px;line-height:1.7;}
+  .badge-lowN{display:inline-block;background:#fffbeb;border:1px solid #fcd34d;color:#92400e;font-size:10px;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:5px;vertical-align:middle;}
+  .special-section{margin-top:26px;padding-top:18px;border-top:2px dashed #fca5a5;}
+  .edu-strength-section{margin-top:26px;padding-top:18px;border-top:2px dashed var(--border);}
+  .univ-clickable{cursor:pointer;transition:background .15s,color .15s;}
+  .univ-clickable:hover{background:var(--navy-pale)!important;color:var(--blue)!important;}
+  .univ-clickable::after{content:'▼ 상세';font-size:9px;margin-left:5px;opacity:.55;font-weight:400;}
+  /* 모달 */
+  .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:999;overflow-y:auto;padding:40px 16px;}
+  .modal-box{max-width:760px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.35);}
+  .modal-hd{background:var(--navy);color:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;}
+  .modal-hd h3{font-size:15px;font-weight:800;}
+  .modal-close{background:rgba(255,255,255,.15);border:none;color:#fff;font-size:13px;font-weight:700;cursor:pointer;padding:5px 12px;border-radius:6px;}
+  .modal-body{padding:22px;max-height:76vh;overflow-y:auto;}
+
+  /* ── 인쇄 버튼 ── */
+  .print-btn{position:fixed;bottom:30px;right:30px;z-index:900;background:var(--navy);color:#fff;border:none;border-radius:50px;padding:12px 22px;font-size:13px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(13,43,78,0.35);display:flex;align-items:center;gap:8px;transition:background .2s;}
+  .print-btn:hover{background:var(--navy-light);}
+
+  /* ── 인쇄 / PDF 레이아웃 ── */
+  @media print {
+    @page { margin: 12mm 15mm; }
+    body { background: #fff !important; font-size: 11px; }
+    .print-btn, .modal-overlay { display: none !important; }
+    .page-header {
+      background: var(--navy) !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      padding: 18px 0;
+      box-shadow: none;
+    }
+    .container { max-width: 100%; padding: 8px 12px; }
+    .section {
+      box-shadow: none !important;
+      border: 1px solid #d0daea;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      break-inside: avoid;
+    }
+    .sec-hd {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      padding: 10px 18px;
+    }
+    .sec-hd h2 { font-size: 13px; }
+    .sec-bd { padding: 14px 18px; }
+    /* 카드 */
+    .stat-card { padding: 10px 8px; }
+    .stat-card .val { font-size: 22px; }
+    .stat-card.hi {
+      background: var(--navy) !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    /* 테이블 */
+    table { font-size: 10px; width: 100%; }
+    th, td { padding: 3px 6px; }
+    [style*="overflow-x:auto"] { overflow: visible !important; }
+    /* 막대그래프 */
+    .bar-track { overflow: visible; }
+    .bar-fill {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .bar-fill.strength { background: #27ae60 !important; }
+    .bar-fill.near { background: #e67e22 !important; }
+    .bar-fill.highgrade { background: #2980b9 !important; }
+    .bar-fill.fail-danger { background: #c0392b !important; }
+    .bar-fill.fail-near { background: #e67e22 !important; }
+    .bar-fill.fail-normal { background: #95a5a6 !important; }
+    /* 차트 캔버스 */
+    canvas { max-width: 320px !important; max-height: 320px !important; }
+    /* 섹션 페이지 나눔 */
+    .section:nth-child(n+3) { break-before: auto; }
+    .note { font-size: 10px; padding: 7px 12px; }
+  }
+  .modal-sum{display:flex;gap:10px;margin-bottom:18px;}
+  .modal-sum-item{flex:1;border-radius:10px;padding:12px;text-align:center;}
+  .modal-sum-item .ms-lbl{font-size:11px;font-weight:700;margin-bottom:3px;}
+  .modal-sum-item .ms-val{font-size:26px;font-weight:900;}
+  .modal-block{border-radius:10px;padding:14px;margin-bottom:14px;}
+  .modal-block.pass{border:2px solid #a7f3d0;}
+  .modal-block.fail{border:2px solid #fca5a5;}
+  .modal-block h4{font-size:13px;font-weight:700;margin-bottom:12px;}
+  .modal-sub{font-size:11px;font-weight:700;color:#555;background:#f0f4fb;padding:4px 8px;border-radius:4px;margin:10px 0 6px;}
+  .modal-tbl{width:100%;border-collapse:collapse;font-size:12px;}
+  .modal-tbl thead tr{background:#f0f4fb;}
+  .modal-tbl th{padding:6px 8px;text-align:left;font-size:11px;font-weight:700;color:var(--navy);}
+  .modal-tbl td{padding:6px 8px;border-bottom:1px solid #eee;}
+  .modal-tbl tr:last-child td{border-bottom:none;}
+  .susp-block{background:#faf5ff;border:1px solid #ddd6fe;border-radius:8px;padding:10px;margin-top:10px;}
+  .susp-row{font-size:12px;padding:4px 0;border-bottom:1px solid #ede9fe;}
+  .susp-row:last-child{border-bottom:none;}
+  .badge-pass{background:#d5f5e3;color:#1a8a45;padding:2px 6px;border-radius:8px;font-size:10px;}
+  .badge-supp{background:#fef5e7;color:#b7770d;padding:2px 6px;border-radius:8px;font-size:10px;}
+  .badge-miss{background:#fef2f2;color:#b91c1c;padding:2px 6px;border-radius:8px;font-size:10px;}
+  .badge-drop{background:#fef5e7;color:#b7770d;padding:2px 6px;border-radius:8px;font-size:10px;}
+  .badge-fail{background:#f0f0f0;color:#555;padding:2px 6px;border-radius:8px;font-size:10px;}
+  .sc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+  .sc-name{font-size:15px;font-weight:800;color:var(--navy);}
+  .sc-gb{font-size:12px;font-weight:700;padding:3px 9px;border-radius:20px;}
+  .gh .sc-gb{background:var(--green-pale);color:#1a8a45;}
+  .gm .sc-gb{background:var(--orange-pale);color:#b7770d;}
+  .gl .sc-gb{background:var(--blue-pale);color:#1a6fa0;}
+  .sc-nums{display:flex;gap:14px;margin-bottom:10px;}
+  .sc-num .sc-lbl{font-size:10px;color:var(--sub);}
+  .sc-num .sc-v{font-size:14px;font-weight:700;color:var(--navy);}
+  .major-tag{display:inline-block;background:var(--navy-pale);color:var(--navy);font-size:11px;padding:2px 7px;border-radius:20px;margin:2px 2px 0 0;}
+
+  /* 테이블 */
+  .tbl-wrap{overflow-x:auto;}
+  table.data{width:100%;border-collapse:collapse;font-size:13px;}
+  table.data th{background:var(--navy);color:#fff;padding:9px 11px;text-align:left;white-space:nowrap;}
+  table.data td{padding:8px 11px;border-bottom:1px solid var(--border);white-space:nowrap;}
+  table.data tr:hover td{background:var(--navy-pale);}
+  .bp{background:var(--green-pale);color:#1a8a45;padding:2px 7px;border-radius:20px;font-size:11px;font-weight:700;}
+  .bs{background:var(--orange-pale);color:#b7770d;padding:2px 7px;border-radius:20px;font-size:11px;font-weight:700;}
+  .gpos{color:var(--red);font-weight:700;}
+  .gneg{color:var(--green);font-weight:700;}
+
+  /* 도넛 */
+  .donut-wrap-outer{display:flex;flex-wrap:wrap;gap:24px;align-items:center;}
+  .donut-canvas{flex:0 0 280px;height:280px;}
+  .donut-leg{flex:1;min-width:180px;}
+  .leg-item{display:flex;align-items:center;gap:10px;margin-bottom:11px;}
+  .leg-dot{width:13px;height:13px;border-radius:50%;flex-shrink:0;}
+  .leg-name{font-weight:700;font-size:13px;}
+  .leg-dtl{font-size:12px;color:var(--sub);}
+
+  /* 산출 개요 */
+  .overview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;}
+  .ov-box{background:var(--gray);border-radius:12px;padding:18px;border:1px solid var(--border);}
+  .ov-box h4{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+  .ov-box ul{list-style:none;}
+  .ov-box li{font-size:12px;color:var(--sub);padding:4px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;}
+  .ov-box li:last-child{border-bottom:none;}
+  .ov-box li b{color:var(--text);flex-shrink:0;}
+  .formula-box{background:#fff8e1;border:1px solid #ffe082;border-radius:8px;padding:14px;font-size:13px;line-height:2;}
+  .formula-box code{background:#fff;border:1px solid var(--border);border-radius:4px;padding:2px 6px;font-family:monospace;font-size:12px;}
+  .notice{background:var(--navy-pale);border-radius:8px;padding:12px 16px;font-size:12px;color:var(--sub);margin-top:16px;line-height:1.8;}
+
+  @media(max-width:640px){.card-grid{grid-template-columns:repeat(2,1fr);}.strength-grid{grid-template-columns:1fr;}.donut-canvas{flex:0 0 100%;}}
+</style>
+</head>
+<body>
+<button class="print-btn" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+
+<div class="page-header">
+  <h1>2026학년도 수시 입시결과 분석</h1>
+  <p>우리 학교 강점 분석 &middot; 교과 / 종합 전형 심층 리포트</p>
+</div>
+<div class="container">
+
+<!-- 섹션1: 전체 요약 -->
+<div class="section">
+  <div class="sec-hd"><h2>① 전체 요약</h2><span class="badge">Overview</span></div>
+  <div class="sec-bd">
+    <div class="card-grid" id="sum-cards"></div>
+    <div class="type-grid" id="type-cards"></div>
+  </div>
+</div>
+
+<!-- 섹션2: 대학별 합격 현황 (개선된 차트) -->
+<div class="section">
+  <div class="sec-hd"><h2>② 대학별 합격 현황 비교 (교과 · 종합 전형)</h2><span class="badge">Chart</span></div>
+  <div class="sec-bd">
+    <div class="note">
+      막대 색상 기준 &nbsp;|&nbsp;
+      <span style="color:#27ae60;font-weight:700;">■ 초록</span> 컷오프보다 <b>낮은 성적으로 합격</b> → <b>우리 학교 강점</b> (비교과·학교 추천 효과) &nbsp;
+      <span style="color:#e67e22;font-weight:700;">■ 주황</span> 컷오프 ±0.2 이내 (경계선) &nbsp;
+      <span style="color:#2980b9;font-weight:700;">■ 파랑</span> 컷오프보다 <b>좋은 성적</b>으로 합격 (우수 학생, 강점 아님) &nbsp;
+      <span style="border-bottom:2px dashed #e74c3c;padding-bottom:1px;">빨간 점선</span> = 연구 컷오프
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="grade-table">
+        <thead>
+          <tr>
+            <th>대학명</th>
+            <th colspan="3">📚 교과전형 합격 평균등급 vs 컷오프</th>
+            <th style="width:8px;background:transparent;"></th>
+            <th colspan="3">🎓 종합전형 합격 평균등급 vs 컷오프</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th style="width:220px;">등급 바 (1등급→)</th>
+            <th class="center" style="width:70px;">실제등급</th>
+            <th class="center" style="width:70px;">GAP</th>
+            <th style="width:8px;background:transparent;"></th>
+            <th style="width:220px;">등급 바 (1등급→)</th>
+            <th class="center" style="width:70px;">실제등급</th>
+            <th class="center" style="width:70px;">GAP</th>
+          </tr>
+        </thead>
+        <tbody id="grade-table-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 섹션3: 강점 대학 -->
+<div class="section">
+  <div class="sec-hd"><h2>③ 학교 강점 대학 분석</h2><span class="badge">핵심</span></div>
+  <div class="sec-bd">
+    <div class="note"><strong>GAP = 실제합격평균 − 컷오프</strong> &nbsp;|&nbsp; <span style="color:#27ae60;font-weight:700;">양수(+)</span>일수록 낮은 성적으로 합격 → 비교과·추천 효과. &nbsp;<span style="color:#b91c1c;font-weight:700;">⚠️ GAP &gt; 1.5는 사회통합·농어촌·기회균형 등 특수전형 가능성 → 별도 분류</span></div>
+
+    <h3 style="font-size:13px;font-weight:700;color:var(--navy);margin:14px 0 10px;">🎓 종합전형 강점 대학</h3>
+    <div class="strength-grid" id="sc-grid"></div>
+
+    <div class="special-section">
+      <h3 style="font-size:13px;font-weight:700;color:#b91c1c;margin-bottom:8px;">⚠️ 특수전형 의심 — 강점으로 해석 불가</h3>
+      <div class="note" style="border-color:#b91c1c;background:#fef2f2;margin-bottom:14px;font-size:12px;">GAP이 1.5를 초과하거나 교과·종합 학과 불일치 등 데이터 신뢰도가 낮은 케이스입니다. 사회통합·농어촌·기회균형·특기자 전형 합격일 가능성이 높으며, 일반 진학 지도에 활용해서는 안 됩니다.</div>
+      <div class="strength-grid" id="sc-special-grid"></div>
+    </div>
+
+    <div class="edu-strength-section">
+      <h3 style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;">📚 교과전형 강점 대학 (GAP ≥ +0.2)</h3>
+      <div class="note" style="margin-bottom:14px;font-size:12px;">교과전형은 성적 반영 비중이 높지만, 컷오프보다 낮은 성적으로 합격한 경우 학교장추천·지역균형·비교과 가산 효과가 작용했을 수 있습니다. <b>n=1 항목은 통계 대표성이 낮으니 참고용으로만 활용하세요.</b></div>
+      <div class="strength-grid" id="sc-edu-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 섹션4: 합격 학과 -->
+<div class="section">
+  <div class="sec-hd"><h2>④ 합격 학과 분석</h2><span class="badge">Table</span></div>
+  <div class="sec-bd">
+    <h3 style="color:var(--navy);font-size:14px;margin-bottom:10px;">📚 교과전형 합격 현황 (등급 낮은 순)</h3>
+    <div class="tbl-wrap" id="edu-tbl"></div>
+    <h3 style="color:var(--navy);font-size:14px;margin:22px 0 10px;">🎓 종합전형 합격 현황 (등급 낮은 순)</h3>
+    <div class="tbl-wrap" id="comp-tbl"></div>
+  </div>
+</div>
+
+<!-- 섹션5: 도넛 -->
+<div class="section">
+  <div class="sec-hd"><h2>⑤ 전형유형별 합격 분포</h2><span class="badge">Donut</span></div>
+  <div class="sec-bd">
+    <div class="donut-wrap-outer">
+      <div class="donut-canvas"><canvas id="donut"></canvas></div>
+      <div class="donut-leg" id="donut-leg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 섹션6: 불합격 현황 -->
+<div class="section">
+  <div class="sec-hd" style="background:#7f1d1d;"><h2>⑥ 불합격 현황 분석 (교과 · 종합 전형)</h2><span class="badge">Fail</span></div>
+  <div class="sec-bd">
+
+    <div class="note" style="border-color:#b91c1c;background:#fef2f2;">
+      <b style="color:#b91c1c;">🔴 빨간 막대</b> 성적이 컷오프보다 좋은데도 불합격 → 수능최저 미충족 또는 면접·서류 탈락 주의 &nbsp;|&nbsp;
+      <b style="color:#e67e22;">🟠 주황</b> 컷 ±0.2 이내 불합격 (경계선) &nbsp;|&nbsp;
+      <b style="color:#6b7280;">■ 회색</b> 컷보다 낮은 성적으로 불합격 (성적 부족, 당연한 결과)
+    </div>
+
+    <div style="overflow-x:auto;margin-bottom:28px;">
+      <table class="grade-table">
+        <thead>
+          <tr>
+            <th>대학명</th>
+            <th colspan="3">📚 교과전형 불합격 평균등급 vs 컷오프</th>
+            <th style="width:8px;background:transparent;"></th>
+            <th colspan="3">🎓 종합전형 불합격 평균등급 vs 컷오프</th>
+          </tr>
+          <tr>
+            <th></th>
+            <th style="width:220px;">등급 바 (1등급→)</th>
+            <th class="center" style="width:70px;">평균등급</th>
+            <th class="center" style="width:70px;">GAP</th>
+            <th style="width:8px;background:transparent;"></th>
+            <th style="width:220px;">등급 바 (1등급→)</th>
+            <th class="center" style="width:70px;">평균등급</th>
+            <th class="center" style="width:70px;">GAP</th>
+          </tr>
+        </thead>
+        <tbody id="fail-table-body"></tbody>
+      </table>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;">
+      <div>
+        <h3 style="color:#7f1d1d;font-size:14px;margin-bottom:12px;">🚨 주의 케이스 — 성적이 컷보다 좋은데도 불합격</h3>
+        <div class="note" style="border-color:#b91c1c;background:#fef2f2;font-size:11px;">수능최저 미충족, 면접 탈락, 서류 미달 등 내신 외 요인 가능성 → 해당 학과 지원 시 추가 조건 반드시 확인</div>
+        <div class="tbl-wrap"><table class="data" id="suspicious-tbl"></table></div>
+      </div>
+      <div>
+        <h3 style="color:#7f1d1d;font-size:14px;margin-bottom:12px;">🔁 반복 불합격 학과 (2건 이상)</h3>
+        <div class="note" style="border-color:#b91c1c;background:#fef2f2;font-size:11px;">같은 대학·학과에 여러 학생이 지원했으나 모두 불합격 → 우리 학교가 불리한 학과이거나 과도한 상향 지원 가능성</div>
+        <div class="tbl-wrap"><table class="data" id="repeated-tbl"></table></div>
+      </div>
+    </div>
+
+    <h3 style="color:#7f1d1d;font-size:14px;margin-bottom:10px;">📚 교과전형 불합격 상세 (등급 낮은 순)</h3>
+    <div class="tbl-wrap" id="fail-edu-tbl"></div>
+    <h3 style="color:#7f1d1d;font-size:14px;margin:22px 0 10px;">🎓 종합전형 불합격 상세 (등급 낮은 순)</h3>
+    <div class="tbl-wrap" id="fail-comp-tbl"></div>
+  </div>
+</div>
+
+<!-- 섹션7: 산출 개요 -->
+<div class="section">
+  <div class="sec-hd"><h2>⑥ 산출 개요 및 방법론</h2><span class="badge">Method</span></div>
+  <div class="sec-bd">
+    <div class="overview-grid">
+
+      <div class="ov-box">
+        <h4>📂 데이터 출처</h4>
+        <ul>
+          <li><b>입시결과</b> 우리 학교 2026학년도 수시 진학결과 파일 (Excel)</li>
+          <li><b>컷오프</b> adiga.kr(대학어디가), 각 대학 입학처 공식 입시결과 (2025학년도 기준)</li>
+          <li><b>분석 대상</b> 학생부교과 · 학생부종합 전형만 (논술·실기 제외)</li>
+        </ul>
+      </div>
+
+      <div class="ov-box">
+        <h4>📊 등급 체계</h4>
+        <ul>
+          <li><b>9등급제</b> 고교 학생부 기본 등급 (1등급 최우수 ~ 9등급 최하위)</li>
+          <li><b>5등급제</b> 일부 학교(중학교 내신 등) 적용 별도 환산</li>
+          <li><b>국영수사과</b> 국어·영어·수학·사회·과학 단위 가중 평균 (9등급)</li>
+          <li><b>컷오프 기준</b> 합격자 평균등급 (70% 컷 또는 최종등록자 평균)</li>
+        </ul>
+      </div>
+
+      <div class="ov-box">
+        <h4>🔢 GAP 계산 공식</h4>
+        <div class="formula-box">
+          <b>교과전형 GAP</b><br>
+          <code>GAP = 실제 합격 평균등급 − 교과전형 컷오프</code><br><br>
+          <b>종합전형 GAP</b><br>
+          <code>GAP = 실제 합격 평균등급 − 종합전형 컷오프</code><br><br>
+          <span style="color:#27ae60;font-size:12px;">※ 양수(+) = 컷보다 <b>낮은 성적</b>으로 합격 → <b>학교 강점</b> (비교과·추천 효과)</span><br>
+          <span style="color:#2980b9;font-size:12px;">※ 음수(−) = 컷보다 <b>좋은 성적</b>으로 합격 → 우수 학생 (강점 아님)</span>
+        </div>
+      </div>
+
+      <div class="ov-box">
+        <h4>🏫 강점 대학 판정 기준</h4>
+        <ul>
+          <li><b>종합전형</b> 비교과 요소가 반영되어 학교 차별성이 나타남 (주 판정 기준)</li>
+          <li><b>강점 높음</b> 종합전형 GAP ≥ +0.5</li>
+          <li><b>강점 중간</b> 종합전형 GAP +0.3 ~ +0.5</li>
+          <li><b>강점</b> 종합전형 GAP +0.1 ~ +0.3</li>
+          <li><b>교과전형 강점</b> GAP ≥ +0.2 (학교장추천·지역균형 효과 가능)</li>
+          <li><b style="color:#b91c1c;">특수전형 분리</b> GAP &gt; 1.5이면 사회통합·농어촌·기회균형 전형 가능성으로 별도 분류, 강점으로 산정 제외</li>
+        </ul>
+      </div>
+
+      <div class="ov-box">
+        <h4>⚠️ 유의사항</h4>
+        <ul>
+          <li><b>표본 수</b> 대학별 합격 건수 1~4건 — n=1은 통계 대표성 없음, 참고용</li>
+          <li><b>컷오프</b> 대학 전체 평균 기준 (학과별 실제 컷과 차이 존재)</li>
+          <li><b>연도 차이</b> 컷오프는 2025학년도, 입시결과는 2026학년도</li>
+          <li><b>특수전형</b> 사회통합·농어촌·기회균형·군사학과 등은 성적 기반 분석 불가</li>
+          <li><b>수능최저</b> 미충족 건수는 파악된 최솟값이며, 기재 없는 케이스 포함 시 더 많음</li>
+          <li><b>등록 전환율</b> 정시 이탈, 상위 대학 합격으로 인한 미등록 포함 — 낮다고 부정적인 것은 아님</li>
+          <li><b>활용 목적</b> 진학 상담 참고자료, 공식 입시 자료로 활용 불가</li>
+        </ul>
+      </div>
+
+      <div class="ov-box">
+        <h4>📈 막대 차트 읽는 법</h4>
+        <ul>
+          <li><b>막대 길이</b> 합격 평균등급 (짧을수록 우수한 성적)</li>
+          <li><b>빨간 점선</b> 해당 대학 연구 컷오프 위치</li>
+          <li><b>초록 막대</b> 컷보다 낮은 성적으로 합격 → <b>학교 강점</b> (비교과 효과)</li>
+          <li><b>주황 막대</b> 컷오프 ±0.2 이내 (경계선)</li>
+          <li><b>파랑 막대</b> 컷보다 좋은 성적으로 합격 → 우수 학생 (강점 아님)</li>
+        </ul>
+      </div>
+
+    </div>
+    <div class="notice">
+      ※ 본 자료는 우리 학교 졸업생의 입시 결과를 기반으로 한 내부 분석 자료입니다. 컷오프 데이터는 공개된 입시 정보를 참조한 것으로, 대학 공식 발표 자료와 차이가 있을 수 있습니다. 진학 상담 보조 자료로만 활용하시기 바랍니다.
+    </div>
+  </div>
+</div>
+
+</div>
+<script>
+const DATA = {"summary":{"total":842,"passed":97,"supp":105,"passed_total":202,"registered":59,"failed":629,"suneung_miss_known":5,"type_stats":{"교과":{"total":268,"pass":98,"rate":36.6},"종합":{"total":288,"pass":53,"rate":18.4},"논술":{"total":126,"pass":6,"rate":4.8},"실기":{"total":111,"pass":18,"rate":16.2},"기타":{"total":49,"pass":27,"rate":55.1}}},"chart2":[{"univ":"연세대","avg":1.77,"edu_avg":1.34,"comp_avg":1.98,"cutoff_edu":1.2,"cutoff_comp":1.4,"edu_count":1,"comp_count":2},{"univ":"고려대","avg":1.49,"edu_avg":1.49,"comp_avg":null,"cutoff_edu":1.3,"cutoff_comp":1.5,"edu_count":2,"comp_count":0},{"univ":"한양대","avg":1.34,"edu_avg":null,"comp_avg":1.34,"cutoff_edu":1.3,"cutoff_comp":1.5,"edu_count":0,"comp_count":1},{"univ":"서강대","avg":1.68,"edu_avg":1.58,"comp_avg":1.77,"cutoff_edu":1.4,"cutoff_comp":1.6,"edu_count":2,"comp_count":2},{"univ":"성균관대","avg":1.53,"edu_avg":1.53,"comp_avg":null,"cutoff_edu":1.4,"cutoff_comp":1.65,"edu_count":1,"comp_count":0},{"univ":"이화여대","avg":1.75,"edu_avg":1.63,"comp_avg":2.11,"cutoff_edu":1.4,"cutoff_comp":1.6,"edu_count":3,"comp_count":1},{"univ":"중앙대","avg":1.61,"edu_avg":1.61,"comp_avg":null,"cutoff_edu":1.5,"cutoff_comp":1.75,"edu_count":4,"comp_count":0},{"univ":"경희대","avg":2.21,"edu_avg":null,"comp_avg":2.21,"cutoff_edu":1.6,"cutoff_comp":1.85,"edu_count":0,"comp_count":1},{"univ":"건국대","avg":1.97,"edu_avg":null,"comp_avg":1.97,"cutoff_edu":1.8,"cutoff_comp":2.05,"edu_count":0,"comp_count":1},{"univ":"서울시립대","avg":1.64,"edu_avg":1.64,"comp_avg":null,"cutoff_edu":1.9,"cutoff_comp":2.15,"edu_count":1,"comp_count":0},{"univ":"동국대","avg":2.11,"edu_avg":2.11,"comp_avg":null,"cutoff_edu":1.9,"cutoff_comp":2.15,"edu_count":1,"comp_count":0},{"univ":"홍익대","avg":2.48,"edu_avg":null,"comp_avg":2.48,"cutoff_edu":2.0,"cutoff_comp":2.25,"edu_count":0,"comp_count":2},{"univ":"숙명여대","avg":2.26,"edu_avg":1.97,"comp_avg":2.41,"cutoff_edu":2.0,"cutoff_comp":2.3,"edu_count":1,"comp_count":2},{"univ":"국민대","avg":2.56,"edu_avg":2.54,"comp_avg":2.59,"cutoff_edu":2.1,"cutoff_comp":2.35,"edu_count":2,"comp_count":1},{"univ":"연세대(미래)","avg":4.48,"edu_avg":null,"comp_avg":4.48,"cutoff_edu":2.1,"cutoff_comp":2.35,"edu_count":0,"comp_count":1},{"univ":"인하대","avg":2.66,"edu_avg":null,"comp_avg":2.66,"cutoff_edu":2.1,"cutoff_comp":2.5,"edu_count":0,"comp_count":1},{"univ":"한양(에리카)","avg":2.91,"edu_avg":2.66,"comp_avg":3.03,"cutoff_edu":2.2,"cutoff_comp":2.6,"edu_count":1,"comp_count":2},{"univ":"차의과학대","avg":2.91,"edu_avg":1.34,"comp_avg":4.48,"cutoff_edu":2.2,"cutoff_comp":2.5,"edu_count":1,"comp_count":1},{"univ":"숭실대","avg":2.34,"edu_avg":2.34,"comp_avg":null,"cutoff_edu":2.2,"cutoff_comp":2.45,"edu_count":2,"comp_count":0},{"univ":"단국대(죽전)","avg":2.97,"edu_avg":2.62,"comp_avg":3.66,"cutoff_edu":2.3,"cutoff_comp":2.6,"edu_count":2,"comp_count":1},{"univ":"서울과기대","avg":2.38,"edu_avg":2.11,"comp_avg":2.66,"cutoff_edu":2.3,"cutoff_comp":2.6,"edu_count":1,"comp_count":1},{"univ":"세종대","avg":2.86,"edu_avg":2.86,"comp_avg":null,"cutoff_edu":2.4,"cutoff_comp":2.7,"edu_count":1,"comp_count":0},{"univ":"을지대(성남)","avg":2.66,"edu_avg":2.66,"comp_avg":null,"cutoff_edu":2.4,"cutoff_comp":2.7,"edu_count":1,"comp_count":0},{"univ":"가천대","avg":2.93,"edu_avg":2.93,"comp_avg":null,"cutoff_edu":2.5,"cutoff_comp":2.9,"edu_count":1,"comp_count":0},{"univ":"명지대","avg":3.24,"edu_avg":3.1,"comp_avg":3.3,"cutoff_edu":2.5,"cutoff_comp":2.85,"edu_count":1,"comp_count":2},{"univ":"경기대","avg":3.7,"edu_avg":null,"comp_avg":3.7,"cutoff_edu":2.6,"cutoff_comp":3.0,"edu_count":0,"comp_count":4},{"univ":"성신여대","avg":2.61,"edu_avg":2.48,"comp_avg":2.67,"cutoff_edu":2.7,"cutoff_comp":3.05,"edu_count":1,"comp_count":2},{"univ":"광운대","avg":3.13,"edu_avg":null,"comp_avg":3.13,"cutoff_edu":2.8,"cutoff_comp":3.15,"edu_count":0,"comp_count":1},{"univ":"가톨릭(성심)","avg":3.27,"edu_avg":2.82,"comp_avg":3.43,"cutoff_edu":2.9,"cutoff_comp":3.3,"edu_count":1,"comp_count":3},{"univ":"강원대","avg":4.25,"edu_avg":null,"comp_avg":4.25,"cutoff_edu":3.0,"cutoff_comp":3.4,"edu_count":0,"comp_count":1},{"univ":"한성대","avg":3.1,"edu_avg":3.1,"comp_avg":null,"cutoff_edu":3.0,"cutoff_comp":3.4,"edu_count":1,"comp_count":0},{"univ":"한림대","avg":3.72,"edu_avg":3.72,"comp_avg":null,"cutoff_edu":3.3,"cutoff_comp":3.7,"edu_count":1,"comp_count":0},{"univ":"동덕여대","avg":3.43,"edu_avg":3.14,"comp_avg":3.72,"cutoff_edu":3.4,"cutoff_comp":3.85,"edu_count":1,"comp_count":1},{"univ":"서경대","avg":3.13,"edu_avg":3.13,"comp_avg":null,"cutoff_edu":4.2,"cutoff_comp":4.75,"edu_count":1,"comp_count":0},{"univ":"안양대","avg":4.31,"edu_avg":3.86,"comp_avg":4.76,"cutoff_edu":4.3,"cutoff_comp":4.85,"edu_count":1,"comp_count":1}],"strength":[{"univ":"연세대(미래)","avg":4.48,"cutoff_comp":2.35,"gap":2.13,"count":1,"majors":["자율융합계열"],"special":true,"special_note":"4.48등급이 2.35 컷에 합격 — 일반전형으로 불가능. 사회통합·농어촌·기회균형 등 특수전형 합격 가능성 높음"},{"univ":"차의과학대","avg":4.48,"cutoff_comp":2.5,"gap":1.98,"count":1,"majors":["미래융합대학"],"special":true,"special_note":"교과전형(약학, 1.34등급)과 종합전형(미래융합대학, 4.48등급)이 전혀 다른 학과 — 같은 컷오프로 GAP 계산 불가. 데이터 혼재"},{"univ":"단국대(죽전)","avg":3.66,"cutoff_comp":2.6,"gap":1.06,"count":1,"majors":["특수교육과"]},{"univ":"강원대","avg":4.25,"cutoff_comp":3.4,"gap":0.85,"count":1,"majors":["기계융합공학부"]},{"univ":"경기대","avg":3.7,"cutoff_comp":3.0,"gap":0.7,"count":4,"majors":["글로벌어문학부","건축학과","경제학부","문헌정보학과"]},{"univ":"연세대","avg":1.98,"cutoff_comp":1.4,"gap":0.58,"count":2,"majors":["시스템생물학과","식품영양학과"]},{"univ":"이화여대","avg":2.11,"cutoff_comp":1.6,"gap":0.51,"count":1,"majors":["과학교육과"]},{"univ":"명지대","avg":3.3,"cutoff_comp":2.85,"gap":0.45,"count":2,"majors":["응용통계학전공","국어국문학전공"]},{"univ":"한양(에리카)","avg":3.03,"cutoff_comp":2.6,"gap":0.43,"count":2,"majors":["스포츠과학부","LIONS자율전공학부"]},{"univ":"경희대","avg":2.21,"cutoff_comp":1.85,"gap":0.36,"count":1,"majors":["생물학과"]},{"univ":"국민대","avg":2.59,"cutoff_comp":2.35,"gap":0.24,"count":1,"majors":["미디어전공"]},{"univ":"홍익대","avg":2.48,"cutoff_comp":2.25,"gap":0.23,"count":2,"majors":["산업데이터공학과","건설환경공학과"]},{"univ":"서강대","avg":1.77,"cutoff_comp":1.6,"gap":0.17,"count":2,"majors":["기계공학과","화공생명공학과"]},{"univ":"인하대","avg":2.66,"cutoff_comp":2.5,"gap":0.16,"count":1,"majors":["체육교육과"]},{"univ":"가톨릭(성심)","avg":3.43,"cutoff_comp":3.3,"gap":0.13,"count":3,"majors":["컴퓨터정보공학부","경제학과","사회학과"]},{"univ":"숙명여대","avg":2.41,"cutoff_comp":2.3,"gap":0.11,"count":2,"majors":["미디어학부","정치외교학과"]}],"dept_edu":[{"univ":"고려대","major":"생명과학부","grade":1.34,"grade_detail":"국1.2 영1.2 수1.0","cutoff":1.3,"gap":0.04,"stage":"충원합격"},{"univ":"연세대","major":"시스템생물학과","grade":1.34,"grade_detail":"국1.2 영1.2 수1.0","cutoff":1.2,"gap":0.14,"stage":"충원합격"},{"univ":"차의과학대","major":"약학대학","grade":1.34,"grade_detail":"국1.2 영1.2 수1.0","cutoff":2.2,"gap":-0.86,"stage":"합격"},{"univ":"이화여대","major":"휴먼기계바이오공학과","grade":1.48,"grade_detail":"국1.2 영1.6 수1.5","cutoff":1.4,"gap":0.08,"stage":"합격"},{"univ":"중앙대","major":"융합공학부","grade":1.48,"grade_detail":"국1.2 영1.6 수1.5","cutoff":1.5,"gap":-0.02,"stage":"충원합격"},{"univ":"서강대","major":"인문학부","grade":1.53,"grade_detail":"국1.6 영1.4 수2.4","cutoff":1.4,"gap":0.13,"stage":"충원합격"},{"univ":"성균관대","major":"사회과학계열","grade":1.53,"grade_detail":"국1.6 영1.4 수2.4","cutoff":1.4,"gap":0.13,"stage":"충원합격"},{"univ":"중앙대","major":"사회과학대학","grade":1.53,"grade_detail":"국1.6 영1.4 수2.4","cutoff":1.5,"gap":0.03,"stage":"합격"},{"univ":"고려대","major":"독어독문학과","grade":1.64,"grade_detail":"국1.6 영1.2 수2.0","cutoff":1.3,"gap":0.34,"stage":"충원합격"},{"univ":"서강대","major":"유럽문화학과","grade":1.64,"grade_detail":"국1.6 영1.2 수2.0","cutoff":1.4,"gap":0.24,"stage":"충원합격"},{"univ":"서울시립대","major":"도시행정학과","grade":1.64,"grade_detail":"국1.6 영1.2 수2.0","cutoff":1.9,"gap":-0.26,"stage":"합격"},{"univ":"이화여대","major":"행정학과","grade":1.64,"grade_detail":"국1.6 영1.2 수2.0","cutoff":1.4,"gap":0.24,"stage":"충원합격"},{"univ":"중앙대","major":"사회과학대학","grade":1.64,"grade_detail":"국1.6 영1.2 수2.0","cutoff":1.5,"gap":0.14,"stage":"충원합격"},{"univ":"이화여대","major":"컴퓨터공학과","grade":1.76,"grade_detail":"국1.8 영1.4 수1.7","cutoff":1.4,"gap":0.36,"stage":"합격"},{"univ":"중앙대","major":"기계공학부","grade":1.79,"grade_detail":"국1.6 영1.6 수2.3","cutoff":1.5,"gap":0.29,"stage":"충원합격"},{"univ":"숙명여대","major":"화학과","grade":1.97,"grade_detail":"국1.4 영1.2 수2.8","cutoff":2.0,"gap":-0.03,"stage":"충원합격"},{"univ":"동국대","major":"건설환경공학과","grade":2.11,"grade_detail":"국2.4 영2.2 수1.7","cutoff":1.9,"gap":0.21,"stage":"충원합격"},{"univ":"서울과기대","major":"건설시스템공학과","grade":2.11,"grade_detail":"국2.4 영2.2 수1.7","cutoff":2.3,"gap":-0.19,"stage":"충원합격"},{"univ":"숭실대","major":"산업정보시스템공학과","grade":2.11,"grade_detail":"국2.4 영2.2 수1.7","cutoff":2.2,"gap":-0.09,"stage":"합격"},{"univ":"국민대","major":"국제통상학과","grade":2.23,"grade_detail":"국1.8 영3.0 수2.4","cutoff":2.1,"gap":0.13,"stage":"충원합격"},{"univ":"성신여대","major":"창의융합학부","grade":2.48,"grade_detail":"국1.6 영2.0 수3.6","cutoff":2.7,"gap":-0.22,"stage":"합격"},{"univ":"숭실대","major":"회계학과","grade":2.57,"grade_detail":"국2.2 영1.8 수1.2","cutoff":2.2,"gap":0.37,"stage":"합격"},{"univ":"단국대(죽전)","major":"사회계열광역","grade":2.59,"grade_detail":"국2.8 영1.4 수3.6","cutoff":2.3,"gap":0.29,"stage":"충원합격"},{"univ":"한양(에리카)","major":"배터리소재화학공학과","grade":2.66,"grade_detail":"국2.6 영3.0 수2.2","cutoff":2.2,"gap":0.46,"stage":"충원합격"},{"univ":"단국대(죽전)","major":"건축학부 건축공학전공","grade":2.66,"grade_detail":"국2.8 영2.0 수2.2","cutoff":2.3,"gap":0.36,"stage":"합격"},{"univ":"을지대(성남)","major":"물리치료학과","grade":2.66,"grade_detail":"국2.6 영3.8 수1.6","cutoff":2.4,"gap":0.26,"stage":"충원합격"},{"univ":"가톨릭(성심)","major":"중국언어문화학과","grade":2.82,"grade_detail":"국3.0 영3.4 수2.8","cutoff":2.9,"gap":-0.08,"stage":"합격"},{"univ":"국민대","major":"경제학과","grade":2.86,"grade_detail":"국3.0 영1.8 수1.5","cutoff":2.1,"gap":0.76,"stage":"충원합격"},{"univ":"세종대","major":"경영학부","grade":2.86,"grade_detail":"국3.0 영1.8 수1.5","cutoff":2.4,"gap":0.46,"stage":"충원합격"},{"univ":"가천대","major":"화공생명배터리공학부","grade":2.93,"grade_detail":"국2.8 영2.4 수2.2","cutoff":2.5,"gap":0.43,"stage":"충원합격"}],"dept_comp":[{"univ":"한양대","major":"생명공학과","grade":1.34,"grade_detail":"국1.2 영1.2 수1.0","cutoff":1.5,"gap":-0.16,"stage":"충원합격"},{"univ":"서강대","major":"화공생명공학과","grade":1.76,"grade_detail":"국1.8 영1.4 수1.7","cutoff":1.6,"gap":0.16,"stage":"충원합격"},{"univ":"연세대","major":"식품영양학과","grade":1.76,"grade_detail":"국1.8 영1.4 수1.7","cutoff":1.4,"gap":0.36,"stage":"충원합격"},{"univ":"서강대","major":"기계공학과","grade":1.79,"grade_detail":"국1.6 영1.6 수2.3","cutoff":1.6,"gap":0.19,"stage":"충원합격"},{"univ":"건국대","major":"생명과학특성학과","grade":1.97,"grade_detail":"국1.4 영1.2 수2.8","cutoff":2.05,"gap":-0.08,"stage":"합격"},{"univ":"이화여대","major":"과학교육과","grade":2.11,"grade_detail":"국1.6 영1.8 수2.2","cutoff":1.6,"gap":0.51,"stage":"충원합격"},{"univ":"홍익대","major":"건설환경공학과","grade":2.11,"grade_detail":"국2.4 영2.2 수1.7","cutoff":2.25,"gap":-0.14,"stage":"합격"},{"univ":"경희대","major":"생물학과","grade":2.21,"grade_detail":"국2.4 영2.0 수3.2","cutoff":1.85,"gap":0.36,"stage":"합격"},{"univ":"연세대","major":"시스템생물학과","grade":2.21,"grade_detail":"국2.4 영2.0 수3.2","cutoff":1.4,"gap":0.81,"stage":"합격"},{"univ":"숙명여대","major":"정치외교학과","grade":2.23,"grade_detail":"국1.8 영3.0 수2.4","cutoff":2.3,"gap":-0.07,"stage":"충원합격"},{"univ":"국민대","major":"미디어전공","grade":2.59,"grade_detail":"국2.8 영1.4 수3.6","cutoff":2.35,"gap":0.24,"stage":"합격"},{"univ":"숙명여대","major":"미디어학부","grade":2.59,"grade_detail":"국2.8 영1.4 수3.6","cutoff":2.3,"gap":0.29,"stage":"합격"},{"univ":"성신여대","major":"바이오신약의과학부","grade":2.66,"grade_detail":"국2.8 영2.0 수2.2","cutoff":3.05,"gap":-0.39,"stage":"합격"},{"univ":"서울과기대","major":"스포츠과학과","grade":2.66,"grade_detail":"국2.6 영3.8 수1.6","cutoff":2.6,"gap":0.06,"stage":"합격"},{"univ":"인하대","major":"체육교육과","grade":2.66,"grade_detail":"국2.6 영3.8 수1.6","cutoff":2.5,"gap":0.16,"stage":"합격"},{"univ":"성신여대","major":"한문교육과","grade":2.69,"grade_detail":"국2.8 영3.2 수2.8","cutoff":3.05,"gap":-0.36,"stage":"합격"},{"univ":"홍익대","major":"산업데이터공학과","grade":2.86,"grade_detail":"국3.0 영1.8 수1.5","cutoff":2.25,"gap":0.61,"stage":"충원합격"},{"univ":"한양(에리카)","major":"스포츠과학부","grade":2.93,"grade_detail":"국2.8 영2.0 수3.0","cutoff":2.6,"gap":0.33,"stage":"충원합격"},{"univ":"가톨릭(성심)","major":"사회학과","grade":2.97,"grade_detail":"국2.4 영3.2 수4.2","cutoff":3.3,"gap":-0.33,"stage":"충원합격"},{"univ":"광운대","major":"국어국문학과","grade":3.13,"grade_detail":"국2.2 영4.0 수5.0","cutoff":3.15,"gap":-0.02,"stage":"충원합격"},{"univ":"명지대","major":"국어국문학전공","grade":3.13,"grade_detail":"국2.2 영4.0 수5.0","cutoff":2.85,"gap":0.28,"stage":"합격"},{"univ":"한양(에리카)","major":"LIONS자율전공학부","grade":3.13,"grade_detail":"국3.0 영3.0 수3.8","cutoff":2.6,"gap":0.53,"stage":"충원합격"},{"univ":"가톨릭(성심)","major":"경제학과","grade":3.48,"grade_detail":"국3.0 영4.4 수2.2","cutoff":3.3,"gap":0.18,"stage":"합격"},{"univ":"경기대","major":"경제학부","grade":3.48,"grade_detail":"국3.0 영4.4 수2.2","cutoff":3.0,"gap":0.48,"stage":"합격"},{"univ":"명지대","major":"응용통계학전공","grade":3.48,"grade_detail":"국3.0 영4.4 수2.2","cutoff":2.85,"gap":0.63,"stage":"충원합격"},{"univ":"단국대(죽전)","major":"특수교육과","grade":3.66,"grade_detail":"국3.4 영4.8 수5.2","cutoff":2.6,"gap":1.06,"stage":"충원합격"},{"univ":"경기대","major":"글로벌어문학부","grade":3.72,"grade_detail":"국3.6 영3.2 수4.8","cutoff":3.0,"gap":0.72,"stage":"합격"},{"univ":"동덕여대","major":"글로벌지역학부 일어일본학전공","grade":3.72,"grade_detail":"국3.6 영3.2 수4.8","cutoff":3.85,"gap":-0.13,"stage":"충원합격"},{"univ":"경기대","major":"건축학과","grade":3.75,"grade_detail":"국4.2 영3.6 수2.8","cutoff":3.0,"gap":0.75,"stage":"합격"},{"univ":"가톨릭(성심)","major":"컴퓨터정보공학부","grade":3.83,"grade_detail":"국4.4 영3.0 수3.3","cutoff":3.3,"gap":0.53,"stage":"합격"}],"donut":{"교과":{"pass":98,"reg":28},"종합":{"pass":53,"reg":13},"논술":{"pass":6,"reg":2},"실기":{"pass":18,"reg":8},"기타":{"pass":27,"reg":8}}};
+
+// ── 섹션1: 요약 카드 ──
+(function(){
+  var s=DATA.summary;
+  var pr=(s.passed_total/s.total*100).toFixed(1);
+  var rr=(s.registered/s.passed_total*100).toFixed(1);
+  [{lbl:'총 지원건수',val:s.total,sub:'전체 수시 지원',hi:0},
+   {lbl:'합격+충원합격',val:s.passed_total,sub:'합격 '+s.passed+' / 충원 '+s.supp,hi:1},
+   {lbl:'최종 등록',val:s.registered,sub:'등록(Y) 건수',hi:0},
+   {lbl:'불합격',val:s.failed,sub:'불합격 건수',hi:0},
+   {lbl:'합격률',val:pr+'%',sub:'합격+충원 / 전체 지원',hi:0},
+   {lbl:'등록 전환율',val:rr+'%',sub:'정시이탈·포기 포함 — 합격 중 '+rr+'%만 등록',hi:0},
+   {lbl:'수능최저 미충족',val:s.suneung_miss_known+'건+',sub:'파악된 최저미충족 (실제는 더 많을 수 있음)',hi:0}
+  ].forEach(function(c){
+    var d=document.createElement('div');
+    d.className='stat-card'+(c.hi?' hi':'');
+    d.innerHTML='<div class="lbl">'+c.lbl+'</div><div class="val">'+c.val+'</div><div class="sub">'+c.sub+'</div>';
+    document.getElementById('sum-cards').appendChild(d);
+  });
+  ['교과','종합','논술','실기','기타'].forEach(function(t){
+    var d=DATA.summary.type_stats[t];
+    var el=document.createElement('div');
+    el.className='type-card';
+    var extra=t==='논술'
+      ?'<div style="font-size:10px;color:#e67e22;font-weight:700;margin-top:3px;">⚠️ 효율 재검토 필요</div>'
+      :t==='기타'
+      ?'<div style="font-size:10px;color:var(--sub);margin-top:3px;">실기·사회통합·특기 포함</div>'
+      :'';
+    if(t==='논술') el.style.borderColor='#f39c12';
+    el.innerHTML='<div class="tn">'+t+'전형</div><div class="tr" style="'+(t==='논술'?'color:#e67e22;':'')+'">'+d.rate+'%</div><div class="td">합격 '+d.pass+' / 지원 '+d.total+'</div>'+extra;
+    document.getElementById('type-cards').appendChild(el);
+  });
+})();
+
+// ── 섹션2: 개선된 막대 차트 ──
+(function(){
+  var MAX=6; // x축 최대 (등급 1~6 표시)
+  function barHtml(avg, cutoff){
+    if(avg===null) return '<td class="bar-cell"><span class="bar-empty">해당 없음</span></td>';
+    var pct=Math.min((avg-1)/(MAX-1)*100,100);
+    var cpct=Math.min((cutoff-1)/(MAX-1)*100,100);
+    var gap=+(avg-cutoff).toFixed(2);
+    // gap 양수 = 실제등급 > 컷오프 = 낮은 성적으로 합격 = 학교 강점
+    // gap 음수 = 실제등급 < 컷오프 = 좋은 성적으로 합격 = 우수 학생(강점 아님)
+    var cls=gap>=0.2?'strength':gap>=-0.2?'near':'highgrade';
+    var valCls=pct<20?'bar-val outside':'bar-val';
+    return '<td class="bar-cell" style="min-width:220px;padding:4px 10px;">'
+      +'<div class="bar-track">'
+      +'<div class="bar-fill '+cls+'" style="width:'+pct.toFixed(1)+'%">'
+      +'<span class="'+valCls+'">'+avg+'등급</span>'
+      +'</div>'
+      +'<div class="cutoff-line" style="left:'+cpct.toFixed(1)+'%">'
+      +'<span class="cutoff-label">컷'+cutoff+'</span>'
+      +'</div>'
+      +'</div></td>';
+  }
+  function gapBadge(avg, cutoff){
+    if(avg===null) return '<td><span class="gap-badge na">-</span></td>';
+    var gap=+(avg-cutoff).toFixed(2);
+    // 양수(+) = 낮은 성적으로 합격 = 강점 / 음수(-) = 좋은 성적으로 합격 = 우수학생
+    // 양수(+) = 낮은 성적으로 합격 = 강점(초록) / 음수(-) = 좋은 성적으로 합격 = 우수학생(파랑)
+    var cls=gap>=0.2?'good':gap>=-0.2?'near':'over';
+    var sign=gap>0?'+':'';
+    return '<td style="text-align:center;"><span class="gap-badge '+cls+'">'+sign+gap+'</span></td>';
+  }
+  var tbody=document.getElementById('grade-table-body');
+  DATA.chart2.forEach(function(d){
+    var tr=document.createElement('tr');
+    var eduCnt=d.edu_count>0?'<div class="cnt-badge">'+d.edu_count+'건</div>':'';
+    var compCnt=d.comp_count>0?'<div class="cnt-badge">'+d.comp_count+'건</div>':'';
+    tr.innerHTML='<td class="univ-name univ-clickable" onclick="showUnivDetail(\''+d.univ+'\')" title="클릭하여 전형별 상세 보기">'+d.univ+'</td>'
+      +barHtml(d.edu_avg, d.cutoff_edu)
+      +'<td style="text-align:center;font-size:12px;color:var(--sub);">'+(d.edu_avg||'-')+'<br>'+eduCnt+'</td>'
+      +gapBadge(d.edu_avg, d.cutoff_edu)
+      +'<td style="background:#f8f9fc;width:4px;padding:0;"></td>'
+      +barHtml(d.comp_avg, d.cutoff_comp)
+      +'<td style="text-align:center;font-size:12px;color:var(--sub);">'+(d.comp_avg||'-')+'<br>'+compCnt+'</td>'
+      +gapBadge(d.comp_avg, d.cutoff_comp);
+    tbody.appendChild(tr);
+  });
+})();
+
+// ── 섹션6: 불합격 현황 ──
+const FAIL = {"total_fail":400,"univ_summary":[{"univ":"서울대","edu_avg":null,"edu_cnt":0,"comp_avg":1.5,"comp_cnt":4,"cutoff_edu":1.1,"cutoff_comp":1.2,"edu_gap":null,"comp_gap":0.3},{"univ":"연세대","edu_avg":null,"edu_cnt":0,"comp_avg":1.61,"comp_cnt":2,"cutoff_edu":1.2,"cutoff_comp":1.4,"edu_gap":null,"comp_gap":0.21},{"univ":"고려대","edu_avg":1.59,"edu_cnt":3,"comp_avg":2.16,"comp_cnt":4,"cutoff_edu":1.3,"cutoff_comp":1.5,"edu_gap":0.29,"comp_gap":0.66},{"univ":"한양대","edu_avg":1.63,"edu_cnt":2,"comp_avg":2.33,"comp_cnt":3,"cutoff_edu":1.3,"cutoff_comp":1.5,"edu_gap":0.33,"comp_gap":0.83},{"univ":"성균관대","edu_avg":null,"edu_cnt":0,"comp_avg":3.19,"comp_cnt":2,"cutoff_edu":1.4,"cutoff_comp":1.65,"edu_gap":null,"comp_gap":1.54},{"univ":"서강대","edu_avg":null,"edu_cnt":0,"comp_avg":2.36,"comp_cnt":3,"cutoff_edu":1.4,"cutoff_comp":1.6,"edu_gap":null,"comp_gap":0.76},{"univ":"이화여대","edu_avg":1.92,"edu_cnt":1,"comp_avg":2.32,"comp_cnt":7,"cutoff_edu":1.4,"cutoff_comp":1.6,"edu_gap":0.52,"comp_gap":0.72},{"univ":"중앙대","edu_avg":1.83,"edu_cnt":2,"comp_avg":2.82,"comp_cnt":12,"cutoff_edu":1.5,"cutoff_comp":1.75,"edu_gap":0.33,"comp_gap":1.07},{"univ":"경희대","edu_avg":4.36,"edu_cnt":1,"comp_avg":2.35,"comp_cnt":1,"cutoff_edu":1.6,"cutoff_comp":1.85,"edu_gap":2.76,"comp_gap":0.5},{"univ":"한국외대","edu_avg":4.36,"edu_cnt":1,"comp_avg":2.87,"comp_cnt":2,"cutoff_edu":1.7,"cutoff_comp":1.95,"edu_gap":2.66,"comp_gap":0.92},{"univ":"건국대","edu_avg":2.0,"edu_cnt":1,"comp_avg":3.15,"comp_cnt":6,"cutoff_edu":1.8,"cutoff_comp":2.05,"edu_gap":0.2,"comp_gap":1.1},{"univ":"서울시립대","edu_avg":null,"edu_cnt":0,"comp_avg":2.46,"comp_cnt":1,"cutoff_edu":1.9,"cutoff_comp":2.15,"edu_gap":null,"comp_gap":0.31},{"univ":"동국대","edu_avg":2.27,"edu_cnt":3,"comp_avg":2.88,"comp_cnt":2,"cutoff_edu":1.9,"cutoff_comp":2.15,"edu_gap":0.37,"comp_gap":0.73},{"univ":"홍익대","edu_avg":null,"edu_cnt":0,"comp_avg":2.46,"comp_cnt":4,"cutoff_edu":2.0,"cutoff_comp":2.25,"edu_gap":null,"comp_gap":0.21},{"univ":"숙명여대","edu_avg":2.46,"edu_cnt":2,"comp_avg":2.95,"comp_cnt":4,"cutoff_edu":2.0,"cutoff_comp":2.3,"edu_gap":0.46,"comp_gap":0.65},{"univ":"아주대","edu_avg":null,"edu_cnt":0,"comp_avg":4.03,"comp_cnt":4,"cutoff_edu":2.0,"cutoff_comp":2.4,"edu_gap":null,"comp_gap":1.63},{"univ":"인하대","edu_avg":2.46,"edu_cnt":1,"comp_avg":3.29,"comp_cnt":2,"cutoff_edu":2.1,"cutoff_comp":2.5,"edu_gap":0.36,"comp_gap":0.79},{"univ":"연세대(미래)","edu_avg":4.74,"edu_cnt":6,"comp_avg":5.43,"comp_cnt":9,"cutoff_edu":2.1,"cutoff_comp":2.35,"edu_gap":2.64,"comp_gap":3.08},{"univ":"국민대","edu_avg":3.75,"edu_cnt":1,"comp_avg":2.57,"comp_cnt":3,"cutoff_edu":2.1,"cutoff_comp":2.35,"edu_gap":1.65,"comp_gap":0.22},{"univ":"숭실대","edu_avg":2.04,"edu_cnt":2,"comp_avg":3.6,"comp_cnt":12,"cutoff_edu":2.2,"cutoff_comp":2.45,"edu_gap":-0.16,"comp_gap":1.15},{"univ":"한양(에리카)","edu_avg":null,"edu_cnt":0,"comp_avg":3.87,"comp_cnt":4,"cutoff_edu":2.2,"cutoff_comp":2.6,"edu_gap":null,"comp_gap":1.27},{"univ":"단국대(죽전)","edu_avg":2.84,"edu_cnt":1,"comp_avg":3.17,"comp_cnt":2,"cutoff_edu":2.3,"cutoff_comp":2.6,"edu_gap":0.54,"comp_gap":0.57},{"univ":"서울과기대","edu_avg":null,"edu_cnt":0,"comp_avg":3.56,"comp_cnt":6,"cutoff_edu":2.3,"cutoff_comp":2.6,"edu_gap":null,"comp_gap":0.96},{"univ":"세종대","edu_avg":3.8,"edu_cnt":2,"comp_avg":4.81,"comp_cnt":1,"cutoff_edu":2.4,"cutoff_comp":2.7,"edu_gap":1.4,"comp_gap":2.11},{"univ":"경인교대","edu_avg":3.0,"edu_cnt":4,"comp_avg":null,"comp_cnt":0,"cutoff_edu":2.4,"cutoff_comp":2.2,"edu_gap":0.6,"comp_gap":null},{"univ":"가천대","edu_avg":3.58,"edu_cnt":4,"comp_avg":4.58,"comp_cnt":7,"cutoff_edu":2.5,"cutoff_comp":2.9,"edu_gap":1.08,"comp_gap":1.68},{"univ":"명지대","edu_avg":3.16,"edu_cnt":1,"comp_avg":3.49,"comp_cnt":4,"cutoff_edu":2.5,"cutoff_comp":2.85,"edu_gap":0.66,"comp_gap":0.64},{"univ":"경기대","edu_avg":3.18,"edu_cnt":2,"comp_avg":4.18,"comp_cnt":8,"cutoff_edu":2.6,"cutoff_comp":3.0,"edu_gap":0.58,"comp_gap":1.18},{"univ":"성신여대","edu_avg":3.13,"edu_cnt":1,"comp_avg":3.16,"comp_cnt":7,"cutoff_edu":2.7,"cutoff_comp":3.05,"edu_gap":0.43,"comp_gap":0.11},{"univ":"가톨릭(성심)","edu_avg":2.72,"edu_cnt":1,"comp_avg":3.96,"comp_cnt":6,"cutoff_edu":2.9,"cutoff_comp":3.3,"edu_gap":-0.18,"comp_gap":0.66},{"univ":"강원대","edu_avg":4.37,"edu_cnt":2,"comp_avg":4.7,"comp_cnt":2,"cutoff_edu":3.0,"cutoff_comp":3.4,"edu_gap":1.37,"comp_gap":1.3},{"univ":"서경대","edu_avg":3.82,"edu_cnt":4,"comp_avg":null,"comp_cnt":0,"cutoff_edu":4.2,"cutoff_comp":4.75,"edu_gap":-0.38,"comp_gap":null},{"univ":"안양대","edu_avg":5.98,"edu_cnt":2,"comp_avg":6.43,"comp_cnt":2,"cutoff_edu":4.3,"cutoff_comp":4.85,"edu_gap":1.68,"comp_gap":1.58}],"suspicious":[{"univ":"서경대","dept":"미래융합학부1","form":"교과","grade":3.33,"cutoff":4.2,"gap":-0.87,"kor":"3","eng":"4.4","math":"2.2","reason":"불합격","cutoff_doubt":true,"cutoff_note":"서경대 전체 컷오프 4.2 기준 적용 — 학과별 실제 컷은 상이할 수 있으며, 데이터 신뢰도 재검토 필요"},{"univ":"가톨릭(성심)","dept":"바이오메디컬화학공학과","form":"종합","grade":2.46,"cutoff":3.3,"gap":-0.84,"kor":"2.8","eng":"2","math":"2.17","reason":"불합격"},{"univ":"서경대","dept":"군사학과","form":"교과","grade":3.38,"cutoff":4.2,"gap":-0.82,"kor":"3.2","eng":"3.8","math":"4.4","reason":"불합격","nonacademic":true,"nonacademic_note":"군사학과는 체력검정·면접 등 비성적 요소 비중이 크며, 성적 컷오프 기준이 적용되지 않음"},{"univ":"서경대","dept":"미래융합학부1","form":"교과","grade":3.84,"cutoff":4.2,"gap":-0.36,"kor":"3.6","eng":"3.2","math":"4.8","reason":"불합격","cutoff_doubt":true,"cutoff_note":"서경대 전체 컷오프 4.2 기준 적용 — 학과별 실제 컷은 상이할 수 있으며, 데이터 신뢰도 재검토 필요"},{"univ":"성신여대","dept":"간호학과","form":"종합","grade":2.79,"cutoff":3.05,"gap":-0.26,"kor":"2.2","eng":"2.4","math":"3.33","reason":"1단계 불합격"},{"univ":"숭실대","dept":"의생명시스템학부","form":"교과","grade":2.0,"cutoff":2.2,"gap":-0.2,"kor":"1.6","eng":"1.8","math":"2.17","reason":"최저미충족"},{"univ":"가톨릭(성심)","dept":"아동학과","form":"교과","grade":2.72,"cutoff":2.9,"gap":-0.18,"kor":"2","eng":"3.2","math":"3","reason":"최저미충족"},{"univ":"홍익대","dept":"신소재화공시스템공학부","form":"종합","grade":2.08,"cutoff":2.25,"gap":-0.17,"kor":"2","eng":"2.4","math":"1.83","reason":"최저미충족"},{"univ":"성신여대","dept":"간호학과","form":"종합","grade":2.88,"cutoff":3.05,"gap":-0.17,"kor":"3","eng":"3.4","math":"2.8","reason":"1단계 불합격"},{"univ":"숭실대","dept":"신소재공학과","form":"교과","grade":2.08,"cutoff":2.2,"gap":-0.12,"kor":"2","eng":"2.4","math":"1.83","reason":"불합격"},{"univ":"중앙대","dept":"기계공학부","form":"종합","grade":1.64,"cutoff":1.75,"gap":-0.11,"kor":"1.6","eng":"1.6","math":"2.33","reason":"불합격"}],"repeated":[{"univ":"연세대(미래)","dept":"자율융합계열","form":"종합","cnt":7},{"univ":"연세대(미래)","dept":"자율융합계열","form":"교과","cnt":5},{"univ":"한양(에리카)","dept":"LIONS자율전공학부(인문사회계열)","form":"종합","cnt":4},{"univ":"경인교대","dept":"초등교육과","form":"교과","cnt":4},{"univ":"가천대","dept":"자유전공학부(자유전공)","form":"교과","cnt":3},{"univ":"아주대","dept":"경제정치사회융합학부","form":"종합","cnt":3},{"univ":"덕성여대","dept":"글로벌융합대학(인문사회)","form":"종합","cnt":3},{"univ":"건국대학교(글로컬)","dept":"간호학과","form":"종합","cnt":2},{"univ":"숭실대","dept":"기독교학과","form":"종합","cnt":2}],"detail_edu":[{"univ":"고려대","dept":"산업경영공학부","grade":1.52,"cutoff":1.3,"gap":0.22,"kor":"1.2","eng":"1.6","math":"1.5","reason":"불합격"},{"univ":"고려대","dept":"국제학부","grade":1.58,"cutoff":1.3,"gap":0.28,"kor":"1.6","eng":"1.4","math":"2.4","reason":"불합격"},{"univ":"한양대","dept":"행정학과","grade":1.63,"cutoff":1.3,"gap":0.33,"kor":"1.6","eng":"1.2","math":"2","reason":"불합격"},{"univ":"한양대","dept":"기계공학부","grade":1.64,"cutoff":1.3,"gap":0.34,"kor":"1.6","eng":"1.6","math":"2.33","reason":"불합격"},{"univ":"고려대","dept":"가정교육과","grade":1.67,"cutoff":1.3,"gap":0.37,"kor":"1.8","eng":"1.4","math":"1.67","reason":"불합격"},{"univ":"중앙대","dept":"기계공학부","grade":1.67,"cutoff":1.5,"gap":0.17,"kor":"1.8","eng":"1.4","math":"1.67","reason":"불합격"},{"univ":"이화여대","dept":"과학교육과","grade":1.92,"cutoff":1.4,"gap":0.52,"kor":"1.4","eng":"1.2","math":"2.83","reason":"불합격"},{"univ":"건국대","dept":"생명과학대학자유전공학부","grade":2.0,"cutoff":1.8,"gap":0.2,"kor":"1.6","eng":"1.8","math":"2.17","reason":"불합격"},{"univ":"숭실대","dept":"의생명시스템학부","grade":2.0,"cutoff":2.2,"gap":-0.2,"kor":"1.6","eng":"1.8","math":"2.17","reason":"최저미충족"},{"univ":"중앙대","dept":"유아교육과","grade":2.0,"cutoff":1.5,"gap":0.5,"kor":"1.6","eng":"1.8","math":"2.17","reason":"최저미충족"},{"univ":"동국대","dept":"에너지신소재공학과","grade":2.08,"cutoff":1.9,"gap":0.18,"kor":"2","eng":"2.4","math":"1.83","reason":"불합격"},{"univ":"숭실대","dept":"신소재공학과","grade":2.08,"cutoff":2.2,"gap":-0.12,"kor":"2","eng":"2.4","math":"1.83","reason":"불합격"},{"univ":"동국대","dept":"영화영상학과","grade":2.08,"cutoff":1.9,"gap":0.18,"kor":"2.2","eng":"1.8","math":"1.2","reason":"불합격"},{"univ":"숙명여대","dept":"정치외교학과","grade":2.35,"cutoff":2.0,"gap":0.35,"kor":"1.8","eng":"3","math":"2.4","reason":"불합격"},{"univ":"인하대","dept":"고분자공학과","grade":2.46,"cutoff":2.1,"gap":0.36,"kor":"2.8","eng":"2","math":"2.17","reason":"불합격"},{"univ":"숙명여대","dept":"문화관광학전공","grade":2.56,"cutoff":2.0,"gap":0.56,"kor":"2.8","eng":"1.4","math":"3.6","reason":"불합격"},{"univ":"경인교대","dept":"초등교육과","grade":2.56,"cutoff":2.4,"gap":0.16,"kor":"2.6","eng":"3.8","math":"1.6","reason":"불합격"},{"univ":"동국대","dept":"통계학과","grade":2.64,"cutoff":1.9,"gap":0.74,"kor":"3","eng":"1.8","math":"1.5","reason":"불합격"},{"univ":"가톨릭(성심)","dept":"아동학과","grade":2.72,"cutoff":2.9,"gap":-0.18,"kor":"2","eng":"3.2","math":"3","reason":"최저미충족"},{"univ":"경인교대","dept":"초등교육과","grade":2.76,"cutoff":2.4,"gap":0.36,"kor":"2.8","eng":"3.2","math":"2.8","reason":"불합격"},{"univ":"세종대","dept":"자유전공학부","grade":2.8,"cutoff":2.4,"gap":0.4,"kor":"2.8","eng":"2.4","math":"2.17","reason":"불합격"},{"univ":"경인교대","dept":"초등교육과","grade":2.84,"cutoff":2.4,"gap":0.44,"kor":"2.8","eng":"2","math":"3","reason":"불합격"},{"univ":"단국대(죽전)","dept":"체육교육과","grade":2.84,"cutoff":2.3,"gap":0.54,"kor":"2.8","eng":"2","math":"3","reason":"불합격"},{"univ":"가천대","dept":"식품생명공학과","grade":3.13,"cutoff":2.5,"gap":0.63,"kor":"3.6","eng":"2.2","math":"2.67","reason":"불합격"},{"univ":"성신여대","dept":"유아교육과","grade":3.13,"cutoff":2.7,"gap":0.43,"kor":"3.6","eng":"2.2","math":"2.67","reason":"불합격"},{"univ":"경기대","dept":"공공인재학부","grade":3.16,"cutoff":2.6,"gap":0.56,"kor":"2.4","eng":"3.2","math":"4.2","reason":"불합격"},{"univ":"명지대","dept":"자율전공학부(인문)","grade":3.16,"cutoff":2.5,"gap":0.66,"kor":"2.4","eng":"3.2","math":"4.2","reason":"불합격"},{"univ":"경기대","dept":"경영학부","grade":3.2,"cutoff":2.6,"gap":0.6,"kor":"3","eng":"3","math":"3.8","reason":"불합격"},{"univ":"서경대","dept":"미래융합학부1","grade":3.33,"cutoff":4.2,"gap":-0.87,"kor":"3","eng":"4.4","math":"2.2","reason":"불합격"},{"univ":"가천대","dept":"자유전공학부","grade":3.36,"cutoff":2.5,"gap":0.86,"kor":"4","eng":"3.8","math":"2.67","reason":"최저미충족"}],"detail_comp":[{"univ":"서울대","dept":"응용생물화학부","grade":1.24,"cutoff":1.2,"gap":0.04,"kor":"1.2","eng":"1.2","math":"1","reason":"1단계 불합격"},{"univ":"서울대","dept":"식품동물생명공학부","grade":1.52,"cutoff":1.2,"gap":0.32,"kor":"1.2","eng":"1.6","math":"1.5","reason":"1단계 불합격"},{"univ":"한양대","dept":"데이터사이언스학부","grade":1.52,"cutoff":1.5,"gap":0.02,"kor":"1.2","eng":"1.6","math":"1.5","reason":"불합격"},{"univ":"서울대","dept":"정치외교학부","grade":1.58,"cutoff":1.2,"gap":0.38,"kor":"1.6","eng":"1.4","math":"2.4","reason":"1단계 불합격"},{"univ":"연세대","dept":"정치외교학과","grade":1.58,"cutoff":1.4,"gap":0.18,"kor":"1.6","eng":"1.4","math":"2.4","reason":"1단계 불합격"},{"univ":"고려대","dept":"기계공학부","grade":1.64,"cutoff":1.5,"gap":0.14,"kor":"1.6","eng":"1.6","math":"2.33","reason":"불합격"},{"univ":"연세대","dept":"기계공학부","grade":1.64,"cutoff":1.4,"gap":0.24,"kor":"1.6","eng":"1.6","math":"2.33","reason":"1단계 불합격"},{"univ":"중앙대","dept":"기계공학부","grade":1.64,"cutoff":1.75,"gap":-0.11,"kor":"1.6","eng":"1.6","math":"2.33","reason":"불합격"},{"univ":"서울대","dept":"식품영양학과","grade":1.67,"cutoff":1.2,"gap":0.47,"kor":"1.8","eng":"1.4","math":"1.67","reason":"1단계 불합격"},{"univ":"고려대","dept":"생명과학부","grade":1.92,"cutoff":1.5,"gap":0.42,"kor":"1.4","eng":"1.2","math":"2.83","reason":"불합격"},{"univ":"서강대","dept":"생명과학과","grade":1.92,"cutoff":1.6,"gap":0.32,"kor":"1.4","eng":"1.2","math":"2.83","reason":"불합격"},{"univ":"이화여대","dept":"뇌인지과학부","grade":1.92,"cutoff":1.6,"gap":0.32,"kor":"1.4","eng":"1.2","math":"2.83","reason":"불합격"},{"univ":"중앙대","dept":"융합공학부","grade":2.08,"cutoff":1.75,"gap":0.33,"kor":"2","eng":"2.4","math":"1.83","reason":"불합격"},{"univ":"홍익대","dept":"신소재화공시스템공학부","grade":2.08,"cutoff":2.25,"gap":-0.17,"kor":"2","eng":"2.4","math":"1.83","reason":"최저미충족"},{"univ":"이화여대","dept":"커뮤니케이션미디어학부","grade":2.08,"cutoff":1.6,"gap":0.48,"kor":"2.2","eng":"1.8","math":"1.2","reason":"불합격"},{"univ":"한양대","dept":"연극영화학과(영화전공)","grade":2.08,"cutoff":1.5,"gap":0.58,"kor":"2.2","eng":"1.8","math":"1.2","reason":"불합격"},{"univ":"이화여대","dept":"건축도시시스템공학과","grade":2.13,"cutoff":1.6,"gap":0.53,"kor":"2.4","eng":"2.2","math":"1.67","reason":"불합격"},{"univ":"중앙대","dept":"사회기반시스템공학부","grade":2.13,"cutoff":1.75,"gap":0.38,"kor":"2.4","eng":"2.2","math":"1.67","reason":"불합격"},{"univ":"이화여대","dept":"생명과학과","grade":2.29,"cutoff":1.6,"gap":0.69,"kor":"2.4","eng":"2","math":"3.17","reason":"불합격"},{"univ":"중앙대","dept":"생명과학과","grade":2.29,"cutoff":1.75,"gap":0.54,"kor":"2.4","eng":"2","math":"3.17","reason":"불합격"},{"univ":"경희대","dept":"정치외교학과","grade":2.35,"cutoff":1.85,"gap":0.5,"kor":"1.8","eng":"3","math":"2.4","reason":"1단계 불합격"},{"univ":"이화여대","dept":"정치외교학과","grade":2.35,"cutoff":1.6,"gap":0.75,"kor":"1.8","eng":"3","math":"2.4","reason":"불합격"},{"univ":"한국외대","dept":"정치외교학과","grade":2.35,"cutoff":1.95,"gap":0.4,"kor":"1.8","eng":"3","math":"2.4","reason":"1단계 불합격"},{"univ":"가톨릭(성심)","dept":"바이오메디컬화학공학과","grade":2.46,"cutoff":3.3,"gap":-0.84,"kor":"2.8","eng":"2","math":"2.17","reason":"불합격"},{"univ":"국민대","dept":"임산생명공학과","grade":2.46,"cutoff":2.35,"gap":0.11,"kor":"2.8","eng":"2","math":"2.17","reason":"1단계 불합격"},{"univ":"숭실대","dept":"화학과","grade":2.46,"cutoff":2.45,"gap":0.01,"kor":"2.6","eng":"3","math":"2.17","reason":"1단계 불합격"},{"univ":"중앙대","dept":"화학과","grade":2.46,"cutoff":1.75,"gap":0.71,"kor":"2.6","eng":"3","math":"2.17","reason":"1단계 불합격"},{"univ":"국민대","dept":"시각디자인학과","grade":2.54,"cutoff":2.35,"gap":0.19,"kor":"1.6","eng":"2","math":"3.6","reason":"불합격"},{"univ":"숭실대","dept":"언론홍보학과","grade":2.56,"cutoff":2.45,"gap":0.11,"kor":"2.8","eng":"1.4","math":"3.6","reason":"불합격"},{"univ":"중앙대","dept":"미디어커뮤니케이션학부","grade":2.56,"cutoff":1.75,"gap":0.81,"kor":"2.8","eng":"1.4","math":"3.6","reason":"불합격"}]};
+
+(function(){
+  var MAX=6;
+  function failBarHtml(avg, cutoff){
+    if(avg===null) return '<td class="bar-cell"><span class="bar-empty">해당 없음</span></td>';
+    var pct=Math.min((avg-1)/(MAX-1)*100,100);
+    var cpct=Math.min((cutoff-1)/(MAX-1)*100,100);
+    var gap=+(avg-cutoff).toFixed(2);
+    // 불합격: gap 음수 = 성적 좋은데 불합격 = 빨간(위험) / gap 작은 양수 = 경계 / gap 큰 양수 = 성적 부족(당연)
+    var cls=gap<=-0.1?'fail-danger':gap<=0.2?'fail-near':'fail-normal';
+    var valCls=pct<20?'bar-val outside':'bar-val';
+    return '<td class="bar-cell" style="min-width:220px;padding:4px 10px;">'
+      +'<div class="bar-track">'
+      +'<div class="bar-fill '+cls+'" style="width:'+pct.toFixed(1)+'%">'
+      +'<span class="'+valCls+'">'+avg+'등급</span></div>'
+      +'<div class="cutoff-line" style="left:'+cpct.toFixed(1)+'%">'
+      +'<span class="cutoff-label">컷'+cutoff+'</span></div>'
+      +'</div></td>';
+  }
+  function failGapBadge(gap){
+    if(gap===null) return '<td><span class="gap-badge na">-</span></td>';
+    var cls=gap<=-0.1?'fail-badge-danger':gap<=0.2?'fail-badge-near':'fail-badge-normal';
+    var sign=gap>0?'+':'';
+    return '<td style="text-align:center;"><span class="'+cls+'">'+sign+gap.toFixed(2)+'</span></td>';
+  }
+  var tbody=document.getElementById('fail-table-body');
+  FAIL.univ_summary.forEach(function(d){
+    var tr=document.createElement('tr');
+    var ec=d.edu_cnt>0?'<div class="cnt-badge">'+d.edu_cnt+'건</div>':'';
+    var cc=d.comp_cnt>0?'<div class="cnt-badge">'+d.comp_cnt+'건</div>':'';
+    tr.innerHTML='<td class="univ-name univ-clickable" onclick="showUnivDetail(\''+d.univ+'\')" title="클릭하여 전형별 상세 보기">'+d.univ+'</td>'
+      +failBarHtml(d.edu_avg,d.cutoff_edu)
+      +'<td style="text-align:center;font-size:12px;color:var(--sub);">'+(d.edu_avg||'-')+'<br>'+ec+'</td>'
+      +failGapBadge(d.edu_gap)
+      +'<td style="background:#f8f9fc;width:4px;padding:0;"></td>'
+      +failBarHtml(d.comp_avg,d.cutoff_comp)
+      +'<td style="text-align:center;font-size:12px;color:var(--sub);">'+(d.comp_avg||'-')+'<br>'+cc+'</td>'
+      +failGapBadge(d.comp_gap);
+    tbody.appendChild(tr);
+  });
+
+  // 주의 케이스 테이블
+  var sh='<thead><tr><th>대학</th><th>학과</th><th>전형</th><th>등급</th><th>컷오프</th><th>GAP</th><th>사유</th><th>비고</th></tr></thead><tbody>';
+  FAIL.suspicious.forEach(function(d){
+    var rs=d.nonacademic?'<span style="color:#7c3aed;font-weight:700;">비성적요소</span>'
+          :d.reason.includes('최저')?'<span style="color:#b91c1c;font-weight:700;">수능최저미충족</span>'
+          :d.reason.includes('1단계')?'<span style="color:#e67e22;font-weight:700;">1단계탈락</span>'
+          :'<span style="color:#6b7280;">불합격</span>';
+    var note=d.nonacademic?'<span style="font-size:10px;color:#7c3aed;">'+d.nonacademic_note+'</span>'
+            :d.cutoff_doubt?'<span style="font-size:10px;color:#92400e;">⚠️ '+d.cutoff_note+'</span>'
+            :'<span style="font-size:11px;color:#999;">-</span>';
+    var rowStyle=d.nonacademic?'background:#faf5ff;':d.cutoff_doubt?'background:#fffbeb;':'';
+    sh+='<tr style="'+rowStyle+'"><td><b>'+d.univ+'</b></td><td style="font-size:12px;">'+d.dept+'</td><td>'+d.form+'</td>'
+      +'<td style="font-weight:700;color:#b91c1c;">'+d.grade+'</td><td>'+d.cutoff+'</td>'
+      +'<td style="font-weight:700;color:#b91c1c;">'+d.gap.toFixed(2)+'</td><td>'+rs+'</td><td style="max-width:180px;white-space:normal;">'+note+'</td></tr>';
+  });
+  var hasSpecial=FAIL.suspicious.some(function(d){return d.nonacademic||d.cutoff_doubt;});
+  if(hasSpecial){
+    sh+='<tr><td colspan="8" style="background:#f8f9fc;padding:8px 11px;font-size:11px;color:var(--sub);">'
+      +'<span style="color:#7c3aed;font-weight:700;">■ 보라</span> 비성적요소(신체검사·면접 등) 전형 — 성적 기반 분석 불가 &nbsp;|&nbsp; '
+      +'<span style="color:#92400e;font-weight:700;">■ 노랑</span> 컷오프 데이터 신뢰도 낮음 — 학과별 실제 컷과 차이 가능성</td></tr>';
+  }
+  document.getElementById('suspicious-tbl').innerHTML=sh+'</tbody>';
+
+  // 반복 불합격 테이블
+  var rh='<thead><tr><th>대학</th><th>학과</th><th>전형</th><th>불합격 건수</th></tr></thead><tbody>';
+  FAIL.repeated.forEach(function(d){
+    var danger=d.cnt>=4?'style="color:#b91c1c;font-weight:800;"':'style="color:#e67e22;font-weight:700;"';
+    rh+='<tr><td><b>'+d.univ+'</b></td><td style="font-size:12px;">'+d.dept+'</td><td>'+d.form+'</td>'
+      +'<td '+danger+'>'+d.cnt+'건</td></tr>';
+  });
+  document.getElementById('repeated-tbl').innerHTML=rh+'</tbody>';
+
+  // 불합격 상세 테이블
+  function makeFailTable(data, id){
+    var h='<table class="data"><thead><tr><th>대학명</th><th>학과명</th><th>불합격 등급</th><th>국·영·수</th><th>컷오프</th><th>GAP</th><th>사유</th></tr></thead><tbody>';
+    data.forEach(function(d){
+      var isDanger=d.gap<=-0.1;
+      var gc=isDanger?'style="color:#b91c1c;font-weight:700;"':'style="color:#6b7280;"';
+      var gs=(d.gap>0?'+':'')+d.gap.toFixed(2);
+      var rs=d.reason.includes('최저')?'<span style="color:#b91c1c;font-size:11px;font-weight:700;">수능최저</span>':
+             d.reason.includes('1단계')?'<span style="color:#e67e22;font-size:11px;">1단계</span>':
+             '<span style="color:#6b7280;font-size:11px;">불합격</span>';
+      h+='<tr'+(isDanger?' style="background:#fff5f5;"':'')+'>'
+        +'<td><b>'+d.univ+'</b></td><td style="font-size:12px;">'+d.dept+'</td>'
+        +'<td style="font-weight:700;'+(isDanger?'color:#b91c1c;':'')+'">'+d.grade+'</td>'
+        +'<td style="color:#555;font-size:12px;">국'+d.kor+' 영'+d.eng+' 수'+d.math+'</td>'
+        +'<td>'+d.cutoff+'</td><td '+gc+'>'+gs+'</td><td>'+rs+'</td></tr>';
+    });
+    document.getElementById(id).innerHTML=h+'</tbody></table>';
+  }
+  makeFailTable(FAIL.detail_edu,'fail-edu-tbl');
+  makeFailTable(FAIL.detail_comp,'fail-comp-tbl');
+})();
+
+// ── 섹션3: 강점 카드 ──
+(function(){
+  var g=document.getElementById('sc-grid');
+  var gs=document.getElementById('sc-special-grid');
+  var ge=document.getElementById('sc-edu-grid');
+
+  function makeCard(d, type){
+    var isSpec=type==='special';
+    var isEdu=type==='edu';
+    var cls=isSpec?'special gh':d.gap>=0.5?'gh':d.gap>=0.3?'gm':'gl';
+    var lbl=isSpec?'⚠️ 해석 주의':d.gap>=0.5?'강점 높음':d.gap>=0.3?'강점 중간':'강점';
+    var cutoffLbl=isEdu?'교과 컷오프':'종합 컷오프';
+    var cutoffVal=isEdu?d.cutoff:d.cutoff_comp;
+    var lowN=(d.count===1&&!isSpec)?'<span class="badge-lowN">n=1 주의</span>':'';
+    var warnHtml=isSpec?'<div class="warn-banner"><b>⚠️ 특수전형 가능성:</b> '+d.special_note+'</div>':'';
+    var tags=d.majors?d.majors.map(function(m){return '<span class="major-tag">'+m+'</span>';}).join(''):'';
+    var div=document.createElement('div');
+    div.className='sc '+cls;
+    div.innerHTML='<div class="sc-top"><div class="sc-name">'+d.univ+lowN+'</div><div class="sc-gb">+'+(+d.gap.toFixed(2))+' '+lbl+'</div></div>'
+      +'<div class="sc-nums">'
+      +'<div class="sc-num"><div class="sc-lbl">실제 합격 평균</div><div class="sc-v">'+d.avg+' 등급</div></div>'
+      +'<div class="sc-num"><div class="sc-lbl">'+cutoffLbl+'</div><div class="sc-v">'+cutoffVal+' 등급</div></div>'
+      +'<div class="sc-num"><div class="sc-lbl">합격 건수</div><div class="sc-v">'+d.count+'건</div></div>'
+      +'</div>'
+      +(tags?'<div style="font-size:10px;color:var(--sub);margin-bottom:5px;">합격 학과</div>'+tags:'')
+      +warnHtml;
+    return div;
+  }
+
+  var normal=[], special=[];
+  DATA.strength.forEach(function(d){
+    if(d.special===true||d.gap>1.5) special.push(d);
+    else normal.push(d);
+  });
+  normal.forEach(function(d){ g.appendChild(makeCard(d,'normal')); });
+  if(special.length>0){
+    special.forEach(function(d){ gs.appendChild(makeCard(d,'special')); });
+  } else {
+    var sec=document.querySelector('.special-section');
+    if(sec) sec.style.display='none';
+  }
+
+  // 교과전형 강점 (chart2 기준, GAP >= 0.2)
+  var eduArr=[];
+  DATA.chart2.forEach(function(d){
+    if(d.edu_avg!==null){
+      var gap=+(d.edu_avg-d.cutoff_edu).toFixed(2);
+      if(gap>=0.2) eduArr.push({univ:d.univ,avg:d.edu_avg,cutoff:d.cutoff_edu,gap:gap,count:d.edu_count,cutoff_comp:null});
+    }
+  });
+  eduArr.sort(function(a,b){return b.gap-a.gap;});
+  if(eduArr.length===0){
+    ge.innerHTML='<p style="color:var(--sub);font-size:13px;">교과전형 GAP ≥ 0.2 해당 대학 없음</p>';
+  } else {
+    eduArr.forEach(function(d){ ge.appendChild(makeCard(d,'edu')); });
+  }
+})();
+
+// ── 섹션4: 테이블 ──
+function makeTable(data, id){
+  var h='<table class="data"><thead><tr><th>대학명</th><th>학과명</th><th>합격 평균등급</th><th>국·영·수</th><th>컷오프</th><th>GAP</th><th>결과</th></tr></thead><tbody>';
+  data.forEach(function(d){
+    var gc=d.gap>0?'gpos':'gneg';
+    var gs=(d.gap>0?'+':'')+d.gap.toFixed(2);
+    var sb=d.stage==='합격'?'<span class="bp">합격</span>':'<span class="bs">충원합격</span>';
+    h+='<tr><td><b>'+d.univ+'</b></td><td>'+d.major+'</td><td style="font-weight:700;">'+d.grade+'</td><td style="color:#555;font-size:12px;">'+d.grade_detail+'</td><td>'+d.cutoff+'</td><td class="'+gc+'">'+gs+'</td><td>'+sb+'</td></tr>';
+  });
+  h+='</tbody></table>';
+  document.getElementById(id).innerHTML=h;
+}
+makeTable(DATA.dept_edu,'edu-tbl');
+makeTable(DATA.dept_comp,'comp-tbl');
+
+// ── 섹션5: 도넛 ──
+(function(){
+  var order=['교과','종합','논술','실기','기타'];
+  var colors=['#2980b9','#27ae60','#e67e22','#8e44ad','#e74c3c'];
+  var labels=order.filter(function(k){return DATA.donut[k];});
+  var vals=labels.map(function(k){return DATA.donut[k].pass;});
+  var cols=labels.map(function(k){return colors[order.indexOf(k)];});
+  new Chart(document.getElementById('donut'),{
+    type:'doughnut',
+    data:{labels:labels,datasets:[{data:vals,backgroundColor:cols,borderWidth:2,borderColor:'#fff'}]},
+    options:{responsive:true,maintainAspectRatio:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(ctx){
+      var k=labels[ctx.dataIndex];var p=DATA.donut[k].pass;var r=DATA.donut[k].reg;
+      var tot=vals.reduce(function(a,b){return a+b;},0);
+      return [' '+k+'전형: '+p+'건 ('+(p/tot*100).toFixed(1)+'%)',' 등록: '+r+'건'];
+    }}}}}
+  });
+  var tot=vals.reduce(function(a,b){return a+b;},0);
+  document.getElementById('donut-leg').innerHTML=labels.map(function(k,i){
+    var p=DATA.donut[k].pass; var r=DATA.donut[k].reg;
+    return '<div class="leg-item"><div class="leg-dot" style="background:'+cols[i]+'"></div><div><div class="leg-name">'+k+'전형</div><div class="leg-dtl">합격 '+p+'건 ('+(p/tot*100).toFixed(1)+'%) · 등록 '+r+'건</div></div></div>';
+  }).join('');
+})();
+
+// ── 대학별 상세 모달 ──
+function showUnivDetail(name){
+  var modal=document.getElementById('univModal');
+  document.getElementById('modalTitle').textContent=name+' — 전형별 합격·불합격 상세';
+
+  var passEdu=DATA.dept_edu.filter(function(d){return d.univ===name;});
+  var passComp=DATA.dept_comp.filter(function(d){return d.univ===name;});
+  var failEdu=FAIL.detail_edu.filter(function(d){return d.univ===name;});
+  var failComp=FAIL.detail_comp.filter(function(d){return d.univ===name;});
+  var susp=FAIL.suspicious.filter(function(d){return d.univ===name;});
+
+  var tp=passEdu.length+passComp.length;
+  var tf=failEdu.length+failComp.length;
+  var total=tp+tf;
+
+  var html='';
+
+  // 요약 바
+  html+='<div class="modal-sum">';
+  html+='<div class="modal-sum-item" style="background:#d5f5e3;"><div class="ms-lbl" style="color:#1a8a45;">합격·충원합격</div><div class="ms-val" style="color:#1a8a45;">'+tp+'건</div></div>';
+  html+='<div class="modal-sum-item" style="background:#fef2f2;"><div class="ms-lbl" style="color:#b91c1c;">불합격</div><div class="ms-val" style="color:#b91c1c;">'+tf+'건</div></div>';
+  if(total>0){
+    var rate=Math.round(tp/total*100);
+    var rc=rate>=50?'#1a8a45':'#b91c1c';
+    html+='<div class="modal-sum-item" style="background:#f0f4fb;"><div class="ms-lbl" style="color:var(--sub);">합격률</div><div class="ms-val" style="color:'+rc+';">'+rate+'%</div></div>';
+  }
+  html+='</div>';
+
+  // 합격 블록
+  if(tp>0){
+    html+='<div class="modal-block pass">';
+    html+='<h4 style="color:#1a8a45;">✅ 합격 · 충원합격</h4>';
+    if(passEdu.length>0){
+      html+='<div class="modal-sub">📚 교과전형 ('+passEdu.length+'건)</div>';
+      html+=modalTable(passEdu, false);
+    }
+    if(passComp.length>0){
+      html+='<div class="modal-sub">🎓 종합전형 ('+passComp.length+'건)</div>';
+      html+=modalTable(passComp, false);
+    }
+    html+='</div>';
+  }
+
+  // 불합격 블록
+  if(tf>0||susp.length>0){
+    html+='<div class="modal-block fail">';
+    html+='<h4 style="color:#b91c1c;">❌ 불합격</h4>';
+    if(failEdu.length>0){
+      html+='<div class="modal-sub">📚 교과전형 ('+failEdu.length+'건)</div>';
+      html+=modalTable(failEdu, true);
+    }
+    if(failComp.length>0){
+      html+='<div class="modal-sub">🎓 종합전형 ('+failComp.length+'건)</div>';
+      html+=modalTable(failComp, true);
+    }
+    if(susp.length>0){
+      html+='<div class="susp-block"><p style="font-size:11px;font-weight:700;color:#7c3aed;margin-bottom:6px;">⚠️ 주의 케이스 — 성적이 컷보다 좋은데도 불합격</p>';
+      susp.forEach(function(d){
+        var note=d.nonacademic?'비성적요소(신체검사·면접)':d.cutoff_doubt?'컷오프 데이터 의심':d.reason.includes('최저')?'수능최저미충족':d.reason.includes('1단계')?'1단계탈락':'불합격';
+        html+='<div class="susp-row"><b>'+d.dept+'</b> ('+d.form+') '
+          +'<span style="color:#b91c1c;font-weight:700;">'+d.grade+'등급</span> / 컷 '+d.cutoff
+          +' / GAP <span style="color:#b91c1c;font-weight:700;">'+d.gap.toFixed(2)+'</span>'
+          +' → <span style="color:#7c3aed;font-weight:700;">'+note+'</span></div>';
+      });
+      html+='</div>';
+    }
+    html+='</div>';
+  }
+
+  if(tp===0&&tf===0&&susp.length===0){
+    html='<p style="text-align:center;color:var(--sub);padding:30px 0;">학과별 상세 데이터가 없습니다.<br><span style="font-size:12px;">합계 데이터(막대 차트)만 집계된 대학입니다.</span></p>';
+  }
+
+  document.getElementById('modalBody').innerHTML=html;
+  modal.style.display='block';
+}
+
+function modalTable(arr, isFail){
+  var h='<table class="modal-tbl"><thead><tr>'
+    +'<th>학과명</th><th style="text-align:center;">등급</th><th style="text-align:center;">국·영·수</th>'
+    +'<th style="text-align:center;">컷오프</th><th style="text-align:center;">GAP</th><th style="text-align:center;">결과</th>'
+    +'</tr></thead><tbody>';
+  arr.forEach(function(d){
+    var name=d.major||d.dept||'-';
+    var detail=d.grade_detail||(d.kor!==undefined?'국'+d.kor+' 영'+d.eng+' 수'+d.math:'-');
+    var gap=+(d.gap!==undefined?d.gap:d.grade-d.cutoff).toFixed(2);
+    var gapStr=(gap>0?'+':'')+gap.toFixed(2);
+    var gc=isFail?(gap<=-0.1?'#b91c1c':gap<=0.2?'#e67e22':'#6b7280'):(gap>=0.2?'#27ae60':gap>=-0.2?'#e67e22':'#2980b9');
+    var stage=d.stage||d.reason||'-';
+    var badge=stage==='합격'?'<span class="badge-pass">합격</span>'
+      :stage==='충원합격'?'<span class="badge-supp">충원합격</span>'
+      :stage.includes('최저')?'<span class="badge-miss">수능최저미충족</span>'
+      :stage.includes('1단계')?'<span class="badge-drop">1단계탈락</span>'
+      :'<span class="badge-fail">불합격</span>';
+    h+='<tr><td>'+name+'</td>'
+      +'<td style="text-align:center;font-weight:700;">'+d.grade+'</td>'
+      +'<td style="text-align:center;font-size:11px;color:#555;">'+detail+'</td>'
+      +'<td style="text-align:center;">'+d.cutoff+'</td>'
+      +'<td style="text-align:center;font-weight:700;color:'+gc+';">'+gapStr+'</td>'
+      +'<td style="text-align:center;">'+badge+'</td></tr>';
+  });
+  return h+'</tbody></table>';
+}
+</script>
+
+<!-- 대학별 상세 모달 -->
+<div id="univModal" class="modal-overlay" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal-box">
+    <div class="modal-hd">
+      <h3 id="modalTitle"></h3>
+      <button class="modal-close" onclick="document.getElementById('univModal').style.display='none'">✕ 닫기</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+</body>
+</html>

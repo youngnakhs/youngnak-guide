@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>2026 영특 안내</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+
+  :root {
+    --blue: #0071e3;
+    --blue-dark: #0051a2;
+    --text: #1d1d1f;
+    --text-secondary: #6e6e73;
+    --bg: #ffffff;
+    --bg-section: #f5f5f7;
+    --border: rgba(0,0,0,0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    max-width: 430px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 430px;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nav-logo {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+  .nav-badge {
+    font-size: 11px;
+    color: var(--blue);
+    font-weight: 600;
+    background: rgba(0,113,227,0.1);
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100svh;
+    background: linear-gradient(180deg, #000 0%, #1a1a2e 50%, #16213e 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 100px 24px 60px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 20%; left: 50%; transform: translate(-50%, -50%);
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(0,113,227,0.4) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(40px);
+  }
+  .hero-eyebrow {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--blue);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.2s forwards;
+  }
+  .hero-title {
+    font-size: 64px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: -2px;
+    margin-bottom: 12px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+  .hero-title span {
+    background: linear-gradient(135deg, #0071e3, #34aadc, #5e5ce6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero-sub {
+    font-size: 18px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.5;
+    margin-bottom: 8px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+  .hero-desc {
+    font-size: 14px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.7s forwards;
+  }
+  .hero-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 280px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.9s forwards;
+  }
+  .btn-primary {
+    background: var(--blue);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 24px;
+    border-radius: 980px;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .btn-primary:active { transform: scale(0.97); background: var(--blue-dark); }
+  .btn-secondary {
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.9);
+    font-size: 15px;
+    font-weight: 500;
+    padding: 14px 24px;
+    border-radius: 980px;
+    text-decoration: none;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .scroll-hint {
+    position: absolute;
+    bottom: 30px;
+    left: 50%; transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    opacity: 0;
+    animation: fadeIn 1s ease 1.5s forwards;
+  }
+  .scroll-hint span { font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 1px; }
+  .scroll-arrow {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+    animation: scrollPulse 2s ease infinite;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 80px 24px;
+  }
+  .section-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--blue);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-size: 34px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .section-body {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+  .section-body strong { color: var(--text); font-weight: 600; }
+
+  /* WHAT IS */
+  .what-section { background: var(--bg); }
+  .stat-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-top: 40px;
+  }
+  .stat-card {
+    background: var(--bg-section);
+    border-radius: 18px;
+    padding: 20px 16px;
+    text-align: center;
+  }
+  .stat-num {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--blue);
+    letter-spacing: -1px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  /* TODAY */
+  .today-section { background: #000; }
+  .today-section .section-title { color: #fff; }
+  .today-section .section-eyebrow { color: #34aadc; }
+  .step-list {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .step-item {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.2s;
+  }
+  .step-item:active { transform: scale(0.98); }
+  .step-num {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--blue), #5e5ce6);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-content { flex: 1; }
+  .step-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 3px;
+  }
+  .step-sub {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+  }
+  .step-arrow { color: rgba(255,255,255,0.2); font-size: 16px; }
+
+  /* DEADLINE */
+  .deadline-section {
+    background: linear-gradient(135deg, #dc2626, #b91c1c, #991b1b);
+    padding: 60px 24px;
+    text-align: center;
+  }
+  .deadline-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .deadline-date {
+    font-size: 48px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .deadline-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 32px;
+  }
+  .deadline-warning {
+    background: rgba(0,0,0,0.25);
+    border-radius: 14px;
+    padding: 16px 20px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    line-height: 1.6;
+  }
+  .deadline-warning strong { color: #fff; font-weight: 700; }
+
+  /* RULES */
+  .rules-section { background: var(--bg-section); }
+  .rule-cards {
+    margin-top: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .rule-card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+  .rule-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .rule-icon.blue { background: rgba(0,113,227,0.12); }
+  .rule-icon.purple { background: rgba(94,92,230,0.12); }
+  .rule-icon.green { background: rgba(52,199,89,0.12); }
+  .rule-icon.orange { background: rgba(255,149,0,0.12); }
+  .rule-text-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+  .rule-text-sub {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  /* SCHEDULE */
+  .schedule-section { background: #000; }
+  .schedule-section .section-title { color: #fff; }
+  .schedule-section .section-eyebrow { color: #34d058; }
+  .timeline {
+    margin-top: 40px;
+    position: relative;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 20px; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--blue), rgba(0,113,227,0.1));
+  }
+  .tl-item {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 28px;
+    padding-left: 0;
+    align-items: flex-start;
+  }
+  .tl-dot-wrap {
+    position: relative;
+    width: 40px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: center;
+  }
+  .tl-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--blue);
+    border: 2px solid #000;
+    box-shadow: 0 0 0 2px var(--blue);
+    margin-top: 4px;
+    position: relative;
+    z-index: 1;
+  }
+  .tl-dot.now { background: #ff3b30; box-shadow: 0 0 0 2px #ff3b30; }
+  .tl-dot.done { background: #34c759; box-shadow: 0 0 0 2px #34c759; }
+  .tl-right { flex: 1; }
+  .tl-date {
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  .tl-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 2px;
+  }
+  .tl-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.5;
+  }
+  .tl-tag {
+    display: inline-block;
+    background: rgba(255,59,48,0.2);
+    color: #ff3b30;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .tl-tag.green { background: rgba(52,199,89,0.15); color: #34c759; }
+
+  /* QA */
+  .qa-section { background: var(--bg); padding-bottom: 40px; }
+  .qa-list {
+    margin-top: 36px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .qa-item {
+    border-radius: 0;
+    overflow: hidden;
+  }
+  .qa-item:first-child { border-radius: 18px 18px 0 0; }
+  .qa-item:last-child { border-radius: 0 0 18px 18px; }
+  .qa-item:only-child { border-radius: 18px; }
+  .qa-q-btn {
+    width: 100%;
+    background: var(--bg-section);
+    border: none;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.2s;
+  }
+  .qa-q-btn:active { background: #ebebed; }
+  .qa-q-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.4;
+    flex: 1;
+  }
+  .qa-chevron {
+    color: var(--text-secondary);
+    font-size: 14px;
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+  .qa-item.open .qa-chevron { transform: rotate(180deg); }
+  .qa-answer {
+    background: var(--bg-section);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s;
+    padding: 0 20px;
+  }
+  .qa-item.open .qa-answer {
+    max-height: 200px;
+    padding: 0 20px 18px;
+  }
+  .qa-answer-text {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    padding-top: 14px;
+  }
+  .qa-answer-text strong { color: var(--text); font-weight: 600; }
+  .qa-answer-text .warn { color: #ff3b30; font-weight: 600; }
+  .qa-answer-text .tip {
+    display: inline-block;
+    background: rgba(0,113,227,0.08);
+    color: var(--blue);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 6px;
+  }
+
+  .qa-category-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 28px 4px 10px;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--bg-section);
+    padding: 40px 24px 60px;
+    text-align: center;
+    border-top: 1px solid var(--border);
+  }
+  .footer-logo {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--text);
+    letter-spacing: -1px;
+    margin-bottom: 8px;
+  }
+  .footer-sub {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">영특 2026</div>
+  <div class="nav-badge">신규 프로그램</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">2026 신규 프로그램</div>
+  <h1 class="hero-title">영<span>특</span></h1>
+  <p class="hero-sub">영락 특색 교육</p>
+  <p class="hero-desc">영특한 영락인을 만드는 소그룹 독서·탐구 프로그램</p>
+  <div class="hero-cta">
+    <a href="https://yrgo.riroschool.kr/board_msg.php?club=index&action=view&db=1901&page=1&cate=&t_year=&sort=&uid=1144&inum=0&key=&key2=&s1=&s2=&s3=" class="btn-primary" target="_blank">지금 신청하기 →</a>
+    <a href="#what" class="btn-secondary">자세히 알아보기</a>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-arrow"></div>
+    <span>SCROLL</span>
+  </div>
+</section>
+
+<!-- WHAT IS -->
+<section id="what" class="what-section">
+  <div class="reveal">
+    <div class="section-eyebrow">What is 영특</div>
+    <h2 class="section-title">영락 특색 교육의<br>줄임말</h2>
+    <p class="section-body">
+      <strong>3~6명 소그룹</strong>이 함께 독서·토론·탐구·발표를 통해 전공·진로·취미를 탐색하는 프로그램입니다.<br><br>
+      모든 활동이 <strong>학생부(자율·진로 활동)에 기재</strong>되는 실질적인 소재가 됩니다.
+    </p>
+  </div>
+  <div class="stat-row">
+    <div class="stat-card reveal reveal-delay-1">
+      <div class="stat-num">3~6</div>
+      <div class="stat-label">소그룹<br>인원</div>
+    </div>
+    <div class="stat-card reveal reveal-delay-2">
+      <div class="stat-num">10</div>
+      <div class="stat-label">총 활동<br>횟수</div>
+    </div>
+    <div class="stat-card reveal reveal-delay-3">
+      <div class="stat-num">월5</div>
+      <div class="stat-label">매주 월요일<br>5교시</div>
+    </div>
+  </div>
+</section>
+
+<!-- TODAY -->
+<section id="today" class="today-section">
+  <div class="reveal">
+    <div class="section-eyebrow">오늘 할 일</div>
+    <h2 class="section-title" style="color:#fff">지금 당장<br>해야 할 것들</h2>
+  </div>
+  <div class="step-list">
+    <div class="step-item reveal reveal-delay-1">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">리로스쿨 접속 → 영특 신청</div>
+        <div class="step-sub">전공 멘토링 학생 제외, 전원 신청</div>
+      </div>
+      <div class="step-arrow">›</div>
+    </div>
+    <div class="step-item reveal reveal-delay-2">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">소그룹 이름 + 팀원 확정</div>
+        <div class="step-sub">학년·반·이름 기재 / 최대 6명</div>
+      </div>
+      <div class="step-arrow">›</div>
+    </div>
+    <div class="step-item reveal reveal-delay-3">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">탐구 주제·책 상의</div>
+        <div class="step-sub">전공·진로·취미 관련 책 미리 생각</div>
+      </div>
+      <div class="step-arrow">›</div>
+    </div>
+    <div class="step-item reveal reveal-delay-4">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-title">창체 보고서 → 영특 일지 기록</div>
+        <div class="step-sub">3월 30일(오늘)부터 시작</div>
+      </div>
+      <div class="step-arrow">›</div>
+    </div>
+  </div>
+</section>
+
+<!-- DEADLINE -->
+<section class="deadline-section">
+  <div class="deadline-label">신청 마감</div>
+  <div class="deadline-date reveal">4월 3일</div>
+  <div class="deadline-sub">목요일 오전 8시까지</div>
+  <div class="deadline-warning reveal">
+    ⚠️ 기한 내 미신청 시 학교에서 <strong>임의 배정</strong>되며,<br>원하는 그룹에 들어갈 수 없습니다.
+  </div>
+</section>
+
+<!-- RULES -->
+<section class="rules-section">
+  <div class="reveal">
+    <div class="section-eyebrow">구성 규칙</div>
+    <h2 class="section-title">소그룹<br>만드는 법</h2>
+  </div>
+  <div class="rule-cards">
+    <div class="rule-card reveal reveal-delay-1">
+      <div class="rule-icon blue">👥</div>
+      <div>
+        <div class="rule-text-title">3명 이상, 6명 이하</div>
+        <div class="rule-text-sub">6명 초과 시 그룹 분리 필요</div>
+      </div>
+    </div>
+    <div class="rule-card reveal reveal-delay-2">
+      <div class="rule-icon purple">🏫</div>
+      <div>
+        <div class="rule-text-title">같은 학급 권장</div>
+        <div class="rule-text-sub">같은 학년이면 다른 반도 가능<br>인원 부족 시 학년 혼합 허용</div>
+      </div>
+    </div>
+    <div class="rule-card reveal reveal-delay-3">
+      <div class="rule-icon green">📅</div>
+      <div>
+        <div class="rule-text-title">월요일 5교시 운영</div>
+        <div class="rule-text-sub">3학년 5회 / 1·2학년 10회</div>
+      </div>
+    </div>
+    <div class="rule-card reveal reveal-delay-4">
+      <div class="rule-icon orange">🙋</div>
+      <div>
+        <div class="rule-text-title">개인 독서·학습 선택 가능</div>
+        <div class="rule-text-sub">단, 이 경우 학생부 기록 없음</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section class="schedule-section">
+  <div class="reveal">
+    <div class="section-eyebrow">일정</div>
+    <h2 class="section-title" style="color:#fff">연간<br>로드맵</h2>
+  </div>
+  <div class="timeline">
+    <div class="tl-item reveal">
+      <div class="tl-dot-wrap"><div class="tl-dot now"></div></div>
+      <div class="tl-right">
+        <div class="tl-date">3월 29일 <span class="tl-tag">오늘</span></div>
+        <div class="tl-title">영특 개요 안내 + 소그룹 구성 시작</div>
+        <div class="tl-desc">지금 바로 팀원 모집 시작!</div>
+      </div>
+    </div>
+    <div class="tl-item reveal reveal-delay-1">
+      <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+      <div class="tl-right">
+        <div class="tl-date">4월 3일 AM8시 <span class="tl-tag">마감</span></div>
+        <div class="tl-title">리로스쿨 신청 마감</div>
+        <div class="tl-desc">미신청 시 학교 임의 배정</div>
+      </div>
+    </div>
+    <div class="tl-item reveal reveal-delay-2">
+      <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+      <div class="tl-right">
+        <div class="tl-date">4월 6일</div>
+        <div class="tl-title">첫 팀 모임 + 계획서 작성</div>
+        <div class="tl-desc">팀명 확정, 역할 분배, 도서 신청<br>봉사 연계 안내</div>
+      </div>
+    </div>
+    <div class="tl-item reveal reveal-delay-3">
+      <div class="tl-dot-wrap"><div class="tl-dot"></div></div>
+      <div class="tl-right">
+        <div class="tl-date">4월 ~ 11월</div>
+        <div class="tl-title">독서 · 토론 · 탐구 · 봉사</div>
+        <div class="tl-desc">보고서 작성 및 발표 준비</div>
+      </div>
+    </div>
+    <div class="tl-item reveal reveal-delay-3">
+      <div class="tl-dot-wrap"><div class="tl-dot done"></div></div>
+      <div class="tl-right">
+        <div class="tl-date">7월 15일 <span class="tl-tag green">3학년</span></div>
+        <div class="tl-title">협력 학술제 발표</div>
+        <div class="tl-desc">최소 1회 무대 발표 기회 제공</div>
+      </div>
+    </div>
+    <div class="tl-item reveal reveal-delay-4">
+      <div class="tl-dot-wrap"><div class="tl-dot done"></div></div>
+      <div class="tl-right">
+        <div class="tl-date">11월~12월 <span class="tl-tag green">1·2학년</span></div>
+        <div class="tl-title">발표제 + 최종 평가회</div>
+        <div class="tl-desc">12월 21일 최종 평가회</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Q&A -->
+<section class="qa-section">
+  <div class="reveal">
+    <div class="section-eyebrow">FAQ</div>
+    <h2 class="section-title">자주 묻는<br>질문</h2>
+  </div>
+
+  <div class="qa-category-label">참여 · 신청</div>
+  <div class="qa-list">
+    <div class="qa-item">
+      <button class="qa-q-btn" onclick="toggleQA(this)">
+        <span class="qa-q-text">꼭 참여해야 하나요?</span>
+        <span class="qa-chevron">⌄</span>
+      </button>
+      <div class="qa-answer">
+        <div class="qa-answer-text"><span class="warn">전공 멘토링 학생 제외 전원 참여</span>입니다. 미신청 시 학교에서 <strong>임의 배정</strong>되며 원하는 그룹에 들어갈 수 없습니다.</div>
+      </div>
+    </div>
+    <div class="qa-item">
+      <button class="qa-q-btn" onclick="toggleQA(this)">
+        <span class="qa-q-text">혼자 하고 싶어요. 가능한가요?</span>
+        <span class="qa-chevron">⌄</span>
+      </button>
+      <div class="qa-answer">
+        <div class="qa-answer-text">가능합니다. 리로스쿨에서 <strong>"개인 독서 및 학습"</strong>을 선택하면 됩니다. 단, <span class="warn">학생부 기록이 남지 않습니다.</span></div>
+      </div>
+    </div>
+    <div class="qa-item">
+      <button class="qa-q-btn" onclick="toggleQA(this)">
+        <span class="qa-q-text">다른 반 친구랑 같이 해도 되나요?</span>
+        <span class="qa-chevron">⌄</span>
+      </button>
+      <div class="qa-answer">
+        <div class="qa-answer-text"><strong>같은 학년이면 다른 반도 가능</strong>합니다. 인원 부족 시 학년 혼합도 허용됩니다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa-category-label">소그룹 · 활동</div>
+  <div class="qa-list">
+    <div class="qa-item">
+      <button class="qa-q-btn" onclick="toggleQA(this)">
+        <span class="qa-q-text">소그룹 이름은 어떻게 정해요?</span>
+        <span class="qa-chevron">⌄</span>
+      </button>
+      <div class="qa-answer">
+        <div class="qa-answer-text">자유롭게 정하면 됩니다. 단, <strong>리로스쿨 등록 후 변경이 어려우니</strong> 신중하게 결정해 주세요.</div>
+      </div>
+    </div>
+    <div class="qa-item">
+      <button class="qa-q-btn" onclick="toggleQA(this)">
+        <span class="qa-q-text">어떤 책을 읽어야 하나요?</span>
+        <span class="qa-chevron">⌄</span>
+      </button>
+      <div class="qa-answer">
+        <div class="qa-answer-text">소그룹이 함께 탐구할 <strong>전공·진로·취미 관련 책</strong>을 자유롭게 선정합니다. <span class="tip">학술적 가치가 높을수록 학생부에 유리</span></div>
+      </div>
+    </div>
+    <div class="qa-item">
+      <button class="qa-q-btn" onclick="toggleQA(this)">
+        <span class="qa-q-text">기록은 어디에, 언제부터 해야 하나요?</span>
+        <span class="qa-chevron">⌄</span>
+      </button>
+      <div class="qa-answer">
+        <div class="qa-answer-text"><strong>창체 보고서 → 영특 일지</strong>에 날짜별로 기록합니다. <span class="warn">오늘(3월 30일)부터 시작</span>이며 모임마다 빠짐없이 작성해야 합니다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa-category-label">학생부 · 발표</div>
+  <div class="qa-list">
+    <div class="qa-item">
+      <button class="qa-q-btn" onclick="toggleQA(this)">
+        <span class="qa-q-text">학생부에는 어떻게 기록되나요?</span>
+        <span class="qa-chevron">⌄</span>
+      </button>
+      <div class="qa-answer">
+        <div class="qa-answer-text"><strong>자율활동 또는 진로활동</strong>란에 기재됩니다. 탐구 → 실천 → 발표까지 이어질수록 내용이 풍부해집니다.</div>
+      </div>
+    </div>
+    <div class="qa-item">
+      <button class="qa-q-btn" onclick="toggleQA(this)">
+        <span class="qa-q-text">발표는 꼭 해야 하나요?</span>
+        <span class="qa-chevron">⌄</span>
+      </button>
+      <div class="qa-answer">
+        <div class="qa-answer-text">학기 말 발표제에 참여하며 <strong>최소 1회 무대 발표 기회</strong>가 주어집니다. 3학년 7/15, 1·2학년 11~12월.</div>
+      </div>
+    </div>
+    <div class="qa-item">
+      <button class="qa-q-btn" onclick="toggleQA(this)">
+        <span class="qa-q-text">봉사 연계는 어떻게 하나요?</span>
+        <span class="qa-chevron">⌄</span>
+      </button>
+      <div class="qa-answer">
+        <div class="qa-answer-text">리로스쿨 봉사 메뉴에서 연계 가능합니다. <strong>4월 6일 첫 모임 때 별도 안내</strong> 예정입니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">영특 2026</div>
+  <div class="footer-sub">
+    2026학년도 영락 특색 교육<br>
+    담당 연구부<br><br>
+    문의사항은 담당 선생님께 문의하세요.
+  </div>
+</footer>
+
+<script>
+  // Toggle Q&A
+  function toggleQA(btn) {
+    const item = btn.closest('.qa-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.qa-item.open').forEach(el => el.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
