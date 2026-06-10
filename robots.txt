@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# 입시결과 분석: 익명 집계지만 소규모 코호트 재식별 우려로 검색 비공개
+Disallow: /admission-results.html
+
+Sitemap: https://youngnakhs.github.io/youngnak-guide/navigator/sitemap.xml
