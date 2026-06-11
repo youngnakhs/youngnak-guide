@@ -312,13 +312,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 .reveal.visible{opacity:1;transform:translateY(0);}
 .rd1{transition-delay:.07s;}.rd2{transition-delay:.16s;}.rd3{transition-delay:.25s;}.rd4{transition-delay:.34s;}.rd5{transition-delay:.43s;}.rd6{transition-delay:.52s;}.rd7{transition-delay:.61s;}.rd8{transition-delay:.70s;}
 
-/* QR CARD */
-.qr-card-inner{display:flex;gap:20px;align-items:flex-start;}
-.qr-box{flex-shrink:0;width:100px;height:100px;background:#fff;border:2px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.qr-box img,.qr-box canvas{width:90px!important;height:90px!important;}
-.qr-text{flex:1;min-width:0;}
-@media(max-width:360px){.qr-card-inner{flex-direction:column;}.qr-box{width:100%;height:auto;padding:12px;}.qr-box canvas,.qr-box img{width:120px!important;height:120px!important;}}
-
 @media(max-width:480px){
   .menu-card{padding:26px 18px;}
   .motto-banner{padding:24px 18px;}
@@ -668,15 +661,6 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
     document.dispatchEvent(new MouseEvent('mousemove', { clientX: touch.clientX, clientY: touch.clientY }));
   }, { passive: true });
 })();
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script>
-new QRCode(document.getElementById('qr-box'), {
-  text: 'https://youngnakhs.github.io/youngnak-guide/prompt-happiness.html',
-  width: 90, height: 90,
-  colorDark: '#1f7a49', colorLight: '#ffffff',
-  correctLevel: QRCode.CorrectLevel.M
-});
 </script>
 </body>
 </html>
