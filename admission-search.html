@@ -2,6 +2,18 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<script>
+(function(){
+  try{ if(sessionStorage.getItem('ynTeacherAuth')==='1') return; }catch(e){}
+  var pw = window.prompt('이 페이지는 비밀번호 인증이 필요합니다.\n비밀번호를 입력해 주세요.');
+  if(pw==='900613'){
+    try{ sessionStorage.setItem('ynTeacherAuth','1'); }catch(e){}
+  }else{
+    alert('⚠️ 비정상적인 접근입니다.\n메인 페이지로 이동합니다.');
+    window.location.replace('index.html');
+  }
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>수시 내신 합격예측기 | 2023~2025 전국 대학</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
