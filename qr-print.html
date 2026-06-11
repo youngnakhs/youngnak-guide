@@ -202,6 +202,19 @@ body{
   font-family:'Gowun Dodum',sans-serif;
 }
 
+/* HOME BUTTON (screen only) */
+.home-btn{
+  position:fixed;top:16px;left:16px;z-index:100;
+  display:inline-flex;align-items:center;gap:6px;
+  background:#fff;color:#c2557e;
+  font-family:'Gowun Dodum',sans-serif;font-size:13px;font-weight:700;
+  padding:9px 16px;border-radius:999px;text-decoration:none;
+  border:1.5px solid #f0c4d6;
+  box-shadow:0 4px 16px rgba(200,100,140,.18);
+  transition:background .18s,transform .15s;
+}
+.home-btn:hover{background:#fde8f1;transform:translateY(-1px);}
+
 /* PRINT */
 @media print{
   body{background:#fff5f9;margin:0;padding:0;}
@@ -223,6 +236,8 @@ body{
 </style>
 </head>
 <body>
+
+<a href="index.html" class="home-btn no-print">🏫 정보센터 홈</a>
 
 <div class="sheet">
   <!-- BG PETALS -->

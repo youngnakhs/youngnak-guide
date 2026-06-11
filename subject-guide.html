@@ -38,6 +38,8 @@ mark{background:var(--amber-soft);border-radius:3px;padding:0 2px;}
 .nav button:active{transform:translateY(2px);box-shadow:none;}
 .nav button.on{background:var(--ink);color:#FFF;}
 .nav button .ico{margin-right:4px;}
+.nav a.main-link{flex-shrink:0;display:inline-block;border:2px solid var(--coral);background:var(--coral-soft);color:var(--coral);font-weight:700;font-size:13.5px;padding:8px 14px;border-radius:999px;box-shadow:var(--shadow);text-decoration:none;transition:transform .12s;}
+.nav a.main-link:active{transform:translateY(2px);box-shadow:none;}
 
 .wrap{max-width:880px;margin:0 auto;padding:24px 16px 90px;}
 .tab{display:none;animation:rise .3s ease;}
@@ -441,7 +443,7 @@ function typeBadge(s){
 /* ── nav ── */
 const TABS = [['home','🏠 홈'],['test','🧭 성향 테스트'],['dict','📚 과목 사전'],['major','🎓 계열·학과'],['univ','🏛️ 대학별 권장'],['mysel','✏️ 내 선택']];
 const TOTAL_PICK = GROUPS.reduce((a,g)=>a+g.pick,0);
-$('#nav').innerHTML = TABS.map(t=>`<button data-t="${t[0]}" onclick="go('${t[0]}')">${t[1]}${t[0]==='mysel'?'<span class="bdg" id="navBdg">0/'+TOTAL_PICK+'</span>':''}</button>`).join('');
+$('#nav').innerHTML = TABS.map(t=>`<button data-t="${t[0]}" onclick="go('${t[0]}')">${t[1]}${t[0]==='mysel'?'<span class="bdg" id="navBdg">0/'+TOTAL_PICK+'</span>':''}</button>`).join('') + '<a class="main-link" href="index.html">🏫 정보센터</a>';
 function updateNavBdg(){
   const n = Object.values(loadSel()).flat().length;
   const b = $('#navBdg'); if(b) b.textContent = n+'/'+TOTAL_PICK;
