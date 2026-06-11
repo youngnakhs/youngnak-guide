@@ -214,7 +214,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 .c-dual{display:flex;gap:10px;margin-top:16px;}
 .dual-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:12px 8px;border:1.5px solid var(--border);border-radius:12px;text-decoration:none;color:var(--green-dk);background:var(--green-pale);transition:background .18s,border-color .18s,transform .15s;}
 .dual-btn:hover{background:var(--green);color:#fff;border-color:var(--green);transform:translateY(-2px);}
-.dual-btn b{font-size:14px;font-weight:800;}
+.dual-btn b{font-size:14px;font-weight:800;word-break:keep-all;text-align:center;line-height:1.3;}
 .dual-btn span{font-size:10px;opacity:.85;font-family:'DM Mono',monospace;letter-spacing:.5px;}
 
 /* ══ 학교상징 ══ */
@@ -312,13 +312,6 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 .reveal.visible{opacity:1;transform:translateY(0);}
 .rd1{transition-delay:.07s;}.rd2{transition-delay:.16s;}.rd3{transition-delay:.25s;}.rd4{transition-delay:.34s;}.rd5{transition-delay:.43s;}.rd6{transition-delay:.52s;}.rd7{transition-delay:.61s;}.rd8{transition-delay:.70s;}
 
-/* QR CARD */
-.qr-card-inner{display:flex;gap:20px;align-items:flex-start;}
-.qr-box{flex-shrink:0;width:100px;height:100px;background:#fff;border:2px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.qr-box img,.qr-box canvas{width:90px!important;height:90px!important;}
-.qr-text{flex:1;min-width:0;}
-@media(max-width:360px){.qr-card-inner{flex-direction:column;}.qr-box{width:100%;height:auto;padding:12px;}.qr-box canvas,.qr-box img{width:120px!important;height:120px!important;}}
-
 @media(max-width:480px){
   .menu-card{padding:26px 18px;}
   .motto-banner{padding:24px 18px;}
@@ -403,14 +396,17 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
   </div>
 
   <div class="card-grid">
-    <a href="subject-guide.html" class="menu-card reveal rd1">
+    <div class="menu-card reveal rd1 dual">
       <div class="card-tbar"></div>
       <div class="c-head"><span class="c-num">01</span><span class="c-tag tag-career">진로 맞춤</span></div>
       <span class="c-icon">🧭</span>
-      <h3 class="c-title">선택과목<br>나침반</h3>
-      <p class="c-desc">진로와 관심 분야에 따라 어떤 과목을 선택할지 단계별로 안내합니다. 나만의 교육과정을 설계해보세요.</p>
-      <div class="c-foot"><span class="c-meta">2022 개정 교육과정</span><span class="c-arrow">→</span></div>
-    </a>
+      <h3 class="c-title">선택과목<br>안내</h3>
+      <p class="c-desc">진로에 맞는 과목 선택부터 3년 시간표 설계까지. 입학년도에 맞는 도구를 골라 바로 이용하세요.</p>
+      <div class="c-dual">
+        <a href="subject-compass.html" class="dual-btn"><b>선택과목 나침반</b><span>고2·고3</span></a>
+        <a href="subject-guide.html" class="dual-btn"><b>대학까지? 네!학기</b><span>고1(2026입학생)</span></a>
+      </div>
+    </div>
 
     <a href="curriculum-guide.html" class="menu-card reveal rd2">
       <div class="card-tbar"></div>
@@ -665,15 +661,6 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
     document.dispatchEvent(new MouseEvent('mousemove', { clientX: touch.clientX, clientY: touch.clientY }));
   }, { passive: true });
 })();
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script>
-new QRCode(document.getElementById('qr-box'), {
-  text: 'https://youngnakhs.github.io/youngnak-guide/prompt-happiness.html',
-  width: 90, height: 90,
-  colorDark: '#1f7a49', colorLight: '#ffffff',
-  correctLevel: QRCode.CorrectLevel.M
-});
 </script>
 </body>
 </html>

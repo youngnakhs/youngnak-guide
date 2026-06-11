@@ -118,6 +118,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     // The manifest bytes are ours; SRI protects against CDN compromise, not this.
     template = template.replace(/\s+integrity="[^"]*"/gi, '').replace(/\s+crossorigin="[^"]*"/gi, '');
 
+    // Desktop console layout (rail/main/cart) clips on phones at device width.
+    // Render at design width instead so mobile shows the whole console zoomed out (pinch to use).
+    template = template.replace(/<meta[^>]*name=["']viewport["'][^>]*>/i, '<meta name="viewport" content="width=1280">');
+
     const resourceScript = '<script>window.__resources = ' +
       JSON.stringify(resourceMap).split('</' + 'script>').join('<\\/' + 'script>') +
       ';</' + 'script>';
