@@ -1722,7 +1722,7 @@ const RolePicker = ({ onPick }) => (
   </div>
 );
 
-const Composer = ({ value, onChange, onSend, disabled, placeholder }) => {
+const Composer = ({ value, onChange, onSend, disabled, placeholder, password }) => {
   const ref = useRef(null);
   const can = value.trim().length > 0 && !disabled;
   return (
@@ -1731,6 +1731,8 @@ const Composer = ({ value, onChange, onSend, disabled, placeholder }) => {
         <input
           ref={ref}
           className="input"
+          type={password ? 'password' : 'text'}
+          inputMode={password ? 'numeric' : undefined}
           value={value}
           placeholder={placeholder}
           onChange={(e) => onChange(e.target.value)}
@@ -1827,6 +1829,7 @@ function ChatApp() {
   const [typing, setTyping] = useState(false);
   const [input, setInput] = useState('');
   const [search, setSearch] = useState(false);
+  const [awaitPw, setAwaitPw] = useState(false);
   const [todayLabel] = useState(todayFull());
   const scrollerRef = useRef(null);
   const lock = useRef(false);
@@ -1861,6 +1864,33 @@ function ChatApp() {
 
   const sendText = (text) => {
     if (!text.trim() || lock.current) return;
+    if (awaitPw) {
+      const entered = text.trim();
+      pushUser('•'.repeat(entered.length) || '•');
+      setAwaitPw(false);
+      setTyping(true);
+      if (entered === '900613') {
+        setTimeout(() => {
+          setTyping(false);
+          setRole('교사');
+          pushBot({
+            text: '인증되었습니다.\n' + ROLE_GREET['교사'],
+            quick: ROLE_MENUS['교사'].map(m => m.label),
+            kind: 'greet',
+            showRec: true,
+          });
+        }, 450);
+      } else {
+        setTimeout(() => {
+          setTyping(false);
+          pushBot({
+            text: '⚠️ 비정상적인 접근입니다.\n인증에 실패하여 메인 페이지로 이동합니다.',
+          });
+          setTimeout(() => { window.location.href = 'index.html'; }, 1800);
+        }, 450);
+      }
+      return;
+    }
     pushUser(text);
     const topic = findTopic(text, role);
     if (topic) {
@@ -1883,6 +1913,19 @@ function ChatApp() {
   };
 
   const pickRole = (r) => {
+    if (r === '교사') {
+      pushUser(r);
+      setTyping(true);
+      setTimeout(() => {
+        setTyping(false);
+        setAwaitPw(true);
+        pushBot({
+          text: '교사 메뉴는 인증이 필요해요.\n비밀번호를 입력해 주세요.',
+          kind: 'pwAsk',
+        });
+      }, 450);
+      return;
+    }
     setRole(r);
     pushUser(r);
     setTyping(true);
@@ -1999,8 +2042,9 @@ function ChatApp() {
         value={input}
         onChange={setInput}
         onSend={() => { sendText(input); setInput(''); }}
-        placeholder={role ? '메시지 입력' : '먼저 위에서 역할을 선택해 주세요'}
-        disabled={!role}
+        placeholder={awaitPw ? '비밀번호 입력' : role ? '메시지 입력' : '먼저 위에서 역할을 선택해 주세요'}
+        disabled={!role && !awaitPw}
+        password={awaitPw}
       />
       <SearchOverlay
         open={search}
