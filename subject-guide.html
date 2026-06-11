@@ -622,6 +622,14 @@ function clusterPicks(cid){
     if(g.id==='G21') return; // 마지막에 연계 고려해 계산
     picks[g.id] = (rec[g.id]||[]).slice(0, g.pick).map(x=>x[0]);
   });
+  // 문과·예체능: picks 자리가 꽉 차도 지구시스템과학/행성우주과학 강제 포함 (마지막 과목 교체)
+  if(EARTH_CLUSTERS.includes(cid)){
+    [['G22','지구시스템과학'],['G31','행성우주과학']].forEach(([gid,subj])=>{
+      if(!G[gid]||!G[gid].subjects.includes(subj)||picks[gid].includes(subj)) return;
+      if(picks[gid].length>=G[gid].pick) picks[gid].pop();
+      picks[gid].push(subj);
+    });
+  }
   // G21: 추천된 2-2/3-1 과학 진로과목의 기반과목을 우선 배치
   const needBase = [];
   [...(picks['G22']||[]), ...(picks['G31']||[])].forEach(s=>{
