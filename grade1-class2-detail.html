@@ -116,7 +116,9 @@ ul.chk li::before{content:"☐";position:absolute;left:12px;top:8px;color:var(--
 @media print{
   .toolbar,.toTop,.btn{display:none!important}
   body{background:#fff}
-  .card{break-inside:avoid;box-shadow:none;border:1px solid #ccc}
+  .card{break-inside:avoid;break-before:page;box-shadow:none;border:1px solid #ccc}
+  .card:first-of-type{break-before:auto}
+  #ovtable,.toolbar{break-after:page}
   header.top{background:#fff;color:#000;border-bottom:2px solid #000}
   .kick,.sub,.meta-row .m{color:#333}
 }
