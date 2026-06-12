@@ -446,7 +446,8 @@ details.faq .a::before{content:'A. ';color:var(--teal-deep);font-weight:800;font
   <div id="selGroups"></div>
   <div class="checklist" id="checklist"></div>
   <div class="cta-row">
-    <button class="btn coral" onclick="window.print()">🖨️ 인쇄 / PDF 저장</button>
+    <button class="btn coral" onclick="window.print()">🖨️ 인쇄 / PDF</button>
+    <button id="savePNGBtn" class="btn ghost needs-h2c" onclick="savePNG()">🖼️ PNG 저장</button>
     <button class="btn ghost" onclick="resetSel()">↺ 처음부터 다시</button>
   </div>
 </section>
@@ -784,6 +785,23 @@ function renderResult(forceTop){
     </div>
     <div class="note" style="margin-top:18px"><b>이 검사는 출발점일 뿐!</b> 진짜 결정은 ①과목 사전에서 내용 확인 → ②계열·학과에서 깊이 탐색 → ③대학별 권장과목 체크 → ④선생님·부모님 상담 순서로 차근차근. 결과 화면을 캡처해서 친구와 비교해 보는 것도 재밌어요 📸</div>`;
   window.scrollTo({top:0});
+}
+function savePNG(){
+  const area = document.getElementById('printArea');
+  area.classList.add('capturing');
+  const btn = document.getElementById('savePNGBtn');
+  if(btn){btn.textContent='저장 중…';btn.disabled=true;}
+  html2canvas(area,{scale:2,useCORS:true,backgroundColor:'#FFFFFF',logging:false}).then(function(canvas){
+    canvas.toBlob(function(blob){
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = '영락_선택과목_나의선택.png';
+      a.click();
+      setTimeout(function(){URL.revokeObjectURL(a.href);},1000);
+      area.classList.remove('capturing');
+      if(btn){btn.textContent='🖼️ PNG 저장';btn.disabled=false;}
+    });
+  });
 }
 function saveResultCard(){
   if(!_lastResult) return;
