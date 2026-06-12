@@ -138,6 +138,26 @@ body::before{
   z-index:5; animation:fadeHint 1s 1.2s both;}
 @keyframes fadeHint{from{opacity:0}to{opacity:1}}
 
+/* ── 떠다니는 선배 과외 버튼 ── */
+.help-fab{ position:fixed; left:20px; bottom:90px; z-index:30;
+  display:flex; align-items:center; gap:11px; text-decoration:none; cursor:pointer;
+  animation:helpFloat 3.6s ease-in-out infinite;}
+.help-fab .orb{ width:54px; height:54px; border-radius:50%; flex:none;
+  display:flex; align-items:center; justify-content:center; font-size:26px; position:relative;
+  background:radial-gradient(circle at 34% 28%, #72d4a0, #2ea865 70%);
+  box-shadow:0 10px 24px rgba(0,0,0,.45), 0 0 0 3px rgba(114,212,160,.3), 0 0 30px rgba(60,184,120,.5);}
+.help-fab .orb::after{ content:''; position:absolute; inset:-5px; border-radius:50%;
+  border:2px solid rgba(114,212,160,.55); animation:helpPulse 2.3s ease-out infinite;}
+.help-fab .lbl{ background:rgba(11,31,21,.82); backdrop-filter:blur(6px);
+  border:1px solid rgba(114,212,160,.38); border-radius:30px; padding:8px 14px; line-height:1.25;
+  box-shadow:0 8px 20px rgba(0,0,0,.32); white-space:nowrap;}
+.help-fab .lbl b{ display:block; font-size:13px; font-weight:800; color:var(--ink); letter-spacing:-.2px;}
+.help-fab .lbl b em{ font-style:normal; color:var(--green-lt);}
+.help-fab .lbl span{ display:block; font-size:10px; color:var(--ink-mute); margin-top:1px;}
+.help-fab:hover .orb{ transform:scale(1.06);}
+@keyframes helpFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+@keyframes helpPulse{0%{transform:scale(1);opacity:.7}100%{transform:scale(1.55);opacity:0}}
+
 /* ── 하단 정보 스트립 ── */
 .strip{ flex:none; display:flex; align-items:center; justify-content:center; gap:22px;
   padding:13px 18px 17px; font-size:12px; color:var(--ink-mute); flex-wrap:wrap;
@@ -161,6 +181,28 @@ body::before{
   .hint{font-size:9.5px; letter-spacing:2px;}
   .strip{gap:8px 14px; font-size:10.5px; padding:11px 14px 14px;}
   .strip .hide-m{display:none;}
+  .help-fab{left:14px; bottom:76px; gap:9px;}
+  .help-fab .orb{width:48px; height:48px; font-size:23px;}
+  .help-fab .lbl b{font-size:12px;} .help-fab .lbl span{font-size:9px;}
+}
+/* 소형 폰 */
+@media(max-width:380px){
+  .help-fab .lbl{display:none;}
+}
+/* 소형 폰 */
+@media(max-width:400px){
+  .card{ width:188px; height:270px; left:-94px; top:-135px; padding:14px 13px 11px;}
+  .card h3{font-size:16px;} .card .icon{font-size:30px;}
+  .duo a{font-size:10.5px;} .duo a span{font-size:9px;}
+}
+/* 낮은 높이·가로 모드 */
+@media(max-height:560px) and (max-width:760px){
+  .hero{padding-top:10px;}
+  .hero-emblem{width:46px;height:46px;}
+  .hero-eyebrow{margin:8px 0 4px;}
+  .spirit-row{margin-top:8px;}
+  .card{height:236px; top:-118px;}
+  .card p{-webkit-line-clamp:2;}
 }
 /* 소형 폰 */
 @media(max-width:400px){
@@ -215,6 +257,11 @@ body::before{
     <span>영락학원 · 진학지도부</span>
   </footer>
 </div>
+
+<a class="help-fab" href="senior-tutors.html" aria-label="졸업 선배 과외 찾기">
+  <span class="orb">🎓</span>
+  <span class="lbl"><b>도와줘요 <em>선배님!</em></b><span>졸업 선배 과외 찾기</span></span>
+</a>
 
 <script>
 const MENUS = [
