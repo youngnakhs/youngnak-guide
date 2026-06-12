@@ -101,7 +101,28 @@ p.sub{color:var(--dim);font-size:13.5px;margin-bottom:18px;}
   20%{transform:translateX(-50%) scaleX(-1) translateY(-2.5px);}
   65%{transform:translateX(-50%) scaleX(-1) translateY(1px);}
 }
-.train-icon{position:absolute;top:3px;font-size:24px;line-height:1;transform:translateX(-50%) scaleX(-1);animation:trainShake 0.55s ease-in-out infinite;z-index:5;pointer-events:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));}
+.train-icon{position:absolute;top:3px;font-size:24px;line-height:1;transform:translateX(-50%) scaleX(-1);animation:trainShake 0.55s ease-in-out infinite;z-index:5;pointer-events:auto;cursor:default;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));}
+/* ── 기차 이스터에그 말풍선 ── */
+@keyframes smokeFloat{
+  0%  {opacity:0;transform:translateX(-50%) translateY(-100%) scale(0.6);}
+  10% {opacity:1;transform:translateX(-50%) translateY(calc(-100% - 6px)) scale(1);}
+  70% {opacity:.95;transform:translateX(-50%) translateY(calc(-100% - 28px)) scale(1.03);}
+  100%{opacity:0;transform:translateX(-50%) translateY(calc(-100% - 56px)) scale(1.07);}
+}
+#trainSpeech{
+  position:fixed;pointer-events:none;z-index:300;
+  background:rgba(255,255,255,.97);border:2px solid #D8DDE4;border-radius:18px;
+  padding:10px 15px;font-size:13px;font-weight:600;color:#14181F;
+  max-width:220px;text-align:center;line-height:1.55;
+  box-shadow:0 6px 24px rgba(0,0,0,.14);
+  animation:smokeFloat 3.3s ease-out forwards;
+}
+#trainSpeech::after{
+  content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);
+  border:7px solid transparent;border-top-color:rgba(255,255,255,.97);
+}
+html[data-theme=dark] #trainSpeech{background:rgba(44,52,61,.97);border-color:#3A4552;color:#E8EDF2;}
+html[data-theme=dark] #trainSpeech::after{border-top-color:rgba(44,52,61,.97);}
 .route-hint{display:none;font-size:11.5px;color:var(--dim);text-align:right;margin-top:-2px;}
 @media(max-width:760px){
   .route-hint{display:block;}
@@ -617,6 +638,51 @@ function renderRoute(){
   trainEl.textContent = '🚂';
   trainEl.style.left = leftPct + '%';
   $('#homeRoute').appendChild(trainEl);
+  // 이스터에그: 두 번 누르면 응원 멘트
+  const _CHEERS = [
+    '지금 고민하는 게 맞아, 나중이 아니라 지금! 🔥',
+    '선택이 어려운 건 가능성이 많다는 뜻이야 ✨',
+    '이 페이지 보는 너, 이미 남들보다 한 발 앞서 있어 🚀',
+    '3년 뒤의 나한테 "잘 선택했다" 들을 거야 💪',
+    '걱정 마, 9월까지 얼마든지 바꿀 수 있어 😊',
+    '네 관심사가 곧 최고의 과목이야 📚',
+    '고1인데 벌써 이런 거 찾아본다고? 대단한걸 👏',
+    '어떤 과목 선택해도 열심히 하면 다 빛나 ⭐',
+    '지금 막막해도 괜찮아, 다 그러면서 커 🌱',
+    '기차는 천천히 가도 목적지에 도착해 — 너도 마찬가지 🚂',
+    '수능 몇 년 남았는지 알아? 아직 충분해! ⏰',
+    '친구 따라 과목 고르지 말고 네 마음 따라가 봐 💫',
+    '궁금한 거 있으면 선생님한테 물어봐, 기다리고 있어! 🙋',
+    '실패가 아니라 경험이야, 두려워하지 마 💡',
+    '지금 이 선택이 훗날 자랑스러운 이야기가 될 거야 🗺️',
+    '이스터에그 발견! 이미 특별한 학생이야 🏆',
+    '기관차처럼 힘차게 — 행선지는 네가 정해 🎯',
+    '학종도 수능도 지금부터 준비하는 네가 유리해 📈',
+    '아직 1학년이잖아, 가장 많은 가능성을 가진 때야 🌟',
+    '오늘의 작은 선택이 내일의 큰 차이를 만들어 🎉'
+  ];
+  let _tc = 0, _tt = null;
+  trainEl.addEventListener('click', function(e){
+    e.stopPropagation();
+    _tc++;
+    clearTimeout(_tt);
+    if(_tc >= 2){
+      _tc = 0;
+      const old = document.getElementById('trainSpeech');
+      if(old) old.remove();
+      const msg = _CHEERS[Math.floor(Math.random()*_CHEERS.length)];
+      const bbl = document.createElement('div');
+      bbl.id = 'trainSpeech';
+      bbl.textContent = msg;
+      const r = this.getBoundingClientRect();
+      bbl.style.left = (r.left + r.width/2) + 'px';
+      bbl.style.top = r.top + 'px';
+      document.body.appendChild(bbl);
+      setTimeout(()=>{ if(bbl.parentNode) bbl.remove(); }, 3400);
+    } else {
+      _tt = setTimeout(()=>{ _tc = 0; }, 400);
+    }
+  });
 }
 renderRoute();
 
