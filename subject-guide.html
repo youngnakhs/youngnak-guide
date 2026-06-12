@@ -90,7 +90,13 @@ p.sub{color:var(--dim);font-size:13.5px;margin-bottom:18px;}
 
 /* ── route map ── */
 .route-wrap{position:relative;}
-.route{display:flex;gap:0;overflow-x:auto;padding:20px 4px 10px;scrollbar-width:thin;}
+.route{display:flex;gap:0;overflow-x:auto;padding:20px 4px 10px;scrollbar-width:thin;position:relative;}
+@keyframes trainShake{
+  0%,100%{transform:translateX(-50%) translateY(0) rotate(0deg);}
+  20%{transform:translateX(-50%) translateY(-2.5px) rotate(-1deg);}
+  65%{transform:translateX(-50%) translateY(1px) rotate(0.5deg);}
+}
+.train-icon{position:absolute;top:3px;font-size:24px;line-height:1;transform:translateX(-50%);animation:trainShake 0.55s ease-in-out infinite;z-index:5;pointer-events:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18));}
 .route-hint{display:none;font-size:11.5px;color:var(--dim);text-align:right;margin-top:-2px;}
 @media(max-width:760px){
   .route-hint{display:block;}
@@ -553,6 +559,15 @@ function go(t){
 document.querySelectorAll('#nav button')[0].classList.add('on');
 
 /* ── 홈 노선도 ── */
+function trainProgress(){
+  // 2026-03-01 입학 ~ 2029-02-28 졸업 (3년)
+  const start = new Date(2026,2,1);
+  const end   = new Date(2029,1,28);
+  const now   = new Date();
+  const total = end - start;
+  const elapsed = Math.max(0, Math.min(total, now - start));
+  return elapsed / total; // 0(입학일) ~ 1(졸업일)
+}
 function renderRoute(){
   let h = `<div class="station" data-c="gray"><div class="st-dot"></div><div class="st-name">1학년</div><div class="st-desc">공통과목<br>(모두 함께)</div></div>`;
   STATIONS.forEach(st=>{
@@ -563,6 +578,15 @@ function renderRoute(){
   });
   h += `<div class="station" data-c="gray"><div class="st-dot"></div><div class="st-name">졸업 🎓</div><div class="st-desc">나의 진로로!</div></div>`;
   $('#homeRoute').innerHTML = h;
+  // 기차 아이콘: 6개 정거장, 각 1/6 너비 → 첫 dot=8.33%, 마지막 dot=91.67%
+  const p = trainProgress();
+  const leftPct = (100/12 + p * (100*10/12)).toFixed(2);
+  const trainEl = document.createElement('span');
+  trainEl.className = 'train-icon';
+  trainEl.title = '현재 학기 위치';
+  trainEl.textContent = '🚂';
+  trainEl.style.left = leftPct + '%';
+  $('#homeRoute').appendChild(trainEl);
 }
 renderRoute();
 
