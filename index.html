@@ -16,7 +16,7 @@
   --grace:#3b9fd4; --truth:#3cb878; --love:#e05c5c; --serve:#d4922e;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;}
+html,body{height:100%; height:100dvh; overscroll-behavior:none;}
 body{
   font-family:'Noto Sans KR',sans-serif; color:var(--ink);
   background:
@@ -24,7 +24,8 @@ body{
     radial-gradient(900px 500px at 12% 110%, rgba(31,122,73,.30), transparent 60%),
     radial-gradient(900px 500px at 88% -10%, rgba(59,159,212,.10), transparent 55%),
     linear-gradient(170deg,#0d2a1c 0%, #0a1f15 45%, #071710 100%);
-  overflow:hidden; user-select:none; -webkit-user-select:none;
+  overflow:hidden; overscroll-behavior:none; user-select:none; -webkit-user-select:none;
+  -webkit-text-size-adjust:100%; text-size-adjust:100%;
 }
 /* 입자·결 텍스처 */
 body::before{
@@ -57,7 +58,8 @@ body::before{
   color:var(--green-lt); margin:14px 0 6px; text-transform:uppercase;
   animation:rise .8s .15s cubic-bezier(.2,.9,.2,1) both;}
 .hero-motto{ font-family:'Noto Serif KR',serif; font-weight:900; line-height:1.25;
-  font-size:clamp(22px,3.4vw,34px); letter-spacing:-.5px;
+  font-size:clamp(20px,5vw,34px); letter-spacing:-.5px;
+  word-break:keep-all; text-wrap:balance; padding:0 8px;
   animation:rise .8s .25s cubic-bezier(.2,.9,.2,1) both;}
 .hero-motto .hl{ color:var(--green-lt); }
 .spirit-row{ display:flex; gap:10px; justify-content:center; margin-top:14px;
@@ -72,7 +74,7 @@ body::before{
 
 /* ── 중앙: 3D 오비트 캐러셀 ── */
 .orbit-zone{ flex:1; position:relative; perspective:1300px; perspective-origin:50% 38%;
-  min-height:0; cursor:grab;}
+  min-height:0; cursor:grab; touch-action:none; -webkit-tap-highlight-color:transparent;}
 .orbit-zone.dragging{cursor:grabbing;}
 .ring{ position:absolute; left:50%; top:46%; transform-style:preserve-3d; will-change:transform;}
 .card{
@@ -92,8 +94,8 @@ body::before{
 .card .tag{ font-size:10.5px; font-weight:700; padding:3px 9px; border-radius:20px;
   color:#06150e; background:var(--c,#3cb878);}
 .card .icon{ font-size:42px; line-height:1; margin:4px 0 12px; filter:drop-shadow(0 6px 14px rgba(0,0,0,.4));}
-.card h3{ font-family:'Noto Serif KR',serif; font-size:21px; font-weight:900; line-height:1.32; letter-spacing:-.3px;}
-.card p{ font-size:12.5px; line-height:1.62; color:var(--ink-dim); margin-top:9px; flex:1;
+.card h3{ font-family:'Noto Serif KR',serif; font-size:21px; font-weight:900; line-height:1.32; letter-spacing:-.3px; word-break:keep-all;}
+.card p{ font-size:12.5px; line-height:1.62; color:var(--ink-dim); margin-top:9px; flex:1; word-break:keep-all;
   display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;}
 .card .foot{ display:flex; justify-content:space-between; align-items:center;
   border-top:1px dashed rgba(114,212,160,.25); padding-top:11px; margin-top:8px;}
@@ -109,9 +111,9 @@ body::before{
 .card.dim{ filter:brightness(.42) saturate(.6); opacity:.85;}
 /* 하위 듀얼 링크 */
 .duo{ display:flex; gap:7px; margin-top:10px;}
-.duo a{ flex:1; text-decoration:none; text-align:center; font-size:11px; font-weight:700;
+.duo a{ flex:1; min-width:0; text-decoration:none; text-align:center; font-size:11px; font-weight:700;
   color:var(--ink); background:rgba(60,184,120,.14); border:1px solid rgba(114,212,160,.3);
-  border-radius:9px; padding:7px 4px; transition:background .25s;}
+  border-radius:9px; padding:7px 4px; transition:background .25s; word-break:keep-all;}
 .duo a:hover{ background:rgba(60,184,120,.3);}
 .duo a span{ display:block; font-weight:400; font-size:9.5px; color:var(--ink-mute); margin-top:2px;}
 
@@ -145,14 +147,35 @@ body::before{
 .strip .sym{ font-size:13px; margin-right:4px;}
 
 @media(max-width:760px){
-  .hero{padding-top:18px;}
+  .hero{padding:16px 14px 0;}
   .hero-emblem{width:58px;height:58px;}
-  .spirit-row{gap:6px;} .sp{padding:4px 9px 4px 11px; font-size:11px; letter-spacing:2px;}
+  .hero-eyebrow{font-size:10px; letter-spacing:3px; margin:11px 0 5px;}
+  .spirit-row{gap:6px; flex-wrap:wrap; margin-top:12px;}
+  .sp{padding:4px 9px 4px 11px; font-size:11px; letter-spacing:2px;}
+  .orbit-zone{perspective:1000px; perspective-origin:50% 42%;}
   .card{ width:208px; height:286px; left:-104px; top:-143px; padding:16px 15px 12px;}
-  .card h3{font-size:17px;} .card .icon{font-size:32px;}
+  .card h3{font-size:17px;} .card .icon{font-size:32px; margin:3px 0 9px;}
+  .card p{-webkit-line-clamp:2; font-size:12px; margin-top:7px;}
+  .card .foot{padding-top:9px;}
   .nav-arr{display:none;}
-  .strip{gap:12px; font-size:10.5px;}
+  .hint{font-size:9.5px; letter-spacing:2px;}
+  .strip{gap:8px 14px; font-size:10.5px; padding:11px 14px 14px;}
   .strip .hide-m{display:none;}
+}
+/* 소형 폰 */
+@media(max-width:400px){
+  .card{ width:188px; height:270px; left:-94px; top:-135px; padding:14px 13px 11px;}
+  .card h3{font-size:16px;} .card .icon{font-size:30px;}
+  .duo a{font-size:10.5px;} .duo a span{font-size:9px;}
+}
+/* 낮은 높이·가로 모드 */
+@media(max-height:560px) and (max-width:760px){
+  .hero{padding-top:10px;}
+  .hero-emblem{width:46px;height:46px;}
+  .hero-eyebrow{margin:8px 0 4px;}
+  .spirit-row{margin-top:8px;}
+  .card{height:236px; top:-118px;}
+  .card p{-webkit-line-clamp:2;}
 }
 @media(prefers-reduced-motion:reduce){
   body::before{animation:none;}
@@ -175,7 +198,7 @@ body::before{
   </header>
 
   <div class="orbit-zone" id="zone">
-    <div class="hint">◀ 드래그 · 휠 · 방향키로 둘러보기 ▶</div>
+    <div class="hint">◀ 드래그 · 스와이프로 둘러보기 ▶</div>
     <div class="ring" id="ring"></div>
     <button class="nav-arr prev" id="prev" aria-label="이전">‹</button>
     <button class="nav-arr next" id="next" aria-label="다음">›</button>
@@ -221,7 +244,13 @@ const N = MENUS.length, STEP = 360/N;
 const ring = document.getElementById('ring');
 const zone = document.getElementById('zone');
 const dotsEl = document.getElementById('dots');
-let RADIUS = window.innerWidth < 760 ? 300 : 430;
+function getRadius(){
+  const w = window.innerWidth;
+  if(w < 400) return 232;
+  if(w < 760) return 272;
+  return 430;
+}
+let RADIUS = getRadius();
 
 MENUS.forEach((m,i)=>{
   const el = document.createElement('div');
@@ -303,7 +332,7 @@ cards.forEach(el=>el.addEventListener('click',e=>{
   const m=MENUS[i];
   if(m.href) location.href=m.href;          // duo 카드는 내부 a 링크가 처리
 }));
-window.addEventListener('resize',()=>{ RADIUS = window.innerWidth<760?300:430; layout(); });
+window.addEventListener('resize',()=>{ RADIUS = getRadius(); layout(); paint(); });
 </script>
 </body>
 </html>
