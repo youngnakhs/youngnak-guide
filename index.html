@@ -257,7 +257,7 @@ function tick(){
   paint();
   requestAnimationFrame(tick);
 }
-setInterval(()=>{ if(idle) target -= STEP; }, 4500);  // 한가할 때 한 칸씩 자동 순환
+setInterval(()=>{ if(idle) target -= STEP; }, 3000);  // 한가할 때 3초마다 한 칸씩 자동 순환
 layout(); requestAnimationFrame(tick);
 
 /* 입력: 드래그 */
