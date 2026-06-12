@@ -294,6 +294,7 @@ details.faq summary::before{content:'Q. ';color:var(--coral);font-family:'Paperl
 details.faq .a{padding:0 17px 13px;font-size:13px;color:#454D59;border-top:1px dashed var(--line);padding-top:10px;}
 details.faq .a::before{content:'A. ';color:var(--teal-deep);font-weight:800;font-family:'Paperlogy',sans-serif;}
 </style>
+<script>(function(){const t=localStorage.getItem('ynk-theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');})()</script>
 </head>
 <body>
 
@@ -1057,5 +1058,6 @@ renderDictChips(); renderDict();
 renderSel();
 updateNavBdg();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" onload="document.body.classList.add('h2c-ready')" onerror="document.querySelectorAll('.needs-h2c').forEach(function(b){b.style.display='none'})"></script>
 </body>
 </html>
