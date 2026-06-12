@@ -290,15 +290,35 @@ details.uni summary .cnt{font-size:11.5px;color:var(--dim);font-weight:600;}
 
 /* print */
 #printArea{display:none;}
+#printArea.capturing{display:block!important;padding:20px;background:#FFF;font-size:13px;max-width:860px;}
+#printArea.capturing h1{font-size:18px;margin-bottom:4px;font-family:'Paperlogy',sans-serif;font-weight:800;}
+#printArea.capturing .p-meta{font-size:12px;color:#666;margin-bottom:14px;}
+#printArea.capturing .p-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;}
+#printArea.capturing .p-card{border:1.5px solid #DDD;border-radius:12px;padding:14px 16px;}
+#printArea.capturing .p-head{font-size:12px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:7px;}
+#printArea.capturing .p-dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;}
+#printArea.capturing .p-count{margin-left:auto;font-size:11px;color:#666;}
+#printArea.capturing .p-pill{display:inline-block;background:#F0EDE5;border-radius:7px;padding:4px 10px;font-size:11.5px;margin:3px 4px 3px 0;}
+#printArea.capturing .p-blank{display:inline-block;width:72px;height:24px;border:1.5px dashed #CCC;border-radius:7px;margin:3px 4px 3px 0;vertical-align:middle;}
+#printArea.capturing .p-checks{margin-top:16px;font-size:12px;padding-left:0;}
+#printArea.capturing .p-checks li{margin-bottom:5px;list-style:none;}
+#printArea.capturing .sig{margin-top:20px;font-size:11px;color:#666;border-top:1px solid #DDD;padding-top:12px;}
 @media print{
   body{background:#FFF;}
   .hdr,.nav,.wrap,.foot{display:none!important;}
-  #printArea{display:block;padding:10mm;font-size:12px;}
-  #printArea h1{font-size:19px;margin-bottom:2px;}
-  #printArea h2{font-size:14px;margin:12px 0 4px;border-bottom:2px solid #000;padding-bottom:2px;}
-  #printArea table{width:100%;border-collapse:collapse;}
-  #printArea td,#printArea th{border:1px solid #555;padding:4px 7px;font-size:11.5px;text-align:left;}
-  #printArea .sig{margin-top:24px;font-size:12px;}
+  #printArea{display:block!important;padding:10mm;font-size:12px;}
+  #printArea h1{font-size:18px;margin-bottom:4px;font-family:'Paperlogy',sans-serif;font-weight:800;}
+  #printArea .p-meta{font-size:11px;color:#666;margin-bottom:12px;}
+  #printArea .p-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+  #printArea .p-card{border:1.5px solid #CCC;border-radius:10px;padding:12px 14px;break-inside:avoid;}
+  #printArea .p-head{font-size:11.5px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+  #printArea .p-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+  #printArea .p-count{margin-left:auto;font-size:10px;color:#666;}
+  #printArea .p-pill{display:inline-block;background:#F0EDE5;border-radius:6px;padding:3px 9px;font-size:11px;margin:2px 3px 2px 0;}
+  #printArea .p-blank{display:inline-block;width:70px;height:22px;border:1.5px dashed #CCC;border-radius:6px;margin:2px 3px 2px 0;vertical-align:middle;}
+  #printArea .p-checks{margin-top:14px;font-size:11px;padding-left:0;}
+  #printArea .p-checks li{margin-bottom:4px;list-style:none;}
+  #printArea .sig{margin-top:20px;font-size:11px;color:#666;border-top:1px solid #CCC;padding-top:10px;}
 }
 @media(max-width:560px){
   .cards{grid-template-columns:1fr 1fr;}
@@ -1122,17 +1142,24 @@ function renderPrint(sel, checks){
     const cur = sel[g.id]||[];
     return `<tr><th>${stationOf(g.id).name} ${g.label} (${g.pick}개)</th><td>${cur.map(s=>`${s} <small>[${evalShort(s)}]</small>`).join(', ')||'<i>미선택</i>'}</td></tr>`;
   }).join('');
-  const probs = checks.filter(c=>c.lv!=='ok').map(c=>`<li>${c.txt} — ${c.sub||''}</li>`).join('');
-  $('#printArea').innerHTML = `
-    <h1>영락고 2·3학년 선택과목 — 나의 선택 (초안)</h1>
-    <p>2026학년도 입학생 · 1학년 ( )반 ( )번 이름:(            ) · 작성일: ${new Date().toLocaleDateString('ko-KR')}</p>
-    <h2>선택 내용</h2><table>${rows}</table>
-    ${probs?`<h2>점검 필요</h2><ul>${probs}</ul>`:'<h2>자동 점검</h2><p>모든 규칙을 충족했어요 ✔</p>'}
-    <h2>상담 메모</h2>
-    <table><tr><th style="width:25%">희망 계열/학과</th><td style="height:34px"></td></tr>
-    <tr><th>선생님 의견</th><td style="height:50px"></td></tr>
-    <tr><th>부모님 의견</th><td style="height:50px"></td></tr></table>
-    <p class="sig">학생 서명: ____________ 학부모 서명: ____________ ※ 실제 수강신청은 9월 리로스쿨 온라인 신청이 최종본입니다.</p>`;
+  const stColors = {'blue':'#3D6BFF','coral':'#FF5B4A','teal':'#00A88E','amber':'#FFB020'};
+  const stCards = GROUPS.map(g=>{
+    const chosen = (sel[g.id]||[]);
+    const st = stationOf(g.id);
+    const stColor = stColors[st.color]||'#14181F';
+    const pills = chosen.map(s=>'<span class="p-pill">'+s+'</span>').join('');
+    const blanks = Array(Math.max(0,g.pick-chosen.length)).fill('<span class="p-blank"></span>').join('');
+    return '<div class="p-card">'
+      +'<div class="p-head"><span class="p-dot" style="background:'+stColor+'"></span>'+st.name+' · '+g.sname+'<span class="p-count">'+chosen.length+'/'+g.pick+'</span></div>'
+      +'<div>'+pills+blanks+'</div>'
+      +'</div>';
+  }).join('');
+  const checkItems = checks.map(c=>'<li>'+(c.lv==='ok'?'✅':c.lv==='warn'?'⚠️':'❌')+' '+c.txt+(c.sub?' — '+c.sub:'')+'</li>').join('');
+  $('#printArea').innerHTML = '<h1>영락고 2·3학년 선택과목 — 나의 선택 (초안)</h1>'
+    +'<p class="p-meta">2026학년도 입학생 · 1학년 ( )반 ( )번 이름:(            ) · 작성일: '+new Date().toLocaleDateString('ko-KR')+'</p>'
+    +'<div class="p-grid">'+stCards+'</div>'
+    +'<ul class="p-checks">'+checkItems+'</ul>'
+    +'<p class="sig">학생 서명: ____________ 학부모 서명: ____________ ※ 실제 수강신청은 9월 리로스쿨 온라인 신청이 최종본입니다.</p>';
 }
 
 /* init */
