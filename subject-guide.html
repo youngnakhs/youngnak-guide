@@ -442,6 +442,7 @@ details.faq .a::before{content:'A. ';color:var(--teal-deep);font-weight:800;font
   <div class="modal" id="modalBody"></div>
 </div>
 
+<div id="shareCard" style="position:fixed;left:-9999px;top:0;width:600px;min-height:900px;background:#FFFFFF;font-family:'Paperlogy',sans-serif;padding:50px 48px;box-sizing:border-box;"></div>
 <div id="printArea"></div>
 <div id="toast"></div>
 
@@ -617,7 +618,7 @@ const QS = [
    {t:'손해와 이득을 따져 가장 효율적인 길을 찾는다', em:'🧮', w:{BIZ:2}},
    {t:'일단 부딪쳐 보고 감각적으로 돌파한다', em:'⚡', w:{ART:2,MED:1}}]},
 ];
-let tIdx = 0, tScore = {};
+let tIdx = 0, tScore = {}, _lastResult = null;
 const TEST_KEY = 'ynk-testresult-' + COHORT;
 function startTest(){
   tIdx = 0; tScore = {}; tHist = []; Object.keys(CLUSTERS).forEach(k=>tScore[k]=0);
@@ -722,6 +723,7 @@ function renderResult(forceTop){
   const top = forceTop ? [forceTop, tScore[forceTop]] : sorted[0];
   const second = sorted.find(x=>x[0]!==top[0]);
   const C = CLUSTERS[top[0]];
+  if(!forceTop) _lastResult = {cid: top[0], sorted};
   if(!forceTop){
     try{ localStorage.setItem(TEST_KEY, JSON.stringify({top: top[0], scores: tScore})); }catch(e){}
   }
