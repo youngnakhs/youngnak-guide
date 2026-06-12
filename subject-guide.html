@@ -759,10 +759,54 @@ function renderResult(forceTop){
     <div class="cta-row">
       <button class="btn coral" onclick="fillFromCluster('${top[0]}')">✏️ 이 추천으로 내 선택 채우기</button>
       ${second?`<button class="btn ghost" onclick="renderResult('${forceTop?sorted[0][0]:second[0]}');window.scrollTo({top:0})">${forceTop?CLUSTERS[sorted[0][0]].em+' 1위 결과로 돌아가기':CLUSTERS[second[0]].em+' '+CLUSTERS[second[0]].label+' 결과도 보기'}</button>`:''}
+      <button id="saveCardBtn" class="btn ghost needs-h2c" onclick="saveResultCard()">📸 이미지로 저장</button>
       <button class="btn ghost" onclick="startTest()">↺ 다시 하기</button>
     </div>
     <div class="note" style="margin-top:18px"><b>이 검사는 출발점일 뿐!</b> 진짜 결정은 ①과목 사전에서 내용 확인 → ②계열·학과에서 깊이 탐색 → ③대학별 권장과목 체크 → ④선생님·부모님 상담 순서로 차근차근. 결과 화면을 캡처해서 친구와 비교해 보는 것도 재밌어요 📸</div>`;
   window.scrollTo({top:0});
+}
+function saveResultCard(){
+  if(!_lastResult) return;
+  const {cid, sorted} = _lastResult;
+  const C = CLUSTERS[cid];
+  const topScore = sorted[0][1] || 1;
+  const bars = sorted.slice(0,4).map(([k,v])=>{
+    const c = CLUSTERS[k];
+    const pct = Math.round(v/topScore*100);
+    return '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">'
+      +'<span style="width:110px;font-size:13px;font-weight:700;text-align:right;flex-shrink:0;">'+c.em+' '+c.label+'</span>'
+      +'<div style="flex:1;height:14px;background:#EEEEEE;border-radius:999px;overflow:hidden;">'
+      +'<div style="width:'+pct+'%;height:100%;background:'+c.color+';border-radius:999px;"></div>'
+      +'</div>'
+      +'<span style="width:38px;font-size:12px;font-weight:700;color:#666666;">'+pct+'%</span>'
+      +'</div>';
+  }).join('');
+  const card = document.getElementById('shareCard');
+  card.innerHTML = '<div style="display:flex;flex-direction:column;min-height:800px;justify-content:space-between;">'
+    +'<div>'
+    +'<div style="display:inline-block;background:#F6F7F9;color:#5B6470;font-size:12px;font-weight:600;letter-spacing:.4px;padding:6px 14px;border-radius:999px;margin-bottom:32px;">영락고등학교 · 2026학년도 입학생</div>'
+    +'<div style="font-size:80px;line-height:1;margin-bottom:18px;">'+C.em+'</div>'
+    +'<div style="font-family:\'Paperlogy\',sans-serif;font-weight:800;font-size:36px;letter-spacing:-.5px;color:#14181F;margin-bottom:12px;">나는 「'+C.label+'」형!</div>'
+    +'<div style="font-size:14px;color:#5B6470;line-height:1.65;margin-bottom:40px;">'+C.desc+'</div>'
+    +'<div>'+bars+'</div>'
+    +'</div>'
+    +'<div style="text-align:center;font-size:11px;color:#9BA5B0;border-top:1.5px solid #EEEEEE;padding-top:16px;margin-top:40px;">'
+    +'대학까지? 네!학기 · youngnakhs.github.io/youngnak-guide/subject-guide.html'
+    +'</div>'
+    +'</div>';
+  const btn = document.getElementById('saveCardBtn');
+  if(btn){btn.textContent='저장 중…';btn.disabled=true;}
+  html2canvas(card,{scale:2,useCORS:true,backgroundColor:'#FFFFFF',logging:false}).then(function(canvas){
+    canvas.toBlob(function(blob){
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = '영락_성향결과_'+C.label+'.png';
+      a.click();
+      setTimeout(function(){URL.revokeObjectURL(a.href);},1000);
+      card.innerHTML = '';
+      if(btn){btn.textContent='📸 이미지로 저장';btn.disabled=false;}
+    });
+  });
 }
 function fillFromCluster(cid){
   const sel = loadSel();
