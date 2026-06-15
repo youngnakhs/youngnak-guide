@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>영락고 1학년부 공지 디스플레이</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  /* ============ 영락고 1학년부 공지 디스플레이 — OLED 미니멀 (세로 1080×1920) ============ */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #000000;
+    --accent: #c8f63c;
+    --text: #f5f6f8;
+    --dim: #9aa0ab;
+    --faint: #5b6068;
+    --line: rgba(255, 255, 255, 0.10);
+  }
+
+  html, body { height: 100%; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Pretendard Variable', Pretendard, 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+    overflow: hidden;
+    cursor: none;
+  }
+
+  #app {
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    padding: 2.4vh 3vh 4.2vh;
+  }
+
+  /* ---------- 시계 + 날씨 ---------- */
+  #clockRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2vh;
+  }
+  #weatherBox { text-align: right; padding-bottom: 2.1vh; flex-shrink: 0; }
+  #wTop {
+    font-size: 4.2vh;
+    font-weight: 800;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  #wIcon { margin-right: 0.9vh; }
+  #wSub {
+    font-size: 1.9vh;
+    font-weight: 600;
+    color: var(--dim);
+    margin-top: 0.4vh;
+    white-space: nowrap;
+  }
+  #clock {
+    font-size: 9.6vh;
+    font-weight: 800;
+    letter-spacing: -0.25vh;
+    line-height: 1.04;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+  }
+  #clock .sec {
+    font-size: 4vh;
+    font-weight: 700;
+    color: var(--faint);
+    margin-left: 1.2vh;
+    letter-spacing: 0;
+  }
+
+  /* ---------- 날짜 · D-day ---------- */
+  #subline {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 2vh;
+    margin-top: 0.6vh;
+  }
+  #date { font-size: 2.7vh; font-weight: 600; color: var(--dim); white-space: nowrap; }
+  #date b { color: var(--text); font-weight: 800; }
+  #ddayPanel {
+    font-size: 2.7vh;
+    font-weight: 700;
+    color: var(--dim);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .dday b { color: var(--accent); font-weight: 800; font-variant-numeric: tabular-nums; }
+  .dday small { font-size: 2vh; font-weight: 600; color: var(--faint); margin-left: 0.7vh; }
+
+  .div {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 2vh 0;
+  }
+
+  /* ---------- 출제기간 경고 배너 ---------- */
+  #examBan {
+    display: none;
+    align-items: center;
+    gap: 1.4vh;
+    margin-top: 1.1vh;
+    padding: 1.3vh 2.2vh;
+    border-radius: 1.6vh;
+    border: 0.42vh solid rgba(255, 92, 80, 0.85);
+    background: rgba(255, 60, 54, 0.16);
+  }
+  #examBan.on { display: flex; animation: banPulse 1.6s ease-in-out infinite; }
+  #examBan .ico { font-size: 5.2vh; line-height: 1; flex-shrink: 0; animation: banShake 0.55s ease-in-out infinite; }
+  #examBan .txt { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; text-align: center; }
+  #examBan .main {
+    font-size: 4.4vh; font-weight: 900; color: #ff7b71; line-height: 1.16; letter-spacing: 0.005em;
+    white-space: pre-line; word-break: keep-all;
+    text-shadow: 0 0 2.4vh rgba(255, 60, 54, 0.6);
+    animation: textShake 2s ease-in-out infinite, mainGlow 1.6s ease-in-out infinite;
+  }
+  #examBan .sub { font-size: 2.2vh; font-weight: 800; color: #ffb0a9; margin-top: 0.5vh; letter-spacing: 0.02em; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  @keyframes banPulse {
+    0%        { border-color: rgba(255, 92, 80, 0.45); background: rgba(255, 60, 54, 0.12); box-shadow: 0 0 0 rgba(255,60,54,0); }
+    10%       { border-color: rgba(255, 170, 156, 1);  background: rgba(255, 42, 36, 0.50); box-shadow: 0 0 7vh rgba(255, 42, 36, 0.8), inset 0 0 4.5vh rgba(255, 42, 36, 0.3); }
+    22%       { border-color: rgba(255, 92, 80, 0.5);  background: rgba(255, 60, 54, 0.14); box-shadow: 0 0 0.8vh rgba(255,60,54,0.12); }
+    34%       { border-color: rgba(255, 170, 156, 1);  background: rgba(255, 42, 36, 0.50); box-shadow: 0 0 7vh rgba(255, 42, 36, 0.8), inset 0 0 4.5vh rgba(255, 42, 36, 0.3); }
+    55%, 100% { border-color: rgba(255, 92, 80, 0.45); background: rgba(255, 60, 54, 0.12); box-shadow: 0 0 0 rgba(255,60,54,0); }
+  }
+  @keyframes banShake {
+    0%, 100% { transform: translateX(0) rotate(0) scale(1); }
+    20%      { transform: translateX(-0.5vh) rotate(-11deg) scale(1.16); }
+    45%      { transform: translateX(0.5vh) rotate(11deg) scale(1.06); }
+    70%      { transform: translateX(-0.4vh) rotate(-8deg) scale(1.14); }
+  }
+  @keyframes textShake {
+    0%, 36%, 76%, 100% { transform: translateX(0) rotate(0); }
+    39% { transform: translateX(-0.6vh) rotate(-0.7deg); }
+    42% { transform: translateX(0.6vh) rotate(0.7deg); }
+    45% { transform: translateX(-0.45vh); }
+    48% { transform: translateX(0.32vh); }
+    79% { transform: translateX(-0.65vh) rotate(-0.7deg); }
+    82% { transform: translateX(0.65vh) rotate(0.7deg); }
+    85% { transform: translateX(-0.45vh); }
+    88% { transform: translateX(0.3vh); }
+  }
+  @keyframes mainGlow {
+    0%, 55%, 100% { color: #ff7b71; text-shadow: 0 0 2.2vh rgba(255, 60, 54, 0.55); }
+    10%, 34%      { color: #ffd6cf; text-shadow: 0 0 4.2vh rgba(255, 95, 84, 1), 0 0 1.4vh rgba(255,255,255,0.55); }
+    22%           { color: #ff7b71; text-shadow: 0 0 2.2vh rgba(255, 60, 54, 0.55); }
+  }
+
+  /* ---------- 대학 카드 패널 ---------- */
+  #noticePanel {
+    flex: 1 1 auto;
+    min-height: 20vh;
+    margin-top: 1.8vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  #noticeHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1.1vh;
+  }
+  #noticeTitle {
+    font-size: 2.1vh;
+    font-weight: 800;
+    color: var(--dim);
+    letter-spacing: 0.14em;
+  }
+  #noticeCount {
+    font-size: 2.1vh;
+    font-weight: 700;
+    color: var(--faint);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.06em;
+  }
+  /* 단일 프로그레스 바 */
+  #noticeDots {
+    height: 0.38vh;
+    background: rgba(255,255,255,0.08);
+    border-radius: 99px;
+    overflow: hidden;
+    margin-bottom: 1.6vh;
+  }
+  #noticeDots i { display: block; height: 100%; width: 0; background: var(--accent); }
+  @keyframes prog { from { width: 0; } to { width: 100%; } }
+
+  #noticeBody {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── 대학 카드 내용 ── */
+  #uniCard {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateY(0.8vh);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+  #uniCard.on { opacity: 1; transform: none; }
+
+  .uni-chips { display: flex; gap: 1vh; flex-wrap: wrap; margin-bottom: 0.3vh; }
+  .uni-chip {
+    font-size: 1.75vh; font-weight: 700;
+    padding: 0.35vh 1.1vh; border-radius: 99px; letter-spacing: 0.04em;
+  }
+  .uni-chip.cat { background: rgba(255,255,255,0.07); color: var(--dim); border: 1px solid var(--line); }
+  .uni-chip.conf { border: 1px solid currentColor; }
+  .conf-확정 { color: #7fe0a6; }
+  .conf-보도 { color: #ffd98a; }
+  .conf-미공개 { color: var(--dim); }
+
+  .uni-name {
+    font-size: 4.2vh;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    word-break: keep-all;
+  }
+  .uni-sub {
+    font-size: 1.85vh;
+    font-weight: 600;
+    color: var(--dim);
+    margin-top: 0.45vh;
+    word-break: keep-all;
+  }
+
+  .uni-facts { flex: 1; min-height: 0; overflow: hidden; margin-top: 0.5vh; display: flex; flex-direction: column; }
+  .uni-fact {
+    display: grid;
+    grid-template-columns: 8vh 1fr;
+    column-gap: 1.8vh;
+    padding: 0.5vh 0;
+    border-top: 1px solid var(--line);
+    align-items: start;
+  }
+  .uni-fact:first-child { border-top: none; }
+  .uni-fact .k { font-size: 1.6vh; font-weight: 800; color: var(--dim); letter-spacing: 0.06em; padding-top: 0.2vh; white-space: nowrap; overflow: hidden; }
+  .uni-fact .v { font-size: 1.9vh; font-weight: 600; color: #c3c8d1; line-height: 1.5; word-break: keep-all; overflow: hidden; max-height: calc(1.9vh * 1.5 * 2.15); }
+  .uni-fact .v b { color: var(--accent); font-weight: 800; }
+
+  .uni-point {
+    flex-shrink: 0;
+    margin-top: 0.5vh;
+    display: flex;
+    align-items: center;
+    gap: 1.2vh;
+    padding: 0.9vh 1.5vh;
+    border-radius: 1.2vh;
+    background: rgba(200, 246, 60, 0.07);
+    border: 1px solid rgba(200, 246, 60, 0.22);
+  }
+  .uni-point .badge {
+    flex-shrink: 0;
+    font-size: 1.7vh; font-weight: 900;
+    padding: 0.4vh 1.0vh; border-radius: 0.7vh;
+    background: var(--accent); color: #000;
+    white-space: nowrap;
+  }
+  .uni-point .ptxt { font-size: 1.9vh; font-weight: 600; color: #c3c8d1; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .uni-point .ptxt b { color: var(--accent); }
+
+  .uni-tip {
+    margin-top: 1.0vh;
+    font-size: 1.8vh; font-weight: 600; color: var(--faint);
+    line-height: 1.45; word-break: keep-all;
+  }
+  .uni-tip b { color: var(--dim); }
+
+  /* ---------- 하단 정보 ---------- */
+  #infoGrid { }
+  .row {
+    display: grid;
+    grid-template-columns: 7.5vh 1fr;
+    column-gap: 1.8vh;
+    padding: 0.85vh 0;
+    align-items: start;
+  }
+  .row + .row { border-top: 1px solid var(--line); }
+  .row .k { font-size: 1.7vh; font-weight: 800; color: var(--dim); letter-spacing: 0.1em; padding-top: 0.15vh; }
+  .row .v {
+    font-size: 1.8vh; font-weight: 600; color: #c3c8d1; line-height: 1.45;
+    overflow: hidden; max-height: calc(1.8vh * 1.45 * 2.15);
+    word-break: keep-all;
+  }
+  .row .v b { color: var(--text); font-weight: 800; }
+  #schedTxt { display: block; }
+  #schedTxt .sl { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #schedTxt .sl + .sl { margin-top: 0.2vh; }
+
+  #updated { position: fixed; bottom: 0.5vh; right: 1.2vh; font-size: 1.4vh; color: rgba(255,255,255,0.16); }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div id="clockRow">
+    <div id="clock">--:--<span class="sec"></span></div>
+    <div id="weatherBox">
+      <div id="wTop"><span id="wIcon"></span><span id="wTemp"></span></div>
+      <div id="wSub"></div>
+    </div>
+  </div>
+
+  <div id="subline">
+    <span id="date">로딩 중…</span>
+    <span id="ddayPanel"></span>
+  </div>
+
+  <div id="examBan">
+    <span class="ico">⛔</span>
+    <span class="txt"><span class="main"></span><span class="sub"></span></span>
+    <span class="ico">⛔</span>
+  </div>
+
+  <div id="noticePanel">
+    <div id="noticeHead">
+      <span id="noticeTitle">2028 대입 내신 가이드</span>
+      <span id="noticeCount"></span>
+    </div>
+    <div id="noticeDots"><i></i></div>
+    <div id="noticeBody">
+      <div id="uniCard"></div>
+    </div>
+  </div>
+
+  <hr class="div">
+
+  <div id="infoGrid">
+    <div class="row"><span class="k">교시</span><span class="v" id="periodTxt">—</span></div>
+    <div class="row"><span class="k">일정</span><span class="v" id="schedTxt">불러오는 중…</span></div>
+    <div class="row"><span class="k">급식</span><span class="v" id="mealTxt">불러오는 중…</span></div>
+  </div>
+</div>
+
+<div id="updated"></div>
+
+<script>
+/* ================================================================
+ *  설정
+ * ================================================================ */
+var CONFIG = {
+  SHEET_ID: '1sI2mRy19XaKi8kefw0tvjKi9yNj0GehYCoWSclDBZJ0',
+  SCHED_GID: '786277236',
+  ATPT: 'B10',
+  SCHOOL: '7010214',
+  LAT: 37.4823,
+  LON: 126.9420,
+  DDAYS: [],
+  EXAM_BAN: {
+    text: '학생 교무실\n출입 금지',
+    sub: '출제기간 · 6/8 ~ 7/1',
+    from: '2026-06-08',
+    to: '2026-07-01'
+  },
+  PERIODS: [
+    { name: '학급시간(HR)', s: '08:10', e: '08:20' },
+    { name: '1교시',  s: '08:20', e: '09:10' },
+    { name: '2교시',  s: '09:20', e: '10:10' },
+    { name: '3교시',  s: '10:20', e: '11:10' },
+    { name: '4교시',  s: '11:20', e: '12:10' },
+    { name: '점심시간', s: '12:10', e: '13:10' },
+    { name: '5교시',  s: '13:10', e: '14:00' },
+    { name: '6교시',  s: '14:10', e: '15:00' },
+    { name: '7교시',  s: '15:10', e: '16:00' },
+    { name: '종례·청소', s: '16:00', e: '16:30' },
+    { name: '방과후학교', s: '16:30', e: '17:20' },
+    { name: '저녁시간', s: '17:20', e: '18:00' },
+    { name: '자율학습', s: '18:00', e: '22:00' }
+  ],
+  UNI_ROTATE_SEC: 18,
+  RELOAD_HOUR: 4
+};
+
+/* ================================================================
+ *  2028 대입 내신 데이터
+ * ================================================================ */
+var DATA = [
+ {name:'서울대학교', sub:'지역균형(학생부종합)', cat:'인서울 주요대', type:'none', conf:'보도',
+  facts:[['전형','교과전형 <b>미운영</b> · 지역균형은 학생부종합(정성)'],['정시','교과역량평가 <b>20%→40%</b> 확대'],['최저','전 모집단위 미적용']]},
+ {name:'연세대학교', sub:'추천형', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','1단계 교과 100% → 2단계 <b>서류(정성) 20%</b> 신설'],['포인트','세특·발전 과정도 평가에 반영']]},
+ {name:'고려대학교', sub:'학교추천', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','교과 <b>80%</b> + 서류 <b>20%</b>'],['서류','교과 이수 충실도 · 공동체역량']]},
+ {name:'서강대학교', sub:'학생부교과(지역균형)', cat:'인서울 주요대', type:'early', conf:'보도',
+  facts:[['전형','교과 <b>90%</b> + 출결 10% (정성 없음)'],['성격','사실상 순수 등급 정량']]},
+ {name:'성균관대학교', sub:'학생부교과(추천)', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','정량 <b>70%</b> + 교과종합평가(정성) <b>30%</b>'],['정성','원점수·성취도 분포까지 활용'],['최저','3개 영역 합 7']]},
+ {name:'한양대학교', sub:'추천형', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','교과 <b>60%</b> + 학생부종합평가(정성) <b>40%</b>'],['특징','정성 비중 최상위 · 수능최저 미적용']]},
+ {name:'중앙대학교', sub:'지역균형', cat:'인서울 주요대', type:'early', conf:'보도',
+  facts:[['전형','등급 중심 <b>정량</b> (2028 정성 변경 미명시)'],['포인트','등급 한 칸이 곧 합불']]},
+ {name:'경희대학교', sub:'지역균형', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','교과 <b>70%</b> + 교과종합평가(정성) <b>30%</b>'],['진로선택','<b>석차3+성취A → A를 1등급</b> 처리'],['융합','사회·과학 9과목 미반영']]},
+ {name:'한국외국어대', sub:'학교장추천', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','교과 <b>70%</b> + 서류(정성) <b>30%</b>'],['변경','기존 교과 100% → 서류 신설']]},
+ {name:'서울시립대학교', sub:'지역균형선발', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','교과 <b>60%</b> + 서류(정성) <b>40%</b>'],['주의','단독 보도 기준 — 확정 시 재확인']]},
+ {name:'이화여자대학교', sub:'고교추천', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','교과 <b>80%</b> + 출결 5% + 서류(정성) <b>15%</b>'],['변경','기존 교과 100% → 서류 신설']]},
+ {name:'건국대학교', sub:'KU지역균형', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','교과 <b>70%</b> + 학생부(정성) <b>30%</b>']]},
+ {name:'홍익대학교', sub:'학교장추천', cat:'인서울 주요대', type:'early', conf:'확정',
+  facts:[['전형','교과 <b>100%</b> (정량)'],['진로·융합','성취도 환산 <b>A=10·B=9·C=7</b>·D=4·E=0'],['성격','전 과목 누적형']]},
+ {name:'성신여자대학교', sub:'지역균형 I·II', cat:'인서울 주요대', type:'early', conf:'확정',
+  facts:[['전형','교과 <b>90%</b> + 출결 10%'],['진로선택','환산 반영(상위 10/4과목)'],['융합','사회·과학 <b>반영 제외</b>']]},
+ {name:'상명대학교', sub:'고교추천', cat:'인서울 주요대', type:'early', conf:'확정',
+  facts:[['전형','교과 <b>95%</b> + 출결 5%'],['진로·융합','성취도 과목 <b>미반영</b> · 석차등급만'],['등급환산','1~5등급 = 100/95/93/70/0']]},
+ {name:'서울과기대', sub:'고교추천', cat:'인서울 주요대', type:'early', conf:'확정',
+  facts:[['전형','교과 <b>100%</b> · 석차등급만'],['등급환산','1등급 1000 / 2등급 990 / 3등급 977'],['변경','모집 521→393 축소 · 최저 2개합 6']]},
+ {name:'덕성여자대학교', sub:'학생부교과', cat:'인서울 주요대', type:'rise', conf:'확정',
+  facts:[['전형','교과 정량 + <b>진로선택 이수학점 가산</b>'],['성취도','A=99.5(≈1등급) · 융합선택 제외'],['포인트','심화·진로 과목 많이 들수록 유리']]},
+ {name:'동국대학교', sub:'학교장추천인재', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','교과 <b>70%</b> + 서류(정성) <b>30%</b>'],['산출','석차+성취도 Zone 매트릭스 <b>2등급+A=만점</b>']]},
+ {name:'숙명여자대학교', sub:'지역균형', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','교과 <b>70%</b> + 서류(정성) <b>30%</b>'],['변경','수능최저 폐지']]},
+ {name:'숭실대학교', sub:'학생부교과', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','교과전형에 <b>정성평가 도입</b> (비율 미공개)'],['진로선택','성취도/석차 중 상위 반영']]},
+ {name:'국민대학교', sub:'학교장추천', cat:'인서울 주요대', type:'early', conf:'보도',
+  facts:[['전형','등급 중심 정량 (정성 미도입)'],['변경','현역 Ⅰ형 / N수 Ⅱ형 분리 신설']]},
+ {name:'전남대학교', sub:'학생부교과', cat:'지방거점국립', type:'early', conf:'확정',
+  facts:[['전형','학생부 <b>100%</b> (정성 없음)'],['진로·융합','성취도 상위 3과목 반영'],['학년','차등 없음(1-1~3-1)']]},
+ {name:'부산대학교', sub:'학생부교과', cat:'지방거점국립', type:'rise', conf:'보도',
+  facts:[['전형','교과 <b>80%</b> + 학업역량평가(정성) <b>20%</b>'],['변경','논술 폐지 · 교과(탐구형) 신설']]},
+ {name:'전북대학교', sub:'학생부교과', cat:'지방거점국립', type:'early', conf:'보도',
+  facts:[['전형','교과 <b>100%</b> (서류·면접 없음)'],['지역인재','정시 지역인재 운영(도내 유일)']]},
+ {name:'한양대 ERICA', sub:'학생부교과(지역균형)', cat:'지방캠퍼스', type:'early', conf:'확정',
+  facts:[['전형','교과 <b>100%</b> (순수 정량)'],['진로·융합','융합선택(사·과) 성취도 환산'],['변경','모집 531→380 · 최저 2개합 6']]},
+ {name:'한국항공대학교', sub:'교과성적우수자', cat:'수도권 주요대', type:'early', conf:'보도',
+  facts:[['전형','교과 <b>100%</b> (정량)'],['진로·융합','진로(사·과) 석차/성취도 상위 · 융합 최대 3과목 가산'],['변경','재학 Ⅰ형 / 졸업 Ⅱ형 분리']]},
+ {name:'인하대학교', sub:'지역균형', cat:'수도권 주요대', type:'early', conf:'보도',
+  facts:[['전형','교과 중심 정량 · <b>학년 차등 없음</b>'],['종합','미래인재 서류형은 정성 별도']]},
+];
+
+var POINT = {
+  early: { badge: '정량형', txt: '<b>석차등급</b>이 합격선. 공통·일반 등급 사수!' },
+  rise:  { badge: '정성형', txt: '등급 + <b>세특·전공 연계</b> 생기부를 함께 평가.' },
+  none:  { badge: '교과 미운영', txt: '<b>생기부 전체의 깊이</b>가 관건. 3년 내내 정성껏.' },
+  tba:   { badge: '발표 예정', txt: '정확한 산출식은 2027년 모집요강에서 확정됩니다.' },
+};
+var TIP = {
+  early: '공통·일반선택 등급 사수 · 진로선택은 전공 따라 도전 · 융합선택은 부담 없이 A!',
+  rise:  '등급도 챙기고, 세특·전공 연계·성적 향상 흐름으로 나만의 스토리를!',
+  none:  '한 과목 한 과목의 깊이가 쌓여 평가됩니다. 1학년부터 꾸준히!',
+  tba:   '발표 전까지는 전 학년 등급 안정 + 세특 충실이라는 기본기를 다지면 됩니다.',
+};
+
+/* ================================================================ */
+var $ = function (id) { return document.getElementById(id); };
+var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+var DAYS = ['일', '월', '화', '수', '목', '금', '토'];
+
+/* ---------- 시계 ---------- */
+function tickClock() {
+  var n = new Date();
+  $('clock').innerHTML = pad(n.getHours()) + ':' + pad(n.getMinutes()) +
+    '<span class="sec">' + pad(n.getSeconds()) + '</span>';
+  $('date').innerHTML = (n.getMonth() + 1) + '월 ' + n.getDate() + '일 <b>' + DAYS[n.getDay()] + '요일</b>';
+  if (n.getHours() === CONFIG.RELOAD_HOUR && n.getMinutes() === 0 && n.getSeconds() === 0) location.reload();
+  if (n.getSeconds() === 0) renderExamBan();
+}
+setInterval(tickClock, 1000);
+tickClock();
+
+/* ---------- 출제기간 배너 ---------- */
+function renderExamBan() {
+  var el = $('examBan'), b = CONFIG.EXAM_BAN;
+  if (!b) { el.classList.remove('on'); return; }
+  var today = new Date(); today.setHours(0,0,0,0);
+  var from = new Date(b.from + 'T00:00:00'), to = new Date(b.to + 'T00:00:00');
+  if (today >= from && today <= to) {
+    el.querySelector('.main').textContent = b.text;
+    el.querySelector('.sub').textContent = b.sub || '';
+    el.classList.add('on');
+  } else { el.classList.remove('on'); }
+}
+
+/* ---------- D-day ---------- */
+var autoDdays = [];
+function renderDdays() {
+  var today = new Date(); today.setHours(0,0,0,0);
+  var all = CONFIG.DDAYS.concat(autoDdays), seen = {}, parts = [];
+  all.forEach(function(d) {
+    if (seen[d.name]) return; seen[d.name] = 1;
+    var diff = Math.round((new Date(d.date + 'T00:00:00') - today) / 86400000);
+    if (diff < 0) return;
+    parts.push('<span class="dday">' + d.name + ' <b>' + (diff===0?'D-DAY':'D-'+diff) + '</b></span>');
+  });
+  $('ddayPanel').innerHTML = parts.join(' &nbsp; ');
+}
+
+/* ---------- 2028 대학 카드 ---------- */
+var uniIdx = 0;
+
+function renderUniCard() {
+  var d = DATA[uniIdx];
+  var p = POINT[d.type] || POINT.tba;
+  var tip = TIP[d.type] || TIP.tba;
+
+  var facts = d.facts.map(function(f) {
+    return '<div class="uni-fact"><div class="k">' + f[0] + '</div><div class="v">' + f[1] + '</div></div>';
+  }).join('');
+
+  var card = $('uniCard');
+  card.classList.remove('on');
+
+  card.innerHTML =
+    '<div class="uni-chips">' +
+      '<span class="uni-chip cat">' + d.cat + '</span>' +
+      '<span class="uni-chip conf conf-' + d.conf + '">' + ({확정:'확정', 보도:'미확정', 미공개:'미공개'}[d.conf]||d.conf) + '</span>' +
+    '</div>' +
+    '<div class="uni-name">' + d.name + '</div>' +
+    (d.sub ? '<div class="uni-sub">' + d.sub + '</div>' : '') +
+    '<div class="uni-facts">' + facts + '</div>' +
+    '<div class="uni-point">' +
+      '<span class="badge">' + p.badge + '</span>' +
+      '<span class="ptxt">' + p.txt + '</span>' +
+    '</div>' +
+    '';
+
+  $('noticeCount').textContent = pad(uniIdx + 1) + ' / ' + pad(DATA.length);
+
+  // 프로그레스 바 리셋
+  var bar = $('noticeDots').querySelector('i');
+  bar.style.animation = 'none';
+  void bar.offsetWidth;
+  bar.style.animation = 'prog ' + CONFIG.UNI_ROTATE_SEC + 's linear forwards';
+
+  void card.offsetWidth;
+  card.classList.add('on');
+}
+
+setInterval(function() {
+  uniIdx = (uniIdx + 1) % DATA.length;
+  renderUniCard();
+}, CONFIG.UNI_ROTATE_SEC * 1000);
+
+/* ---------- 하단 정보 공통 ---------- */
+var barCache = {};
+function setBar(id, valHtml) {
+  barCache[id] = valHtml;
+  var v = $(id);
+  v.innerHTML = valHtml;
+  var size = 2.15;
+  v.style.fontSize = size + 'vh';
+  var guard = 0;
+  while (v.scrollHeight > v.clientHeight + 2 && size > 1.45 && guard < 30) {
+    size -= 0.1; v.style.fontSize = size.toFixed(2) + 'vh'; guard++;
+  }
+}
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(function() {
+    for (var id in barCache) setBar(id, barCache[id]);
+    renderUniCard();
+  });
+}
+
+/* ---------- 급식 ---------- */
+function ymd(d) { return '' + d.getFullYear() + pad(d.getMonth()+1) + pad(d.getDate()); }
+function loadMeal() {
+  fetch('https://open.neis.go.kr/hub/mealServiceDietInfo?Type=json&ATPT_OFCDC_SC_CODE=' + CONFIG.ATPT +
+    '&SD_SCHUL_CODE=' + CONFIG.SCHOOL + '&MLSV_YMD=' + ymd(new Date()))
+    .then(function(r){return r.json();}).then(function(j){
+      var rows = j.mealServiceDietInfo && j.mealServiceDietInfo[1] && j.mealServiceDietInfo[1].row;
+      if (!rows || !rows.length) { setBar('mealTxt','오늘은 급식이 없습니다'); return; }
+      var meal = rows.filter(function(r){return r.MMEAL_SC_NM==='중식';})[0] || rows[0];
+      var items = meal.DDISH_NM.split(/<br\s*\/?>/i).map(function(s){
+        return s.replace(/\([0-9. ]+\)/g,'').replace(/[*♥]/g,'').replace(/\[[^\]]*\]/g,'').trim();
+      }).filter(Boolean);
+      setBar('mealTxt','<b>' + meal.MMEAL_SC_NM + '</b> · ' + items.join(' · '));
+    }).catch(function(){setBar('mealTxt','정보를 불러올 수 없습니다');});
+}
+
+/* ---------- 현재 교시 ---------- */
+function toMin(hm) { var p=hm.split(':'); return Number(p[0])*60+Number(p[1]); }
+function tickPeriod() {
+  var n=new Date(), day=n.getDay();
+  if (day===0||day===6) { setBar('periodTxt','오늘은 <b>주말</b>입니다'); return; }
+  var cur=n.getHours()*60+n.getMinutes(), P=CONFIG.PERIODS;
+  if (cur<toMin(P[0].s)) { setBar('periodTxt','등교 시간 — <b>'+P[0].name+' '+P[0].s+'</b> 시작'); return; }
+  if (cur>=toMin(P[P.length-1].e)) { setBar('periodTxt','오늘 일과가 끝났습니다'); return; }
+  for (var i=0;i<P.length;i++) {
+    if (cur>=toMin(P[i].s)&&cur<toMin(P[i].e)) {
+      setBar('periodTxt','지금 <b>'+P[i].name+'</b> ('+P[i].s+'~'+P[i].e+')'+
+        (P[i+1]?' · 다음 '+P[i+1].name+' '+P[i+1].s:'')); return;
+    }
+    if (P[i+1]&&cur>=toMin(P[i].e)&&cur<toMin(P[i+1].s)) {
+      setBar('periodTxt','<b>쉬는시간</b> · 다음 '+P[i+1].name+' ('+P[i+1].s+'~'+P[i+1].e+')'); return;
+    }
+  }
+  setBar('periodTxt','—');
+}
+setInterval(tickPeriod, 20000);
+tickPeriod();
+
+/* ---------- 날씨 ---------- */
+var WMO = {
+  0:['☀️','맑음'],1:['🌤️','대체로 맑음'],2:['⛅','구름 조금'],3:['☁️','흐림'],
+  45:['🌫️','안개'],48:['🌫️','안개'],51:['🌦️','이슬비'],53:['🌦️','이슬비'],55:['🌧️','이슬비'],
+  61:['🌧️','비'],63:['🌧️','비'],65:['🌧️','강한 비'],71:['🌨️','눈'],73:['🌨️','눈'],75:['❄️','강한 눈'],
+  80:['🌦️','소나기'],81:['🌦️','소나기'],82:['⛈️','강한 소나기'],95:['⛈️','뇌우'],96:['⛈️','뇌우'],99:['⛈️','강한 뇌우']
+};
+function pmGrade(pm10,pm25){
+  function g10(v){return v<=30?0:v<=80?1:v<=150?2:3;}
+  function g25(v){return v<=15?0:v<=35?1:v<=75?2:3;}
+  return ['좋음','보통','나쁨','매우나쁨'][Math.max(g10(pm10),g25(pm25))];
+}
+function loadWeather() {
+  Promise.all([
+    fetch('https://api.open-meteo.com/v1/forecast?latitude='+CONFIG.LAT+'&longitude='+CONFIG.LON+'&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&forecast_days=1&timezone=Asia%2FSeoul').then(function(r){return r.json();}),
+    fetch('https://air-quality-api.open-meteo.com/v1/air-quality?latitude='+CONFIG.LAT+'&longitude='+CONFIG.LON+'&current=pm10,pm2_5&timezone=Asia%2FSeoul').then(function(r){return r.json();}).catch(function(){return null;})
+  ]).then(function(res){
+    var cw=res[0].current, code=WMO[cw.weather_code]||['🌡️',''];
+    $('wIcon').textContent=code[0]; $('wTemp').textContent=Math.round(cw.temperature_2m)+'°';
+    var sub=[];
+    if(res[0].daily) sub.push(Math.round(res[0].daily.temperature_2m_min[0])+'~'+Math.round(res[0].daily.temperature_2m_max[0])+'°');
+    if(res[1]&&res[1].current) sub.push('미세먼지 '+pmGrade(res[1].current.pm10,res[1].current.pm2_5));
+    $('wSub').innerHTML=sub.map(function(s){return '<span>'+s+'</span>';}).join('<br>');
+  }).catch(function(){$('wIcon').textContent='';$('wTemp').textContent='';$('wSub').textContent='';});
+}
+
+/* ---------- D-day 자동 (NEIS 고사 감지) ---------- */
+function loadDday() {
+  var from=new Date(), to=new Date(); to.setDate(to.getDate()+45);
+  fetch('https://open.neis.go.kr/hub/SchoolSchedule?Type=json&pSize=100&ATPT_OFCDC_SC_CODE='+CONFIG.ATPT+'&SD_SCHUL_CODE='+CONFIG.SCHOOL+'&AA_FROM_YMD='+ymd(from)+'&AA_TO_YMD='+ymd(to))
+    .then(function(r){return r.json();}).then(function(j){
+      var rows=(j.SchoolSchedule&&j.SchoolSchedule[1]&&j.SchoolSchedule[1].row)||[];
+      var todayYmd=ymd(new Date());
+      var exam=rows.filter(function(r){return r.EVENT_NM&&r.EVENT_NM.indexOf('고사')>=0&&r.AA_YMD>=todayYmd;})[0];
+      autoDdays=[];
+      if(exam){
+        var dstr=exam.AA_YMD.slice(0,4)+'-'+exam.AA_YMD.slice(4,6)+'-'+exam.AA_YMD.slice(6,8);
+        autoDdays.push({name:exam.EVENT_NM.replace(/\s*\(.*\)/,''),date:dstr});
+      }
+      renderDdays();
+    }).catch(function(){renderDdays();});
+}
+
+/* ---------- 학사일정 (구글시트 JSONP) ---------- */
+function jsonpSheet(gid, cbName, scriptId, onError) {
+  var old=$(scriptId); if(old) old.remove();
+  var s=document.createElement('script');
+  s.id=scriptId;
+  s.src='https://docs.google.com/spreadsheets/d/'+CONFIG.SHEET_ID+'/gviz/tq?tqx=out:json%3BresponseHandler:'+cbName+'&gid='+gid+'&_='+Date.now();
+  s.onerror=onError; document.body.appendChild(s);
+}
+
+function grade1Parts(line) {
+  var out=[], segs=line.split(/(?=[①②③④⑤⑥⑦⑧⑨⑩])/), carry='';
+  for(var i=0;i<segs.length;i++){
+    var m=segs[i].match(/^([①②③④⑤⑥⑦⑧⑨⑩]*)([\s\S]*)$/);
+    var circles=carry+m[1], text=m[2].trim();
+    if(!text){carry=circles;continue;} carry='';
+    if(circles===''||circles.indexOf('①')>=0) out.push(text);
+  }
+  return out;
+}
+function escapeHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function handleSched(resp) {
+  try {
+    var cols=resp.table.cols, rows=resp.table.rows;
+    var grid=[cols.map(function(c){return c.label||'';})];
+    rows.forEach(function(r){ grid.push((r.c||[]).map(function(c){return c&&c.v!=null?String(c.v):'';})); });
+    var now=new Date(), sy=(now.getMonth()+1>=3)?now.getFullYear():now.getFullYear()-1;
+    var blocks=[];
+    for(var hr=0;hr<Math.min(3,grid.length)&&blocks.length===0;hr++){
+      for(var c=1;c<grid[hr].length-1;c++){
+        var mm=String(grid[hr][c]).match(/(?:(\d{4})년\s*)?(\d{1,2})월/);
+        if(!mm) continue;
+        var mo=Number(mm[2]); if(mo<1||mo>12) continue;
+        blocks.push({col:c,month:mo,year:mm[1]?Number(mm[1]):(mo>=3?sy:sy+1)});
+      }
+    }
+    var today=new Date(); today.setHours(0,0,0,0);
+    var limit=new Date(today); limit.setDate(limit.getDate()+60);
+    var evts=[];
+    blocks.forEach(function(b){
+      for(var r=1;r<grid.length;r++){
+        var row=grid[r], day=Number(row[b.col-1]);
+        if(!day||day<1||day>31) continue;
+        var content=String(row[b.col+1]||'').trim(); if(!content) continue;
+        var d=new Date(b.year,b.month-1,day);
+        if(d.getMonth()!==b.month-1||d<today||d>limit) continue;
+        content.split('\n').forEach(function(line){
+          grade1Parts(line.trim()).forEach(function(t){ if(t.length>1) evts.push({d:d,t:t}); });
+        });
+      }
+    });
+    evts.sort(function(a,b){return a.d-b.d;});
+    var seen={},dateOrder=[],byDate={};
+    evts.forEach(function(e){
+      var key=e.d.getTime()+'|'+e.t; if(seen[key]) return; seen[key]=1;
+      var dk=e.d.getTime(); if(!byDate[dk]){byDate[dk]=[];dateOrder.push(dk);} byDate[dk].push(e.t);
+    });
+    var lines=dateOrder.slice(0,2).map(function(dk){
+      var d=new Date(Number(dk)), isToday=d.getTime()===today.getTime();
+      var head=isToday?'오늘':(d.getMonth()+1)+'/'+d.getDate()+'('+DAYS[d.getDay()]+')';
+      return '<span class="sl"><b>'+head+'</b> '+byDate[dk].map(escapeHtml).join(' · ')+'</span>';
+    });
+    setBar('schedTxt',lines.length?lines.join(''):'예정된 학사일정이 없습니다');
+  } catch(e){ setBar('schedTxt','학사일정을 읽을 수 없습니다'); }
+}
+window.handleSched = handleSched;
+
+function loadSchedule() {
+  jsonpSheet(CONFIG.SCHED_GID,'handleSched','schedjs',function(){setBar('schedTxt','시트에 연결할 수 없습니다');});
+}
+
+/* ---------- 초기화 ---------- */
+function stampUpdated() {
+  var n=new Date(); $('updated').textContent='갱신 '+pad(n.getHours())+':'+pad(n.getMinutes());
+}
+
+renderExamBan();
+renderDdays();
+renderUniCard();
+loadMeal();
+loadWeather();
+loadSchedule();
+loadDday();
+
+setInterval(loadWeather, 30*60*1000);
+setInterval(function(){loadMeal();loadSchedule();loadDday();}, 6*60*60*1000);
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>영락고 1학년부 공지 디스플레이 (스틱·세로)</title>
+<style>
+  /* ============================================================
+     안드로이드 스틱(샤오미 등) 전용 세로 회전 래퍼
+     - 스틱은 화면을 가로(1920×1080)로만 출력함
+     - 모니터(F22T450)는 물리적으로 세로 피벗되어 있음
+     - 그래서 내용을 90° 돌려서 가로 신호에 채우면, 피벗된
+       화면에서 똑바로(세로) 보이게 됨
+     - 안의 display.html은 손대지 않고 iframe으로 그대로 띄움
+       → iframe 안에서는 화면이 진짜 1080×1920(세로)라
+         원래 레이아웃(vh/vw)이 100% 그대로 작동함
+     ============================================================ */
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    overflow: hidden;
+  }
+
+  #frame {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* iframe에는 '세로' 크기를 줌: 너비=화면높이, 높이=화면너비 */
+    width: 100vh;   /* = 1080 */
+    height: 100vw;  /* = 1920 */
+    border: 0;
+    /* 가운데 정렬 후 90° 회전 → 가로 출력 신호를 꽉 채움 */
+    transform: translate(-50%, -50%) rotate(90deg);
+    transform-origin: center center;
+    background: #000;
+  }
+
+  /* ▼▼▼ 화면이 거꾸로(180°) 나오면 위 rotate(90deg)를
+         rotate(-90deg) 로 바꾸세요. 그게 끝입니다. ▼▼▼ */
+</style>
+</head>
+<body>
+  <iframe id="frame" src="display.html" allow="fullscreen" scrolling="no"></iframe>
+</body>
+</html>
