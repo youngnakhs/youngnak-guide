@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0a1f15">
+<title>스터디미터 — 공부시간·졸음 측정</title>
+<link rel="manifest" href='data:application/manifest+json,{"name":"스터디미터","short_name":"스터디미터","display":"standalone","background_color":"%230a1f15","theme_color":"%230a1f15","start_url":"./studymeter.html","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 192 192%27%3E%3Crect width=%27192%27 height=%27192%27 rx=%2742%27 fill=%27%230a1f15%27/%3E%3Ccircle cx=%2796%27 cy=%2796%27 r=%2758%27 fill=%27none%27 stroke=%27%233cb878%27 stroke-width=%279%27/%3E%3Cpath d=%27M96 60v40l26 16%27 fill=%27none%27 stroke=%27%2372d4a0%27 stroke-width=%279%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27/%3E%3C/svg%3E","sizes":"192x192","type":"image/svg+xml"}]}'>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#3cb878; --green2:#2ea865; --green-dk:#1f7a49; --green-lt:#72d4a0;
+  --ink:#eaf7f1; --ink-dim:#9dd4b8; --ink-mute:#5d8f74;
+  --gold:#d4b36a; --red:#e05c5c; --serve:#d4922e; --grace:#3b9fd4;
+  --panel:rgba(23,56,40,.55); --panel-2:rgba(13,36,25,.7);
+  --line:rgba(114,212,160,.18);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{min-height:100%;}
+body{
+  font-family:'Noto Sans KR',sans-serif; color:var(--ink);
+  background:
+    radial-gradient(1100px 600px at 50% 0%, rgba(60,184,120,.16), transparent 60%),
+    radial-gradient(900px 500px at 12% 110%, rgba(31,122,73,.26), transparent 60%),
+    linear-gradient(170deg,#0d2a1c 0%, #0a1f15 45%, #071710 100%);
+  background-attachment:fixed;
+  min-height:100dvh; -webkit-text-size-adjust:100%; text-size-adjust:100%;
+  -webkit-tap-highlight-color:transparent;
+}
+.wrap{max-width:760px; margin:0 auto; padding:18px 16px 96px;}
+a{color:inherit;}
+button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit;}
+
+/* ── 상단바 ── */
+.topbar{display:flex; align-items:center; gap:10px; margin-bottom:18px;}
+.logo{display:flex; align-items:center; gap:10px; font-family:'Noto Serif KR',serif; font-weight:900; font-size:19px; letter-spacing:-.3px;}
+.logo .ring{width:30px;height:30px;border-radius:50%;border:3px solid var(--green);position:relative;flex:none;}
+.logo .ring::after{content:'';position:absolute;left:50%;top:18%;width:3px;height:38%;background:var(--green-lt);border-radius:3px;transform-origin:bottom;transform:translateX(-50%) rotate(35deg);}
+.logo .hl{color:var(--green-lt);}
+.home-link{margin-left:auto; font-size:12.5px; color:var(--ink-dim); padding:7px 12px; border:1px solid var(--line); border-radius:20px; background:var(--panel-2);}
+
+/* ── 카드/패널 ── */
+.panel{background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:18px; backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); margin-bottom:14px;}
+.panel h2{font-size:13px; letter-spacing:1px; color:var(--ink-dim); font-weight:700; margin-bottom:12px; text-transform:uppercase; font-family:'DM Mono',monospace;}
+
+/* ── 대시보드 숫자 ── */
+.today-total{text-align:center; padding:10px 0 6px;}
+.today-total .lbl{font-size:12px; letter-spacing:3px; color:var(--ink-mute); font-family:'DM Mono',monospace;}
+.today-total .big{font-family:'DM Mono',monospace; font-weight:500; font-size:clamp(40px,12vw,64px); line-height:1.05; letter-spacing:-1px; margin-top:4px;}
+.today-total .big small{font-size:.42em; color:var(--ink-dim); margin-left:4px; letter-spacing:0;}
+.mini-row{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px;}
+.mini{background:var(--panel-2); border:1px solid var(--line); border-radius:14px; padding:12px 14px;}
+.mini .k{font-size:11px; color:var(--ink-mute); letter-spacing:1px;}
+.mini .v{font-family:'DM Mono',monospace; font-size:20px; margin-top:3px;}
+
+/* ── 과목별 막대 ── */
+.subj-bar{display:flex; align-items:center; gap:10px; margin:9px 0;}
+.subj-bar .name{width:62px; font-size:13px; color:var(--ink-dim); flex:none;}
+.subj-bar .track{flex:1; height:10px; border-radius:6px; background:rgba(255,255,255,.06); overflow:hidden;}
+.subj-bar .fill{height:100%; border-radius:6px; background:linear-gradient(90deg,var(--green-dk),var(--green-lt));}
+.subj-bar .t{font-family:'DM Mono',monospace; font-size:12.5px; color:var(--ink); width:54px; text-align:right; flex:none;}
+
+/* ── 버튼 ── */
+.btn{display:flex; align-items:center; justify-content:center; gap:8px; width:100%; padding:16px; border-radius:16px; font-size:16px; font-weight:700; transition:transform .12s, filter .2s;}
+.btn:active{transform:scale(.98);}
+.btn-primary{background:linear-gradient(135deg,var(--green2),var(--green-dk)); color:#fff; box-shadow:0 8px 24px rgba(31,122,73,.4);}
+.btn-ghost{background:var(--panel-2); border:1px solid var(--line); color:var(--ink-dim);}
+.btn-danger{background:linear-gradient(135deg,#c44,#922); color:#fff;}
+.btn-row{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+.btn.sm{padding:11px; font-size:13.5px; border-radius:13px;}
+
+/* ── 하단 탭바 ── */
+.tabbar{position:fixed; left:0; right:0; bottom:0; z-index:30; display:flex; justify-content:center; gap:4px; padding:8px 8px calc(8px + env(safe-area-inset-bottom)); background:linear-gradient(0deg,rgba(7,23,16,.96),rgba(7,23,16,.7)); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-top:1px solid var(--line);}
+.tabbar button{flex:1; max-width:130px; display:flex; flex-direction:column; align-items:center; gap:3px; padding:6px; border-radius:12px; color:var(--ink-mute); font-size:11px; font-weight:500;}
+.tabbar button .ic{font-size:19px; line-height:1;}
+.tabbar button.on{color:var(--green-lt);}
+
+/* ── 뷰 전환 ── */
+.view{display:none;} .view.on{display:block; animation:fade .3s;}
+@keyframes fade{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
+
+/* ── 측정 화면 ── */
+.study-screen{position:fixed; inset:0; z-index:50; background:#000; color:#fff; display:none; flex-direction:column; padding:18px 16px calc(18px + env(safe-area-inset-bottom)); overflow-y:auto;}
+.study-screen.on{display:flex;}
+.study-pick{display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:6px;}
+.chip{padding:7px 14px; border-radius:20px; font-size:13px; border:1px solid rgba(255,255,255,.16); background:rgba(255,255,255,.05); color:#cfe9dc; transition:.15s;}
+.chip.on{background:var(--green2); border-color:var(--green-lt); color:#fff; font-weight:700;}
+.stopwatch{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; min-height:200px;}
+.sw-time{font-family:'DM Mono',monospace; font-weight:500; font-size:clamp(46px,17vw,92px); letter-spacing:-2px; line-height:1;}
+.sw-time small{font-size:.38em; color:#7fbf9c;}
+.sw-sub{font-size:13px; color:#8fc7ac; letter-spacing:1px;}
+.sw-meta{display:flex; gap:18px; justify-content:center; margin-top:10px; font-size:12.5px; color:#9dd4b8;}
+.sw-meta b{font-family:'DM Mono',monospace; color:#eaf7f1; font-weight:500; display:block; font-size:16px; margin-top:2px; text-align:center;}
+
+/* ── 카메라 패널 ── */
+.cam-wrap{position:relative; width:148px; height:111px; margin:0 auto 6px; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,.15); background:#0a1f15;}
+.cam-wrap video{width:100%; height:100%; object-fit:cover; transform:scaleX(-1);}
+.cam-wrap.hide{display:none;}
+.ear-badge{position:absolute; left:6px; bottom:6px; font-family:'DM Mono',monospace; font-size:11px; padding:2px 7px; border-radius:10px; background:rgba(0,0,0,.55); color:#72d4a0;}
+.ear-badge.warn{color:#ffd27f;} .ear-badge.bad{color:#ff8a8a;}
+.cam-status{text-align:center; font-size:12px; color:#8fc7ac; margin-bottom:8px;}
+
+/* ── 졸음 경고 오버레이 ── */
+.drowsy-alert{position:fixed; inset:0; z-index:80; display:none; flex-direction:column; align-items:center; justify-content:center; gap:18px; background:rgba(120,12,12,.82); backdrop-filter:blur(4px); text-align:center; padding:30px;}
+.drowsy-alert.on{display:flex; animation:pulse 1s infinite alternate;}
+@keyframes pulse{from{background:rgba(120,12,12,.78)} to{background:rgba(170,20,20,.9)}}
+.drowsy-alert .em{font-size:74px;} .drowsy-alert h2{font-size:26px; font-weight:900;}
+.drowsy-alert p{color:#ffd9d9; font-size:14px;}
+
+/* ── 차트(통계) ── */
+.daychart{display:flex; align-items:flex-end; gap:6px; height:140px; padding-top:10px;}
+.daychart .col{flex:1; display:flex; flex-direction:column; align-items:center; gap:5px; height:100%; justify-content:flex-end;}
+.daychart .bar{width:70%; max-width:30px; border-radius:5px 5px 0 0; background:linear-gradient(180deg,var(--green-lt),var(--green-dk)); min-height:2px; transition:height .4s;}
+.daychart .col.today .bar{background:linear-gradient(180deg,var(--gold),#a8842f);}
+.daychart .dl{font-size:10.5px; color:var(--ink-mute);}
+.daychart .dv{font-size:9.5px; color:var(--ink-dim); font-family:'DM Mono',monospace;}
+.heat-row{display:flex; gap:3px; flex-wrap:wrap; margin-top:6px;}
+.heat-cell{width:calc((100% - 23*3px)/24); aspect-ratio:1; border-radius:3px; background:rgba(255,255,255,.05); position:relative;}
+.heat-lbls{display:flex; justify-content:space-between; font-size:9.5px; color:var(--ink-mute); margin-top:5px; font-family:'DM Mono',monospace;}
+
+/* ── 설정 리스트 ── */
+.set-row{display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--line);}
+.set-row:last-child{border-bottom:none;}
+.set-row .lbl{flex:1;}
+.set-row .lbl small{display:block; color:var(--ink-mute); font-size:11.5px; margin-top:2px;}
+.tag-list{display:flex; flex-wrap:wrap; gap:7px; margin-top:8px;}
+.tag-list .tg{display:inline-flex; align-items:center; gap:6px; padding:6px 10px; border-radius:14px; background:var(--panel-2); border:1px solid var(--line); font-size:13px;}
+.tag-list .tg button{color:var(--red); font-weight:700; font-size:14px; line-height:1;}
+.addbox{display:flex; gap:8px; margin-top:10px;}
+.addbox input{flex:1; padding:10px 12px; border-radius:12px; background:rgba(255,255,255,.05); border:1px solid var(--line); color:var(--ink); font-size:14px; font-family:inherit;}
+.addbox input:focus{outline:none; border-color:var(--green-lt);}
+input[type=number].mini-num{width:64px; padding:8px; border-radius:10px; background:rgba(255,255,255,.05); border:1px solid var(--line); color:var(--ink); font-family:'DM Mono',monospace; text-align:center;}
+
+/* ── 토글 스위치 ── */
+.sw-toggle{width:48px; height:28px; border-radius:16px; background:rgba(255,255,255,.12); position:relative; flex:none; transition:.2s;}
+.sw-toggle.on{background:var(--green2);}
+.sw-toggle::after{content:''; position:absolute; left:3px; top:3px; width:22px; height:22px; border-radius:50%; background:#fff; transition:.2s;}
+.sw-toggle.on::after{left:23px;}
+
+/* ── 모달 ── */
+.modal-back{position:fixed; inset:0; z-index:90; display:none; align-items:center; justify-content:center; padding:22px; background:rgba(5,15,10,.7); backdrop-filter:blur(8px);}
+.modal-back.on{display:flex; animation:fade .25s;}
+.modal{width:100%; max-width:420px; background:linear-gradient(168deg,rgba(23,56,40,.97),rgba(13,36,25,.98)); border:1px solid var(--line); border-radius:22px; padding:24px;}
+.modal h3{font-family:'Noto Serif KR',serif; font-size:20px; margin-bottom:12px;}
+.modal .consent-list{font-size:13.5px; color:var(--ink-dim); line-height:1.75; margin:6px 0 18px; padding-left:2px;}
+.modal .consent-list li{list-style:none; padding-left:20px; position:relative; margin-bottom:6px;}
+.modal .consent-list li::before{content:'✓'; position:absolute; left:0; color:var(--green-lt); font-weight:700;}
+.rate-pill{display:inline-block; padding:3px 10px; border-radius:12px; font-family:'DM Mono',monospace; font-size:13px;}
+.rate-good{background:rgba(60,184,120,.18); color:var(--green-lt);}
+.rate-mid{background:rgba(212,179,106,.18); color:var(--gold);}
+.rate-low{background:rgba(224,92,92,.18); color:#f0a;}
+.empty{text-align:center; color:var(--ink-mute); font-size:13.5px; padding:24px 0;}
+.kss{display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin:10px 0 4px;}
+.kss button{width:38px; height:38px; border-radius:11px; background:var(--panel-2); border:1px solid var(--line); font-family:'DM Mono',monospace; font-size:15px;}
+.kss button.on{background:var(--green2); border-color:var(--green-lt); color:#fff; font-weight:700;}
+.note{font-size:11.5px; color:var(--ink-mute); line-height:1.6; margin-top:10px;}
+</style>
+</head>
+<body>
+
+<!-- ══ 메인(대시보드/통계/설정) ══ -->
+<div class="wrap" id="main">
+  <div class="topbar">
+    <div class="logo"><span class="ring"></span><span>스터디<span class="hl">미터</span></span></div>
+    <a class="home-link" href="index.html">← 정보센터</a>
+  </div>
+
+  <!-- 대시보드 -->
+  <section class="view on" id="v-home">
+    <div class="panel">
+      <div class="today-total">
+        <div class="lbl">오늘 누적 공부시간</div>
+        <div class="big" id="todayBig">0:00<small>00</small></div>
+      </div>
+      <div class="mini-row">
+        <div class="mini"><div class="k">이번 주</div><div class="v" id="weekVal">0h 0m</div></div>
+        <div class="mini"><div class="k">전체 누계</div><div class="v" id="totalVal">0h 0m</div></div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" id="startBtn">▶ 공부 시작</button>
+    <div style="height:10px"></div>
+    <div class="btn-row">
+      <button class="btn btn-ghost sm" data-tab="stats">📊 통계 보기</button>
+      <button class="btn btn-ghost sm" data-tab="settings">⚙ 설정</button>
+    </div>
+  </section>
+
+  <!-- 통계 -->
+  <section class="view" id="v-stats">
+    <div class="panel">
+      <h2>최근 7일 공부시간</h2>
+      <div class="daychart" id="dayChart"></div>
+    </div>
+    <div class="panel">
+      <h2>각성 유지율 (졸음 적은 정도)</h2>
+      <div id="awakeBox"><div class="empty">졸음 감지를 켜고 공부하면 여기에 표시됩니다.</div></div>
+    </div>
+    <div class="panel">
+      <h2>시간대별 졸음 분포</h2>
+      <div class="heat-row" id="heatRow"></div>
+      <div class="heat-lbls"><span>0시</span><span>6시</span><span>12시</span><span>18시</span><span>23시</span></div>
+      <div class="note">졸음으로 판정된 시간이 많을수록 칸이 붉어집니다. 본인에게만 보이는 정보입니다.</div>
+    </div>
+    <div class="panel">
+      <h2>최근 세션</h2>
+      <div id="sessionList"></div>
+    </div>
+  </section>
+
+  <!-- 설정 -->
+  <section class="view" id="v-settings">
+    <div class="panel">
+      <h2>닉네임</h2>
+      <div class="addbox"><input id="nickInput" maxlength="12" placeholder="리더보드용 닉네임 (선택)"><button class="btn btn-ghost sm" style="width:auto;padding:10px 16px" id="nickSave">저장</button></div>
+      <div class="note">2단계 리더보드(학습시간·각성유지율 순위)에서 표시될 이름입니다. 실명 대신 사용하세요.</div>
+    </div>
+
+    <div class="panel">
+      <h2>졸음 감지 (카메라)</h2>
+      <div class="set-row">
+        <div class="lbl">졸음 감지 사용<small>카메라로 눈 감김을 판정. 영상은 저장·전송 안 함</small></div>
+        <div class="sw-toggle" id="drowsyToggle"></div>
+      </div>
+      <div class="set-row">
+        <div class="lbl">졸음 판정 기준<small>눈 감김이 이 시간 이상 지속되면 경고</small></div>
+        <div><input type="number" class="mini-num" id="thrInput" min="3" max="120" step="1"> 초</div>
+      </div>
+      <div class="note" id="consentNote"></div>
+    </div>
+
+    <div class="panel">
+      <h2>데이터</h2>
+      <div class="btn-row">
+        <button class="btn btn-ghost sm" id="exportBtn">내보내기(JSON)</button>
+        <button class="btn btn-ghost sm" id="resetBtn" style="color:var(--red)">전체 초기화</button>
+      </div>
+      <div class="note">모든 기록은 이 기기에만 저장됩니다(localStorage). 기기·브라우저를 바꾸면 기록이 옮겨가지 않습니다.</div>
+    </div>
+  </section>
+</div>
+
+<!-- 하단 탭바 -->
+<nav class="tabbar" id="tabbar">
+  <button data-tab="home" class="on"><span class="ic">🏠</span>홈</button>
+  <button data-tab="stats"><span class="ic">📊</span>통계</button>
+  <button data-tab="settings"><span class="ic">⚙</span>설정</button>
+</nav>
+
+<!-- ══ 측정 전체화면 ══ -->
+<div class="study-screen" id="studyScreen">
+  <div class="stopwatch">
+    <div class="cam-wrap hide" id="camWrap">
+      <video id="cam" playsinline muted autoplay></video>
+      <span class="ear-badge" id="earBadge">--</span>
+    </div>
+    <div class="cam-status" id="camStatus"></div>
+    <div class="sw-time" id="swTime">0:00<small>.0</small></div>
+    <div class="sw-sub" id="swSub">현재 세션</div>
+    <div class="sw-meta">
+      <div>오늘 총<b id="mTotal">0:00</b></div>
+      <div id="mAwakeWrap" style="display:none">각성유지<b id="mAwake">100%</b></div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn btn-ghost" id="pauseBtn">⏸ 일시정지</button>
+    <button class="btn btn-danger" id="stopBtn">■ 종료</button>
+  </div>
+</div>
+
+<!-- 졸음 경고 -->
+<div class="drowsy-alert" id="drowsyAlert">
+  <div class="em">😴</div>
+  <h2>졸고 있어요!</h2>
+  <p>눈을 뜨면 자동으로 닫힙니다.</p>
+  <button class="btn btn-ghost sm" style="width:auto;padding:10px 22px" id="muteAlert">소리 끄기</button>
+</div>
+
+<!-- 동의 모달 -->
+<div class="modal-back" id="consentModal">
+  <div class="modal">
+    <h3>📷 카메라 졸음 감지 안내</h3>
+    <ul class="consent-list">
+      <li>카메라 영상은 <b>이 기기 안에서만</b> 처리됩니다.</li>
+      <li>영상·사진은 <b>저장·전송하지 않고</b> 즉시 폐기됩니다.</li>
+      <li>눈 감김(졸음)만 판정하며, 얼굴·심박 정보는 남기지 않습니다.</li>
+      <li>저장되는 것은 <b>졸음 횟수·시각</b>뿐입니다.</li>
+    </ul>
+    <p class="note" style="margin:0 0 16px">※ 미성년자(학생)는 보호자 동의가 필요할 수 있습니다. 학교 안내에 따라 사용하세요.</p>
+    <div class="btn-row">
+      <button class="btn btn-ghost" id="consentNo">취소</button>
+      <button class="btn btn-primary" id="consentYes">동의하고 켜기</button>
+    </div>
+  </div>
+</div>
+
+<!-- 세션 종료 평가 모달 -->
+<div class="modal-back" id="evalModal">
+  <div class="modal">
+    <h3 id="evalTitle">세션 종료</h3>
+    <p class="note" style="margin:0 0 4px">지금 졸린 정도는? (1=완전 각성 · 9=매우 졸림)</p>
+    <div class="kss" id="kssRow"></div>
+    <div style="height:8px"></div>
+    <button class="btn btn-primary" id="evalSave">저장</button>
+    <button class="btn btn-ghost sm" style="margin-top:8px" id="evalSkip">건너뛰기</button>
+  </div>
+</div>
+
+<script type="module">
+import { FaceLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.35/vision_bundle.mjs";
+
+/* ════════════════ 저장소 ════════════════ */
+const LS = {
+  get(k, d){ try{ const v = localStorage.getItem('sm_'+k); return v==null?d:JSON.parse(v); }catch{ return d; } },
+  set(k, v){ localStorage.setItem('sm_'+k, JSON.stringify(v)); },
+  del(k){ localStorage.removeItem('sm_'+k); },
+};
+const DEFAULT_SETTINGS = {
+  nickname:'', drowsyEnabled:false, drowsyConsent:false, drowsyThresholdSec:15,
+};
+let settings = Object.assign({}, DEFAULT_SETTINGS, LS.get('settings', {}));
+function saveSettings(){ LS.set('settings', settings); }
+
+/** sessions: [{id, subject, type, start, end, durationMs, drowsyMs, drowsyEvents, kss}] */
+let sessions = LS.get('sessions', []);
+function saveSessions(){ LS.set('sessions', sessions); }
+
+/* ════════════════ 시간 유틸 ════════════════ */
+const pad = n => String(n).padStart(2,'0');
+function fmtClock(ms){ // m:ss 또는 h:mm:ss
+  const s = Math.floor(ms/1000), h = Math.floor(s/3600), m = Math.floor(s%3600/60), ss = s%60;
+  return h>0 ? `${h}:${pad(m)}:${pad(ss)}` : `${m}:${pad(ss)}`;
+}
+function fmtHM(ms){ const s=Math.floor(ms/1000), h=Math.floor(s/3600), m=Math.floor(s%3600/60); return `${h}h ${m}m`; }
+function dayKey(ts){ const d=new Date(ts); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
+function todayKey(){ return dayKey(Date.now()); }
+function mondayOf(ts){ const d=new Date(ts); d.setHours(0,0,0,0); const wd=(d.getDay()+6)%7; d.setDate(d.getDate()-wd); return d.getTime(); }
+
+/* ════════════════ 집계 ════════════════ */
+function todaySessions(){ const t=todayKey(); return sessions.filter(s=>dayKey(s.start)===t); }
+function sumToday(){ return todaySessions().reduce((a,s)=>a+s.durationMs,0); }
+function sumWeek(){ const mon=mondayOf(Date.now()); return sessions.filter(s=>s.start>=mon).reduce((a,s)=>a+s.durationMs,0); }
+function sumTotal(){ return sessions.reduce((a,s)=>a+s.durationMs,0); }
+
+/* ════════════════ 뷰 라우팅 ════════════════ */
+const views = { home:'v-home', stats:'v-stats', settings:'v-settings' };
+function showTab(tab){
+  Object.values(views).forEach(id=>document.getElementById(id).classList.remove('on'));
+  document.getElementById(views[tab]).classList.add('on');
+  document.querySelectorAll('#tabbar button').forEach(b=>b.classList.toggle('on', b.dataset.tab===tab));
+  if(tab==='home') renderHome();
+  if(tab==='stats') renderStats();
+  if(tab==='settings') renderSettings();
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('[data-tab]').forEach(b=> b.addEventListener('click', ()=>showTab(b.dataset.tab)));
+
+/* ════════════════ 대시보드 렌더 ════════════════ */
+function renderHome(){
+  const t = sumToday();
+  const s=Math.floor(t/1000), h=Math.floor(s/3600), m=Math.floor(s%3600/60), cs=Math.floor((t%1000)/10);
+  document.getElementById('todayBig').innerHTML = `${h>0?h+':':''}${h>0?pad(m):m}:${pad(s%60)}<small>${pad(cs)}</small>`;
+  document.getElementById('weekVal').textContent = fmtHM(sumWeek());
+  document.getElementById('totalVal').textContent = fmtHM(sumTotal());
+}
+
+/* ════════════════ 통계 렌더 ════════════════ */
+function renderStats(){
+  // 최근 7일 막대
+  const days=[]; for(let i=6;i>=0;i--){ const d=new Date(); d.setDate(d.getDate()-i); days.push(d); }
+  const tk=todayKey();
+  const data = days.map(d=>{ const k=dayKey(d.getTime()); const ms=sessions.filter(s=>dayKey(s.start)===k).reduce((a,s)=>a+s.durationMs,0); return {k,ms,d}; });
+  const max = Math.max(1, ...data.map(x=>x.ms));
+  document.getElementById('dayChart').innerHTML = data.map(x=>{
+    const h = x.ms/max*100;
+    const dow = ['일','월','화','수','목','금','토'][x.d.getDay()];
+    const hm = x.ms>0 ? `${Math.floor(x.ms/3600000)}h${Math.floor(x.ms%3600000/60000)}m` : '';
+    return `<div class="col ${x.k===tk?'today':''}"><div class="dv">${hm}</div><div class="bar" style="height:${h}%"></div><div class="dl">${dow}</div></div>`;
+  }).join('');
+
+  // 각성유지율 (졸음감지 데이터 있는 세션만)
+  const dz = sessions.filter(s=>s.drowsyMs!=null && s.durationMs>0);
+  const awakeBox = document.getElementById('awakeBox');
+  if(!dz.length){ awakeBox.innerHTML = '<div class="empty">졸음 감지를 켜고 공부하면 여기에 표시됩니다.</div>'; }
+  else {
+    const totDur = dz.reduce((a,s)=>a+s.durationMs,0);
+    const totDrowsy = dz.reduce((a,s)=>a+(s.drowsyMs||0),0);
+    const rate = Math.max(0, Math.round((1 - totDrowsy/totDur)*100));
+    const cls = rate>=90?'rate-good':rate>=70?'rate-mid':'rate-low';
+    awakeBox.innerHTML = `
+      <div style="text-align:center;padding:6px 0">
+        <div style="font-family:'DM Mono',monospace;font-size:46px;line-height:1" class="${cls.replace('rate-','').replace('good','').replace('mid','').replace('low','')||''}">
+          <span class="rate-pill ${cls}" style="font-size:.55em;vertical-align:middle">전체</span> ${rate}<span style="font-size:.5em">%</span>
+        </div>
+        <div class="note" style="margin-top:8px">졸음 감지를 켠 ${dz.length}개 세션 기준 · 졸음 누적 ${fmtClock(totDrowsy)}</div>
+      </div>`;
+  }
+
+  // 시간대별 졸음 히트맵
+  const hrs = new Array(24).fill(0);
+  sessions.forEach(s=>{ (s.drowsyLog||[]).forEach(ts=>{ hrs[new Date(ts).getHours()]++; }); });
+  const hmax = Math.max(1, ...hrs);
+  document.getElementById('heatRow').innerHTML = hrs.map(c=>{
+    const a = c/hmax; const bg = c? `rgba(224,92,92,${0.18+a*0.7})` : 'rgba(255,255,255,.05)';
+    return `<span class="heat-cell" style="background:${bg}" title="${c}회"></span>`;
+  }).join('');
+
+  // 최근 세션
+  const recent = [...sessions].sort((a,b)=>b.start-a.start).slice(0,12);
+  const list = document.getElementById('sessionList');
+  if(!recent.length){ list.innerHTML='<div class="empty">기록이 없습니다.</div>'; return; }
+  list.innerHTML = recent.map(s=>{
+    const d=new Date(s.start); const when=`${pad(d.getMonth()+1)}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    const drow = s.drowsyMs!=null ? ` · 😴${fmtClock(s.drowsyMs)}` : '';
+    return `<div class="set-row"><div class="lbl">공부 <small>${when}${drow}</small></div><div style="font-family:'DM Mono',monospace">${fmtClock(s.durationMs)}</div></div>`;
+  }).join('');
+}
+
+/* ════════════════ 설정 렌더 ════════════════ */
+function renderSettings(){
+  document.getElementById('nickInput').value = settings.nickname||'';
+  document.getElementById('thrInput').value = settings.drowsyThresholdSec;
+  document.getElementById('drowsyToggle').classList.toggle('on', settings.drowsyEnabled);
+  document.getElementById('consentNote').textContent = settings.drowsyConsent
+    ? '✓ 동의함 — 영상은 저장·전송되지 않습니다.' : '아직 동의하지 않았습니다. 켜면 안내가 표시됩니다.';
+}
+document.getElementById('nickSave').addEventListener('click', ()=>{
+  settings.nickname=document.getElementById('nickInput').value.trim(); saveSettings();
+  document.getElementById('nickSave').textContent='✓';
+  setTimeout(()=>document.getElementById('nickSave').textContent='저장',1200);
+});
+document.getElementById('thrInput').addEventListener('change', e=>{
+  let v=Math.min(120,Math.max(3,+e.target.value||15)); settings.drowsyThresholdSec=v; e.target.value=v; saveSettings();
+});
+document.getElementById('exportBtn').addEventListener('click', ()=>{
+  const blob=new Blob([JSON.stringify({settings,sessions},null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download=`스터디미터_백업_${todayKey()}.json`; a.click();
+});
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  if(confirm('모든 기록과 설정을 삭제할까요? 되돌릴 수 없습니다.')){
+    LS.del('sessions'); LS.del('settings'); LS.del('active'); location.reload();
+  }
+});
+
+/* 졸음 토글 → 동의 흐름 */
+const consentModal=document.getElementById('consentModal');
+document.getElementById('drowsyToggle').addEventListener('click', ()=>{
+  if(settings.drowsyEnabled){ settings.drowsyEnabled=false; saveSettings(); renderSettings(); return; }
+  if(settings.drowsyConsent){ settings.drowsyEnabled=true; saveSettings(); renderSettings(); }
+  else consentModal.classList.add('on');
+});
+document.getElementById('consentNo').addEventListener('click', ()=>consentModal.classList.remove('on'));
+document.getElementById('consentYes').addEventListener('click', ()=>{
+  settings.drowsyConsent=true; settings.drowsyEnabled=true; saveSettings();
+  consentModal.classList.remove('on'); renderSettings();
+});
+
+/* ════════════════ 측정(세션) ════════════════
+   절대시각 기반: start(시작 타임스탬프) + accumMs(일시정지 누적). 새로고침 복원 지원. */
+const studyScreen=document.getElementById('studyScreen');
+let active = LS.get('active', null); // {start,accumMs,paused,drowsyMs,drowsyLog}
+let rafId=null;
+
+function elapsedMs(){
+  if(!active) return 0;
+  const base = active.accumMs||0;
+  if(active.paused) return base;
+  return base + (Date.now() - active.start);
+}
+function persistActive(){ LS.set('active', active); }
+
+function startSession(){
+  active = { subject:'공부', type:'', start:Date.now(), accumMs:0, paused:false, drowsyMs:0, drowsyLog:[] };
+  persistActive();
+  document.getElementById('pauseBtn').innerHTML='⏸ 일시정지';
+  if(settings.drowsyEnabled) startCamera(); else stopCamera();
+}
+function finalizeSession(askEval){
+  if(!active) return;
+  const dur = elapsedMs();
+  const rec = { id:Date.now()+'_'+Math.floor(performance.now()),
+    subject:active.subject, type:active.type, start:active.start, end:Date.now(),
+    durationMs:dur };
+  if(settings.drowsyEnabled || active.drowsyMs>0 || (active.drowsyLog&&active.drowsyLog.length)){
+    rec.drowsyMs = active.drowsyMs||0; rec.drowsyLog = active.drowsyLog||[];
+  }
+  if(dur >= 1000) { sessions.push(rec); saveSessions(); }
+  active=null; LS.del('active');
+  if(askEval) openEval(rec);
+}
+
+document.getElementById('startBtn').addEventListener('click', ()=>{
+  openStudy(); startSession();
+});
+function openStudy(){
+  studyScreen.classList.add('on');
+  document.getElementById('mAwakeWrap').style.display = settings.drowsyEnabled?'block':'none';
+  loop();
+}
+function closeStudy(){ studyScreen.classList.remove('on'); cancelAnimationFrame(rafId); rafId=null; stopCamera(); }
+
+document.getElementById('pauseBtn').addEventListener('click', ()=>{
+  if(!active) return;
+  if(active.paused){ active.start=Date.now(); active.paused=false; document.getElementById('pauseBtn').innerHTML='⏸ 일시정지'; if(settings.drowsyEnabled) startCamera(); }
+  else { active.accumMs=elapsedMs(); active.paused=true; document.getElementById('pauseBtn').innerHTML='▶ 재개'; stopCamera(); }
+  persistActive();
+});
+document.getElementById('stopBtn').addEventListener('click', ()=>{
+  const rec = active ? {dur:elapsedMs()} : null;
+  finalizeSession(true);
+  closeStudy(); showTab('home');
+});
+
+/* 측정 화면 갱신 루프 */
+function loop(){
+  if(active){
+    const e=elapsedMs();
+    const s=Math.floor(e/1000), tenth=Math.floor((e%1000)/100);
+    document.getElementById('swTime').innerHTML = `${fmtClock(e)}<small>.${tenth}</small>`;
+    document.getElementById('swSub').textContent = '공부 중';
+    document.getElementById('mTotal').textContent = fmtClock(sumToday()+ (active?e:0));
+    if(settings.drowsyEnabled){
+      const rate = e>0 ? Math.max(0,Math.round((1-(active.drowsyMs||0)/e)*100)) : 100;
+      document.getElementById('mAwake').textContent = rate+'%';
+    }
+    if(active.paused) persistActive();
+  }
+  rafId=requestAnimationFrame(loop);
+}
+
+/* ════════════════ 세션 평가(KSS) ════════════════ */
+const evalModal=document.getElementById('evalModal'); let evalTarget=null, kssVal=null;
+function openEval(rec){
+  if(!rec || rec.durationMs<1000){ return; }
+  evalTarget=rec; kssVal=null;
+  document.getElementById('evalTitle').textContent = `${rec.subject} ${fmtClock(rec.durationMs)} 완료`;
+  document.getElementById('kssRow').innerHTML = [1,2,3,4,5,6,7,8,9].map(n=>`<button data-kss="${n}">${n}</button>`).join('');
+  evalModal.classList.add('on');
+}
+document.getElementById('kssRow').addEventListener('click', e=>{
+  const b=e.target.closest('[data-kss]'); if(!b) return; kssVal=+b.dataset.kss;
+  document.querySelectorAll('#kssRow button').forEach(x=>x.classList.toggle('on', x===b));
+});
+document.getElementById('evalSave').addEventListener('click', ()=>{
+  if(evalTarget && kssVal!=null){ const s=sessions.find(x=>x.id===evalTarget.id); if(s){ s.kss=kssVal; saveSessions(); } }
+  evalModal.classList.remove('on');
+});
+document.getElementById('evalSkip').addEventListener('click', ()=>evalModal.classList.remove('on'));
+
+/* ════════════════ 졸음 감지 (MediaPipe FaceLandmarker · EAR) ════════════════
+   영상은 저장·전송하지 않음. 매 프레임 랜드마크만 계산하고 프레임은 즉시 폐기. */
+const cam=document.getElementById('cam'), camWrap=document.getElementById('camWrap'),
+      camStatus=document.getElementById('camStatus'), earBadge=document.getElementById('earBadge'),
+      drowsyAlert=document.getElementById('drowsyAlert');
+let landmarker=null, stream=null, detLoop=null, lmReady=false;
+// EAR 랜드마크 (MediaPipe FaceMesh 468 표준)
+const R_EYE=[33,160,158,133,153,144], L_EYE=[362,385,387,263,373,380];
+let earBaselineSamples=[], baseline=NaN;
+let eyesClosedSince=null, drowsyActive=false, lastTickTs=null, alertMuted=false;
+
+async function ensureLandmarker(){
+  if(landmarker) return true;
+  try{
+    camStatus.textContent='졸음 감지 모델 불러오는 중…';
+    const fileset = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.35/wasm");
+    landmarker = await FaceLandmarker.createFromOptions(fileset, {
+      baseOptions:{ modelAssetPath:"https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task", delegate:"GPU" },
+      numFaces:1, runningMode:"VIDEO", outputFaceBlendshapes:false, outputFacialTransformationMatrixes:false,
+    });
+    return true;
+  }catch(err){ console.error(err); camStatus.textContent='모델 로드 실패 — 졸음 감지를 사용할 수 없습니다.'; return false; }
+}
+async function startCamera(){
+  camWrap.classList.remove('hide');
+  if(!await ensureLandmarker()){ return; }
+  try{
+    stream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:'user', width:320, height:240 }, audio:false });
+    cam.srcObject = stream; await cam.play();
+    camStatus.textContent='눈 상태 감시 중 (영상 저장 안 함)';
+    // 세션 상태 초기화
+    earBaselineSamples=[]; baseline=NaN; eyesClosedSince=null; drowsyActive=false; lastTickTs=null; alertMuted=false;
+    lmReady=true; runDetect();
+  }catch(err){ console.error(err); camStatus.textContent='카메라 권한이 거부되어 졸음 감지를 끕니다.'; camWrap.classList.add('hide'); }
+}
+function stopCamera(){
+  lmReady=false; if(detLoop) cancelAnimationFrame(detLoop); detLoop=null;
+  if(stream){ stream.getTracks().forEach(t=>t.stop()); stream=null; }
+  cam.srcObject=null; camWrap.classList.add('hide'); hideAlert();
+}
+function dist(a,b){ const dx=a.x-b.x, dy=a.y-b.y; return Math.hypot(dx,dy); }
+function earOf(pts, idx){
+  const p=idx.map(i=>pts[i]);
+  return (dist(p[1],p[5]) + dist(p[2],p[4])) / (2*dist(p[0],p[3]));
+}
+function runDetect(){
+  if(!lmReady || !landmarker) return;
+  if(cam.readyState>=2){
+    let res=null; try{ res = landmarker.detectForVideo(cam, performance.now()); }catch{}
+    const now=Date.now();
+    if(res && res.faceLandmarks && res.faceLandmarks.length){
+      const pts=res.faceLandmarks[0];
+      const ear=(earOf(pts,R_EYE)+earOf(pts,L_EYE))/2;
+      // 적응형 베이스라인 (눈 뜬 상태 90퍼센타일)
+      earBaselineSamples.push(ear); if(earBaselineSamples.length>900) earBaselineSamples.shift();
+      if(earBaselineSamples.length>=60){
+        const sorted=[...earBaselineSamples].sort((a,b)=>a-b);
+        baseline=sorted[Math.floor(0.9*(sorted.length-1))];
+      }
+      updateDrowsy(ear, now);
+      const b=Number.isFinite(baseline)?baseline:0.28;
+      earBadge.textContent='EAR '+ear.toFixed(2);
+      earBadge.className='ear-badge'+(ear<0.6*b?' bad':ear<0.75*b?' warn':'');
+    } else {
+      earBadge.textContent='얼굴 인식 안 됨'; earBadge.className='ear-badge warn';
+      eyesClosedSince=null; lastTickTs=now;
+      if(drowsyActive) hideAlert();
+    }
+  }
+  detLoop=requestAnimationFrame(runDetect);
+}
+function updateDrowsy(ear, now){
+  if(lastTickTs==null){ lastTickTs=now; }
+  const dt=now-lastTickTs; lastTickTs=now;
+  const b=Number.isFinite(baseline)?baseline:0.28;
+  const closed = ear < 0.6*b;
+  const open   = ear >= 0.75*b;
+  if(closed){
+    if(eyesClosedSince==null) eyesClosedSince=now;
+    const closedFor = now - eyesClosedSince;
+    // 졸음 누적 시간(눈 감김 지속분)
+    if(active){ active.drowsyMs=(active.drowsyMs||0)+dt; }
+    if(closedFor >= settings.drowsyThresholdSec*1000 && !drowsyActive){
+      triggerAlert(now);
+    }
+  } else if(open){
+    eyesClosedSince=null;
+    if(drowsyActive) hideAlert();
+  }
+}
+let alertOsc=null, alertCtx=null, alertTimer=null;
+function triggerAlert(now){
+  drowsyActive=true; alertMuted=false;
+  if(active){ active.drowsyLog=active.drowsyLog||[]; active.drowsyLog.push(now); persistActive(); }
+  drowsyAlert.classList.add('on');
+  if(navigator.vibrate) navigator.vibrate([300,150,300,150,300]);
+  beepLoop();
+}
+function beepLoop(){
+  if(alertMuted) return;
+  try{
+    alertCtx = alertCtx || new (window.AudioContext||window.webkitAudioContext)();
+    const o=alertCtx.createOscillator(), g=alertCtx.createGain();
+    o.type='sine'; o.frequency.value=880; g.gain.value=0.0001;
+    o.connect(g); g.connect(alertCtx.destination);
+    const t=alertCtx.currentTime;
+    g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(0.35,t+0.05);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+0.4);
+    o.start(t); o.stop(t+0.42);
+  }catch{}
+  alertTimer=setTimeout(beepLoop, 900);
+}
+function hideAlert(){
+  drowsyActive=false; drowsyAlert.classList.remove('on');
+  if(alertTimer){ clearTimeout(alertTimer); alertTimer=null; }
+  if(navigator.vibrate) navigator.vibrate(0);
+}
+document.getElementById('muteAlert').addEventListener('click', ()=>{
+  alertMuted=true; if(alertTimer){ clearTimeout(alertTimer); alertTimer=null; } if(navigator.vibrate) navigator.vibrate(0);
+});
+
+/* ════════════════ 초기화 / 진행중 세션 복원 ════════════════ */
+function init(){
+  renderHome();
+  if(active){ // 새로고침/재진입 시 진행 중 세션 복원
+    openStudy();
+    if(active.paused){ document.getElementById('pauseBtn').innerHTML='▶ 재개'; }
+    else if(settings.drowsyEnabled){ startCamera(); }
+  }
+}
+window.addEventListener('beforeunload', ()=>{ if(active) persistActive(); });
+init();
+</script>
+</body>
+</html>
