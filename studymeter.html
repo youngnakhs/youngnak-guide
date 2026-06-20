@@ -50,6 +50,7 @@ button{font-family:inherit; cursor:pointer; border:none; background:none; color:
 .today-total .lbl{font-size:12px; letter-spacing:3px; color:var(--ink-mute); font-family:'DM Mono',monospace;}
 .today-total .big{font-family:'DM Mono',monospace; font-weight:500; font-size:clamp(40px,12vw,64px); line-height:1.05; letter-spacing:-1px; margin-top:4px;}
 .today-total .big small{font-size:.42em; color:var(--ink-dim); margin-left:4px; letter-spacing:0;}
+.today-total .sub-total{font-size:12px; color:var(--ink-mute); margin-top:5px; font-family:'DM Mono',monospace;}
 .mini-row{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px;}
 .mini{background:var(--panel-2); border:1px solid var(--line); border-radius:14px; padding:12px 14px;}
 .mini .k{font-size:11px; color:var(--ink-mute); letter-spacing:1px;}
@@ -91,6 +92,7 @@ button{font-family:inherit; cursor:pointer; border:none; background:none; color:
 .sw-time{font-family:'DM Mono',monospace; font-weight:500; font-size:clamp(46px,17vw,92px); letter-spacing:-2px; line-height:1;}
 .sw-time small{font-size:.38em; color:#7fbf9c;}
 .sw-sub{font-size:13px; color:#8fc7ac; letter-spacing:1px;}
+.sw-net{font-family:'DM Mono',monospace; font-size:21px; color:#72d4a0; margin-top:3px;}
 .sw-meta{display:flex; gap:18px; justify-content:center; margin-top:10px; font-size:12.5px; color:#9dd4b8;}
 .sw-meta b{font-family:'DM Mono',monospace; color:#eaf7f1; font-weight:500; display:block; font-size:16px; margin-top:2px; text-align:center;}
 
@@ -171,12 +173,13 @@ input[type=number].mini-num{width:64px; padding:8px; border-radius:10px; backgro
   <section class="view on" id="v-home">
     <div class="panel">
       <div class="today-total">
-        <div class="lbl">오늘 누적 공부시간</div>
+        <div class="lbl">오늘 순공시간 · 졸음 제외</div>
         <div class="big" id="todayBig">0:00<small>00</small></div>
+        <div class="sub-total" id="todayTotalSub">총 측정 0:00</div>
       </div>
       <div class="mini-row">
-        <div class="mini"><div class="k">이번 주</div><div class="v" id="weekVal">0h 0m</div></div>
-        <div class="mini"><div class="k">전체 누계</div><div class="v" id="totalVal">0h 0m</div></div>
+        <div class="mini"><div class="k">이번 주 순공</div><div class="v" id="weekVal">0h 0m</div></div>
+        <div class="mini"><div class="k">전체 순공</div><div class="v" id="totalVal">0h 0m</div></div>
       </div>
     </div>
 
@@ -258,9 +261,10 @@ input[type=number].mini-num{width:64px; padding:8px; border-radius:10px; backgro
     </div>
     <div class="cam-status" id="camStatus"></div>
     <div class="sw-time" id="swTime">0:00<small>.0</small></div>
-    <div class="sw-sub" id="swSub">현재 세션</div>
+    <div class="sw-net" id="swNet">순공 0:00</div>
     <div class="sw-meta">
-      <div>오늘 총<b id="mTotal">0:00</b></div>
+      <div>오늘 순공<b id="mNetToday">0:00</b></div>
+      <div>총 측정<b id="mTotal">0:00</b></div>
       <div id="mAwakeWrap" style="display:none">각성유지<b id="mAwake">100%</b></div>
     </div>
   </div>
@@ -344,6 +348,10 @@ function todaySessions(){ const t=todayKey(); return sessions.filter(s=>dayKey(s
 function sumToday(){ return todaySessions().reduce((a,s)=>a+s.durationMs,0); }
 function sumWeek(){ const mon=mondayOf(Date.now()); return sessions.filter(s=>s.start>=mon).reduce((a,s)=>a+s.durationMs,0); }
 function sumTotal(){ return sessions.reduce((a,s)=>a+s.durationMs,0); }
+function netMs(s){ return Math.max(0, s.durationMs - (s.drowsyMs||0)); }   // 순공 = 총 − 졸음(눈감김)
+function sumTodayNet(){ return todaySessions().reduce((a,s)=>a+netMs(s),0); }
+function sumWeekNet(){ const mon=mondayOf(Date.now()); return sessions.filter(s=>s.start>=mon).reduce((a,s)=>a+netMs(s),0); }
+function sumTotalNet(){ return sessions.reduce((a,s)=>a+netMs(s),0); }
 
 /* ════════════════ 뷰 라우팅 ════════════════ */
 const views = { home:'v-home', stats:'v-stats', settings:'v-settings' };
@@ -360,11 +368,12 @@ document.querySelectorAll('[data-tab]').forEach(b=> b.addEventListener('click', 
 
 /* ════════════════ 대시보드 렌더 ════════════════ */
 function renderHome(){
-  const t = sumToday();
+  const t = sumTodayNet();
   const s=Math.floor(t/1000), h=Math.floor(s/3600), m=Math.floor(s%3600/60), cs=Math.floor((t%1000)/10);
   document.getElementById('todayBig').innerHTML = `${h>0?h+':':''}${h>0?pad(m):m}:${pad(s%60)}<small>${pad(cs)}</small>`;
-  document.getElementById('weekVal').textContent = fmtHM(sumWeek());
-  document.getElementById('totalVal').textContent = fmtHM(sumTotal());
+  document.getElementById('todayTotalSub').textContent = `총 측정 ${fmtClock(sumToday())}`;
+  document.getElementById('weekVal').textContent = fmtHM(sumWeekNet());
+  document.getElementById('totalVal').textContent = fmtHM(sumTotalNet());
 }
 
 /* ════════════════ 통계 렌더 ════════════════ */
@@ -414,8 +423,12 @@ function renderStats(){
   if(!recent.length){ list.innerHTML='<div class="empty">기록이 없습니다.</div>'; return; }
   list.innerHTML = recent.map(s=>{
     const d=new Date(s.start); const when=`${pad(d.getMonth()+1)}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    const hasDrowsy = s.drowsyMs!=null && s.drowsyMs>0;
+    const right = hasDrowsy
+      ? `${fmtClock(netMs(s))}<small style="color:var(--ink-mute);font-weight:400"> /${fmtClock(s.durationMs)}</small>`
+      : fmtClock(s.durationMs);
     const drow = s.drowsyMs!=null ? ` · 😴${fmtClock(s.drowsyMs)}` : '';
-    return `<div class="set-row"><div class="lbl">공부 <small>${when}${drow}</small></div><div style="font-family:'DM Mono',monospace">${fmtClock(s.durationMs)}</div></div>`;
+    return `<div class="set-row"><div class="lbl">공부 <small>${when}${drow}</small></div><div style="font-family:'DM Mono',monospace;text-align:right">${right}</div></div>`;
   }).join('');
 }
 
@@ -519,10 +532,12 @@ document.getElementById('stopBtn').addEventListener('click', ()=>{
 function loop(){
   if(active){
     const e=elapsedMs();
-    const s=Math.floor(e/1000), tenth=Math.floor((e%1000)/100);
+    const net=Math.max(0, e-(active.drowsyMs||0));
+    const tenth=Math.floor((e%1000)/100);
     document.getElementById('swTime').innerHTML = `${fmtClock(e)}<small>.${tenth}</small>`;
-    document.getElementById('swSub').textContent = '공부 중';
-    document.getElementById('mTotal').textContent = fmtClock(sumToday()+ (active?e:0));
+    document.getElementById('swNet').textContent = `순공 ${fmtClock(net)}`;
+    document.getElementById('mNetToday').textContent = fmtClock(sumTodayNet()+net);
+    document.getElementById('mTotal').textContent = fmtClock(sumToday()+e);
     if(settings.drowsyEnabled){
       const rate = e>0 ? Math.max(0,Math.round((1-(active.drowsyMs||0)/e)*100)) : 100;
       document.getElementById('mAwake').textContent = rate+'%';
