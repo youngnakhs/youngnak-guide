@@ -961,6 +961,13 @@ function init(){
     openStudy();
     if(active.paused){ document.getElementById('pauseBtn').innerHTML='▶ 재개'; releaseWake(); }
     else if(settings.drowsyEnabled){ startCamera(); }
+    return;
+  }
+  // 첫 방문자는 설정 화면을 먼저 보여줌(닉네임·기능 설정 유도)
+  if(!LS.get('onboarded', false)){
+    LS.set('onboarded', true);
+    showTab('settings');
+    toast('먼저 닉네임과 사용할 기능을 설정해 주세요', 3500);
   }
 }
 window.addEventListener('beforeunload', ()=>{ if(active) persistActive(); });
