@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a1f15">
+<title>스터디미터 — 교사용 대시보드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@600;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#3cb878; --green2:#2ea865; --green-dk:#1f7a49; --green-lt:#72d4a0;
+  --ink:#eaf7f1; --ink-dim:#9dd4b8; --ink-mute:#5d8f74;
+  --gold:#d4b36a; --red:#e05c5c; --serve:#d4922e;
+  --panel:rgba(23,56,40,.55); --panel-2:rgba(13,36,25,.7); --line:rgba(114,212,160,.18);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Noto Sans KR',sans-serif; color:var(--ink); min-height:100dvh;
+  background:radial-gradient(1100px 600px at 50% 0%, rgba(60,184,120,.14), transparent 60%),
+    linear-gradient(170deg,#0d2a1c 0%, #0a1f15 45%, #071710 100%); background-attachment:fixed;
+  -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:1000px; margin:0 auto; padding:22px 16px 60px;}
+button{font-family:inherit; cursor:pointer; border:none;}
+a{color:inherit;}
+.topbar{display:flex; align-items:center; gap:10px; margin-bottom:20px;}
+.logo{display:flex; align-items:center; gap:10px; font-family:'Noto Serif KR',serif; font-weight:900; font-size:19px;}
+.logo .ring{width:30px;height:30px;border-radius:50%;border:3px solid var(--green);position:relative;}
+.logo .ring::after{content:'';position:absolute;left:50%;top:18%;width:3px;height:38%;background:var(--green-lt);border-radius:3px;transform-origin:bottom;transform:translateX(-50%) rotate(35deg);}
+.logo .hl{color:var(--serve);}
+.home-link{margin-left:auto; font-size:12.5px; color:var(--ink-dim); padding:7px 12px; border:1px solid var(--line); border-radius:20px; background:var(--panel-2); text-decoration:none;}
+
+/* 로그인 게이트 */
+.gate{max-width:380px; margin:14vh auto 0; text-align:center;}
+.gate .em{font-size:54px; margin-bottom:10px;}
+.gate h1{font-family:'Noto Serif KR',serif; font-size:24px; margin-bottom:6px;}
+.gate p{color:var(--ink-mute); font-size:13px; margin-bottom:20px;}
+.gate input{width:100%; padding:14px 16px; border-radius:14px; background:rgba(255,255,255,.05); border:1px solid var(--line); color:var(--ink); font-size:16px; text-align:center; letter-spacing:3px; font-family:'DM Mono',monospace;}
+.gate input:focus{outline:none; border-color:var(--green-lt);}
+.gate button{width:100%; margin-top:12px; padding:14px; border-radius:14px; background:linear-gradient(135deg,var(--green2),var(--green-dk)); color:#fff; font-size:16px; font-weight:700;}
+.gate .err{color:var(--red); font-size:13px; margin-top:10px; min-height:18px;}
+
+.panel{background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:18px; margin-bottom:14px;}
+.summary{display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin-bottom:16px;}
+.scard{background:var(--panel-2); border:1px solid var(--line); border-radius:14px; padding:14px;}
+.scard .k{font-size:11px; color:var(--ink-mute); letter-spacing:1px;}
+.scard .v{font-family:'DM Mono',monospace; font-size:24px; margin-top:4px; color:var(--green-lt);}
+
+.toolbar{display:flex; gap:10px; align-items:center; margin-bottom:12px; flex-wrap:wrap;}
+.toolbar .ttl{font-family:'Noto Serif KR',serif; font-weight:700; font-size:18px;}
+.toolbar button{margin-left:auto; padding:9px 14px; border-radius:11px; background:var(--panel-2); border:1px solid var(--line); color:var(--ink-dim); font-size:13px;}
+.toolbar .csv{margin-left:0;}
+
+.tbl{width:100%; border-collapse:collapse; font-size:13.5px;}
+.tbl th, .tbl td{padding:11px 9px; text-align:left; border-bottom:1px solid var(--line); white-space:nowrap;}
+.tbl th{color:var(--ink-dim); font-size:11.5px; font-weight:700; cursor:pointer; user-select:none;}
+.tbl th:hover{color:var(--green-lt);}
+.tbl td.num, .tbl th.num{text-align:right; font-family:'DM Mono',monospace;}
+.tbl tbody tr:hover{background:rgba(114,212,160,.05);}
+.rank{color:var(--ink-mute); font-family:'DM Mono',monospace;}
+.rate{display:inline-block; padding:2px 8px; border-radius:10px; font-family:'DM Mono',monospace; font-size:12px;}
+.rate.good{background:rgba(60,184,120,.18); color:var(--green-lt);}
+.rate.mid{background:rgba(212,179,106,.18); color:var(--gold);}
+.rate.low{background:rgba(224,92,92,.2); color:#f0a0a0;}
+.heatmini{display:inline-flex; gap:1px; vertical-align:middle;}
+.heatmini i{width:4px; height:13px; border-radius:1px; background:rgba(255,255,255,.08);}
+.empty{text-align:center; color:var(--ink-mute); padding:40px 0; font-size:14px;}
+.tblwrap{overflow-x:auto;}
+.note{font-size:11.5px; color:var(--ink-mute); line-height:1.6; margin-top:14px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="logo"><span class="ring"></span><span>스터디미터 <span class="hl">교사용</span></span></div>
+    <a class="home-link" href="index.html">← 정보센터</a>
+  </div>
+
+  <!-- 비밀번호 게이트 -->
+  <div id="gate" class="gate">
+    <div class="em">🔒</div>
+    <h1>교사용 대시보드</h1>
+    <p>학생 학습·졸음 데이터를 보려면 비밀번호를 입력하세요.</p>
+    <input id="pw" type="password" inputmode="numeric" placeholder="••••••" autocomplete="off">
+    <button id="enterBtn">입장</button>
+    <div class="err" id="gateErr"></div>
+  </div>
+
+  <!-- 대시보드 -->
+  <div id="dash" style="display:none">
+    <div class="summary" id="summary"></div>
+    <div class="panel">
+      <div class="toolbar">
+        <span class="ttl">이번 주 학생 현황</span>
+        <button class="csv" id="csvBtn">CSV 내보내기</button>
+        <button id="refreshBtn">새로고침</button>
+      </div>
+      <div class="tblwrap">
+        <table class="tbl" id="tbl">
+          <thead><tr>
+            <th>#</th><th data-sort="nickname">닉네임</th>
+            <th class="num" data-sort="weekNetMs">순공(주)</th>
+            <th class="num" data-sort="weekTotalMs">총 측정</th>
+            <th class="num" data-sort="awakeRate">각성유지</th>
+            <th class="num" data-sort="weekDrowsyMs">졸음</th>
+            <th class="num" data-sort="kssAvg">졸림(KSS)</th>
+            <th class="num" data-sort="sessions">세션</th>
+            <th>졸음 시간대</th>
+          </tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <div class="empty" id="emptyMsg" style="display:none">이번 주 업로드된 학생 데이터가 없습니다.</div>
+      <div class="note">순공시간 = 총 측정 − 졸음(경고 구간). 닉네임만 수집되며 실명은 저장되지 않습니다. 졸음 시간대 막대는 0~23시 분포입니다.</div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAgKeOTFaXaTRpcrPlOb17FpVTFPbMHe5U",
+  authDomain: "youngnak-studymeter.firebaseapp.com",
+  projectId: "youngnak-studymeter",
+  storageBucket: "youngnak-studymeter.firebasestorage.app",
+  messagingSenderId: "759960503900",
+  appId: "1:759960503900:web:d9c20e4a8a23489a990899"
+};
+const TEACHER_PW = "900613";   // ← 비밀번호 변경 시 이 값만 수정
+
+const db = getFirestore(initializeApp(firebaseConfig));
+
+const pad=n=>String(n).padStart(2,'0');
+function fmtHM(ms){ const s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor(s%3600/60); return `${h}h ${m}m`; }
+function fmtClock(ms){ const s=Math.floor(ms/1000),h=Math.floor(s/3600),m=Math.floor(s%3600/60),ss=s%60; return h>0?`${h}:${pad(m)}:${pad(ss)}`:`${m}:${pad(ss)}`; }
+function dayKey(ts){ const d=new Date(ts); return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
+function mondayOf(ts){ const d=new Date(ts); d.setHours(0,0,0,0); const wd=(d.getDay()+6)%7; d.setDate(d.getDate()-wd); return d.getTime(); }
+function weekKey(){ return dayKey(mondayOf(Date.now())); }
+
+/* 게이트 */
+const gate=document.getElementById('gate'), dash=document.getElementById('dash');
+function tryEnter(){
+  const v=document.getElementById('pw').value.trim();
+  if(v===TEACHER_PW){ sessionStorage.setItem('sm_teacher','1'); gate.style.display='none'; dash.style.display='block'; loadData(); }
+  else document.getElementById('gateErr').textContent='비밀번호가 올바르지 않습니다.';
+}
+document.getElementById('enterBtn').addEventListener('click', tryEnter);
+document.getElementById('pw').addEventListener('keydown', e=>{ if(e.key==='Enter') tryEnter(); });
+if(sessionStorage.getItem('sm_teacher')==='1'){ gate.style.display='none'; dash.style.display='block'; }
+
+/* 데이터 로드 */
+let rows=[], sortKey='weekNetMs', sortDir=-1;
+async function loadData(){
+  const tbody=document.getElementById('tbody');
+  tbody.innerHTML=`<tr><td colspan="9" style="text-align:center;color:var(--ink-mute);padding:30px">불러오는 중…</td></tr>`;
+  try{
+    const snap=await getDocs(collection(db,'students'));
+    const wk=weekKey();
+    rows=[]; snap.forEach(d=>{ const v=d.data(); if(v.weekKey===wk) rows.push(v); });
+    renderSummary(); renderTable();
+  }catch(e){ console.error(e); tbody.innerHTML=`<tr><td colspan="9" style="text-align:center;color:var(--red);padding:30px">불러오기 실패: ${e.message}</td></tr>`; }
+}
+function renderSummary(){
+  const n=rows.length;
+  const totNet=rows.reduce((a,r)=>a+(r.weekNetMs||0),0);
+  const rated=rows.filter(r=>r.awakeRate!=null);
+  const avgRate = rated.length? Math.round(rated.reduce((a,r)=>a+r.awakeRate,0)/rated.length) : null;
+  const avgNet = n? totNet/n : 0;
+  document.getElementById('summary').innerHTML=`
+    <div class="scard"><div class="k">참여 학생</div><div class="v">${n}명</div></div>
+    <div class="scard"><div class="k">주간 순공 합계</div><div class="v">${fmtHM(totNet)}</div></div>
+    <div class="scard"><div class="k">1인 평균 순공</div><div class="v">${fmtHM(avgNet)}</div></div>
+    <div class="scard"><div class="k">평균 각성유지율</div><div class="v">${avgRate==null?'—':avgRate+'%'}</div></div>`;
+}
+function rateCls(r){ return r>=90?'good':r>=70?'mid':'low'; }
+function renderTable(){
+  const tbody=document.getElementById('tbody'), empty=document.getElementById('emptyMsg');
+  if(!rows.length){ tbody.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  const sorted=[...rows].sort((a,b)=>{
+    let x=a[sortKey], y=b[sortKey];
+    if(sortKey==='nickname'){ return (x||'').localeCompare(y||'')*sortDir; }
+    x=x==null?-1:x; y=y==null?-1:y; return (x-y)*sortDir;
+  });
+  tbody.innerHTML=sorted.map((r,i)=>{
+    const hourly=r.hourly||new Array(24).fill(0); const hmax=Math.max(1,...hourly);
+    const heat=hourly.map(c=>`<i style="background:${c?`rgba(224,92,92,${0.2+c/hmax*0.7})`:'rgba(255,255,255,.08)'}"></i>`).join('');
+    const rate=r.awakeRate;
+    return `<tr>
+      <td class="rank">${i+1}</td>
+      <td>${esc(r.nickname||'(이름없음)')}</td>
+      <td class="num">${fmtClock(r.weekNetMs||0)}</td>
+      <td class="num" style="color:var(--ink-mute)">${fmtClock(r.weekTotalMs||0)}</td>
+      <td class="num">${rate==null?'—':`<span class="rate ${rateCls(rate)}">${rate}%</span>`}</td>
+      <td class="num" style="color:#e0a0a0">${fmtClock(r.weekDrowsyMs||0)}</td>
+      <td class="num">${r.kssAvg==null?'—':r.kssAvg}</td>
+      <td class="num">${r.sessions||0}</td>
+      <td><span class="heatmini">${heat}</span></td>
+    </tr>`;
+  }).join('');
+}
+function esc(s){ return String(s).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c])); }
+
+document.querySelectorAll('#tbl th[data-sort]').forEach(th=>th.addEventListener('click',()=>{
+  const k=th.dataset.sort; if(sortKey===k) sortDir*=-1; else { sortKey=k; sortDir = k==='nickname'?1:-1; }
+  renderTable();
+}));
+document.getElementById('refreshBtn').addEventListener('click', loadData);
+document.getElementById('csvBtn').addEventListener('click', ()=>{
+  const head=['순위','닉네임','순공(주)초','총측정초','각성유지율','졸음초','KSS','세션'];
+  const sorted=[...rows].sort((a,b)=>(b.weekNetMs||0)-(a.weekNetMs||0));
+  const lines=[head.join(',')].concat(sorted.map((r,i)=>[
+    i+1, `"${(r.nickname||'').replace(/"/g,'""')}"`, Math.round((r.weekNetMs||0)/1000), Math.round((r.weekTotalMs||0)/1000),
+    r.awakeRate==null?'':r.awakeRate, Math.round((r.weekDrowsyMs||0)/1000), r.kssAvg==null?'':r.kssAvg, r.sessions||0
+  ].join(',')));
+  const blob=new Blob(['﻿'+lines.join('\n')],{type:'text/csv'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`스터디미터_학생현황_${weekKey()}.csv`; a.click();
+});
+</script>
+</body>
+</html>

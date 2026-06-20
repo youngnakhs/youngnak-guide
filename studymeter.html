@@ -155,6 +155,15 @@ input[type=number].mini-num{width:70px; padding:8px; border-radius:10px; backgro
 .kss button{width:38px; height:38px; border-radius:11px; background:var(--panel-2); border:1px solid var(--line); font-family:'DM Mono',monospace; font-size:15px;}
 .kss button.on{background:var(--green2); border-color:var(--green-lt); color:#fff; font-weight:700;}
 .note{font-size:11.5px; color:var(--ink-mute); line-height:1.6; margin-top:10px;}
+/* ── 리더보드 ── */
+.lb-row{display:flex; align-items:center; gap:12px; padding:12px 8px; border-bottom:1px solid var(--line);}
+.lb-row:last-child{border-bottom:none;}
+.lb-row.me{background:rgba(212,179,106,.12); border-radius:12px;}
+.lb-pos{width:36px; text-align:center; font-size:20px;}
+.lb-pos .lb-rank{font-family:'DM Mono',monospace; font-size:15px; color:var(--ink-mute);}
+.lb-name{flex:1; font-weight:500;}
+.lb-name em{font-style:normal; color:var(--gold); font-size:12px;}
+.lb-time{font-family:'DM Mono',monospace; color:var(--green-lt);}
 </style>
 </head>
 <body>
@@ -192,6 +201,15 @@ input[type=number].mini-num{width:70px; padding:8px; border-radius:10px; backgro
     </div>
   </section>
 
+  <!-- 순위 -->
+  <section class="view" id="v-rank">
+    <div class="panel">
+      <h2>이번 주 순공시간 순위</h2>
+      <div id="lbList"><div class="empty">불러오는 중…</div></div>
+    </div>
+    <div class="note" style="padding:0 4px">순공시간(졸음 제외) 기준입니다. 졸음·각성유지율은 순위에 공개되지 않고 선생님만 확인합니다.</div>
+  </section>
+
   <!-- 통계 -->
   <section class="view" id="v-stats">
     <div class="panel">
@@ -220,7 +238,16 @@ input[type=number].mini-num{width:70px; padding:8px; border-radius:10px; backgro
     <div class="panel">
       <h2>닉네임</h2>
       <div class="addbox"><input id="nickInput" maxlength="12" placeholder="리더보드용 닉네임 (선택)"><button class="btn btn-ghost sm" style="width:auto;padding:10px 16px" id="nickSave">저장</button></div>
-      <div class="note">2단계 리더보드(순공시간 순위)에서 표시될 이름입니다. 실명 대신 사용하세요.</div>
+      <div class="note">리더보드(순공시간 순위)에서 표시될 이름입니다. 실명 대신 사용하세요.</div>
+    </div>
+
+    <div class="panel">
+      <h2>리더보드 참여</h2>
+      <div class="set-row">
+        <div class="lbl">순위에 참여<small>닉네임·순공시간이 다른 학생에게 공개됩니다</small></div>
+        <div class="sw-toggle" id="lbToggle"></div>
+      </div>
+      <div class="note" id="lbNote"></div>
     </div>
 
     <div class="panel">
@@ -265,6 +292,7 @@ input[type=number].mini-num{width:70px; padding:8px; border-radius:10px; backgro
 <!-- 하단 탭바 -->
 <nav class="tabbar" id="tabbar">
   <button data-tab="home" class="on"><span class="ic">🏠</span>홈</button>
+  <button data-tab="rank"><span class="ic">🏆</span>순위</button>
   <button data-tab="stats"><span class="ic">📊</span>통계</button>
   <button data-tab="settings"><span class="ic">⚙</span>설정</button>
 </nav>
@@ -335,6 +363,8 @@ input[type=number].mini-num{width:70px; padding:8px; border-radius:10px; backgro
 
 <script type="module">
 import { FaceLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.35/vision_bundle.mjs";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, setDoc, collection, query, orderBy, limit, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 /* ════════════════ 저장소 ════════════════ */
 const LS = {
@@ -344,7 +374,7 @@ const LS = {
 };
 const DEFAULT_SETTINGS = {
   nickname:'', drowsyEnabled:false, drowsyConsent:false, drowsyThresholdSec:15,
-  dailyGoalMin:0, pomodoroMin:0,
+  dailyGoalMin:0, pomodoroMin:0, leaderboardOptIn:false, leaderboardConsent:false,
 };
 let settings = Object.assign({}, DEFAULT_SETTINGS, LS.get('settings', {}));
 function saveSettings(){ LS.set('settings', settings); }
@@ -352,6 +382,57 @@ function saveSettings(){ LS.set('settings', settings); }
 /** sessions: [{id, start, end, durationMs, drowsyMs, drowsyLog, kss}] */
 let sessions = LS.get('sessions', []);
 function saveSessions(){ LS.set('sessions', sessions); }
+
+/* ════════════════ Firebase (리더보드 · 2단계) ════════════════ */
+const firebaseConfig = {
+  apiKey: "AIzaSyAgKeOTFaXaTRpcrPlOb17FpVTFPbMHe5U",
+  authDomain: "youngnak-studymeter.firebaseapp.com",
+  projectId: "youngnak-studymeter",
+  storageBucket: "youngnak-studymeter.firebasestorage.app",
+  messagingSenderId: "759960503900",
+  appId: "1:759960503900:web:d9c20e4a8a23489a990899"
+};
+let fdb=null; try{ fdb=getFirestore(initializeApp(firebaseConfig)); }catch(e){ console.error('firebase init',e); }
+function deviceId(){ let id=LS.get('deviceId',null); if(!id){ id=(crypto.randomUUID?crypto.randomUUID():'d'+Date.now()+Math.floor(Math.random()*1e6)); LS.set('deviceId',id); } return id; }
+function weekKeyOf(ts){ return dayKey(mondayOf(ts)); }
+function esc(s){ return String(s).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c])); }
+
+/** 세션 종료 시 호출: 공개 리더보드(순공만) + 교사용(졸음 등) 업로드 */
+async function uploadStats(){
+  if(!fdb || !settings.leaderboardOptIn || !settings.nickname) return;
+  try{
+    const id=deviceId(), wk=weekKeyOf(Date.now()), mon=mondayOf(Date.now());
+    const weekNet=sumWeekNet();
+    await setDoc(doc(fdb,'leaderboard',id), { nickname:settings.nickname, weekNetMs:weekNet, weekKey:wk, updatedAt:serverTimestamp() });
+    const wkS=sessions.filter(s=>s.start>=mon);
+    const weekTot=wkS.reduce((a,s)=>a+s.durationMs,0);
+    const dz=wkS.filter(s=>s.drowsyMs!=null);
+    const dzDur=dz.reduce((a,s)=>a+s.durationMs,0), weekDrowsy=dz.reduce((a,s)=>a+(s.drowsyMs||0),0);
+    const awakeRate = dzDur>0? Math.max(0,Math.round((1-weekDrowsy/dzDur)*100)) : null;
+    const hourly=new Array(24).fill(0); wkS.forEach(s=>(s.drowsyLog||[]).forEach(ts=>hourly[new Date(ts).getHours()]++));
+    const kssArr=wkS.filter(s=>s.kss!=null).map(s=>s.kss);
+    const kssAvg=kssArr.length? +(kssArr.reduce((a,b)=>a+b,0)/kssArr.length).toFixed(1) : null;
+    await setDoc(doc(fdb,'students',id), { nickname:settings.nickname, weekKey:wk, weekNetMs:weekNet, weekTotalMs:weekTot, weekDrowsyMs:weekDrowsy, awakeRate, hourly, kssAvg, sessions:wkS.length, updatedAt:serverTimestamp() });
+  }catch(e){ console.error('upload',e); }
+}
+
+async function renderLeaderboard(){
+  const box=document.getElementById('lbList');
+  if(!fdb){ box.innerHTML='<div class="empty">연결할 수 없습니다.</div>'; return; }
+  if(!settings.leaderboardOptIn){ box.innerHTML='<div class="empty">설정 → 리더보드 참여를 켜면 순위에 함께합니다.</div>'; return; }
+  box.innerHTML='<div class="empty">불러오는 중…</div>';
+  try{
+    const wk=weekKeyOf(Date.now()), myId=deviceId();
+    const snap=await getDocs(query(collection(fdb,'leaderboard'), orderBy('weekNetMs','desc'), limit(100)));
+    const rows=[]; snap.forEach(d=>{ const v=d.data(); if(v.weekKey===wk && v.weekNetMs>0) rows.push({...v, _id:d.id}); });
+    if(!rows.length){ box.innerHTML='<div class="empty">이번 주 기록이 아직 없어요. 1등의 주인공이 되어보세요!</div>'; return; }
+    box.innerHTML=rows.slice(0,50).map((v,i)=>{
+      const me=v._id===myId;
+      const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':`<span class="lb-rank">${i+1}</span>`;
+      return `<div class="lb-row${me?' me':''}"><span class="lb-pos">${medal}</span><span class="lb-name">${esc(v.nickname)}${me?' <em>(나)</em>':''}</span><span class="lb-time">${fmtClock(v.weekNetMs)}</span></div>`;
+    }).join('');
+  }catch(e){ console.error(e); box.innerHTML='<div class="empty">불러오기 실패 — 잠시 후 다시 시도하세요.</div>'; }
+}
 
 /* ════════════════ 시간 유틸 ════════════════ */
 const pad = n => String(n).padStart(2,'0');
@@ -381,12 +462,13 @@ function toast(msg, ms=2600){
 }
 
 /* ════════════════ 뷰 라우팅 ════════════════ */
-const views = { home:'v-home', stats:'v-stats', settings:'v-settings' };
+const views = { home:'v-home', rank:'v-rank', stats:'v-stats', settings:'v-settings' };
 function showTab(tab){
   Object.values(views).forEach(id=>document.getElementById(id).classList.remove('on'));
   document.getElementById(views[tab]).classList.add('on');
   document.querySelectorAll('#tabbar button').forEach(b=>b.classList.toggle('on', b.dataset.tab===tab));
   if(tab==='home') renderHome();
+  if(tab==='rank') renderLeaderboard();
   if(tab==='stats') renderStats();
   if(tab==='settings') renderSettings();
   window.scrollTo(0,0);
@@ -475,6 +557,10 @@ function renderSettings(){
   document.getElementById('drowsyToggle').classList.toggle('on', settings.drowsyEnabled);
   document.getElementById('consentNote').textContent = settings.drowsyConsent
     ? '✓ 동의함 — 영상은 저장·전송되지 않습니다.' : '아직 동의하지 않았습니다. 켜면 안내가 표시됩니다.';
+  document.getElementById('lbToggle').classList.toggle('on', settings.leaderboardOptIn);
+  document.getElementById('lbNote').textContent = settings.leaderboardOptIn
+    ? '✓ 참여 중 — 세션 종료 시 순공시간이 업로드됩니다.'
+    : '꺼져 있습니다. 켜면 순위 참여 안내가 표시됩니다.';
 }
 document.getElementById('nickSave').addEventListener('click', ()=>{
   settings.nickname=document.getElementById('nickInput').value.trim(); saveSettings();
@@ -529,6 +615,15 @@ document.getElementById('consentYes').addEventListener('click', ()=>{
   consentModal.classList.remove('on'); renderSettings();
 });
 
+/* 리더보드 참여 토글 (서버 전송 동의) */
+document.getElementById('lbToggle').addEventListener('click', ()=>{
+  if(settings.leaderboardOptIn){ settings.leaderboardOptIn=false; saveSettings(); renderSettings(); return; }
+  if(!settings.nickname){ alert('먼저 위에서 닉네임을 설정해 주세요.'); return; }
+  const msg='리더보드에 참여하면 닉네임과 순공시간이 다른 학생에게 순위로 공개됩니다.\n'
+    +'졸음 감지를 켠 경우, 졸음·각성유지율 결과가 담임·진학부 선생님께 전송되어 확인용으로 사용됩니다.\n\n동의하고 참여할까요?';
+  if(confirm(msg)){ settings.leaderboardOptIn=true; settings.leaderboardConsent=true; saveSettings(); renderSettings(); uploadStats(); }
+});
+
 /* ════════════════ 화면 꺼짐 방지(Wake Lock) ════════════════ */
 let wakeLock=null;
 async function acquireWake(){ try{ if('wakeLock' in navigator){ wakeLock=await navigator.wakeLock.request('screen'); } }catch{} }
@@ -560,7 +655,7 @@ function finalizeSession(askEval){
   if(settings.drowsyEnabled || active.drowsyMs>0 || (active.drowsyLog&&active.drowsyLog.length)){
     rec.drowsyMs = active.drowsyMs||0; rec.drowsyLog = active.drowsyLog||[];
   }
-  if(dur >= 1000) { sessions.push(rec); saveSessions(); }
+  if(dur >= 1000) { sessions.push(rec); saveSessions(); uploadStats(); }
   active=null; LS.del('active');
   if(askEval) openEval(rec);
 }
