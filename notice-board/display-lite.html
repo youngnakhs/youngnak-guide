@@ -585,9 +585,16 @@ if (document.fonts && document.fonts.ready) {
   });
 }
 
+/* ---------- 데이터 로딩 실패 시 빠른 자동 재시도 (8·16·32·60·60…초, 최대 6회) ----------
+   부팅 직후 와이파이가 늦게 붙거나 중간에 끊겨도 몇 초~몇 분 안에 스스로 복구됨.
+   6회 모두 실패하면 그때 에러 문구를 띄우고, 이후 기존 30분/6시간 주기로 계속 재시도. */
+function retryDelay(attempt){ return Math.min(60, 8 * Math.pow(2, attempt)) * 1000; }
+var RETRY_MAX = 6;
+
 /* ---------- 급식 ---------- */
 function ymd(d) { return '' + d.getFullYear() + pad(d.getMonth()+1) + pad(d.getDate()); }
-function loadMeal() {
+function loadMeal(attempt) {
+  attempt = attempt || 0;
   fetch('https://open.neis.go.kr/hub/mealServiceDietInfo?Type=json&ATPT_OFCDC_SC_CODE=' + CONFIG.ATPT +
     '&SD_SCHUL_CODE=' + CONFIG.SCHOOL + '&MLSV_YMD=' + ymd(new Date()))
     .then(function(r){return r.json();}).then(function(j){
@@ -598,7 +605,10 @@ function loadMeal() {
         return s.replace(/\([0-9. ]+\)/g,'').replace(/[*♥]/g,'').replace(/\[[^\]]*\]/g,'').trim();
       }).filter(Boolean);
       setBar('mealTxt','<b>' + meal.MMEAL_SC_NM + '</b> · ' + items.join(' · '));
-    }).catch(function(){setBar('mealTxt','정보를 불러올 수 없습니다');});
+    }).catch(function(){
+      if (attempt < RETRY_MAX) { setTimeout(function(){ loadMeal(attempt+1); }, retryDelay(attempt)); }
+      else { setBar('mealTxt','정보를 불러올 수 없습니다'); }
+    });
 }
 
 /* ---------- 현재 교시 ---------- */
@@ -635,7 +645,8 @@ function pmGrade(pm10,pm25){
   function g25(v){return v<=15?0:v<=35?1:v<=75?2:3;}
   return ['좋음','보통','나쁨','매우나쁨'][Math.max(g10(pm10),g25(pm25))];
 }
-function loadWeather() {
+function loadWeather(attempt) {
+  attempt = attempt || 0;
   Promise.all([
     fetch('https://api.open-meteo.com/v1/forecast?latitude='+CONFIG.LAT+'&longitude='+CONFIG.LON+'&current=temperature_2m,weather_code&daily=temperature_2m_max,temperature_2m_min&forecast_days=1&timezone=Asia%2FSeoul').then(function(r){return r.json();}),
     fetch('https://air-quality-api.open-meteo.com/v1/air-quality?latitude='+CONFIG.LAT+'&longitude='+CONFIG.LON+'&current=pm10,pm2_5&timezone=Asia%2FSeoul').then(function(r){return r.json();}).catch(function(){return null;})
@@ -646,11 +657,15 @@ function loadWeather() {
     if(res[0].daily) sub.push(Math.round(res[0].daily.temperature_2m_min[0])+'~'+Math.round(res[0].daily.temperature_2m_max[0])+'°');
     if(res[1]&&res[1].current) sub.push('미세먼지 '+pmGrade(res[1].current.pm10,res[1].current.pm2_5));
     $('wSub').innerHTML=sub.map(function(s){return '<span>'+s+'</span>';}).join('<br>');
-  }).catch(function(){$('wIcon').textContent='';$('wTemp').textContent='';$('wSub').textContent='';});
+  }).catch(function(){
+    if (attempt < RETRY_MAX) { setTimeout(function(){ loadWeather(attempt+1); }, retryDelay(attempt)); }
+    else { $('wIcon').textContent='';$('wTemp').textContent='';$('wSub').textContent=''; }
+  });
 }
 
 /* ---------- D-day 자동 (NEIS 고사 감지) ---------- */
-function loadDday() {
+function loadDday(attempt) {
+  attempt = attempt || 0;
   var from=new Date(), to=new Date(); to.setDate(to.getDate()+45);
   fetch('https://open.neis.go.kr/hub/SchoolSchedule?Type=json&pSize=100&ATPT_OFCDC_SC_CODE='+CONFIG.ATPT+'&SD_SCHUL_CODE='+CONFIG.SCHOOL+'&AA_FROM_YMD='+ymd(from)+'&AA_TO_YMD='+ymd(to))
     .then(function(r){return r.json();}).then(function(j){
@@ -663,7 +678,10 @@ function loadDday() {
         autoDdays.push({name:exam.EVENT_NM.replace(/\s*\(.*\)/,''),date:dstr});
       }
       renderDdays();
-    }).catch(function(){renderDdays();});
+    }).catch(function(){
+      if (attempt < RETRY_MAX) { setTimeout(function(){ loadDday(attempt+1); }, retryDelay(attempt)); }
+      else { renderDdays(); }
+    });
 }
 
 /* ---------- 학사일정 (구글시트 JSONP) ---------- */
@@ -733,8 +751,12 @@ function handleSched(resp) {
 }
 window.handleSched = handleSched;
 
-function loadSchedule() {
-  jsonpSheet(CONFIG.SCHED_GID,'handleSched','schedjs',function(){setBar('schedTxt','시트에 연결할 수 없습니다');});
+function loadSchedule(attempt) {
+  attempt = attempt || 0;
+  jsonpSheet(CONFIG.SCHED_GID,'handleSched','schedjs',function(){
+    if (attempt < RETRY_MAX) { setTimeout(function(){ loadSchedule(attempt+1); }, retryDelay(attempt)); }
+    else { setBar('schedTxt','시트에 연결할 수 없습니다'); }
+  });
 }
 
 /* ---------- 초기화 ---------- */
