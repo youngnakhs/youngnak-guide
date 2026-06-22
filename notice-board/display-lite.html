@@ -543,7 +543,7 @@ function tickClock() {
   $('clock').innerHTML = pad(n.getHours()) + ':' + pad(n.getMinutes()) +
     '<span class="sec">' + pad(n.getSeconds()) + '</span>';
   $('date').innerHTML = (n.getMonth() + 1) + '월 ' + n.getDate() + '일 <b>' + DAYS[n.getDay()] + '요일</b>';
-  if (n.getHours() === CONFIG.RELOAD_HOUR && n.getMinutes() === 0 && n.getSeconds() === 0) location.reload();
+  if (n.getHours() === CONFIG.RELOAD_HOUR && n.getMinutes() === 0 && n.getSeconds() === 0) location.replace(location.pathname + '?t=' + n.getTime());
   if (n.getSeconds() === 0) renderExamBan();
 }
 setInterval(tickClock, 1000);
