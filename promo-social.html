@@ -3,145 +3,145 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>세상을 읽는 힘 — 정치·법과 사회·국제관계의 이해 (영락고 사회 진로선택)</title>
+<title>세상을 읽는 힘 — 정치·법과 사회·국제관계의 이해 ｜ 영락고 사회 진로선택 (티저)</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Serif+KR:wght@600;700;900&display=swap" rel="stylesheet">
 <style>
 @font-face{font-family:'Paperlogy';src:url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2');font-weight:800;font-display:swap;}
 *{box-sizing:border-box;margin:0;padding:0;}
-:root{--ac:#16C76B; --ac2:#BEF250;}
+:root{--ac:#16C76B;--ac2:#BEF250;}
 html,body{height:100%;background:#000;overflow:hidden;font-family:'Pretendard Variable',Pretendard,sans-serif;color:#fff;}
 .jua{font-family:'Paperlogy',sans-serif;font-weight:800;letter-spacing:-.5px;}
 .mono{font-family:'DM Mono',monospace;}
+.serif{font-family:'Noto Serif KR',serif;}
 
 #wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;}
-#frame{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center;overflow:hidden;
-  background:#0A0C0B;}
+#frame{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center;overflow:hidden;background:#060807;}
 
-/* ---- persistent background system ---- */
+/* ---- background system ---- */
 .bg-grid{position:absolute;inset:0;background-image:
-  linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
-  linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px);
-  background-size:64px 64px;mask-image:radial-gradient(120% 90% at 50% 35%,#000,transparent 78%);}
-.bg-orb{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;transition:background .7s ease;mix-blend-mode:screen;}
-.o1{width:760px;height:760px;left:-180px;top:-260px;background:radial-gradient(circle,var(--ac),transparent 66%);animation:orbA 14s ease-in-out infinite;}
-.o2{width:680px;height:680px;right:-200px;top:120px;background:radial-gradient(circle,var(--ac2),transparent 66%);opacity:.42;animation:orbB 17s ease-in-out infinite;}
-@keyframes orbA{0%,100%{transform:translate(0,0)}50%{transform:translate(70px,50px)}}
-@keyframes orbB{0%,100%{transform:translate(0,0)}50%{transform:translate(-60px,40px)}}
-.bg-grain{position:absolute;inset:0;opacity:.05;mix-blend-mode:overlay;pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
-.bg-vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(130% 100% at 50% 30%,transparent 52%,rgba(0,0,0,.55) 100%);}
-.marks i{position:absolute;width:22px;height:22px;border:2px solid rgba(255,255,255,.22);}
-.marks .tl{top:24px;left:24px;border-right:0;border-bottom:0;}
-.marks .tr{top:24px;right:24px;border-left:0;border-bottom:0;}
-.marks .bl{bottom:24px;left:24px;border-right:0;border-top:0;}
-.marks .br{bottom:24px;right:24px;border-left:0;border-top:0;}
+  linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:70px 70px;mask-image:radial-gradient(120% 90% at 50% 40%,#000,transparent 76%);}
+.bg-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.5;transition:background .8s ease;mix-blend-mode:screen;}
+.o1{width:820px;height:820px;left:-200px;top:-300px;background:radial-gradient(circle,var(--ac),transparent 66%);animation:orbA 16s ease-in-out infinite;}
+.o2{width:720px;height:720px;right:-220px;top:120px;background:radial-gradient(circle,var(--ac2),transparent 66%);opacity:.4;animation:orbB 19s ease-in-out infinite;}
+@keyframes orbA{0%,100%{transform:translate(0,0)}50%{transform:translate(80px,60px)}}
+@keyframes orbB{0%,100%{transform:translate(0,0)}50%{transform:translate(-70px,46px)}}
+.ray{position:absolute;top:-30%;left:30%;width:60%;height:170%;pointer-events:none;mix-blend-mode:screen;opacity:.5;
+  background:conic-gradient(from 200deg at 50% 0%,transparent 0deg,rgba(255,255,255,.12) 18deg,transparent 36deg);
+  filter:blur(8px);transform-origin:50% 0;animation:ray 12s ease-in-out infinite;}
+@keyframes ray{0%,100%{transform:rotate(-6deg);opacity:.35}50%{transform:rotate(6deg);opacity:.6}}
+.grade{position:absolute;inset:0;pointer-events:none;mix-blend-mode:soft-light;
+  background:linear-gradient(180deg,rgba(0,80,110,.5),transparent 42%,rgba(120,60,0,.35));}
+.grain{position:absolute;inset:0;opacity:.08;mix-blend-mode:overlay;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:gr .6s steps(2) infinite;}
+@keyframes gr{to{transform:translate(-6px,4px)}}
+.vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(125% 100% at 50% 42%,transparent 46%,rgba(0,0,0,.78) 100%);}
+#particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.pt{position:absolute;bottom:-12px;width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.8);opacity:0;
+  box-shadow:0 0 8px rgba(255,255,255,.6);animation:rise linear infinite;}
+@keyframes rise{0%{transform:translateY(0);opacity:0}10%{opacity:.8}90%{opacity:.5}100%{transform:translateY(-760px);opacity:0}}
 
-#brand{position:absolute;top:30px;left:54px;z-index:24;font-size:13px;letter-spacing:1px;color:rgba(255,255,255,.62);}
+/* letterbox */
+.bar{position:absolute;left:0;right:0;height:84px;background:#000;z-index:18;}
+.bar.t{top:0;box-shadow:0 12px 30px rgba(0,0,0,.6);} .bar.b{bottom:0;box-shadow:0 -12px 30px rgba(0,0,0,.6);}
+#brand{position:absolute;top:30px;left:54px;z-index:22;font-size:12.5px;letter-spacing:2px;color:rgba(255,255,255,.6);}
 #brand b{color:var(--ac);}
+#runtag{position:absolute;bottom:30px;right:54px;z-index:22;font-size:12px;letter-spacing:3px;color:rgba(255,255,255,.4);}
 
-/* ---- safe stage (하단 ~24% 비움) ---- */
+/* flash */
+#flash{position:absolute;inset:0;background:#fff;opacity:0;z-index:25;pointer-events:none;}
+#flash.go{animation:flash .42s ease-out;}
+@keyframes flash{0%{opacity:0}12%{opacity:.92}100%{opacity:0}}
+
+/* flare */
+.flare{position:absolute;top:46%;left:-30%;width:60%;height:5px;z-index:6;pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.95),transparent);filter:blur(2px);
+  box-shadow:0 0 40px 12px rgba(255,255,255,.55);animation:sweep 1.5s .15s cubic-bezier(.4,0,.2,1) both;}
+.flare::after{content:'';position:absolute;left:50%;top:50%;width:120px;height:120px;transform:translate(-50%,-50%);
+  border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.9),transparent 60%);}
+@keyframes sweep{0%{left:-30%;opacity:0}20%{opacity:1}100%{left:130%;opacity:0}}
+
+/* stage / push-in */
 .scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;padding:70px 92px 176px;z-index:5;}
+  text-align:center;padding:118px 96px 150px;z-index:5;}
+@keyframes pushin{from{transform:scale(1.015)}to{transform:scale(1.075)}}
+@keyframes pullbk{from{transform:scale(1.09)}to{transform:scale(1.0)}}
 
 /* ---- type ---- */
-.eyebrow{font-family:'DM Mono',monospace;font-size:22px;letter-spacing:2px;color:var(--ac);margin-bottom:26px;
+.kline{font-size:23px;letter-spacing:.55em;text-transform:uppercase;color:rgba(255,255,255,.66);font-weight:600;}
+.eyebrow{font-family:'DM Mono',monospace;font-size:21px;letter-spacing:2px;color:var(--ac);margin-bottom:24px;
   text-transform:uppercase;display:inline-flex;align-items:center;gap:12px;}
 .eyebrow::before{content:'';width:34px;height:2px;background:var(--ac);}
-.display{font-size:130px;line-height:1.0;}
-.display.sm{font-size:98px;} .display.xs{font-size:78px;}
-.lead{font-size:40px;font-weight:700;line-height:1.32;color:rgba(255,255,255,.92);}
-.lead.dim{color:rgba(255,255,255,.62);font-weight:600;font-size:32px;}
-.grad{background:linear-gradient(115deg,#fff 25%,var(--ac));-webkit-background-clip:text;background-clip:text;color:transparent;}
-.glowtx{text-shadow:0 0 26px var(--ac),0 0 60px rgba(0,0,0,.2);}
-.out{color:transparent;-webkit-text-stroke:3px var(--ac);text-shadow:0 0 30px var(--ac);}
+.display{font-size:128px;line-height:1.0;}
+.display.sm{font-size:96px;} .display.xs{font-size:76px;}
+.mega{font-size:210px;line-height:.92;}
+.lead{font-size:38px;font-weight:700;line-height:1.34;color:rgba(255,255,255,.92);}
+.lead.dim{color:rgba(255,255,255,.6);font-weight:600;font-size:31px;}
+.grad{background:linear-gradient(115deg,#fff 22%,var(--ac));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.glowtx{text-shadow:0 0 30px var(--ac);}
+.out{color:transparent;-webkit-text-stroke:3px var(--ac);text-shadow:0 0 34px var(--ac);}
 .acc{color:var(--ac);}
+.box{background:var(--ac);color:#060807;padding:.02em .16em;border-radius:.08em;box-shadow:0 0 44px var(--ac);}
 .mk{position:relative;white-space:nowrap;padding:0 .1em;}
-.mk::before{content:'';position:absolute;left:0;right:0;bottom:.08em;height:.34em;background:var(--ac);z-index:-1;border-radius:.06em;
-  transform:scaleX(0);transform-origin:left;animation:mkw .5s .45s cubic-bezier(.7,0,.3,1) forwards;}
-@keyframes mkw{to{transform:scaleX(1);}}
-.box{background:var(--ac);color:#0A0C0B;padding:.02em .16em;border-radius:.1em;box-shadow:0 0 36px var(--ac);}
+.mk::before{content:'';position:absolute;left:0;right:0;bottom:.06em;height:.32em;background:var(--ac);z-index:-1;border-radius:.05em;transform:scaleX(0);transform-origin:left;animation:mkw .5s .5s cubic-bezier(.7,0,.3,1) forwards;box-shadow:0 0 30px var(--ac);}
+@keyframes mkw{to{transform:scaleX(1)}}
 
+.cine{opacity:0;animation:cineIn 1.15s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i,0)*.12s);}
+@keyframes cineIn{0%{opacity:0;letter-spacing:.32em;filter:blur(18px);transform:scale(1.1)}100%{opacity:1;letter-spacing:-.02em;filter:blur(0);transform:scale(1)}}
 .ln{overflow:hidden;display:block;}
-.ln>span{display:inline-block;opacity:0;transform:translateY(60px);filter:blur(14px);
-  animation:blurUp .8s cubic-bezier(.16,1,.3,1) forwards;animation-delay:calc(.05s + var(--i,0)*.13s);}
-@keyframes blurUp{to{opacity:1;transform:none;filter:blur(0);}}
+.ln>span{display:inline-block;opacity:0;transform:translateY(64px);filter:blur(16px);animation:blurUp .9s cubic-bezier(.16,1,.3,1) forwards;animation-delay:calc(.05s + var(--i,0)*.14s);}
+@keyframes blurUp{to{opacity:1;transform:none;filter:blur(0)}}
 
-/* ghost number */
-.ghost{position:absolute;top:18px;right:60px;font-size:300px;line-height:1;color:transparent;
-  -webkit-text-stroke:2px rgba(255,255,255,.10);z-index:1;pointer-events:none;animation:gF .8s ease both;}
-@keyframes gF{from{opacity:0;transform:translateX(40px);}to{opacity:1;}}
+.ghost{position:absolute;top:90px;right:80px;font-size:300px;line-height:1;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.09);z-index:1;pointer-events:none;animation:cineIn 1.2s ease both;}
+.stk{font-size:78px;display:inline-block;filter:drop-shadow(0 0 32px var(--ac));}
 
-/* glass */
-.glass{background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.045));
-  border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(16px);
-  box-shadow:0 24px 60px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.28);border-radius:20px;}
+.glass{background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(16px);box-shadow:0 26px 64px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.28);border-radius:18px;}
+.units{display:flex;flex-direction:column;gap:12px;width:100%;max-width:920px;}
+.u{display:flex;align-items:center;gap:22px;padding:15px 26px;border-left:4px solid var(--ac);font-size:42px;font-weight:800;font-family:'Paperlogy',sans-serif;letter-spacing:-.4px;text-align:left;}
+.u .nn{font-family:'DM Mono',monospace;font-size:25px;color:var(--ac);min-width:38px;}
+.u small{font-size:21px;font-weight:600;color:rgba(255,255,255,.66);margin-left:auto;font-family:'Pretendard Variable';}
+.chiprow{display:flex;flex-wrap:wrap;gap:13px;justify-content:center;}
+.chip2{font-size:31px;font-weight:800;font-family:'Paperlogy',sans-serif;padding:11px 24px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);}
+.chip2.hot{border-color:var(--ac);color:var(--ac);box-shadow:0 0 26px -6px var(--ac);}
+.tags{display:flex;gap:11px;justify-content:center;flex-wrap:wrap;margin-top:6px;}
+.tag2{font-size:25px;font-weight:700;padding:9px 18px;border-radius:11px;font-family:'DM Mono',monospace;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);color:rgba(255,255,255,.9);}
 
-.units{display:flex;flex-direction:column;gap:13px;width:100%;max-width:940px;}
-.u{display:flex;align-items:center;gap:22px;padding:16px 26px;border-left:4px solid var(--ac);
-  font-size:44px;font-weight:800;font-family:'Paperlogy',sans-serif;letter-spacing:-.4px;text-align:left;}
-.u .nn{font-family:'DM Mono',monospace;font-size:26px;color:var(--ac);min-width:40px;}
-.u small{font-size:22px;font-weight:600;color:rgba(255,255,255,.66);margin-left:auto;font-family:'Pretendard Variable';}
+.slist{display:flex;flex-direction:column;gap:4px;width:100%;max-width:980px;}
+.si{display:flex;align-items:baseline;gap:26px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.12);text-align:left;}
+.si .ix{font-family:'DM Mono',monospace;font-size:28px;color:rgba(255,255,255,.5);}
+.si .nm{font-size:70px;font-family:'Paperlogy',sans-serif;font-weight:800;letter-spacing:-1px;}
+.si .en{margin-left:auto;font-family:'DM Mono',monospace;font-size:19px;color:rgba(255,255,255,.5);letter-spacing:1px;}
 
-.chiprow{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;}
-.chip2{font-size:32px;font-weight:800;font-family:'Paperlogy',sans-serif;padding:12px 26px;border-radius:999px;
-  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);}
-.chip2.hot{border-color:var(--ac);color:var(--ac);box-shadow:0 0 24px -6px var(--ac);}
+.montage{display:flex;flex-direction:column;gap:8px;}
+.montage .m{font-size:78px;font-family:'Paperlogy',sans-serif;font-weight:800;}
 
-.tags{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:6px;}
-.tag2{font-size:26px;font-weight:700;padding:10px 20px;border-radius:12px;font-family:'DM Mono',monospace;
-  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);color:rgba(255,255,255,.9);}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes up{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
+.fd{opacity:0;animation:fade .9s ease forwards;animation-delay:calc(var(--i,0)*.12s)}
+.up{opacity:0;animation:up .7s cubic-bezier(.2,.85,.25,1) forwards;animation-delay:calc(var(--i,0)*.12s)}
+.p{opacity:0;animation:pop .6s cubic-bezier(.2,1.5,.35,1) forwards;animation-delay:calc(var(--i,0)*.12s)}
 
-.stk{font-size:84px;display:inline-block;filter:drop-shadow(0 0 30px var(--ac));}
-.row{display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap;}
-
-/* subject index list */
-.slist{display:flex;flex-direction:column;gap:6px;align-items:stretch;width:100%;max-width:980px;}
-.si{display:flex;align-items:baseline;gap:26px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.12);text-align:left;}
-.si .ix{font-family:'DM Mono',monospace;font-size:30px;color:rgba(255,255,255,.5);}
-.si .nm{font-size:72px;font-family:'Paperlogy',sans-serif;font-weight:800;letter-spacing:-1px;}
-.si .en{margin-left:auto;font-family:'DM Mono',monospace;font-size:20px;color:rgba(255,255,255,.5);letter-spacing:1px;}
-
-/* marquee */
-.marq{width:120%;margin-left:-10%;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);}
-.marq .trk{display:inline-flex;gap:34px;white-space:nowrap;animation:marq 16s linear infinite;font-family:'Paperlogy',sans-serif;font-weight:800;font-size:40px;color:rgba(255,255,255,.16);}
-.marq .trk b{color:var(--ac);}
-@keyframes marq{to{transform:translateX(-50%);}}
-
-.hitrow{display:flex;flex-direction:column;gap:14px;align-items:center;}
-.hit{display:flex;align-items:center;gap:18px;font-size:50px;font-weight:800;font-family:'Paperlogy',sans-serif;}
-.hit .ix{font-family:'DM Mono',monospace;font-size:26px;color:var(--ac);}
-.checks{display:flex;flex-direction:column;gap:10px;align-items:center;font-size:34px;font-weight:700;color:rgba(255,255,255,.8);}
-
-/* utils */
-@keyframes pop{from{opacity:0;transform:scale(.7);}to{opacity:1;transform:none;}}
-@keyframes up{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:none;}}
-@keyframes fade{from{opacity:0;}to{opacity:1;}}
-@keyframes flo{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-14px) rotate(2deg);}}
-.p{opacity:0;animation:pop .6s cubic-bezier(.2,1.5,.35,1) forwards;animation-delay:calc(var(--i,0)*.12s);}
-.up{opacity:0;animation:up .65s cubic-bezier(.2,.85,.25,1) forwards;animation-delay:calc(var(--i,0)*.12s);}
-.fd{opacity:0;animation:fade .8s ease forwards;animation-delay:calc(var(--i,0)*.12s);}
-.flo{animation:flo 3.6s ease-in-out infinite;}
-
-/* progress + ui */
-#top{position:absolute;top:0;left:0;right:0;display:flex;gap:3px;padding:8px 12px 0;z-index:30;}
-.sg{flex:1;height:4px;border-radius:99px;background:rgba(255,255,255,.22);overflow:hidden;}
-.sg i{display:block;height:100%;width:0;background:var(--ac);box-shadow:0 0 10px var(--ac);}
+#top{position:absolute;top:0;left:0;right:0;display:flex;gap:3px;padding:6px 12px 0;z-index:30;}
+.sg{flex:1;height:3px;border-radius:99px;background:rgba(255,255,255,.18);overflow:hidden;}
+.sg i{display:block;height:100%;width:0;background:var(--ac);box-shadow:0 0 8px var(--ac);}
 .sg.done i{width:100%;}
-#ui{position:absolute;top:18px;right:18px;display:flex;gap:7px;z-index:31;opacity:0;transition:opacity .25s;}
+#ui{position:absolute;top:16px;right:16px;display:flex;gap:7px;z-index:31;opacity:0;transition:opacity .25s;}
 #ui.show{opacity:1;}
-.cb{width:38px;height:38px;border-radius:10px;border:1px solid rgba(255,255,255,.16);background:rgba(0,0,0,.45);color:#fff;font-size:16px;cursor:pointer;backdrop-filter:blur(6px);}
-.cb:hover{background:rgba(0,0,0,.7);}
+.cb{width:36px;height:36px;border-radius:9px;border:1px solid rgba(255,255,255,.16);background:rgba(0,0,0,.5);color:#fff;font-size:15px;cursor:pointer;}
 </style>
 </head>
 <body>
 <div id="wrap"><div id="frame">
-  <div class="bg-grid"></div>
-  <div class="bg-orb o1"></div><div class="bg-orb o2"></div>
-  <div class="bg-grain"></div><div class="bg-vig"></div>
-  <div class="marks"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
-  <div id="brand" class="mono">영락고 <b>SOCIAL</b> · 진로선택 ’26</div>
+  <div class="bg-grid"></div><div class="bg-orb o1"></div><div class="bg-orb o2"></div>
+  <div class="ray"></div><div id="particles"></div>
+  <div class="grade"></div><div class="grain"></div><div class="vig"></div>
   <div class="scene" id="stage"></div>
+  <div class="bar t"></div><div class="bar b"></div>
+  <div id="brand" class="mono">영락고 <b>SOCIAL</b> · 진로선택 ’26</div>
+  <div id="runtag" class="mono">TEASER</div>
+  <div id="flash"></div>
   <div id="top"></div>
   <div id="ui">
     <button class="cb" id="pp" onclick="toggle()">⏸</button>
@@ -153,45 +153,38 @@ html,body{height:100%;background:#000;overflow:hidden;font-family:'Pretendard Va
 
 <script>
 const L=(t,i)=>`<span class="ln"><span style="--i:${i}">${t}</span></span>`;
-const AC={lime:['#BEF250','#16C76B'],green:['#16C76B','#BEF250'],blue:['#5B85FF','#19C3D6'],
-  coral:['#FF6555','#FFC93C'],teal:['#1FD3B0','#5B85FF'],amber:['#FFC93C','#FF6555'],violet:['#A98BFF','#5B85FF']};
+const AC={dark:['#7FE3B0','#19C3D6'],amber:['#FFC93C','#FF6555'],green:['#16C76B','#BEF250'],
+  blue:['#5B85FF','#19C3D6'],coral:['#FF6555','#FFC93C'],teal:['#1FD3B0','#5B85FF'],violet:['#A98BFF','#5B85FF'],lime:['#BEF250','#16C76B']};
 
 const scenes=[
-/* 1 hook */{dur:8,ac:'lime',html:()=>`
-  <div class="eyebrow fd" style="--i:0">고1, 잠깐</div>
-  <div class="display jua">${L('뉴스가',0)}${L('<span class="out">외계어</span>로',1)}${L('들린다고?',2)}</div>
-  <div class="stk flo" style="position:absolute;top:104px;right:170px">📺</div>`},
-/* 2 */{dur:7,ac:'lime',html:()=>`
-  <div class="display jua">${L('근데 그거,',0)}${L('곧 <span class="box">네 인생</span>임.',1)}</div>`},
-/* 3 hits */{dur:8,ac:'violet',html:()=>`
-  <div class="eyebrow fd" style="--i:0">곧 너의 현실</div>
-  <div class="hitrow">
-    <div class="hit up" style="--i:1"><span class="ix">01</span>🗳️ 만 18세, 투표</div>
-    <div class="hit up" style="--i:2"><span class="ix">02</span>📄 첫 알바·계약</div>
-    <div class="hit up" style="--i:3"><span class="ix">03</span>🌍 해외로 뻗는 진로</div>
-  </div>`},
-/* 4 title */{dur:9,ac:'green',html:()=>`
-  <div class="eyebrow p" style="--i:0">영락고 사회 · 진로선택</div>
-  <div class="display jua">${L('<span class="grad">세상을 읽는 힘</span>',0)}${L('<span class="out">3과목</span>',1)}</div>
-  <div class="marq fd" style="--i:4;margin-top:34px"><div class="trk jua">
-    <span>정치 • <b>법과 사회</b> • 국제관계의 이해 • <b>POLITICS</b> • LAW • GLOBAL •&nbsp;</span>
-    <span>정치 • <b>법과 사회</b> • 국제관계의 이해 • <b>POLITICS</b> • LAW • GLOBAL •&nbsp;</span>
-  </div></div>`},
-/* 5 subjects */{dur:8,ac:'green',html:()=>`
-  <div class="slist">
-    <div class="si p" style="--i:0"><span class="ix">01</span><span class="nm acc" style="color:#5B85FF">정치</span><span class="en">POLITICS</span></div>
-    <div class="si p" style="--i:1"><span class="ix">02</span><span class="nm" style="color:#FF6555">법과 사회</span><span class="en">LAW & SOCIETY</span></div>
-    <div class="si p" style="--i:2"><span class="ix">03</span><span class="nm" style="color:#1FD3B0">국제관계의 이해</span><span class="en">GLOBAL</span></div>
-  </div>`},
-/* 6 */{dur:6,ac:'coral',html:()=>`
-  <div class="display jua">${L('외울 과목이 아니라,',0)}${L('<span class="glowtx acc">무기</span>다.',1)}</div>`},
+/* A. COLD OPEN */
+{dur:6,ac:'dark',html:()=>`
+  <div class="kline cine" style="--i:0">영락고등학교 사회과</div>
+  <div class="display sm jua cine" style="--i:1;margin-top:18px;opacity:.92">presents</div>`},
+{dur:7,ac:'dark',html:()=>`
+  <div class="display jua">${L('세상은,',0)}${L('<span class="grad">누가 움직일까?</span>',1)}</div>`},
 
-/* 7 정치 intro */{dur:8,ac:'blue',html:()=>`
+/* B. TENSION MONTAGE (flash cuts) */
+{dur:4,ac:'blue',flash:1,html:()=>`<div class="mega jua cine glowtx">투표.</div>`},
+{dur:4,ac:'coral',flash:1,html:()=>`<div class="mega jua cine glowtx">법정.</div>`},
+{dur:4,ac:'teal',flash:1,html:()=>`<div class="mega jua cine glowtx">국경.</div>`},
+{dur:5,ac:'dark',html:()=>`
+  <div class="display sm jua">${L('이제,',0)}${L('<span class="acc glowtx">네가 읽을 차례</span>다.',1)}</div>`},
+
+/* C. TITLE DROP */
+{dur:9,ac:'green',flash:1,flare:1,html:()=>`
+  <div class="kline cine" style="--i:0;margin-bottom:24px">영락고 사회 · 진로선택 3과목</div>
+  <div class="mega jua cine" style="--i:1"><span class="grad">세상을</span></div>
+  <div class="mega jua cine out" style="--i:2;font-size:170px">읽는 힘</div>
+  <div class="kline cine" style="--i:3;margin-top:26px;color:var(--ac)">POLITICS · LAW · GLOBAL</div>`},
+
+/* D. 정치 */
+{dur:6,ac:'blue',push:'in',html:()=>`
   <div class="ghost jua">01</div>
-  <div class="eyebrow p" style="--i:0">01 — POLITICS · 진로선택</div>
-  <div class="display jua glowtx">${L('정치',0)}</div>
-  <div class="lead dim fd" style="--i:2;margin-top:18px">“세상은 누가, 어떻게 움직일까?”</div>`},
-/* 8 정치 단원 */{dur:10,ac:'blue',html:()=>`
+  <div class="eyebrow cine" style="--i:0">FEATURE 01 — POLITICS</div>
+  <div class="mega jua cine glowtx" style="--i:1">정치</div>
+  <div class="lead dim cine" style="--i:2;margin-top:14px">“세상은 누가, 어떻게 움직일까?”</div>`},
+{dur:8,ac:'blue',html:()=>`
   <div class="eyebrow up" style="--i:0">정치 · 커리큘럼</div>
   <div class="units">
     <div class="u glass up" style="--i:1"><span class="nn">01</span>시민 생활과 정치</div>
@@ -199,23 +192,19 @@ const scenes=[
     <div class="u glass up" style="--i:3"><span class="nn">03</span>민주 국가의 정부 형태<small>입법 · 행정 · 사법</small></div>
     <div class="u glass up" style="--i:4"><span class="nn">04</span>국제 사회와 정치</div>
   </div>`},
-/* 9 정치 활동 */{dur:8,ac:'blue',html:()=>`
-  <div class="chiprow" style="margin-bottom:34px">
-    <span class="chip2 hot p" style="--i:0">선거</span><span class="chip2 p" style="--i:1">참정권</span>
-    <span class="chip2 hot p" style="--i:2">미디어 리터러시</span><span class="chip2 p" style="--i:3">여론·정당</span>
-  </div>
-  <div class="display xs jua glowtx up" style="--i:4">🎤 모의선거 · 시사토론</div>`},
-/* 10 정치 진로 */{dur:9,ac:'blue',html:()=>`
-  <div class="lead dim up" style="--i:0">뉴스·토론 덕후라면 →</div>
-  <div class="display sm jua" style="margin:14px 0 22px">${L('외교관·기자·<span class="acc glowtx">정책가</span>',0)}</div>
-  <div class="tags"><span class="tag2 fd" style="--i:2">정치외교학</span><span class="tag2 fd" style="--i:3">행정학</span><span class="tag2 fd" style="--i:4">언론정보학</span></div>`},
+{dur:7,ac:'blue',html:()=>`
+  <div class="chiprow" style="margin-bottom:30px">
+    <span class="chip2 hot p" style="--i:0">선거</span><span class="chip2 p" style="--i:1">미디어 리터러시</span><span class="chip2 hot p" style="--i:2">참정권</span></div>
+  <div class="lead dim up" style="--i:3">🎤 모의선거·시사토론 →</div>
+  <div class="display xs jua glowtx up" style="--i:4;margin-top:10px">외교관·기자·<span class="acc">정책가</span></div>`},
 
-/* 11 법 intro */{dur:8,ac:'coral',html:()=>`
+/* E. 법과 사회 */
+{dur:6,ac:'coral',push:'in',html:()=>`
   <div class="ghost jua">02</div>
-  <div class="eyebrow p" style="--i:0">02 — LAW & SOCIETY · 진로선택</div>
-  <div class="display sm jua glowtx">${L('법과 사회',0)}</div>
-  <div class="lead dim fd" style="--i:2;margin-top:18px">“내 권리는, 내가 지킨다.”</div>`},
-/* 12 법 단원 */{dur:10,ac:'coral',html:()=>`
+  <div class="eyebrow cine" style="--i:0">FEATURE 02 — LAW & SOCIETY</div>
+  <div class="display jua cine glowtx" style="--i:1">법과 사회</div>
+  <div class="lead dim cine" style="--i:2;margin-top:14px">“내 권리는, 내가 지킨다.”</div>`},
+{dur:8,ac:'coral',html:()=>`
   <div class="eyebrow up" style="--i:0">법과 사회 · 커리큘럼</div>
   <div class="units">
     <div class="u glass up" style="--i:1"><span class="nn">01</span>개인 생활과 법<small>계약 · 가족 · 재산</small></div>
@@ -223,67 +212,78 @@ const scenes=[
     <div class="u glass up" style="--i:3"><span class="nn">03</span>사회 생활과 법<small>형사절차 · 근로 · 소비자</small></div>
     <div class="u glass up" style="--i:4"><span class="nn">04</span>학교 생활과 법<small>학교폭력 · 청소년 권리</small></div>
   </div>`},
-/* 13 법 활동 */{dur:8,ac:'coral',html:()=>`
-  <div class="chiprow" style="margin-bottom:34px">
-    <span class="chip2 hot p" style="--i:0">계약·임대차</span><span class="chip2 p" style="--i:1">형사 절차</span>
-    <span class="chip2 p" style="--i:2">근로</span><span class="chip2 hot p" style="--i:3">학교폭력</span>
-  </div>
-  <div class="display xs jua glowtx up" style="--i:4">👩‍⚖️ 모의재판 · 판례 분석</div>`},
-/* 14 법 진로 */{dur:9,ac:'coral',html:()=>`
-  <div class="lead dim up" style="--i:0">꼼꼼 + 정의감 충만이라면 →</div>
-  <div class="display xs jua" style="margin:14px 0 22px">${L('판사·검사·<span class="acc glowtx">변호사</span>·경찰',0)}</div>
-  <div class="tags"><span class="tag2 fd" style="--i:2">법학·로스쿨</span><span class="tag2 fd" style="--i:3">경찰행정학</span><span class="tag2 fd" style="--i:4">행정학</span></div>`},
+{dur:7,ac:'coral',html:()=>`
+  <div class="chiprow" style="margin-bottom:30px">
+    <span class="chip2 hot p" style="--i:0">계약·임대차</span><span class="chip2 p" style="--i:1">형사 절차</span><span class="chip2 hot p" style="--i:2">학교폭력</span></div>
+  <div class="lead dim up" style="--i:3">👩‍⚖️ 모의재판·판례 분석 →</div>
+  <div class="display xs jua glowtx up" style="--i:4;margin-top:10px">판사·검사·<span class="acc">변호사</span>·경찰</div>`},
 
-/* 15 국제 intro */{dur:8,ac:'teal',html:()=>`
+/* F. 국제관계 */
+{dur:6,ac:'teal',push:'in',html:()=>`
   <div class="ghost jua">03</div>
-  <div class="eyebrow p" style="--i:0">03 — GLOBAL · 진로선택</div>
-  <div class="display sm jua glowtx">${L('국제관계의 이해',0)}</div>
-  <div class="lead dim fd" style="--i:2;margin-top:18px">“세계는 어떻게 연결될까?”</div>`},
-/* 16 국제 내용 */{dur:10,ac:'teal',html:()=>`
+  <div class="eyebrow cine" style="--i:0">FEATURE 03 — GLOBAL</div>
+  <div class="display jua cine glowtx" style="--i:1">국제관계의 이해</div>
+  <div class="lead dim cine" style="--i:2;margin-top:14px">“세계는 어떻게 연결될까?”</div>`},
+{dur:8,ac:'teal',html:()=>`
   <div class="eyebrow up" style="--i:0">국제관계 · 커리큘럼</div>
-  <div class="chiprow" style="margin:6px 0 30px">
-    <span class="chip2 hot p" style="--i:1">국제 정치</span><span class="chip2 p" style="--i:2">국제 경제·무역</span>
-    <span class="chip2 p" style="--i:3">국제법</span><span class="chip2 hot p" style="--i:4">UN·국제기구</span>
-  </div>
+  <div class="chiprow" style="margin:4px 0 28px">
+    <span class="chip2 hot p" style="--i:1">국제 정치</span><span class="chip2 p" style="--i:2">국제 경제·무역</span><span class="chip2 p" style="--i:3">국제법</span><span class="chip2 hot p" style="--i:4">UN·국제기구</span></div>
   <div class="display xs jua up" style="--i:5">평화·갈등·균형발전 <span class="acc glowtx">통합 분석</span></div>`},
-/* 17 국제 활동/진로 */{dur:9,ac:'teal',html:()=>`
-  <div class="display xs jua glowtx up" style="--i:0;margin-bottom:22px">🇺🇳 모의 UN · 국제이슈 분석</div>
-  <div class="lead dim up" style="--i:1">글로벌 무대를 꿈꾼다면 →</div>
-  <div class="display xs jua" style="margin:12px 0 20px">${L('<span class="acc glowtx">외교관</span> · 국제기구 · 통상',0)}</div>
-  <div class="tags"><span class="tag2 fd" style="--i:2">정치외교(국제정치)</span><span class="tag2 fd" style="--i:3">국제학부</span><span class="tag2 fd" style="--i:4">국제통상학</span></div>`},
+{dur:7,ac:'teal',html:()=>`
+  <div class="lead dim up" style="--i:0">🇺🇳 모의 UN·국제이슈 분석 →</div>
+  <div class="display xs jua glowtx up" style="--i:1;margin:10px 0 18px"><span class="acc">외교관</span>·국제기구·통상</div>
+  <div class="tags"><span class="tag2 fd" style="--i:3">정치외교(국제정치)</span><span class="tag2 fd" style="--i:4">국제학부</span><span class="tag2 fd" style="--i:5">국제통상학</span></div>`},
 
-/* 18 입시 */{dur:9,ac:'amber',html:()=>`
-  <div class="eyebrow up" style="--i:0">📈 입시에선 이렇게 강력</div>
-  <div class="display sm jua">${L('학생부 <span class="box">한 방</span> 💥',0)}</div>
-  <div class="lead up" style="--i:3;margin-top:22px">세특 · 탐구활동 · 면접 · 논술에서<br><span class="acc glowtx">전공적합성</span>을 증명</div>`},
-/* 19 추천 */{dur:8,ac:'lime',html:()=>`
-  <div class="checks">
-    <div class="fd" style="--i:0">뉴스가 궁금하다 · 내 권리를 챙기고 싶다</div>
-    <div class="fd" style="--i:1">토론·발표가 즐겁다 · 글로벌 진로를 꿈꾼다</div>
-  </div>
-  <div class="display jua up" style="--i:3;margin-top:28px">하나라도? <span class="acc glowtx">너야 너 🔥</span></div>`},
-/* 20 CTA */{dur:11,ac:'green',html:()=>`
-  <div class="eyebrow p" style="--i:0">지금, 선택하자</div>
-  <div class="display sm jua">${L('수강신청 때 <span class="mk">잊지 마!</span>',0)}</div>
-  <div class="marq fd" style="--i:2;margin:26px 0 8px"><div class="trk jua">
-    <span>정치 • <b>법과 사회</b> • 국제관계의 이해 •&nbsp;</span><span>정치 • <b>법과 사회</b> • 국제관계의 이해 •&nbsp;</span>
-  </div></div>
-  <div class="lead dim up" style="--i:3">담임·진로진학상담 선생님과 상담 → 신청 기간에 선택!</div>
-  <div class="mono fd" style="--i:5;margin-top:18px;font-size:22px;color:var(--ac)">🧭 youngnakhs.github.io/youngnak-guide</div>`},
+/* G. CLIMAX */
+{dur:6,ac:'amber',html:()=>`
+  <div class="eyebrow up" style="--i:0">입시에선 이렇게 강력</div>
+  <div class="display jua">${L('학생부, <span class="box">한 방</span>.',0)}</div>
+  <div class="lead up" style="--i:2;margin-top:20px">세특·탐구·면접·논술에서 <span class="acc glowtx">전공적합성</span> 증명</div>`},
+{dur:5,ac:'violet',html:()=>`
+  <div class="montage">
+    <div class="m cine glowtx" style="--i:0">외교관.</div>
+    <div class="m cine glowtx" style="--i:1">변호사.</div>
+    <div class="m cine glowtx" style="--i:2">특파원.</div>
+    <div class="m cine glowtx" style="--i:3;color:var(--ac)">너의 미래.</div>
+  </div>`},
+{dur:5,ac:'green',flash:1,html:()=>`
+  <div class="mega jua cine">${`넌, <span class="out">준비됐어?</span>`}</div>`},
+
+/* H. COMING SOON / CTA */
+{dur:11,ac:'green',flare:1,html:()=>`
+  <div class="kline cine" style="--i:0;margin-bottom:18px">coming to 영락고 · 2026</div>
+  <div class="display sm jua cine" style="--i:1"><span class="grad">정치 · 법과 사회</span></div>
+  <div class="display sm jua cine" style="--i:2">국제관계의 이해</div>
+  <div class="lead dim up" style="--i:4;margin-top:24px">담임·진로진학상담 선생님과 상담 → <span class="acc">수강신청 기간에 선택!</span></div>
+  <div class="mono fd" style="--i:6;margin-top:16px;font-size:21px;color:var(--ac)">🧭 youngnakhs.github.io/youngnak-guide</div>`},
 ];
 
 /* ===== engine ===== */
 const frame=document.getElementById('frame'), stage=document.getElementById('stage'),
-      prog=document.getElementById('top'), ui=document.getElementById('ui'), pp=document.getElementById('pp');
+      prog=document.getElementById('top'), ui=document.getElementById('ui'), pp=document.getElementById('pp'),
+      flash=document.getElementById('flash'), pc=document.getElementById('particles');
 let idx=0, elapsed=0, paused=false, last=0;
+
+/* particles */
+let pseed=1; const rnd=()=>{pseed=(pseed*16807)%2147483647;return pseed/2147483647;};
+for(let k=0;k<34;k++){const d=document.createElement('div');d.className='pt';
+  const dur=7+rnd()*9, sz=1.5+rnd()*3.5;
+  d.style.left=(rnd()*100)+'%';d.style.width=d.style.height=sz+'px';
+  d.style.animationDuration=dur+'s';d.style.animationDelay=(-rnd()*dur)+'s';d.style.opacity=.3+rnd()*.5;
+  pc.appendChild(d);}
+
 prog.innerHTML=scenes.map(()=>`<div class="sg"><i></i></div>`).join('');
 const sgs=[...prog.querySelectorAll('.sg')];
 function fit(){const s=Math.min(innerWidth/1280,innerHeight/720);frame.style.transform=`translate(-50%,-50%) scale(${s})`;}
 addEventListener('resize',fit);fit();
+function doFlash(){flash.classList.remove('go');void flash.offsetWidth;flash.classList.add('go');}
 function render(n){
   idx=(n+scenes.length)%scenes.length; elapsed=0;
   const sc=scenes[idx], ac=AC[sc.ac]||AC.green;
   frame.style.setProperty('--ac',ac[0]); frame.style.setProperty('--ac2',ac[1]);
+  if(sc.flash) doFlash();
+  stage.style.animation='none'; void stage.offsetWidth;
+  stage.style.animation=`${sc.push==='back'?'pullbk':'pushin'} ${sc.dur}s linear both`;
   stage.innerHTML=sc.html();
   sgs.forEach((s,k)=>{s.classList.toggle('done',k<idx);s.querySelector('i').style.width=k<idx?'100%':'0%';});
 }
@@ -295,7 +295,7 @@ function tick(ts){
   requestAnimationFrame(tick);
 }
 function go(n){paused=false;pp.textContent='⏸';render(n);}
-function toggle(){paused=!paused;pp.textContent=paused?'▶':'⏸';}
+function toggle(){paused=!paused;pp.textContent=paused?'▶':'⏸';stage.style.animationPlayState=paused?'paused':'running';}
 function fs(){const el=document.documentElement;if(!document.fullscreenElement)el.requestFullscreen&&el.requestFullscreen();else document.exitFullscreen&&document.exitFullscreen();}
 let hideT;function poke(){ui.classList.add('show');clearTimeout(hideT);hideT=setTimeout(()=>ui.classList.remove('show'),2600);}
 addEventListener('mousemove',poke);
