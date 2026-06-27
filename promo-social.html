@@ -13,71 +13,52 @@
 html,body{height:100%;background:#000;overflow:hidden;font-family:'Pretendard Variable',Pretendard,sans-serif;color:#fff;}
 .jua{font-family:'Paperlogy',sans-serif;font-weight:800;letter-spacing:-.5px;}
 .mono{font-family:'DM Mono',monospace;}
-.serif{font-family:'Noto Serif KR',serif;}
 
 #wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;}
 #frame{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center;overflow:hidden;background:#060807;}
 
-/* ---- background system ---- */
-.bg-grid{position:absolute;inset:0;background-image:
-  linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
-  background-size:70px 70px;mask-image:radial-gradient(120% 90% at 50% 40%,#000,transparent 76%);}
-.bg-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.5;transition:background .8s ease;mix-blend-mode:screen;}
+/* ---- background ---- */
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:70px 70px;mask-image:radial-gradient(120% 90% at 50% 40%,#000,transparent 76%);}
+.bg-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:.55;transition:background .8s ease;mix-blend-mode:screen;}
 .o1{width:820px;height:820px;left:-200px;top:-300px;background:radial-gradient(circle,var(--ac),transparent 66%);animation:orbA 16s ease-in-out infinite;}
-.o2{width:720px;height:720px;right:-220px;top:120px;background:radial-gradient(circle,var(--ac2),transparent 66%);opacity:.4;animation:orbB 19s ease-in-out infinite;}
+.o2{width:720px;height:720px;right:-220px;top:120px;background:radial-gradient(circle,var(--ac2),transparent 66%);opacity:.45;animation:orbB 19s ease-in-out infinite;}
+.o3{width:560px;height:560px;left:42%;bottom:-260px;background:radial-gradient(circle,#A98BFF,transparent 66%);opacity:.3;animation:orbA 22s ease-in-out infinite reverse;mix-blend-mode:screen;filter:blur(90px);}
 @keyframes orbA{0%,100%{transform:translate(0,0)}50%{transform:translate(80px,60px)}}
 @keyframes orbB{0%,100%{transform:translate(0,0)}50%{transform:translate(-70px,46px)}}
-.ray{position:absolute;top:-30%;left:30%;width:60%;height:170%;pointer-events:none;mix-blend-mode:screen;opacity:.5;
-  background:conic-gradient(from 200deg at 50% 0%,transparent 0deg,rgba(255,255,255,.12) 18deg,transparent 36deg);
-  filter:blur(8px);transform-origin:50% 0;animation:ray 12s ease-in-out infinite;}
+.ray{position:absolute;top:-30%;left:30%;width:60%;height:170%;pointer-events:none;mix-blend-mode:screen;opacity:.5;background:conic-gradient(from 200deg at 50% 0%,transparent 0deg,rgba(255,255,255,.12) 18deg,transparent 36deg);filter:blur(8px);transform-origin:50% 0;animation:ray 12s ease-in-out infinite;}
 @keyframes ray{0%,100%{transform:rotate(-6deg);opacity:.35}50%{transform:rotate(6deg);opacity:.6}}
-.grade{position:absolute;inset:0;pointer-events:none;mix-blend-mode:soft-light;
-  background:linear-gradient(180deg,rgba(0,80,110,.5),transparent 42%,rgba(120,60,0,.35));}
-.grain{position:absolute;inset:0;opacity:.08;mix-blend-mode:overlay;pointer-events:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:gr .6s steps(2) infinite;}
+.grade{position:absolute;inset:0;pointer-events:none;mix-blend-mode:soft-light;background:linear-gradient(180deg,rgba(0,80,110,.5),transparent 42%,rgba(120,60,0,.35));}
+.grain{position:absolute;inset:0;opacity:.08;mix-blend-mode:overlay;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:gr .6s steps(2) infinite;}
 @keyframes gr{to{transform:translate(-6px,4px)}}
 .vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(125% 100% at 50% 42%,transparent 46%,rgba(0,0,0,.78) 100%);}
 #particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
-.pt{position:absolute;bottom:-12px;width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.8);opacity:0;
-  box-shadow:0 0 8px rgba(255,255,255,.6);animation:rise linear infinite;}
-@keyframes rise{0%{transform:translateY(0);opacity:0}10%{opacity:.8}90%{opacity:.5}100%{transform:translateY(-760px);opacity:0}}
+.pt{position:absolute;bottom:-12px;border-radius:50%;opacity:0;box-shadow:0 0 8px currentColor;animation:rise linear infinite;}
+@keyframes rise{0%{transform:translateY(0);opacity:0}10%{opacity:.85}90%{opacity:.5}100%{transform:translateY(-760px);opacity:0}}
 
-/* letterbox */
 .bar{position:absolute;left:0;right:0;height:84px;background:#000;z-index:18;}
 .bar.t{top:0;box-shadow:0 12px 30px rgba(0,0,0,.6);} .bar.b{bottom:0;box-shadow:0 -12px 30px rgba(0,0,0,.6);}
 #brand{position:absolute;top:30px;left:54px;z-index:22;font-size:12.5px;letter-spacing:2px;color:rgba(255,255,255,.6);}
 #brand b{color:var(--ac);}
 #runtag{position:absolute;bottom:30px;right:54px;z-index:22;font-size:12px;letter-spacing:3px;color:rgba(255,255,255,.4);}
 
-/* flash */
 #flash{position:absolute;inset:0;background:#fff;opacity:0;z-index:25;pointer-events:none;}
 #flash.go{animation:flash .42s ease-out;}
 @keyframes flash{0%{opacity:0}12%{opacity:.92}100%{opacity:0}}
-
-/* flare */
-.flare{position:absolute;top:46%;left:-30%;width:60%;height:5px;z-index:6;pointer-events:none;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.95),transparent);filter:blur(2px);
-  box-shadow:0 0 40px 12px rgba(255,255,255,.55);animation:sweep 1.5s .15s cubic-bezier(.4,0,.2,1) both;}
-.flare::after{content:'';position:absolute;left:50%;top:50%;width:120px;height:120px;transform:translate(-50%,-50%);
-  border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.9),transparent 60%);}
+.flare{position:absolute;top:46%;left:-30%;width:60%;height:5px;z-index:6;pointer-events:none;background:linear-gradient(90deg,transparent,rgba(255,255,255,.95),transparent);filter:blur(2px);box-shadow:0 0 40px 12px rgba(255,255,255,.55);animation:sweep 1.5s .15s cubic-bezier(.4,0,.2,1) both;}
 @keyframes sweep{0%{left:-30%;opacity:0}20%{opacity:1}100%{left:130%;opacity:0}}
 
-/* stage / push-in */
-.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;padding:118px 96px 150px;z-index:5;}
+.scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:118px 90px 150px;z-index:5;word-break:keep-all;}
 @keyframes pushin{from{transform:scale(1.015)}to{transform:scale(1.075)}}
-@keyframes pullbk{from{transform:scale(1.09)}to{transform:scale(1.0)}}
 
 /* ---- type ---- */
-.kline{font-size:23px;letter-spacing:.55em;text-transform:uppercase;color:rgba(255,255,255,.66);font-weight:600;}
-.eyebrow{font-family:'DM Mono',monospace;font-size:21px;letter-spacing:2px;color:var(--ac);margin-bottom:24px;
-  text-transform:uppercase;display:inline-flex;align-items:center;gap:12px;}
+.kline{font-size:23px;letter-spacing:.5em;text-transform:uppercase;color:rgba(255,255,255,.66);font-weight:600;}
+.eyebrow{font-family:'DM Mono',monospace;font-size:21px;letter-spacing:2px;color:var(--ac);margin-bottom:22px;text-transform:uppercase;display:inline-flex;align-items:center;gap:12px;}
 .eyebrow::before{content:'';width:34px;height:2px;background:var(--ac);}
-.display{font-size:128px;line-height:1.0;}
-.display.sm{font-size:96px;} .display.xs{font-size:76px;}
-.mega{font-size:210px;line-height:.92;}
-.lead{font-size:38px;font-weight:700;line-height:1.34;color:rgba(255,255,255,.92);}
-.lead.dim{color:rgba(255,255,255,.6);font-weight:600;font-size:31px;}
+.display{font-size:124px;line-height:1.02;}
+.display.sm{font-size:92px;} .display.xs{font-size:74px;}
+.mega{font-size:200px;line-height:.94;}
+.lead{font-size:37px;font-weight:700;line-height:1.36;color:rgba(255,255,255,.92);}
+.lead.dim{color:rgba(255,255,255,.62);font-weight:600;font-size:31px;}
 .grad{background:linear-gradient(115deg,#fff 22%,var(--ac));-webkit-background-clip:text;background-clip:text;color:transparent;}
 .glowtx{text-shadow:0 0 30px var(--ac);}
 .out{color:transparent;-webkit-text-stroke:3px var(--ac);text-shadow:0 0 34px var(--ac);}
@@ -86,12 +67,41 @@ html,body{height:100%;background:#000;overflow:hidden;font-family:'Pretendard Va
 .mk{position:relative;white-space:nowrap;padding:0 .1em;}
 .mk::before{content:'';position:absolute;left:0;right:0;bottom:.06em;height:.32em;background:var(--ac);z-index:-1;border-radius:.05em;transform:scaleX(0);transform-origin:left;animation:mkw .5s .5s cubic-bezier(.7,0,.3,1) forwards;box-shadow:0 0 30px var(--ac);}
 @keyframes mkw{to{transform:scaleX(1)}}
+/* colorful */
+.multi{background:linear-gradient(90deg,#FF5B8A,#FFB02E,#34E3A0,#3D9BFF,#A98BFF,#FF5B8A);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:hue 4s linear infinite;filter:drop-shadow(0 0 22px rgba(255,255,255,.25));}
+@keyframes hue{to{background-position:300% 0}}
 
-.cine{opacity:0;animation:cineIn 1.15s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i,0)*.12s);}
-@keyframes cineIn{0%{opacity:0;letter-spacing:.32em;filter:blur(18px);transform:scale(1.1)}100%{opacity:1;letter-spacing:-.02em;filter:blur(0);transform:scale(1)}}
+/* entrance + emphasis FX */
+.cine{opacity:0;animation:cineIn 1.1s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i,0)*.12s);}
+@keyframes cineIn{0%{opacity:0;letter-spacing:.3em;filter:blur(18px);transform:scale(1.1)}100%{opacity:1;letter-spacing:-.02em;filter:blur(0);transform:scale(1)}}
 .ln{overflow:hidden;display:block;}
-.ln>span{display:inline-block;opacity:0;transform:translateY(64px);filter:blur(16px);animation:blurUp .9s cubic-bezier(.16,1,.3,1) forwards;animation-delay:calc(.05s + var(--i,0)*.14s);}
+.ln>span{display:inline-block;opacity:0;transform:translateY(60px);filter:blur(16px);animation:blurUp .9s cubic-bezier(.16,1,.3,1) forwards;animation-delay:calc(.05s + var(--i,0)*.14s);}
 @keyframes blurUp{to{opacity:1;transform:none;filter:blur(0)}}
+.burst{display:inline-block;opacity:0;animation:burstIn .55s cubic-bezier(.2,1.7,.3,1) forwards;animation-delay:calc(var(--i,0)*.1s);}
+@keyframes burstIn{0%{opacity:0;transform:scale(.35);filter:blur(8px)}65%{opacity:1;transform:scale(1.14);filter:blur(0)}100%{opacity:1;transform:scale(1)}}
+.stamp{display:inline-block;opacity:0;animation:stampIn .5s cubic-bezier(.2,.9,.2,1) forwards;}
+@keyframes stampIn{0%{opacity:0;transform:scale(2.4);filter:blur(10px)}70%{opacity:1;transform:scale(.93);filter:blur(0)}85%{opacity:1;transform:scale(1.05)}100%{opacity:1;transform:scale(1)}}
+.shake{animation:shk .42s ease .2s 2;}
+.shk2{display:inline-block;animation:shk .42s ease .14s 2;}
+@keyframes shk{0%,100%{transform:translate(0)}25%{transform:translate(-7px,2px)}50%{transform:translate(6px,-3px)}75%{transform:translate(-4px,-2px)}}
+.flicker{animation:flick 1.3s both;}
+@keyframes flick{0%,16%,20%,24%,55%,100%{opacity:1}18%,22%,53%{opacity:.35}}
+.zoom{opacity:0;animation:zb .7s cubic-bezier(.16,1,.3,1) both;}
+@keyframes zb{from{opacity:0;transform:scale(1.7);filter:blur(20px)}to{opacity:1;transform:none;filter:blur(0)}}
+.glitch{position:relative;display:inline-block;animation:glJit .3s steps(2) 4 .1s;}
+.glitch::before,.glitch::after{content:attr(data-t);position:absolute;left:0;top:0;width:100%;height:100%;}
+.glitch::before{color:#FF2E6E;transform:translate(-3px,1px);mix-blend-mode:screen;}
+.glitch::after{color:#1CE5FF;transform:translate(3px,-1px);mix-blend-mode:screen;}
+@keyframes glJit{0%,100%{transform:translate(0)}25%{transform:translate(-2px,1px)}50%{transform:translate(2px,-1px)}75%{transform:translate(-1px,-1px)}}
+.cp{display:inline-block;opacity:0;transform:translateY(46px) scale(.5);animation:cpop .5s cubic-bezier(.2,1.7,.3,1) forwards;animation-delay:calc(var(--i,0)*.05s);}
+@keyframes cpop{to{opacity:1;transform:none}}
+/* comic burst lines */
+.blines{position:absolute;left:50%;top:50%;width:10px;height:10px;transform:translate(-50%,-50%);z-index:0;pointer-events:none;}
+.blines::before{content:'';position:absolute;left:50%;top:50%;width:680px;height:680px;transform:translate(-50%,-50%);
+  background:repeating-conic-gradient(from 0deg,var(--ac) 0deg 2.4deg,transparent 2.4deg 13deg);
+  -webkit-mask:radial-gradient(circle,transparent 150px,#000 156px,#000 300px,transparent 320px);mask:radial-gradient(circle,transparent 150px,#000 156px,#000 300px,transparent 320px);
+  opacity:0;animation:blz .75s ease-out both;}
+@keyframes blz{0%{opacity:0;transform:translate(-50%,-50%) scale(.45) rotate(0)}38%{opacity:.55}100%{opacity:0;transform:translate(-50%,-50%) scale(1.25) rotate(16deg)}}
 
 .ghost{position:absolute;top:90px;right:80px;font-size:300px;line-height:1;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.09);z-index:1;pointer-events:none;animation:cineIn 1.2s ease both;}
 .stk{font-size:78px;display:inline-block;filter:drop-shadow(0 0 32px var(--ac));}
@@ -102,26 +112,17 @@ html,body{height:100%;background:#000;overflow:hidden;font-family:'Pretendard Va
 .u .nn{font-family:'DM Mono',monospace;font-size:25px;color:var(--ac);min-width:38px;}
 .u small{font-size:21px;font-weight:600;color:rgba(255,255,255,.66);margin-left:auto;font-family:'Pretendard Variable';}
 .chiprow{display:flex;flex-wrap:wrap;gap:13px;justify-content:center;}
-.chip2{font-size:31px;font-weight:800;font-family:'Paperlogy',sans-serif;padding:11px 24px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);}
-.chip2.hot{border-color:var(--ac);color:var(--ac);box-shadow:0 0 26px -6px var(--ac);}
+.chip2{font-size:31px;font-weight:800;font-family:'Paperlogy',sans-serif;padding:11px 24px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid var(--cc,rgba(255,255,255,.2));color:var(--cc,#fff);box-shadow:0 0 24px -8px var(--cc,transparent);}
 .tags{display:flex;gap:11px;justify-content:center;flex-wrap:wrap;margin-top:6px;}
 .tag2{font-size:25px;font-weight:700;padding:9px 18px;border-radius:11px;font-family:'DM Mono',monospace;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);color:rgba(255,255,255,.9);}
+.montage{display:flex;flex-direction:column;gap:6px;}
+.montage .m{font-size:74px;font-family:'Paperlogy',sans-serif;font-weight:800;}
 
-.slist{display:flex;flex-direction:column;gap:4px;width:100%;max-width:980px;}
-.si{display:flex;align-items:baseline;gap:26px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.12);text-align:left;}
-.si .ix{font-family:'DM Mono',monospace;font-size:28px;color:rgba(255,255,255,.5);}
-.si .nm{font-size:70px;font-family:'Paperlogy',sans-serif;font-weight:800;letter-spacing:-1px;}
-.si .en{margin-left:auto;font-family:'DM Mono',monospace;font-size:19px;color:rgba(255,255,255,.5);letter-spacing:1px;}
-
-.montage{display:flex;flex-direction:column;gap:8px;}
-.montage .m{font-size:78px;font-family:'Paperlogy',sans-serif;font-weight:800;}
-
-@keyframes fade{from{opacity:0}to{opacity:1}}
-@keyframes up{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
-@keyframes pop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
-.fd{opacity:0;animation:fade .9s ease forwards;animation-delay:calc(var(--i,0)*.12s)}
-.up{opacity:0;animation:up .7s cubic-bezier(.2,.85,.25,1) forwards;animation-delay:calc(var(--i,0)*.12s)}
-.p{opacity:0;animation:pop .6s cubic-bezier(.2,1.5,.35,1) forwards;animation-delay:calc(var(--i,0)*.12s)}
+/* gag rating card */
+.ticket{border:2px dashed rgba(255,255,255,.4);border-radius:18px;padding:26px 38px;background:rgba(255,255,255,.05);backdrop-filter:blur(8px);text-align:left;max-width:760px;}
+.ticket .rk{font-family:'DM Mono',monospace;font-size:18px;letter-spacing:3px;color:var(--ac);margin-bottom:14px;}
+.ticket .rr{font-size:30px;font-weight:700;line-height:1.7;}
+.ticket .rr b{color:var(--ac);}
 
 #top{position:absolute;top:0;left:0;right:0;display:flex;gap:3px;padding:6px 12px 0;z-index:30;}
 .sg{flex:1;height:3px;border-radius:99px;background:rgba(255,255,255,.18);overflow:hidden;}
@@ -134,55 +135,58 @@ html,body{height:100%;background:#000;overflow:hidden;font-family:'Pretendard Va
 </head>
 <body>
 <div id="wrap"><div id="frame">
-  <div class="bg-grid"></div><div class="bg-orb o1"></div><div class="bg-orb o2"></div>
+  <div class="bg-grid"></div><div class="bg-orb o1"></div><div class="bg-orb o2"></div><div class="bg-orb o3"></div>
   <div class="ray"></div><div id="particles"></div>
   <div class="grade"></div><div class="grain"></div><div class="vig"></div>
   <div class="scene" id="stage"></div>
   <div class="bar t"></div><div class="bar b"></div>
   <div id="brand" class="mono">영락고 <b>SOCIAL</b> · 진로선택 ’26</div>
   <div id="runtag" class="mono">TEASER</div>
-  <div id="flash"></div>
-  <div id="top"></div>
-  <div id="ui">
-    <button class="cb" id="pp" onclick="toggle()">⏸</button>
-    <button class="cb" onclick="go(idx-1)">⏮</button>
-    <button class="cb" onclick="go(idx+1)">⏭</button>
-    <button class="cb" onclick="fs()">⛶</button>
-  </div>
+  <div id="flash"></div><div id="top"></div>
+  <div id="ui"><button class="cb" id="pp" onclick="toggle()">⏸</button><button class="cb" onclick="go(idx-1)">⏮</button><button class="cb" onclick="go(idx+1)">⏭</button><button class="cb" onclick="fs()">⛶</button></div>
 </div></div>
 
 <script>
 const L=(t,i)=>`<span class="ln"><span style="--i:${i}">${t}</span></span>`;
-const AC={dark:['#7FE3B0','#19C3D6'],amber:['#FFC93C','#FF6555'],green:['#16C76B','#BEF250'],
-  blue:['#5B85FF','#19C3D6'],coral:['#FF6555','#FFC93C'],teal:['#1FD3B0','#5B85FF'],violet:['#A98BFF','#5B85FF'],lime:['#BEF250','#16C76B']};
+/* 글자별 컬러+팝 */
+const POP=['#FF5B8A','#FFB02E','#34E3A0','#3D9BFF','#A98BFF','#19E0E0','#FF6B5B'];
+const SP=(t,off=0)=>[...t].map((c,i)=>c===' '?'&nbsp;':`<span class="cp" style="--i:${i+off};color:${POP[(i+off)%POP.length]}">${c}</span>`).join('');
+const blines=`<span class="blines"></span>`;
+const AC={dark:['#7FE3B0','#19C3D6'],amber:['#FFC93C','#FF6555'],green:['#16C76B','#BEF250'],blue:['#5B85FF','#19C3D6'],coral:['#FF6555','#FFC93C'],teal:['#1FD3B0','#5B85FF'],violet:['#A98BFF','#FF5B8A'],pink:['#FF5B8A','#FFB02E'],lime:['#BEF250','#16C76B']};
 
 const scenes=[
-/* A. COLD OPEN */
-{dur:6,ac:'dark',html:()=>`
-  <div class="kline cine" style="--i:0">영락고등학교 사회과</div>
-  <div class="display sm jua cine" style="--i:1;margin-top:18px;opacity:.92">presents</div>`},
+/* 0 presents — 개그 */
 {dur:7,ac:'dark',html:()=>`
-  <div class="display jua">${L('세상은,',0)}${L('<span class="grad">누가 움직일까?</span>',1)}</div>`},
+  <div class="kline cine" style="--i:0">영락고등학교 사회과</div>
+  <div class="display jua zoom" style="margin-top:14px">presents</div>
+  <div class="lead dim up" style="--i:3;margin-top:22px">…네, ‘선물’이란 뜻인데요 <span class="acc">선물 아니고 수업이요</span> 😐</div>`},
+/* 1 gag — 심의등급 패러디 */
+{dur:6,ac:'pink',html:()=>`
+  <div class="ticket cine">
+    <div class="rk">🎬 영락 영상물 등급</div>
+    <div class="rr">등급: <b>고1 강력 추천</b> ★★★★★<br>러닝타임: <b>졸지 마세요</b><br>부작용: <b>갑자기 세상이 보임</b></div>
+  </div>`},
+/* 2 atmospheric */
+{dur:7,ac:'dark',html:()=>`<div class="display jua">${L('세상은,',0)}${L('<span class="multi">누가 움직일까?</span>',1)}</div>`},
 
-/* B. TENSION MONTAGE (flash cuts) */
-{dur:4,ac:'blue',flash:1,html:()=>`<div class="mega jua cine glowtx">투표.</div>`},
-{dur:4,ac:'coral',flash:1,html:()=>`<div class="mega jua cine glowtx">법정.</div>`},
-{dur:4,ac:'teal',flash:1,html:()=>`<div class="mega jua cine glowtx">국경.</div>`},
-{dur:5,ac:'dark',html:()=>`
-  <div class="display sm jua">${L('이제,',0)}${L('<span class="acc glowtx">네가 읽을 차례</span>다.',1)}</div>`},
+/* 3-5 tension montage (stamp + burst + 컬러) */
+{dur:3.5,ac:'blue',flash:1,html:()=>`${blines}<div class="shk2"><div class="mega jua glowtx">${SP('투표.')}</div></div>`},
+{dur:3.5,ac:'coral',flash:1,html:()=>`${blines}<div class="shk2"><div class="mega jua glowtx">${SP('법정.')}</div></div>`},
+{dur:3.5,ac:'teal',flash:1,html:()=>`${blines}<div class="shk2"><div class="mega jua glowtx">${SP('국경.')}</div></div>`},
+{dur:5,ac:'dark',html:()=>`<div class="display sm jua">${L('이제,',0)}${L('<span class="acc glowtx shake">네가 읽을 차례</span>다.',1)}</div>`},
 
-/* C. TITLE DROP */
+/* 6 TITLE DROP */
 {dur:9,ac:'green',flash:1,flare:1,html:()=>`
-  <div class="kline cine" style="--i:0;margin-bottom:24px">영락고 사회 · 진로선택 3과목</div>
-  <div class="mega jua cine" style="--i:1"><span class="grad">세상을</span></div>
-  <div class="mega jua cine out" style="--i:2;font-size:170px">읽는 힘</div>
-  <div class="kline cine" style="--i:3;margin-top:26px;color:var(--ac)">POLITICS · LAW · GLOBAL</div>`},
+  <div class="kline cine" style="--i:0;margin-bottom:22px">영락고 사회 · 진로선택 3과목</div>
+  <div class="mega jua zoom" style="margin-bottom:4px"><span class="multi">세상을</span></div>
+  <div class="mega jua out burst" style="--i:1;font-size:158px">읽는 힘</div>
+  <div class="kline cine" style="--i:3;margin-top:24px;color:var(--ac)">POLITICS · LAW · GLOBAL</div>`},
 
-/* D. 정치 */
-{dur:6,ac:'blue',push:'in',html:()=>`
+/* 7-9 정치 */
+{dur:6,ac:'blue',html:()=>`
   <div class="ghost jua">01</div>
   <div class="eyebrow cine" style="--i:0">FEATURE 01 — POLITICS</div>
-  <div class="mega jua cine glowtx" style="--i:1">정치</div>
+  <div class="mega jua glowtx">${SP('정치')}</div>
   <div class="lead dim cine" style="--i:2;margin-top:14px">“세상은 누가, 어떻게 움직일까?”</div>`},
 {dur:8,ac:'blue',html:()=>`
   <div class="eyebrow up" style="--i:0">정치 · 커리큘럼</div>
@@ -194,15 +198,15 @@ const scenes=[
   </div>`},
 {dur:7,ac:'blue',html:()=>`
   <div class="chiprow" style="margin-bottom:30px">
-    <span class="chip2 hot p" style="--i:0">선거</span><span class="chip2 p" style="--i:1">미디어 리터러시</span><span class="chip2 hot p" style="--i:2">참정권</span></div>
+    <span class="chip2 burst" style="--i:0;--cc:#5B85FF">선거</span><span class="chip2 burst" style="--i:1;--cc:#FF5B8A">미디어 리터러시</span><span class="chip2 burst" style="--i:2;--cc:#FFB02E">참정권</span></div>
   <div class="lead dim up" style="--i:3">🎤 모의선거·시사토론 →</div>
   <div class="display xs jua glowtx up" style="--i:4;margin-top:10px">외교관·기자·<span class="acc">정책가</span></div>`},
 
-/* E. 법과 사회 */
-{dur:6,ac:'coral',push:'in',html:()=>`
+/* 10-12 법 */
+{dur:6,ac:'coral',html:()=>`
   <div class="ghost jua">02</div>
   <div class="eyebrow cine" style="--i:0">FEATURE 02 — LAW & SOCIETY</div>
-  <div class="display jua cine glowtx" style="--i:1">법과 사회</div>
+  <div class="display jua glowtx">${SP('법과 사회')}</div>
   <div class="lead dim cine" style="--i:2;margin-top:14px">“내 권리는, 내가 지킨다.”</div>`},
 {dur:8,ac:'coral',html:()=>`
   <div class="eyebrow up" style="--i:0">법과 사회 · 커리큘럼</div>
@@ -214,48 +218,52 @@ const scenes=[
   </div>`},
 {dur:7,ac:'coral',html:()=>`
   <div class="chiprow" style="margin-bottom:30px">
-    <span class="chip2 hot p" style="--i:0">계약·임대차</span><span class="chip2 p" style="--i:1">형사 절차</span><span class="chip2 hot p" style="--i:2">학교폭력</span></div>
+    <span class="chip2 burst" style="--i:0;--cc:#FF6555">계약·임대차</span><span class="chip2 burst" style="--i:1;--cc:#34E3A0">형사 절차</span><span class="chip2 burst" style="--i:2;--cc:#FFB02E">학교폭력</span></div>
   <div class="lead dim up" style="--i:3">👩‍⚖️ 모의재판·판례 분석 →</div>
   <div class="display xs jua glowtx up" style="--i:4;margin-top:10px">판사·검사·<span class="acc">변호사</span>·경찰</div>`},
 
-/* F. 국제관계 */
-{dur:6,ac:'teal',push:'in',html:()=>`
+/* 13-15 국제 */
+{dur:6,ac:'teal',html:()=>`
   <div class="ghost jua">03</div>
   <div class="eyebrow cine" style="--i:0">FEATURE 03 — GLOBAL</div>
-  <div class="display jua cine glowtx" style="--i:1">국제관계의 이해</div>
+  <div class="display jua glowtx">${SP('국제관계의 이해')}</div>
   <div class="lead dim cine" style="--i:2;margin-top:14px">“세계는 어떻게 연결될까?”</div>`},
 {dur:8,ac:'teal',html:()=>`
   <div class="eyebrow up" style="--i:0">국제관계 · 커리큘럼</div>
   <div class="chiprow" style="margin:4px 0 28px">
-    <span class="chip2 hot p" style="--i:1">국제 정치</span><span class="chip2 p" style="--i:2">국제 경제·무역</span><span class="chip2 p" style="--i:3">국제법</span><span class="chip2 hot p" style="--i:4">UN·국제기구</span></div>
-  <div class="display xs jua up" style="--i:5">평화·갈등·균형발전 <span class="acc glowtx">통합 분석</span></div>`},
+    <span class="chip2 burst" style="--i:0;--cc:#1FD3B0">국제 정치</span><span class="chip2 burst" style="--i:1;--cc:#3D9BFF">국제 경제·무역</span><span class="chip2 burst" style="--i:2;--cc:#A98BFF">국제법</span><span class="chip2 burst" style="--i:3;--cc:#FFB02E">UN·국제기구</span></div>
+  <div class="display xs jua up" style="--i:5">평화·갈등·균형발전 <span class="multi">통합 분석</span></div>`},
 {dur:7,ac:'teal',html:()=>`
   <div class="lead dim up" style="--i:0">🇺🇳 모의 UN·국제이슈 분석 →</div>
   <div class="display xs jua glowtx up" style="--i:1;margin:10px 0 18px"><span class="acc">외교관</span>·국제기구·통상</div>
-  <div class="tags"><span class="tag2 fd" style="--i:3">정치외교(국제정치)</span><span class="tag2 fd" style="--i:4">국제학부</span><span class="tag2 fd" style="--i:5">국제통상학</span></div>`},
+  <div class="tags"><span class="tag2 up" style="--i:3">정치외교(국제정치)</span><span class="tag2 up" style="--i:4">국제학부</span><span class="tag2 up" style="--i:5">국제통상학</span></div>`},
 
-/* G. CLIMAX */
+/* 16 입시 (stamp + burst) */
 {dur:6,ac:'amber',html:()=>`
   <div class="eyebrow up" style="--i:0">입시에선 이렇게 강력</div>
-  <div class="display jua">${L('학생부, <span class="box">한 방</span>.',0)}</div>
-  <div class="lead up" style="--i:2;margin-top:20px">세특·탐구·면접·논술에서 <span class="acc glowtx">전공적합성</span> 증명</div>`},
+  ${blines}<div class="display jua">학생부, <span class="box stamp">한 방</span>.</div>
+  <div class="lead up" style="--i:2;margin-top:20px">세특·탐구·면접·논술에서 <span class="multi">전공적합성</span> 증명</div>`},
+/* 17 montage (glitch RGB + 컬러) */
 {dur:5,ac:'violet',html:()=>`
   <div class="montage">
-    <div class="m cine glowtx" style="--i:0">외교관.</div>
-    <div class="m cine glowtx" style="--i:1">변호사.</div>
-    <div class="m cine glowtx" style="--i:2">특파원.</div>
-    <div class="m cine glowtx" style="--i:3;color:var(--ac)">너의 미래.</div>
+    <div class="m glitch" data-t="외교관." style="color:#FF5B8A">외교관.</div>
+    <div class="m glitch" data-t="변호사." style="color:#FFB02E">변호사.</div>
+    <div class="m glitch" data-t="특파원." style="color:#34E3A0">특파원.</div>
+    <div class="m jua up" style="--i:4;color:#fff">→ <span class="multi">너의 미래.</span></div>
   </div>`},
+/* 18 climax (burst, two-line) */
 {dur:5,ac:'green',flash:1,html:()=>`
-  <div class="mega jua cine">${`넌, <span class="out">준비됐어?</span>`}</div>`},
+  ${blines}<div class="shk2">
+  <div class="display jua burst" style="--i:0">넌,</div>
+  <div class="mega jua out burst" style="--i:1;font-size:172px">준비됐어?</div></div>`},
 
-/* H. COMING SOON / CTA */
+/* 19 CTA — coming soon */
 {dur:11,ac:'green',flare:1,html:()=>`
-  <div class="kline cine" style="--i:0;margin-bottom:18px">coming to 영락고 · 2026</div>
-  <div class="display sm jua cine" style="--i:1"><span class="grad">정치 · 법과 사회</span></div>
+  <div class="kline cine" style="--i:0;margin-bottom:16px">coming to 영락고 · 2026</div>
+  <div class="display sm jua zoom"><span class="multi">정치 · 법과 사회</span></div>
   <div class="display sm jua cine" style="--i:2">국제관계의 이해</div>
-  <div class="lead dim up" style="--i:4;margin-top:24px">담임·진로진학상담 선생님과 상담 → <span class="acc">수강신청 기간에 선택!</span></div>
-  <div class="mono fd" style="--i:6;margin-top:16px;font-size:21px;color:var(--ac)">🧭 youngnakhs.github.io/youngnak-guide</div>`},
+  <div class="lead dim up" style="--i:4;margin-top:24px">사회 진로선택, <span class="acc">너의 선택을 기다린다</span></div>
+  <div class="mono up" style="--i:6;margin-top:16px;font-size:21px;color:var(--ac)">🧭 youngnakhs.github.io/youngnak-guide</div>`},
 ];
 
 /* ===== engine ===== */
@@ -263,15 +271,11 @@ const frame=document.getElementById('frame'), stage=document.getElementById('sta
       prog=document.getElementById('top'), ui=document.getElementById('ui'), pp=document.getElementById('pp'),
       flash=document.getElementById('flash'), pc=document.getElementById('particles');
 let idx=0, elapsed=0, paused=false, last=0;
-
-/* particles */
-let pseed=1; const rnd=()=>{pseed=(pseed*16807)%2147483647;return pseed/2147483647;};
-for(let k=0;k<34;k++){const d=document.createElement('div');d.className='pt';
-  const dur=7+rnd()*9, sz=1.5+rnd()*3.5;
-  d.style.left=(rnd()*100)+'%';d.style.width=d.style.height=sz+'px';
-  d.style.animationDuration=dur+'s';d.style.animationDelay=(-rnd()*dur)+'s';d.style.opacity=.3+rnd()*.5;
-  pc.appendChild(d);}
-
+let pseed=7; const rnd=()=>{pseed=(pseed*16807)%2147483647;return pseed/2147483647;};
+const PC=['rgba(255,255,255,.8)','#FFB02E','#5B85FF','#34E3A0','#FF5B8A','#A98BFF'];
+for(let k=0;k<36;k++){const d=document.createElement('div');d.className='pt';const dur=7+rnd()*9,sz=1.5+rnd()*3.5;
+  d.style.left=(rnd()*100)+'%';d.style.width=d.style.height=sz+'px';d.style.color=PC[k%PC.length];d.style.background='currentColor';
+  d.style.animationDuration=dur+'s';d.style.animationDelay=(-rnd()*dur)+'s';d.style.opacity=.3+rnd()*.5;pc.appendChild(d);}
 prog.innerHTML=scenes.map(()=>`<div class="sg"><i></i></div>`).join('');
 const sgs=[...prog.querySelectorAll('.sg')];
 function fit(){const s=Math.min(innerWidth/1280,innerHeight/720);frame.style.transform=`translate(-50%,-50%) scale(${s})`;}
@@ -282,18 +286,13 @@ function render(n){
   const sc=scenes[idx], ac=AC[sc.ac]||AC.green;
   frame.style.setProperty('--ac',ac[0]); frame.style.setProperty('--ac2',ac[1]);
   if(sc.flash) doFlash();
-  stage.style.animation='none'; void stage.offsetWidth;
-  stage.style.animation=`${sc.push==='back'?'pullbk':'pushin'} ${sc.dur}s linear both`;
+  stage.style.animation='none'; void stage.offsetWidth; stage.style.animation=`pushin ${sc.dur}s linear both`;
   stage.innerHTML=sc.html();
   sgs.forEach((s,k)=>{s.classList.toggle('done',k<idx);s.querySelector('i').style.width=k<idx?'100%':'0%';});
 }
-function tick(ts){
-  if(!last)last=ts; const dt=ts-last; last=ts;
-  if(!paused){ elapsed+=dt; const d=scenes[idx].dur*1000;
-    sgs[idx].querySelector('i').style.width=Math.min(100,elapsed/d*100)+'%';
-    if(elapsed>=d) render(idx+1); }
-  requestAnimationFrame(tick);
-}
+function tick(ts){if(!last)last=ts;const dt=ts-last;last=ts;
+  if(!paused){elapsed+=dt;const d=scenes[idx].dur*1000;sgs[idx].querySelector('i').style.width=Math.min(100,elapsed/d*100)+'%';if(elapsed>=d)render(idx+1);}
+  requestAnimationFrame(tick);}
 function go(n){paused=false;pp.textContent='⏸';render(n);}
 function toggle(){paused=!paused;pp.textContent=paused?'▶':'⏸';stage.style.animationPlayState=paused?'paused':'running';}
 function fs(){const el=document.documentElement;if(!document.fullscreenElement)el.requestFullscreen&&el.requestFullscreen();else document.exitFullscreen&&document.exitFullscreen();}
