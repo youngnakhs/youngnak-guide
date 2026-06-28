@@ -5,20 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>세상을 읽는 힘 — 정치·법과 사회·국제관계의 이해 ｜ 영락고 사회 진로선택</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Serif+KR:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-:root{--ac:#A8E0C6; --ink:#F2F1EC; --dim:#A7AEBA; --mut:#7E8694; --gold:#E6D4A6;}
-html,body{height:100%;background:#000;overflow:hidden;font-family:'Pretendard Variable',Pretendard,sans-serif;color:var(--ink);}
-.serif{font-family:'Noto Serif KR',serif;}
+:root{--ac:#A8E0C6; --ink:#F3F2ED; --dim:#A9B0BC; --mut:#7C8492; --news:#E85C4F;}
+html,body{height:100%;background:#000;overflow:hidden;color:var(--ink);
+  font-family:'Pretendard Variable',Pretendard,sans-serif;-webkit-font-smoothing:antialiased;}
 .mono{font-family:'DM Mono',monospace;}
 
 #wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;}
 #frame{position:absolute;left:50%;top:50%;width:1280px;height:720px;transform-origin:center;overflow:hidden;
   background:linear-gradient(160deg,#0E1219 0%,#0C1017 55%,#0A0D13 100%);}
-
-/* soft muted glows */
-.glow{position:absolute;border-radius:50%;filter:blur(90px);mix-blend-mode:screen;opacity:.5;transition:background .9s ease,opacity .9s ease;}
+.glow{position:absolute;border-radius:50%;filter:blur(90px);mix-blend-mode:screen;opacity:.5;transition:background .9s ease;}
 .g1{width:760px;height:760px;left:-180px;top:-240px;background:radial-gradient(circle,#2C4A6E,transparent 64%);animation:gA 22s ease-in-out infinite;}
 .g2{width:680px;height:680px;right:-200px;bottom:-220px;background:radial-gradient(circle,#2A5247,transparent 64%);opacity:.42;animation:gB 27s ease-in-out infinite;}
 @keyframes gA{0%,100%{transform:translate(0,0)}50%{transform:translate(60px,40px)}}
@@ -26,68 +24,74 @@ html,body{height:100%;background:#000;overflow:hidden;font-family:'Pretendard Va
 .grain{position:absolute;inset:0;opacity:.045;mix-blend-mode:overlay;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
 .vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(130% 105% at 50% 42%,transparent 50%,rgba(0,0,0,.72) 100%);}
 #dust{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
-.d{position:absolute;bottom:-10px;border-radius:50%;background:rgba(255,255,255,.55);opacity:0;animation:rise linear infinite;}
-@keyframes rise{0%{transform:translateY(0);opacity:0}12%{opacity:.5}88%{opacity:.35}100%{transform:translateY(-760px);opacity:0}}
-
+.d{position:absolute;bottom:-10px;border-radius:50%;background:rgba(255,255,255,.55);opacity:0;animation:rise2 linear infinite;}
+@keyframes rise2{0%{transform:translateY(0);opacity:0}12%{opacity:.5}88%{opacity:.35}100%{transform:translateY(-760px);opacity:0}}
 .bar{position:absolute;left:0;right:0;height:78px;background:#06080C;z-index:18;}
 .bar.t{top:0;} .bar.b{bottom:0;}
-#brand{position:absolute;top:28px;left:54px;z-index:22;font-size:12px;letter-spacing:2.5px;color:rgba(255,255,255,.5);}
-#brand b{color:var(--ac);font-weight:500;}
-#runtag{position:absolute;bottom:28px;right:54px;z-index:22;font-size:11px;letter-spacing:4px;color:rgba(255,255,255,.32);}
+#brand{position:absolute;top:30px;left:54px;z-index:22;font-size:12.5px;letter-spacing:1.5px;color:rgba(255,255,255,.52);}
+#brand b{color:var(--ac);font-weight:600;}
+#runtag{position:absolute;bottom:29px;right:54px;z-index:22;font-size:11px;letter-spacing:4px;color:rgba(255,255,255,.32);}
 
 .scene{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
-  padding:112px 96px 150px;z-index:5;word-break:keep-all;}
+  padding:108px 92px 146px;z-index:5;word-break:keep-all;}
 @keyframes drift{from{transform:scale(1.012)}to{transform:scale(1.05)}}
 
-/* type */
-.eyebrow{font-family:'DM Mono',monospace;font-size:18px;letter-spacing:5px;color:var(--ac);text-transform:uppercase;margin-bottom:26px;}
-.kline{font-size:19px;letter-spacing:.42em;color:var(--dim);text-transform:uppercase;font-weight:500;}
-.display{font-family:'Noto Serif KR',serif;font-weight:600;font-size:96px;line-height:1.18;letter-spacing:-.5px;}
-.display.lg{font-size:120px;} .display.sm{font-size:72px;}
-.lead{font-size:34px;font-weight:500;line-height:1.5;color:var(--dim);}
-.lead .hl{color:var(--ink);}
+/* ── type (clean modern) ── */
+.eyebrow{font-family:'DM Mono',monospace;font-size:17px;letter-spacing:5px;color:var(--ac);text-transform:uppercase;margin-bottom:24px;}
+.label{font-size:18px;font-weight:700;letter-spacing:.14em;color:var(--ac);}
+.kline{font-size:18px;letter-spacing:.16em;color:var(--dim);font-weight:500;}
+.kline.up{text-transform:uppercase;letter-spacing:.28em;font-family:'DM Mono',monospace;font-size:17px;}
+.display{font-weight:800;font-size:90px;line-height:1.14;letter-spacing:-.035em;text-wrap:balance;}
+.display.lg{font-size:116px;line-height:1.08;} .display.sm{font-size:62px;}
+.lead{font-size:33px;font-weight:500;line-height:1.5;color:var(--dim);letter-spacing:-.01em;text-wrap:balance;}
+.lead .hl{color:var(--ink);font-weight:600;}
 .acc{color:var(--ac);}
-.rule{width:120px;height:1px;background:linear-gradient(90deg,transparent,var(--ac),transparent);margin:30px auto;}
-.muted{color:var(--mut);}
+.rule{width:118px;height:1px;background:linear-gradient(90deg,transparent,var(--ac),transparent);margin:28px auto;}
 
-/* glassmorphism */
+/* ── glassmorphism ── */
 .glass{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);
   backdrop-filter:blur(22px) saturate(118%);-webkit-backdrop-filter:blur(22px) saturate(118%);
-  box-shadow:0 26px 70px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.22),inset 0 -1px 0 rgba(0,0,0,.2);
-  border-radius:24px;}
-.panel{padding:38px 44px;max-width:980px;width:100%;}
-.card{padding:30px 34px;}
-
-.idx{display:flex;flex-direction:column;gap:2px;width:100%;}
-.ix{display:flex;align-items:baseline;gap:26px;padding:16px 6px;border-bottom:1px solid rgba(255,255,255,.1);text-align:left;}
+  box-shadow:0 26px 70px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.22),inset 0 -1px 0 rgba(0,0,0,.2);border-radius:24px;}
+.panel{padding:36px 44px;max-width:980px;width:100%;}
+.idx{display:flex;flex-direction:column;width:100%;}
+.ix{display:flex;align-items:baseline;gap:26px;padding:15px 6px;border-bottom:1px solid rgba(255,255,255,.1);text-align:left;}
 .ix:last-child{border-bottom:none;}
-.ix .n{font-family:'DM Mono',monospace;font-size:24px;color:var(--ac);}
-.ix .t{font-family:'Noto Serif KR',serif;font-weight:600;font-size:60px;letter-spacing:-.5px;}
-.ix .e{margin-left:auto;font-family:'DM Mono',monospace;font-size:17px;color:var(--mut);letter-spacing:2px;align-self:center;}
-
-.feat{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:18px;}
-.units{display:flex;flex-direction:column;gap:1px;width:100%;}
-.u{display:flex;align-items:center;gap:20px;padding:14px 4px;border-bottom:1px solid rgba(255,255,255,.08);}
+.ix .n{font-family:'DM Mono',monospace;font-size:23px;color:var(--ac);}
+.ix .t{font-weight:800;font-size:56px;letter-spacing:-.04em;}
+.ix .e{margin-left:auto;font-family:'DM Mono',monospace;font-size:16px;color:var(--mut);letter-spacing:2px;align-self:center;}
+.feat{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:16px;}
+.units{display:flex;flex-direction:column;width:100%;}
+.u{display:flex;align-items:center;gap:18px;padding:13px 4px;border-bottom:1px solid rgba(255,255,255,.08);}
 .u:last-child{border-bottom:none;}
-.u .n{font-family:'DM Mono',monospace;font-size:18px;color:var(--ac);min-width:30px;}
-.u .t{font-size:27px;font-weight:600;}
+.u .n{font-family:'DM Mono',monospace;font-size:17px;color:var(--ac);min-width:28px;}
+.u .t{font-size:26px;font-weight:700;letter-spacing:-.02em;}
 .u small{font-size:18px;color:var(--mut);margin-left:auto;font-weight:400;}
-.careers{font-size:21px;color:var(--dim);letter-spacing:.5px;}
-.careers b{color:var(--ink);font-weight:600;}
+.careers{font-size:20px;color:var(--dim);}
+.careers b{color:var(--ink);font-weight:700;}
 
-.tags{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:20px;}
-.tag{font-family:'DM Mono',monospace;font-size:18px;padding:8px 16px;border-radius:999px;
-  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:var(--dim);}
+/* ── NEWS broadcast ── */
+.tv{--na:#A9C2E6;width:830px;max-width:100%;}
+.tvscreen{position:relative;height:300px;border-radius:16px 16px 0 0;overflow:hidden;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,.015));border:1px solid rgba(255,255,255,.14);border-bottom:none;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);}
+.tvscreen svg{width:560px;height:280px;}
+.tvscreen::after{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 1px,transparent 1px 3px);opacity:.5;}
+.live{position:absolute;top:16px;left:18px;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;letter-spacing:2px;color:#fff;}
+.live .dot{width:9px;height:9px;border-radius:50%;background:var(--news);box-shadow:0 0 12px var(--news);animation:blink 1.3s infinite;}
+@keyframes blink{50%{opacity:.25}}
+.ch{position:absolute;top:16px;right:18px;font-size:14px;font-weight:800;letter-spacing:1px;color:rgba(255,255,255,.72);}
+.chyron{display:flex;border-radius:0 0 16px 16px;overflow:hidden;border:1px solid rgba(255,255,255,.14);border-top:none;background:rgba(9,12,17,.66);backdrop-filter:blur(20px);}
+.chyron .cat{background:var(--news);color:#fff;font-weight:800;font-size:18px;padding:0 22px;display:flex;align-items:center;letter-spacing:1px;flex-shrink:0;}
+.chyron .hl{padding:17px 24px;font-size:26px;font-weight:700;letter-spacing:-.02em;text-align:left;line-height:1.3;}
 
-/* motion: soft & classic */
-@keyframes rise{from{opacity:0;transform:translateY(28px);filter:blur(10px)}to{opacity:1;transform:none;filter:blur(0)}}
+/* motion */
+@keyframes rise{from{opacity:0;transform:translateY(26px);filter:blur(9px)}to{opacity:1;transform:none;filter:blur(0)}}
 @keyframes fade{from{opacity:0}to{opacity:1}}
 @keyframes ruleIn{from{transform:scaleX(0);opacity:0}to{transform:scaleX(1);opacity:1}}
 .rise{opacity:0;animation:rise 1s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:calc(var(--i,0)*.14s);}
 .fd{opacity:0;animation:fade 1.3s ease forwards;animation-delay:calc(var(--i,0)*.14s);}
 .rIn{transform:scaleX(0);animation:ruleIn .9s .3s cubic-bezier(.2,.7,.2,1) forwards;}
 
-/* progress + ui */
 #top{position:absolute;top:0;left:0;right:0;display:flex;gap:3px;padding:6px 12px 0;z-index:30;}
 .sg{flex:1;height:2px;border-radius:99px;background:rgba(255,255,255,.14);overflow:hidden;}
 .sg i{display:block;height:100%;width:0;background:var(--ac);}
@@ -95,12 +99,11 @@ html,body{height:100%;background:#000;overflow:hidden;font-family:'Pretendard Va
 #ui{position:absolute;top:16px;right:16px;display:flex;gap:7px;z-index:31;opacity:0;transition:opacity .25s;}
 #ui.show{opacity:1;}
 .cb{width:36px;height:36px;border-radius:9px;border:1px solid rgba(255,255,255,.16);background:rgba(0,0,0,.5);color:#fff;font-size:15px;cursor:pointer;}
-#start{position:absolute;inset:0;z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
-  background:rgba(6,8,12,.55);backdrop-filter:blur(6px);cursor:pointer;}
+#start{position:absolute;inset:0;z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:rgba(6,8,12,.55);backdrop-filter:blur(6px);cursor:pointer;}
 #start.hide{display:none;}
 #start .pl{width:96px;height:96px;border-radius:50%;border:1.5px solid rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;font-size:34px;color:#fff;transition:transform .2s;}
 #start:hover .pl{transform:scale(1.07);}
-#start p{font-size:15px;letter-spacing:3px;color:rgba(255,255,255,.7);}
+#start p{font-size:14px;letter-spacing:3px;color:rgba(255,255,255,.7);}
 </style>
 </head>
 <body>
@@ -109,7 +112,7 @@ html,body{height:100%;background:#000;overflow:hidden;font-family:'Pretendard Va
   <div id="dust"></div><div class="grain"></div><div class="vig"></div>
   <div class="scene" id="stage"></div>
   <div class="bar t"></div><div class="bar b"></div>
-  <div id="brand" class="mono">영락고 <b>SOCIAL</b> · 진로선택 ’26</div>
+  <div id="brand">영락고 <b>SOCIAL</b> · 진로선택 ’26</div>
   <div id="runtag" class="mono">YOUNGNAK</div>
   <div id="top"></div>
   <div id="ui"><button class="cb" id="pp" onclick="toggle()">⏸</button><button class="cb" onclick="go(idx-1)">⏮</button><button class="cb" onclick="go(idx+1)">⏭</button><button class="cb" onclick="fs()">⛶</button></div>
@@ -118,46 +121,71 @@ html,body{height:100%;background:#000;overflow:hidden;font-family:'Pretendard Va
 <audio id="bgm" src="promo-bgm.m4a" preload="auto"></audio>
 
 <script>
-const L=(t,i)=>`<span class="rise" style="--i:${i};display:inline-block">${t}</span>`;
 const AC={sage:'#A8E0C6',steel:'#A9C2E6',rose:'#E6BBAE',gold:'#E6D4A6'};
+/* 뉴스 일러스트(직접 제작, 저작권 무관) */
+const SVG={
+ pol:`<svg viewBox="0 0 560 280" fill="none" stroke="#C6D0DC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+   <g opacity=".8"><path d="M70 124 L160 80 L250 124 Z" fill="rgba(255,255,255,.04)"/>
+   <path d="M134 80 a26 26 0 0 1 52 0" fill="rgba(255,255,255,.05)"/><line x1="160" y1="54" x2="160" y2="44"/>
+   <line x1="64" y1="214" x2="256" y2="214"/>
+   <line x1="92" y1="130" x2="92" y2="208"/><line x1="128" y1="130" x2="128" y2="208"/><line x1="192" y1="130" x2="192" y2="208"/><line x1="228" y1="130" x2="228" y2="208"/></g>
+   <rect x="330" y="150" width="156" height="96" rx="9" fill="rgba(169,194,230,.07)" stroke="var(--na)"/>
+   <rect x="372" y="143" width="72" height="10" rx="3" fill="rgba(255,255,255,.08)" stroke="var(--na)"/>
+   <g transform="rotate(-15 408 120)"><rect x="380" y="90" width="56" height="64" rx="4" fill="rgba(255,255,255,.07)" stroke="var(--na)"/><path d="M392 121 l9 10 l17 -22" stroke="var(--na)"/></g></svg>`,
+ law:`<svg viewBox="0 0 560 280" fill="none" stroke="#C6D0DC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+   <g><line x1="250" y1="68" x2="250" y2="214"/><path d="M222 214 h56"/>
+   <line x1="172" y1="92" x2="328" y2="92"/><circle cx="250" cy="84" r="6" fill="rgba(255,255,255,.08)"/>
+   <line x1="172" y1="92" x2="158" y2="122"/><line x1="172" y1="92" x2="186" y2="122"/><path d="M150 122 a22 11 0 0 0 44 0" fill="rgba(169,194,230,.05)" stroke="var(--na)"/>
+   <line x1="328" y1="92" x2="314" y2="122"/><line x1="328" y1="92" x2="342" y2="122"/><path d="M306 122 a22 11 0 0 0 44 0" fill="rgba(169,194,230,.05)" stroke="var(--na)"/></g>
+   <g transform="rotate(-22 432 180)" stroke="var(--na)"><rect x="398" y="150" width="64" height="26" rx="7" fill="rgba(255,255,255,.07)"/><line x1="430" y1="176" x2="430" y2="224"/><rect x="392" y="236" width="84" height="12" rx="4" fill="rgba(255,255,255,.05)"/></g></svg>`,
+ intl:`<svg viewBox="0 0 560 280" fill="none" stroke="#C6D0DC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+   <g><circle cx="232" cy="142" r="94" fill="rgba(169,194,230,.04)"/><ellipse cx="232" cy="142" rx="40" ry="94"/><ellipse cx="232" cy="142" rx="76" ry="94"/>
+   <line x1="138" y1="142" x2="326" y2="142"/><path d="M150 102 h164"/><path d="M150 182 h164"/>
+   <path d="M204 108 q22 -10 36 6 q8 16 -10 22 q-22 4 -30 -12 z" fill="rgba(255,255,255,.06)" stroke="none"/>
+   <path d="M244 152 q26 0 30 20 q-6 18 -28 14 q-14 -12 -2 -34 z" fill="rgba(255,255,255,.05)" stroke="none"/></g>
+   <g stroke="var(--na)"><path d="M326 104 C396 92 430 122 472 110" stroke-dasharray="2 9"/><path d="M316 184 C388 204 420 172 468 190" stroke-dasharray="2 9"/>
+   <circle cx="472" cy="110" r="8" fill="var(--na)" stroke="none"/><circle cx="468" cy="190" r="7" fill="var(--na)" stroke="none"/><circle cx="430" cy="58" r="5" fill="rgba(255,255,255,.5)" stroke="none"/></g></svg>`,
+};
+function news(svg,cat,head,na){return `
+  <div class="tv rise" style="--i:0;--na:${na}">
+    <div class="tvscreen">${svg}<div class="live"><span class="dot"></span>LIVE</div><div class="ch">YN 뉴스</div></div>
+    <div class="chyron"><span class="cat">${cat}</span><span class="hl">${head}</span></div>
+  </div>`;}
 
 const scenes=[
-/* 0 presents (gag, 단정하게) */
+/* 0 presents */
 {dur:8,ac:'sage',html:()=>`
   <div class="kline rise" style="--i:0">영락고등학교 사회과</div>
-  <div class="display serif rise" style="--i:1;margin-top:18px">presents</div>
-  <div class="lead rise" style="--i:3;margin-top:24px">…네, ‘선물’이라는 뜻이지만 <span class="hl">선물은 아니고, 수업입니다.</span></div>`},
+  <div class="display rise" style="--i:1;margin-top:16px">presents</div>
+  <div class="lead rise" style="--i:3;margin-top:22px">…네, ‘선물’이라는 뜻이지만 <span class="hl">선물은 아니고, 수업입니다.</span></div>`},
 /* 1 atmospheric */
-{dur:7,ac:'sage',html:()=>`
-  <div class="display serif">${L('세상은 누가, 어떻게',0)}<br>${L('움직일까?',1)}</div>`},
+{dur:7,ac:'sage',html:()=>`<div class="display rise">세상은 누가, 어떻게<br>움직일까?</div>`},
 /* 2 title */
 {dur:9,ac:'sage',html:()=>`
   <div class="eyebrow fd" style="--i:0">영락고 사회 · 진로선택</div>
-  <div class="display lg serif rise" style="--i:1">세상을 읽는 힘</div>
+  <div class="display lg rise" style="--i:1">세상을 읽는 힘</div>
   <div class="rule rIn"></div>
-  <div class="kline fd" style="--i:3">Politics · Law · Global Relations</div>`},
+  <div class="kline up fd" style="--i:3">Politics · Law · Global Relations</div>`},
 /* 3 subjects */
 {dur:8,ac:'sage',html:()=>`
-  <div class="glass panel rise" style="--i:0">
-    <div class="idx">
-      <div class="ix"><span class="n">01</span><span class="t">정치</span><span class="e">POLITICS</span></div>
-      <div class="ix"><span class="n">02</span><span class="t">법과 사회</span><span class="e">LAW & SOCIETY</span></div>
-      <div class="ix"><span class="n">03</span><span class="t">국제관계의 이해</span><span class="e">GLOBAL RELATIONS</span></div>
-    </div>
-  </div>`},
+  <div class="glass panel rise" style="--i:0"><div class="idx">
+    <div class="ix"><span class="n">01</span><span class="t">정치</span><span class="e">POLITICS</span></div>
+    <div class="ix"><span class="n">02</span><span class="t">법과 사회</span><span class="e">LAW & SOCIETY</span></div>
+    <div class="ix"><span class="n">03</span><span class="t">국제관계의 이해</span><span class="e">GLOBAL</span></div>
+  </div></div>`},
 /* 4 why */
-{dur:6,ac:'sage',html:()=>`
-  <div class="display sm serif">${L('교과서를 넘어,',0)}<br>${L('<span class="acc">세상을 읽는 눈.</span>',1)}</div>`},
+{dur:6,ac:'sage',html:()=>`<div class="display sm rise">교과서를 넘어,<br><span class="acc">세상을 읽는 눈.</span></div>`},
 
-/* 5 정치 intro */
-{dur:7,ac:'steel',html:()=>`
+/* 5 정치 NEWS */
+{dur:7,ac:'steel',html:()=>news(SVG.pol,'정치','한 표가 세상을 바꾼다 — 선거·국회·정책','#A9C2E6')},
+/* 6 정치 intro */
+{dur:6,ac:'steel',html:()=>`
   <div class="eyebrow fd" style="--i:0">01 — Politics</div>
-  <div class="display lg serif rise" style="--i:1">정치</div>
-  <div class="lead rise" style="--i:2;margin-top:18px">“세상은 누가, 어떻게 움직이는가”</div>`},
-/* 6 정치 units */
-{dur:10,ac:'steel',html:()=>`
-  <div class="glass panel feat rise" style="--i:0">
-    <div class="eyebrow" style="margin:0">정치 · 무엇을 배우나</div>
+  <div class="display lg rise" style="--i:1">정치</div>
+  <div class="lead rise" style="--i:2;margin-top:16px">“세상은 누가, 어떻게 움직이는가”</div>`},
+/* 7 정치 units */
+{dur:9,ac:'steel',html:()=>`<div class="glass panel feat rise" style="--i:0">
+    <div class="label">정치 · 무엇을 배우나</div>
     <div class="units">
       <div class="u"><span class="n">01</span><span class="t">시민 생활과 정치</span></div>
       <div class="u"><span class="n">02</span><span class="t">정치과정과 참여</span><small>선거 · 정당 · 미디어 리터러시</small></div>
@@ -167,15 +195,16 @@ const scenes=[
     <div class="careers">진로 → <b>외교관 · 기자 · 정책가</b>　|　정치외교 · 행정 · 언론정보학</div>
   </div>`},
 
-/* 7 법 intro */
-{dur:7,ac:'rose',html:()=>`
+/* 8 법 NEWS */
+{dur:7,ac:'rose',html:()=>news(SVG.law,'사회','전세사기·학폭·계약 분쟁 — 법으로 지킨다','#E6BBAE')},
+/* 9 법 intro */
+{dur:6,ac:'rose',html:()=>`
   <div class="eyebrow fd" style="--i:0">02 — Law & Society</div>
-  <div class="display serif rise" style="--i:1">법과 사회</div>
-  <div class="lead rise" style="--i:2;margin-top:18px">“내 권리는, 내가 지킨다”</div>`},
-/* 8 법 units */
-{dur:10,ac:'rose',html:()=>`
-  <div class="glass panel feat rise" style="--i:0">
-    <div class="eyebrow" style="margin:0">법과 사회 · 무엇을 배우나</div>
+  <div class="display rise" style="--i:1">법과 사회</div>
+  <div class="lead rise" style="--i:2;margin-top:16px">“내 권리는, 내가 지킨다”</div>`},
+/* 10 법 units */
+{dur:9,ac:'rose',html:()=>`<div class="glass panel feat rise" style="--i:0">
+    <div class="label">법과 사회 · 무엇을 배우나</div>
     <div class="units">
       <div class="u"><span class="n">01</span><span class="t">개인 생활과 법</span><small>계약 · 가족 · 재산</small></div>
       <div class="u"><span class="n">02</span><span class="t">국가 생활과 법</span><small>헌법 · 기본권 · 권력분립</small></div>
@@ -185,42 +214,41 @@ const scenes=[
     <div class="careers">진로 → <b>판사 · 검사 · 변호사 · 경찰</b>　|　법학 · 로스쿨 · 경찰행정</div>
   </div>`},
 
-/* 9 국제 intro */
-{dur:7,ac:'sage',html:()=>`
+/* 11 국제 NEWS */
+{dur:7,ac:'sage',html:()=>news(SVG.intl,'국제','정상회담·통상·안보 — 세계는 연결된다','#A8E0C6')},
+/* 12 국제 intro */
+{dur:6,ac:'sage',html:()=>`
   <div class="eyebrow fd" style="--i:0">03 — Global Relations</div>
-  <div class="display serif rise" style="--i:1">국제관계의 이해</div>
-  <div class="lead rise" style="--i:2;margin-top:18px">“세계는 어떻게 연결되는가”</div>`},
-/* 10 국제 units */
-{dur:10,ac:'sage',html:()=>`
-  <div class="glass panel feat rise" style="--i:0">
-    <div class="eyebrow" style="margin:0">국제관계 · 무엇을 배우나</div>
+  <div class="display rise" style="--i:1">국제관계의 이해</div>
+  <div class="lead rise" style="--i:2;margin-top:16px">“세계는 어떻게 연결되는가”</div>`},
+/* 13 국제 units */
+{dur:9,ac:'sage',html:()=>`<div class="glass panel feat rise" style="--i:0">
+    <div class="label">국제관계 · 무엇을 배우나</div>
     <div class="units">
       <div class="u"><span class="n">01</span><span class="t">국제 사회를 보는 눈</span></div>
-      <div class="u"><span class="n">02</span><span class="t">국제 정치 · 경제 · 법</span><small>무역 · 안보 · 국제기구</small></div>
+      <div class="u"><span class="n">02</span><span class="t">국제 정치·경제·법</span><small>무역 · 안보 · 국제기구</small></div>
       <div class="u"><span class="n">03</span><span class="t">평화와 갈등</span><small>분쟁 · 협력 · 균형 발전</small></div>
       <div class="u"><span class="n">04</span><span class="t">세계시민의 자세</span></div>
     </div>
     <div class="careers">진로 → <b>외교관 · 국제기구 · 통상</b>　|　정치외교 · 국제학 · 국제통상</div>
   </div>`},
 
-/* 11 입시 */
-{dur:8,ac:'gold',html:()=>`
-  <div class="glass card rise" style="--i:0;max-width:860px">
-    <div class="eyebrow" style="margin-bottom:14px">학생부에 남는 한 끗</div>
-    <div class="display sm serif">탐구로 증명하는 <span class="acc">전공 적합성</span></div>
-    <div class="lead" style="margin-top:14px;font-size:26px">모의재판 · 모의선거 · 국제이슈 분석 — 세특 · 면접 · 논술까지</div>
+/* 14 입시 */
+{dur:8,ac:'gold',html:()=>`<div class="glass panel rise" style="--i:0;max-width:880px">
+    <div class="label" style="margin-bottom:14px">학생부에 남는 한 끗</div>
+    <div class="display sm">탐구로 증명하는 <span class="acc">전공 적합성</span></div>
+    <div class="lead" style="margin-top:14px;font-size:25px">모의재판 · 모의선거 · 국제이슈 분석 — 세특 · 면접 · 논술까지</div>
   </div>`},
-/* 12 climax */
+/* 15 climax */
 {dur:7,ac:'sage',html:()=>`
-  <div class="display lg serif rise" style="--i:0">당신은,</div>
-  <div class="display lg serif rise acc" style="--i:1;margin-top:6px;text-shadow:0 0 40px rgba(168,224,198,.4)">준비됐습니까?</div>`},
-/* 13 CTA */
+  <div class="display lg rise" style="--i:0">당신은,</div>
+  <div class="display lg rise acc" style="--i:1;margin-top:4px;text-shadow:0 0 44px rgba(168,224,198,.4)">준비됐습니까?</div>`},
+/* 16 CTA */
 {dur:10,ac:'sage',html:()=>`
-  <div class="kline fd" style="--i:0">Coming to 영락고 · 2026</div>
-  <div class="display serif rise" style="--i:1;margin-top:16px">정치 · 법과 사회</div>
-  <div class="display serif rise" style="--i:2">국제관계의 이해</div>
-  <div class="rule rIn" style="margin:26px auto"></div>
-  <div class="mono fd" style="--i:4;font-size:19px;letter-spacing:2px;color:var(--ac)">youngnakhs.github.io/youngnak-guide</div>`},
+  <div class="kline up fd" style="--i:0">Coming to 영락고 · 2026</div>
+  <div class="display rise" style="--i:1;margin-top:14px">정치 · 법과 사회<br>국제관계의 이해</div>
+  <div class="rule rIn" style="margin:24px auto"></div>
+  <div class="mono fd" style="--i:4;font-size:18px;letter-spacing:2px;color:var(--ac)">youngnakhs.github.io/youngnak-guide</div>`},
 ];
 
 /* ===== engine ===== */
@@ -243,7 +271,7 @@ function render(n){
   stage.style.animation='none';void stage.offsetWidth;stage.style.animation=`drift ${sc.dur}s linear both`;
   stage.innerHTML=sc.html();
   sgs.forEach((s,k)=>{s.classList.toggle('done',k<idx);s.querySelector('i').style.width=k<idx?'100%':'0%';});
-  if(wrap&&started&&bgm.src){try{bgm.currentTime=0;}catch(e){}}
+  if(wrap&&started){try{bgm.currentTime=0;}catch(e){}}
 }
 function tick(ts){if(!last)last=ts;const dt=ts-last;last=ts;
   if(!paused&&started){elapsed+=dt;const d=scenes[idx].dur*1000;sgs[idx].querySelector('i').style.width=Math.min(100,elapsed/d*100)+'%';if(elapsed>=d)render(idx+1);}
@@ -256,9 +284,8 @@ let hideT;function poke(){ui.classList.add('show');clearTimeout(hideT);hideT=set
 addEventListener('mousemove',poke);
 startEl.addEventListener('click',begin);
 addEventListener('keydown',e=>{if(!started){begin();return;}if(e.key===' '){e.preventDefault();toggle();}else if(e.key==='ArrowRight')go(idx+1);else if(e.key==='ArrowLeft')go(idx-1);else if(e.key.toLowerCase()==='f')fs();poke();});
-/* 녹화/자동재생용: 음악 없이도 영상은 자동 시작 */
 render(0);requestAnimationFrame(tick);
-setTimeout(()=>{if(!started){started=true;}},400);
+setTimeout(()=>{if(!started)started=true;},400);
 </script>
 </body>
 </html>
