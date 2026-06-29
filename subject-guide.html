@@ -211,6 +211,19 @@ html[data-theme=dark] #trainSpeech::after{border-top-color:rgba(44,52,61,.97);}
 .note{background:#FFFAF0;border:1px solid #F5E3BC;border-left:4px solid var(--amber);border-radius:12px;padding:15px 17px;font-size:12.5px;color:#5B5240;margin:16px 0;line-height:1.7;}
 .note b{color:#9A6A00;}
 
+/* ── 결과 제출 ── */
+.sub-card{margin-top:18px;background:var(--surface);border:1.5px solid var(--coral);border-radius:16px;padding:18px 18px 16px;}
+.sub-card h3{margin:0 0 4px;font-size:16px;font-weight:800;color:var(--coral-deep);}
+.sub-card p{margin:0 0 12px;font-size:12.5px;color:#5B6470;line-height:1.6;}
+.sub-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.sub-row input{flex:1;min-width:120px;font-family:inherit;font-size:15px;padding:11px 13px;border:1.5px solid #D9DEE6;border-radius:12px;background:#FFF;color:#222;}
+.sub-row input:focus{outline:none;border-color:var(--coral);}
+.sub-row #subHak{max-width:180px;}
+.sub-status{margin-top:10px;font-size:13px;font-weight:700;min-height:18px;line-height:1.5;}
+.sub-status .ok{color:var(--teal);}
+.sub-status .err{color:var(--coral-deep);}
+html[data-theme=dark] .sub-row input{background:#1b2027;color:#eee;border-color:#39414d;}
+
 /* ── test ── */
 #testBox{max-width:640px;margin:0 auto;}
 .t-progress{height:10px;border:none;border-radius:999px;background:var(--surface);overflow:hidden;margin:6px 0 22px;}
@@ -916,9 +929,41 @@ function renderResult(forceTop){
       <button id="saveCardBtn" class="btn ghost needs-h2c" onclick="saveResultCard()">📸 이미지로 저장</button>
       <button class="btn ghost" onclick="startTest()">↺ 다시 하기</button>
     </div>
-    <div class="note" style="margin-top:18px"><b>이 검사는 출발점일 뿐!</b> 진짜 결정은 ①과목 사전에서 내용 확인 → ②계열·학과에서 깊이 탐색 → ③대학별 권장과목 체크 → ④선생님·부모님 상담 순서로 차근차근. 결과 화면을 캡처해서 친구와 비교해 보는 것도 재밌어요 📸</div>`;
+    <div class="note" style="margin-top:18px"><b>이 검사는 출발점일 뿐!</b> 진짜 결정은 ①과목 사전에서 내용 확인 → ②계열·학과에서 깊이 탐색 → ③대학별 권장과목 체크 → ④선생님·부모님 상담 순서로 차근차근. 결과 화면을 캡처해서 친구와 비교해 보는 것도 재밌어요 📸</div>
+    <div class="sub-card">
+      <h3>📨 결과를 선생님께 보내기</h3>
+      <p>학번과 이름을 적고 전송하면 담임 선생님 시트에 자동으로 정리돼요. (과목 선택은 보내지 않고 성향 결과만 전송돼요)</p>
+      <div class="sub-row">
+        <input id="subHak" inputmode="numeric" maxlength="5" placeholder="학번 5자리 (예: 10204)" value="${_subHak}" oninput="_onSub('h',this.value)">
+        <input id="subName" maxlength="10" placeholder="이름" value="${_subName}" oninput="_onSub('n',this.value)">
+        <button id="subBtn" class="btn coral small" onclick="submitResult()">전송</button>
+      </div>
+      <div id="subStatus" class="sub-status"></div>
+    </div>`;
   window.scrollTo({top:0});
 }
+const RESULT_ENDPOINT = "https://script.google.com/macros/s/AKfycbyFRLORbBVBWbD-lxD_Pv8K_sP4Sp8Te-8ckZQjahViJ62kR459He2xSjJtQ4DKSaE4cw/exec";
+let _subHak="", _subName="";
+function _onSub(f,v){ if(f==='h') _subHak=v.replace(/[^0-9]/g,''); else _subName=v; }
+function submitResult(){
+  const st=document.getElementById('subStatus');
+  const btn=document.getElementById('subBtn');
+  const hak=(_subHak||'').trim(), name=(_subName||'').trim();
+  if(!/^\d{5}$/.test(hak)){ st.innerHTML='<span class="err">학번 5자리를 정확히 입력해 주세요.</span>'; return; }
+  const ban=Math.floor(+hak/100)-100;
+  if(ban<1||ban>6){ st.innerHTML='<span class="err">학번을 다시 확인해 주세요 (반이 1~6이 아니에요).</span>'; return; }
+  if(name.length<2){ st.innerHTML='<span class="err">이름을 입력해 주세요.</span>'; return; }
+  const sorted=Object.entries(tScore).sort((a,b)=>b[1]-a[1]);
+  const scores={}; Object.keys(CLUSTERS).forEach(k=>scores[CLUSTERS[k].label]=tScore[k]||0);
+  const payload={hakbun:hak,name:name,top1:CLUSTERS[sorted[0][0]].label,top2:sorted[1]?CLUSTERS[sorted[1][0]].label:'',scores:scores};
+  btn.disabled=true; const old=btn.textContent; btn.textContent='전송 중…'; st.innerHTML='';
+  fetch(RESULT_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
+    .then(r=>r.json())
+    .then(d=>{ if(d&&d.ok){ st.innerHTML='<span class="ok">✔ 선생님께 전송됐어요! ('+d.ban+'반 '+d.num+'번 '+name+')</span>'; btn.textContent='전송 완료 ✓'; }
+      else { st.innerHTML='<span class="err">전송 실패: '+((d&&d.error)||'알 수 없는 오류')+'</span>'; btn.disabled=false; btn.textContent=old; } })
+    .catch(e=>{ st.innerHTML='<span class="err">전송 실패(네트워크). 잠시 후 다시 시도해 주세요.</span>'; btn.disabled=false; btn.textContent=old; });
+}
+
 function savePNG(){
   const area = document.getElementById('printArea');
   area.classList.add('capturing');
