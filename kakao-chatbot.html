@@ -2044,14 +2044,15 @@ function ChatApp() {
     }
     pushUser(text);
     const topic = findTopic(text, role);
-    if (topic) {
-      replyTopic(topic);
-    } else {
-      const found = (function(){
-        const r = searchCorpus(text);
-        if (!r.passages.length || r.overlap < 2) return null;
-        const top = r.passages[0];
-        return {
+    // generic catch-all 토픽(아래 단어 하나로만 잡힌 것)은 구체 코퍼스 매칭에 양보
+    const GENERIC_TOPICS = new Set(['입시 정보', '성적 상담', '과목 선택']);
+    const corpus = (function(){
+      const r = searchCorpus(text);
+      if (!r.passages.length || r.overlap < 2) return null;
+      const top = r.passages[0];
+      return {
+        overlap: r.overlap,
+        msg: {
           cards: [{
             title: top.title,
             kicker: '📄 ' + top.page,
@@ -2059,24 +2060,32 @@ function ChatApp() {
             link: { href: top.href, label: top.page + ' 페이지 열기' },
           }],
           quick: ['선택과목 안내', '2028 입시 시행계획', '입시 정보', '도움말'],
-        };
-      })();
+        },
+      };
+    })();
+    // 우선순위: 구체 KB 토픽 > 강한 코퍼스 > generic 토픽 > 안내
+    const preferCorpus = corpus && (!topic || (GENERIC_TOPICS.has(topic) && corpus.overlap >= 3));
+    if (preferCorpus) {
       setTyping(true);
       setTimeout(() => {
         setTyping(false);
-        if (found) {
-          pushBot({ cards: found.cards, quick: found.quick, kind: 'reply' });
-        } else {
-          const fallbackQuick = role === '학부모'
-            ? ['수시·정시 차이', '입시 용어 설명', '자녀 성적 해석', '상담 신청']
-            : role === '교사'
-              ? ['성적 분석 도구', '입시 탐색', '교육과정 안내', '상담 자료']
-              : ['입시 정보', '성적 상담', '선택과목 안내', '도움말'];
-          pushBot({
-            text: '잘 이해하지 못했어요. 아래 메뉴에서 골라보시거나 키워드로 다시 입력해 주세요.',
-            quick: fallbackQuick,
-          });
-        }
+        pushBot({ ...corpus.msg, kind: 'reply' });
+      }, 450);
+    } else if (topic) {
+      replyTopic(topic);
+    } else {
+      setTyping(true);
+      setTimeout(() => {
+        setTyping(false);
+        const fallbackQuick = role === '학부모'
+          ? ['수시·정시 차이', '입시 용어 설명', '자녀 성적 해석', '상담 신청']
+          : role === '교사'
+            ? ['성적 분석 도구', '입시 탐색', '교육과정 안내', '상담 자료']
+            : ['입시 정보', '성적 상담', '선택과목 안내', '도움말'];
+        pushBot({
+          text: '잘 이해하지 못했어요. 아래 메뉴에서 골라보시거나 키워드로 다시 입력해 주세요.',
+          quick: fallbackQuick,
+        });
       }, 450);
     }
   };
