@@ -930,36 +930,59 @@ function renderResult(forceTop){
       <button class="btn ghost" onclick="startTest()">↺ 다시 하기</button>
     </div>
     <div class="note" style="margin-top:18px"><b>이 검사는 출발점일 뿐!</b> 진짜 결정은 ①과목 사전에서 내용 확인 → ②계열·학과에서 깊이 탐색 → ③대학별 권장과목 체크 → ④선생님·부모님 상담 순서로 차근차근. 결과 화면을 캡처해서 친구와 비교해 보는 것도 재밌어요 📸</div>
-    <div class="sub-card">
-      <h3>📨 결과를 선생님께 보내기</h3>
-      <p>학번과 이름을 적고 전송하면 담임 선생님 시트에 자동으로 정리돼요. (과목 선택은 보내지 않고 성향 결과만 전송돼요)</p>
-      <div class="sub-row">
-        <input id="subHak" inputmode="numeric" maxlength="5" placeholder="학번 5자리 (예: 10204)" value="${_subHak}" oninput="_onSub('h',this.value)">
-        <input id="subName" maxlength="10" placeholder="이름" value="${_subName}" oninput="_onSub('n',this.value)">
-        <button id="subBtn" class="btn coral small" onclick="submitResult()">전송</button>
-      </div>
-      <div id="subStatus" class="sub-status"></div>
-    </div>`;
+    ${subCardHTML()}`;
   window.scrollTo({top:0});
 }
 const RESULT_ENDPOINT = "https://script.google.com/macros/s/AKfycbyFRLORbBVBWbD-lxD_Pv8K_sP4Sp8Te-8ckZQjahViJ62kR459He2xSjJtQ4DKSaE4cw/exec";
 let _subHak="", _subName="";
 function _onSub(f,v){ if(f==='h') _subHak=v.replace(/[^0-9]/g,''); else _subName=v; }
+function subCardHTML(){
+  return `<div class="sub-card">
+    <h3>📨 결과를 선생님께 보내기</h3>
+    <p>학번·이름을 적고 전송하면, 담임 선생님 시트에 <b>내가 고른 과목 + 졸업·학점 점검 결과</b>(+성향)가 반별로 자동 정리돼요.</p>
+    <div class="sub-row">
+      <input class="sub-hak" inputmode="numeric" maxlength="5" placeholder="학번 5자리 (예: 10204)" value="${_subHak}" oninput="_onSub('h',this.value)">
+      <input class="sub-name" maxlength="10" placeholder="이름" value="${_subName}" oninput="_onSub('n',this.value)">
+      <button class="btn coral small sub-btn" onclick="submitResult()">전송</button>
+    </div>
+    <div class="sub-status"></div>
+  </div>`;
+}
 function submitResult(){
-  const st=document.getElementById('subStatus');
-  const btn=document.getElementById('subBtn');
+  const card = document.querySelector('.tab.on .sub-card') || document.querySelector('.sub-card');
+  if(!card) return;
+  const st = card.querySelector('.sub-status');
+  const btn = card.querySelector('.sub-btn');
   const hak=(_subHak||'').trim(), name=(_subName||'').trim();
   if(!/^\d{5}$/.test(hak)){ st.innerHTML='<span class="err">학번 5자리를 정확히 입력해 주세요.</span>'; return; }
   const ban=Math.floor(+hak/100)-100;
   if(ban<1||ban>6){ st.innerHTML='<span class="err">학번을 다시 확인해 주세요 (반이 1~6이 아니에요).</span>'; return; }
   if(name.length<2){ st.innerHTML='<span class="err">이름을 입력해 주세요.</span>'; return; }
-  const sorted=Object.entries(tScore).sort((a,b)=>b[1]-a[1]);
-  const scores={}; Object.keys(CLUSTERS).forEach(k=>scores[CLUSTERS[k].label]=tScore[k]||0);
-  const payload={hakbun:hak,name:name,top1:CLUSTERS[sorted[0][0]].label,top2:sorted[1]?CLUSTERS[sorted[1][0]].label:'',scores:scores};
+  // 선택과목(학기별) + 졸업/학점 점검
+  const sel=loadSel(); const all=Object.values(sel).flat();
+  const stStr=id=>{ const stx=STATIONS.find(s=>s.id===id); const a=[]; stx.groups.forEach(gid=>(sel[gid]||[]).forEach(s=>a.push(s))); return a.join(', '); };
+  const sel21=stStr('S1'),sel22=stStr('S2'),sel31=stStr('S3'),sel32=stStr('S4');
+  const checks=validate(sel);
+  const b31=(sel['G31']||[]).filter(s=>BASIC31.includes(s));
+  const b32=all.filter(s=>BASIC32.includes(s));
+  const giha=(sel['G22']||[]).includes('기하');
+  const basicTotal=b31.length+b32.length+(giha?1:0);
+  let life=0; all.forEach(s=>{ if(LIFE_CREDITS[s]) life+=LIFE_CREDITS[s]; });
+  const allOK = all.length>0 && checks.every(c=>c.lv==='ok');
+  const issues = checks.filter(c=>c.lv!=='ok').map(c=>c.txt).join(' / ');
+  // 성향(테스트 했으면 함께)
+  let sc=null; if(typeof tScore==='object' && Object.values(tScore).some(v=>v>0)) sc=tScore;
+  if(!sc){ try{ const sv=JSON.parse(localStorage.getItem(TEST_KEY)); if(sv&&sv.scores) sc=sv.scores; }catch(e){} }
+  let top1='',top2='',scores={};
+  if(sc){ const sorted=Object.entries(sc).sort((a,b)=>b[1]-a[1]); top1=CLUSTERS[sorted[0][0]].label; top2=sorted[1]?CLUSTERS[sorted[1][0]].label:''; Object.keys(CLUSTERS).forEach(k=>scores[CLUSTERS[k].label]=sc[k]||0); }
+  if(all.length===0 && !sc){ st.innerHTML='<span class="err">먼저 성향테스트를 하거나 ✏️내 선택에서 과목을 골라 주세요.</span>'; return; }
+  const payload={hakbun:hak,name:name,top1:top1,top2:top2,scores:scores,
+    sel21:sel21,sel22:sel22,sel31:sel31,sel32:sel32,
+    pick:all.length+'/'+TOTAL_PICK,basic:basicTotal+'/3',life:life+'/10',pass:allOK,issues:issues};
   btn.disabled=true; const old=btn.textContent; btn.textContent='전송 중…'; st.innerHTML='';
   fetch(RESULT_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)})
     .then(r=>r.json())
-    .then(d=>{ if(d&&d.ok){ st.innerHTML='<span class="ok">✔ 선생님께 전송됐어요! ('+d.ban+'반 '+d.num+'번 '+name+')</span>'; btn.textContent='전송 완료 ✓'; }
+    .then(d=>{ if(d&&d.ok){ st.innerHTML='<span class="ok">✔ 전송됐어요! ('+d.ban+'반 '+d.num+'번 '+name+') — 선택과목·점검 결과까지 전달됐어요.</span>'; btn.textContent='전송 완료 ✓'; }
       else { st.innerHTML='<span class="err">전송 실패: '+((d&&d.error)||'알 수 없는 오류')+'</span>'; btn.disabled=false; btn.textContent=old; } })
     .catch(e=>{ st.innerHTML='<span class="err">전송 실패(네트워크). 잠시 후 다시 시도해 주세요.</span>'; btn.disabled=false; btn.textContent=old; });
 }
@@ -1340,7 +1363,7 @@ function renderSel(){
   // 체크리스트
   const checks = validate(sel);
   $('#checklist').innerHTML = `<h3>📋 자동 점검</h3>` + checks.map(c=>
-    `<div class="ck ${c.lv}"><span class="ic">${c.lv==='ok'?'✅':c.lv==='warn'?'⚠️':'❌'}</span><div>${c.txt}<small>${c.sub||''}</small></div></div>`).join('');
+    `<div class="ck ${c.lv}"><span class="ic">${c.lv==='ok'?'✅':c.lv==='warn'?'⚠️':'❌'}</span><div>${c.txt}<small>${c.sub||''}</small></div></div>`).join('') + subCardHTML();
   renderPrint(sel, checks);
 }
 
