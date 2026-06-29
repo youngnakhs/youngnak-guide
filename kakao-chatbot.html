@@ -1462,12 +1462,67 @@ const KEYWORD_MAP = [
   { keys: ['과목'], topic: '과목 선택' },
 ];
 
+// ===== 코퍼스 검색 (무API, 의존성 0) =====
+function ynTokens(str){
+  const s = (str||'').toLowerCase().replace(/[^0-9a-z가-힣\s]/g,' ');
+  const words = s.split(/\s+/).filter(Boolean);
+  const out = [];
+  for(const w of words){
+    out.push(w);
+    if(/^[가-힣]+$/.test(w) && w.length>=2){
+      for(let i=0;i<w.length-1;i++) out.push(w.slice(i,i+2));
+    }
+  }
+  return out;
+}
+// 동의어: 한 그룹 내 표현이 질의에 보이면 그룹 전체를 질의에 추가
+const SYNONYMS = [
+  ['입시결과','입결','합격현황','합격선','우리학교 결과'],
+  ['교육과정','커리큘럼','편제','편성표','학점제'],
+  ['선택과목','과목선택','과목 선택','시간표'],
+  ['시행계획','전형계획','2028 대입','새 입시'],
+  ['과외','튜터','멘토','선배'],
+];
+function expandQuery(tokens){
+  const set = new Set(tokens);
+  const joined = tokens.join('');
+  for(const grp of SYNONYMS){
+    if(grp.some(t => joined.includes(t.replace(/\s/g,'')) ))
+      grp.forEach(t => ynTokens(t).forEach(x => set.add(x)));
+  }
+  return [...set];
+}
+const CORPUS = [
+  // 시드(검증용, 후속 태스크에서 본격 확충)
+  { id:'seed-2028', page:'2028 대입 시행계획', href:'admission-plan-2028.html',
+    title:'2028 대입 핵심 변화',
+    text:'2028학년도부터 수능이 통합형으로 바뀌고 내신·수능 모두 5등급제(상대평가)가 적용됩니다. 선택과목 칸막이가 줄고 공통 응시 비중이 커집니다.' },
+];
+function searchCorpus(query){
+  const q = expandQuery(ynTokens(query));
+  const qset = new Set(q);
+  const scored = CORPUS.map(p => {
+    const dtok = p._tok || (p._tok = ynTokens(p.title + ' ' + p.text));
+    const dset = new Set(dtok);
+    let overlap = 0;
+    for(const tkn of qset) if(dset.has(tkn)) overlap++;
+    const score = overlap * overlap / Math.sqrt(dtok.length || 1);
+    return { p, score, overlap };
+  }).sort((a,b)=> b.score - a.score);
+  const top = scored[0] || { score:0, overlap:0 };
+  return {
+    passages: scored.filter(x => x.overlap > 0).slice(0,2).map(x => x.p),
+    score: top.score, overlap: top.overlap,
+  };
+}
+
 window.YNB = {
   KB, KB_PARENT, KB_TEACHER,
   GRADE_MENUS, GRADE_GREET,
   ROLE_MENUS, ROLE_GREET,
   RECOMMENDED, KEYWORD_MAP,
   DDAY_STR, SUNEUNG_DATE,
+  CORPUS, SYNONYMS, searchCorpus, ynTokens, expandQuery,
 };
 </script>
 
