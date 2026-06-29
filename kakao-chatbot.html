@@ -1463,11 +1463,13 @@ const KEYWORD_MAP = [
 ];
 
 // ===== 코퍼스 검색 (무API, 의존성 0) =====
+const STOPWORDS = new Set(['어떻게','어떤','어떠','무엇','뭐','뭔지','뭐야','알려줘','알려','줘','해줘','주세요','좀','어때','대해','대한','관련','정도','그리고','하는','있어','있나요','인가요','가요','어디','언제','누가','왜','그게','그거','이거','저거','싶어','싶은','거']);
 function ynTokens(str){
   const s = (str||'').toLowerCase().replace(/[^0-9a-z가-힣\s]/g,' ');
   const words = s.split(/\s+/).filter(Boolean);
   const out = [];
   for(const w of words){
+    if(STOPWORDS.has(w)) continue;
     out.push(w);
     if(/^[가-힣]+$/.test(w) && w.length>=2){
       for(let i=0;i<w.length-1;i++) out.push(w.slice(i,i+2));
@@ -1497,6 +1499,44 @@ const CORPUS = [
   { id:'seed-2028', page:'2028 대입 시행계획', href:'admission-plan-2028.html',
     title:'2028 대입 핵심 변화',
     text:'2028학년도부터 수능이 통합형으로 바뀌고 내신·수능 모두 5등급제(상대평가)가 적용됩니다. 선택과목 칸막이가 줄고 공통 응시 비중이 커집니다.' },
+
+  // ===== 2028 대입 시행계획 (admission-plan-2028.html 렌더 내용 기반) =====
+  // 출처: admission-plan-2028.html — 대시보드 개요
+  { id:'plan-overview', page:'2028 대입 시행계획', href:'admission-plan-2028.html', title:'2028 전형 워크벤치 개요', text:'시행계획 도구는 대교협이 발표한 2028 대입 전형계획을 49개 대학(서울 24·수도권 4·거점국립 9·특수 12) 기준으로 정리한 워크벤치입니다. 대학별 전형을 비교하고 상담 시트로 활용할 수 있습니다.' },
+  // 출처: admission-plan-2028.html — 2028 핵심 변화①
+  { id:'plan-5deung', page:'2028 대입 시행계획', href:'admission-plan-2028.html', title:'내신 5등급제(고1부터)', text:'내신이 고1부터 9등급에서 5등급으로 바뀝니다. 변별력 저하를 보완하려고 대학들은 4·5등급 큰 폭 감점, 교과전형에 서류 정성평가 추가, 학종 면접 강화, 정시에 학생부 반영 등으로 변별합니다.' },
+  // 출처: admission-plan-2028.html — 2028 핵심 변화②
+  { id:'plan-tonghap', page:'2028 대입 시행계획', href:'admission-plan-2028.html', title:'통합형 수능(사·과탐 구분 없음)', text:'2028 수능은 사회·과학탐구 구분 없이 통합 출제되어 융합 평가가 강화됩니다. 수능최저학력기준은 신설(연세대 논술 전 모집단위 등)·강화·완화가 대학별로 갈립니다.' },
+  // 출처: admission-plan-2028.html — 2028 핵심 변화③
+  { id:'plan-jayuro', page:'2028 대입 시행계획', href:'admission-plan-2028.html', title:'전공자율선택제(무전공) 확대', text:'49개 대학 중 43개가 전공자율선택제(자유전공·광역·캠퍼스자율)를 운영합니다. 다만 의·약·사범·간호·수의 등 인기학과는 진입 제한이 일반적입니다.' },
+  // 출처: admission-plan-2028.html — 2028 핵심 변화④
+  { id:'plan-jeongsi', page:'2028 대입 시행계획', href:'admission-plan-2028.html', title:'정시 수능 100%의 종말', text:'정시에서도 수능 100%가 사라지고 학생부·서류가 도입됩니다. 서울대 교과역량 40점, 연세대 서류 100점, 고려대 교과우수, 한양·동국·홍익·숙명·시립·중앙대가 정시에 학생부·서류를 반영합니다.' },
+  // 출처: admission-plan-2028.html — 2028 핵심 변화⑤
+  { id:'plan-uiyak', page:'2028 대입 시행계획', href:'admission-plan-2028.html', title:'의약학·계약학과·지역의사 확대', text:'의대 모집이 확대되고 지역의사 선발(부산·경상·전남·전북·충남·충북·강원·제주·성균관)이 신설됩니다. 삼성·SK·LG·현대 등 채용조건형 계약학과도 다수 운영됩니다.' },
+  // 출처: admission-plan-2028.html — 보유 현황
+  { id:'plan-hold', page:'2028 대입 시행계획', href:'admission-plan-2028.html', title:'정리된 대학 구성', text:'도구가 정리한 49개 대학 중 의대 보유 18개교, 약대 16개교, 무전공 운영 43개교입니다. 전형으로는 수능최저 미적용 10개교, 논술 30개교, 정시 학생부 반영 35개교가 집계됩니다.' },
+  // 출처: admission-plan-2028.html — 영락 지역인재
+  { id:'plan-yeongnak', page:'2028 대입 시행계획', href:'admission-plan-2028.html', title:'영락고 지원 불가(지역인재)', text:'거점국립대 9개교의 지역인재 전형은 서울 소재 영락고 학생에게 자격이 없어 지원 불가로 분류됩니다. 해당 대학은 일반전형으로 접근해야 합니다.' },
+
+  // ===== 2022 개정 교육과정 (curriculum-guide.html) =====
+  // 출처: curriculum-guide.html — 고교학점제
+  { id:'curri-1', page:'2022 개정 교육과정', href:'curriculum-guide.html', title:'고교학점제 졸업 요건', text:'고교학점제 전면 시행으로 학생이 직접 과목을 선택해 3년간 192학점을 채우면 졸업합니다. 필수 이수 84학점, 자율 선택 90학점, 창의적 체험활동 18학점으로 구성됩니다.' },
+  // 출처: curriculum-guide.html — 학점 단위
+  { id:'curri-2', page:'2022 개정 교육과정', href:'curriculum-guide.html', title:'1학점의 의미와 학기당 규모', text:'1학점은 주 1시간씩 한 학기 수업을 의미합니다. 학생은 한 학기에 보통 8~10개 과목, 약 30학점 내외를 이수합니다.' },
+  // 출처: curriculum-guide.html — 5등급제
+  { id:'curri-3', page:'2022 개정 교육과정', href:'curriculum-guide.html', title:'일반선택 5등급 상대평가', text:'일반선택 과목 평가가 9등급 상대평가에서 5등급 상대평가로 바뀝니다. 1등급 범위가 상위 4%에서 상위 10%로 넓어져 등급 경쟁 부담이 줄어듭니다.' },
+  // 출처: curriculum-guide.html — 절대평가
+  { id:'curri-4', page:'2022 개정 교육과정', href:'curriculum-guide.html', title:'진로·융합선택 절대평가', text:'진로선택(64개)·융합선택(38개) 과목은 A~E 5단계 성취도로 절대평가되어 다른 학생과 경쟁하지 않습니다. 기준 이상이면 좋은 성취도를 받습니다.' },
+  // 출처: curriculum-guide.html — 과목 분류
+  { id:'curri-5', page:'2022 개정 교육과정', href:'curriculum-guide.html', title:'선택과목 3가지 분류', text:'일반선택(36개)은 수능 출제 과목 포함·5등급 상대평가, 진로선택(64개)은 심화 과목·A~E 절대평가, 융합선택(38개)은 실생활 연계 신설 과목·A~E 절대평가입니다.' },
+  // 출처: curriculum-guide.html — 이수 기준
+  { id:'curri-6', page:'2022 개정 교육과정', href:'curriculum-guide.html', title:'공통과목·선택과목 이수 기준', text:'공통 과목은 출석 2/3 이상과 성취율 40% 이상을 모두 충족해야 이수로 인정되고, 선택 과목은 출석 2/3만 충족하면 이수로 인정됩니다(2026년 3월 기준).' },
+  // 출처: curriculum-guide.html — 통합 수능
+  { id:'curri-7', page:'2022 개정 교육과정', href:'curriculum-guide.html', title:'통합형 수능 도입', text:'2028학년도 수능부터 문·이과 계열 구분 없이 통합 수능으로 운영됩니다. 모든 학생이 공통·일반선택 중심의 동일 범위에서 국어·수학·탐구(통합사회·통합과학)를 응시합니다.' },
+  // 출처: curriculum-guide.html — 수능 외 과목
+  { id:'curri-8', page:'2022 개정 교육과정', href:'curriculum-guide.html', title:'수능 범위 밖이지만 중요한 과목', text:'미적분Ⅱ와 기하는 수능 범위에서 제외되지만 학생부종합전형에서 중요하게 평가됩니다. 이공계 학종 목표라면 진로선택 과학 과목을 병행 이수하는 것이 유리합니다.' },
+  // 출처: curriculum-guide.html — 학종 과목 선택
+  { id:'curri-9', page:'2022 개정 교육과정', href:'curriculum-guide.html', title:'학종에서 과목 선택의 비중', text:'학생부종합전형은 내신·세특·활동을 종합 평가하며 과목 선택이 핵심 요소입니다. 상위 대학은 이공계 지원자에게 진로선택 과학 과목 3개 이상 이수를 권장하기도 합니다.' },
 
   // ===== 선택과목 나침반 / 대학까지 네!학기 / 선배 과외 =====
   // 출처: subject-compass.html — 도구 소개
@@ -1554,7 +1594,7 @@ function searchCorpus(query){
   const q = expandQuery(ynTokens(query));
   const qset = new Set(q);
   const scored = CORPUS.map(p => {
-    const dtok = p._tok || (p._tok = ynTokens(p.title + ' ' + p.text));
+    const dtok = p._tok || (p._tok = ynTokens(p.page + ' ' + p.title + ' ' + p.text));
     const dset = new Set(dtok);
     let overlap = 0;
     for(const tkn of qset) if(dset.has(tkn)) overlap++;
