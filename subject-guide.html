@@ -960,8 +960,8 @@ function submitResult(){
   if(name.length<2){ st.innerHTML='<span class="err">이름을 입력해 주세요.</span>'; return; }
   // 선택과목(학기별) + 졸업/학점 점검
   const sel=loadSel(); const all=Object.values(sel).flat();
-  const stStr=id=>{ const stx=STATIONS.find(s=>s.id===id); const a=[]; stx.groups.forEach(gid=>(sel[gid]||[]).forEach(s=>a.push(s))); return a.join(', '); };
-  const sel21=stStr('S1'),sel22=stStr('S2'),sel31=stStr('S3'),sel32=stStr('S4');
+  const stArr=id=>{ const stx=STATIONS.find(s=>s.id===id); const a=[]; stx.groups.forEach(gid=>(sel[gid]||[]).forEach(s=>a.push(s))); return a; };
+  const sel21=stArr('S1'),sel22=stArr('S2'),sel31=stArr('S3'),sel32=stArr('S4');
   const checks=validate(sel);
   const b31=(sel['G31']||[]).filter(s=>BASIC31.includes(s));
   const b32=all.filter(s=>BASIC32.includes(s));
@@ -973,10 +973,10 @@ function submitResult(){
   // 성향(테스트 했으면 함께)
   let sc=null; if(typeof tScore==='object' && Object.values(tScore).some(v=>v>0)) sc=tScore;
   if(!sc){ try{ const sv=JSON.parse(localStorage.getItem(TEST_KEY)); if(sv&&sv.scores) sc=sv.scores; }catch(e){} }
-  let top1='',top2='',scores={};
-  if(sc){ const sorted=Object.entries(sc).sort((a,b)=>b[1]-a[1]); top1=CLUSTERS[sorted[0][0]].label; top2=sorted[1]?CLUSTERS[sorted[1][0]].label:''; Object.keys(CLUSTERS).forEach(k=>scores[CLUSTERS[k].label]=sc[k]||0); }
+  let top1='',top2='';
+  if(sc){ const sorted=Object.entries(sc).sort((a,b)=>b[1]-a[1]); top1=CLUSTERS[sorted[0][0]].label; top2=sorted[1]?CLUSTERS[sorted[1][0]].label:''; }
   if(all.length===0 && !sc){ st.innerHTML='<span class="err">먼저 성향테스트를 하거나 ✏️내 선택에서 과목을 골라 주세요.</span>'; return; }
-  const payload={hakbun:hak,name:name,top1:top1,top2:top2,scores:scores,
+  const payload={hakbun:hak,name:name,top1:top1,top2:top2,
     sel21:sel21,sel22:sel22,sel31:sel31,sel32:sel32,
     pick:all.length+'/'+TOTAL_PICK,basic:basicTotal+'/3',life:life+'/10',pass:allOK,issues:issues};
   btn.disabled=true; const old=btn.textContent; btn.textContent='전송 중…'; st.innerHTML='';
