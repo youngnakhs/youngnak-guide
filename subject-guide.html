@@ -88,6 +88,9 @@ html[data-theme=dark] #themeBtn:hover{background:rgba(36,43,51,.98);}
 .tab{display:none;animation:rise .3s ease;}
 .tab.on{display:block;}
 @keyframes rise{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+@keyframes ctaPulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(232,93,74,.5);}50%{transform:scale(1.035);box-shadow:0 0 0 9px rgba(232,93,74,0);}}
+.pulse-cta{animation:ctaPulse 1.3s ease-in-out infinite;}
+@media (prefers-reduced-motion:reduce){.pulse-cta{animation:none;}}
 
 h2.sec{font-family:'Paperlogy',sans-serif;font-weight:800;font-size:clamp(20px,4.4vw,26px);letter-spacing:-.3px;margin:40px 0 6px;}
 h2.sec:first-child{margin-top:0;}
@@ -924,7 +927,7 @@ function renderResult(forceTop){
     <p class="sub">서울시교육청 계열별 권장과목 중 우리 학교에 개설된 과목만 골라 정리했어요. 추천 조합은 과학 이어달리기 규칙까지 맞춰서 담아드려요.</p>
     ${groupsHtml}
     <div class="cta-row">
-      <button class="btn coral" onclick="fillFromCluster('${top[0]}')">✏️ 이 추천으로 내 선택 채우기</button>
+      <button class="btn coral pulse-cta" onclick="fillFromCluster('${top[0]}')">✏️ 이 추천으로 내 선택 채우기</button>
       ${second?`<button class="btn ghost" onclick="renderResult('${forceTop?sorted[0][0]:second[0]}');window.scrollTo({top:0})">${forceTop?CLUSTERS[sorted[0][0]].em+' 1위 결과로 돌아가기':CLUSTERS[second[0]].em+' '+CLUSTERS[second[0]].label+' 결과도 보기'}</button>`:''}
       <button id="saveCardBtn" class="btn ghost needs-h2c" onclick="saveResultCard()">📸 이미지로 저장</button>
       <button class="btn ghost" onclick="startTest()">↺ 다시 하기</button>
@@ -977,14 +980,31 @@ function submitResult(){
   if(sc){ const sorted=Object.entries(sc).sort((a,b)=>b[1]-a[1]); top1=CLUSTERS[sorted[0][0]].label; top2=sorted[1]?CLUSTERS[sorted[1][0]].label:''; }
   if(!allOK){
     const fails = checks.filter(c=>c.lv!=='ok');
+    const listHtml = '<ul style="margin:6px 0 0;padding-left:18px;line-height:1.55;text-align:left">'
+      + fails.map(c=>`<li>${c.lv==='bad'?'❌':'⚠️'} ${c.txt}${c.sub?` <span style="opacity:.72">— ${c.sub}</span>`:''}</li>`).join('')
+      + '</ul>';
+    const tabEl = card.closest('.tab');
+    const fromResult = tabEl && tabEl.id === 'tab-test';
+    if(fromResult){
+      // 성향테스트 결과화면: 여기선 교양 등 과목을 더 못 고르니 → 내 선택으로 넘기고 팝업 안내
+      go('mysel');
+      $('#modalBody').innerHTML = `
+        <button class="x" onclick="closeModal()">✕</button>
+        <h3>조금만 더 하면 돼요! ✏️</h3>
+        <p style="font-size:13.5px;color:#37434C;line-height:1.6">성향테스트 추천만으로는 <b>교양 과목</b> 등이 빠져 있어 아직 전송할 수 없어요.<br>지금 보고 계신 <b>✏️ 내 선택</b> 창에서 남은 과목을 마저 고른 뒤 전송해 주세요. 거기서 좀 더 고민해 봐요!</p>
+        <div class="note" style="margin-top:10px"><b>아직 채워야 할 것</b>${listHtml}</div>
+        <div style="margin-top:14px;text-align:right"><button class="btn coral" onclick="closeModal()">알겠어요, 골라볼게요 👍</button></div>`;
+      $('#modalBg').classList.add('on'); document.body.style.overflow='hidden';
+      st.innerHTML='';
+      return;
+    }
+    // 내 선택 탭: 그 자리에서 고칠 수 있으니 인라인으로 사유 표시
     const lead = all.length===0
-      ? '먼저 <b>✏️ 내 선택</b>에서 과목을 골라 주세요. 전송은 졸업 요건을 모두 충족해야 가능해요.'
+      ? '먼저 아래에서 과목을 골라 주세요. 전송은 졸업 요건을 모두 충족해야 가능해요.'
       : '전송 전에 아래 항목을 다시 확인하세요. <b>모두 충족</b>해야 선생님께 전송됩니다.';
     st.innerHTML = '<div class="err submit-recheck" style="text-align:left">'
       + '<b>⚠️ 다시 확인하세요</b><div style="margin:6px 0 4px">'+lead+'</div>'
-      + '<ul style="margin:6px 0 0;padding-left:18px;line-height:1.55">'
-      + fails.map(c=>`<li>${c.lv==='bad'?'❌':'⚠️'} ${c.txt}${c.sub?` <span style="opacity:.72">— ${c.sub}</span>`:''}</li>`).join('')
-      + '</ul></div>';
+      + listHtml + '</div>';
     return;
   }
   const payload={hakbun:hak,name:name,top1:top1,top2:top2,
