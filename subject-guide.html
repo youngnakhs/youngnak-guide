@@ -975,7 +975,18 @@ function submitResult(){
   if(!sc){ try{ const sv=JSON.parse(localStorage.getItem(TEST_KEY)); if(sv&&sv.scores) sc=sv.scores; }catch(e){} }
   let top1='',top2='';
   if(sc){ const sorted=Object.entries(sc).sort((a,b)=>b[1]-a[1]); top1=CLUSTERS[sorted[0][0]].label; top2=sorted[1]?CLUSTERS[sorted[1][0]].label:''; }
-  if(all.length===0 && !sc){ st.innerHTML='<span class="err">먼저 성향테스트를 하거나 ✏️내 선택에서 과목을 골라 주세요.</span>'; return; }
+  if(!allOK){
+    const fails = checks.filter(c=>c.lv!=='ok');
+    const lead = all.length===0
+      ? '먼저 <b>✏️ 내 선택</b>에서 과목을 골라 주세요. 전송은 졸업 요건을 모두 충족해야 가능해요.'
+      : '전송 전에 아래 항목을 다시 확인하세요. <b>모두 충족</b>해야 선생님께 전송됩니다.';
+    st.innerHTML = '<div class="err submit-recheck" style="text-align:left">'
+      + '<b>⚠️ 다시 확인하세요</b><div style="margin:6px 0 4px">'+lead+'</div>'
+      + '<ul style="margin:6px 0 0;padding-left:18px;line-height:1.55">'
+      + fails.map(c=>`<li>${c.lv==='bad'?'❌':'⚠️'} ${c.txt}${c.sub?` <span style="opacity:.72">— ${c.sub}</span>`:''}</li>`).join('')
+      + '</ul></div>';
+    return;
+  }
   const payload={hakbun:hak,name:name,top1:top1,top2:top2,
     sel21:sel21,sel22:sel22,sel31:sel31,sel32:sel32,
     pick:all.length+'/'+TOTAL_PICK,basic:basicTotal+'/3',life:life+'/10',pass:allOK,issues:issues};
