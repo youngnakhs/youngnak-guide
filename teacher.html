@@ -76,16 +76,6 @@ a{color:inherit;}
     <a class="home-link" href="index.html">← 정보센터</a>
   </div>
 
-  <!-- 비밀번호 게이트 -->
-  <div id="gate" class="gate">
-    <div class="em">🔒</div>
-    <h1>교사용 대시보드</h1>
-    <p>학생 학습·졸음 데이터를 보려면 비밀번호를 입력하세요.</p>
-    <input id="pw" type="password" inputmode="numeric" placeholder="••••••" autocomplete="off">
-    <button id="enterBtn">입장</button>
-    <div class="err" id="gateErr"></div>
-  </div>
-
   <!-- 대시보드 -->
   <div id="dash" style="display:none">
     <div class="summary" id="summary"></div>
@@ -128,7 +118,6 @@ const firebaseConfig = {
   messagingSenderId: "759960503900",
   appId: "1:759960503900:web:d9c20e4a8a23489a990899"
 };
-const TEACHER_PW = "900613";   // ← 비밀번호 변경 시 이 값만 수정
 
 const db = getFirestore(initializeApp(firebaseConfig));
 
@@ -139,16 +128,9 @@ function dayKey(ts){ const d=new Date(ts); return `${d.getFullYear()}-${pad(d.ge
 function mondayOf(ts){ const d=new Date(ts); d.setHours(0,0,0,0); const wd=(d.getDay()+6)%7; d.setDate(d.getDate()-wd); return d.getTime(); }
 function weekKey(){ return dayKey(mondayOf(Date.now())); }
 
-/* 게이트 */
-const gate=document.getElementById('gate'), dash=document.getElementById('dash');
-function tryEnter(){
-  const v=document.getElementById('pw').value.trim();
-  if(v===TEACHER_PW){ sessionStorage.setItem('sm_teacher','1'); gate.style.display='none'; dash.style.display='block'; loadData(); }
-  else document.getElementById('gateErr').textContent='비밀번호가 올바르지 않습니다.';
-}
-document.getElementById('enterBtn').addEventListener('click', tryEnter);
-document.getElementById('pw').addEventListener('keydown', e=>{ if(e.key==='Enter') tryEnter(); });
-if(sessionStorage.getItem('sm_teacher')==='1'){ gate.style.display='none'; dash.style.display='block'; }
+/* 게이트 제거: 바로 대시보드 표시 */
+document.getElementById('dash').style.display='block';
+loadData();
 
 /* 데이터 로드 */
 let rows=[], sortKey='weekNetMs', sortDir=-1;

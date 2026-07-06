@@ -2004,33 +2004,6 @@ function ChatApp() {
 
   const sendText = (text) => {
     if (!text.trim() || lock.current) return;
-    if (awaitPw) {
-      const entered = text.trim();
-      pushUser('•'.repeat(entered.length) || '•');
-      setAwaitPw(false);
-      setTyping(true);
-      if (entered === '900613') {
-        setTimeout(() => {
-          setTyping(false);
-          setRole('교사');
-          pushBot({
-            text: '인증되었습니다.\n' + ROLE_GREET['교사'],
-            quick: ROLE_MENUS['교사'].map(m => m.label),
-            kind: 'greet',
-            showRec: true,
-          });
-        }, 450);
-      } else {
-        setTimeout(() => {
-          setTyping(false);
-          pushBot({
-            text: '⚠️ 비정상적인 접근입니다.\n인증에 실패하여 메인 페이지로 이동합니다.',
-          });
-          setTimeout(() => { window.location.href = 'index.html'; }, 1800);
-        }, 450);
-      }
-      return;
-    }
     pushUser(text);
     const topic = findTopic(text, role);
     // generic catch-all 토픽(아래 단어 하나로만 잡힌 것)은 구체 코퍼스 매칭에 양보
@@ -2080,19 +2053,6 @@ function ChatApp() {
   };
 
   const pickRole = (r) => {
-    if (r === '교사') {
-      pushUser(r);
-      setTyping(true);
-      setTimeout(() => {
-        setTyping(false);
-        setAwaitPw(true);
-        pushBot({
-          text: '교사 메뉴는 인증이 필요해요.\n비밀번호를 입력해 주세요.',
-          kind: 'pwAsk',
-        });
-      }, 450);
-      return;
-    }
     setRole(r);
     pushUser(r);
     setTyping(true);
