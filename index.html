@@ -6,6 +6,30 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>영락고등학교 — 진로·대입 정보센터</title>
+<script>
+/* 2026-07-16 10:00 KST 정각부 메인페이지 셧다운 */
+(function(){
+  var T = new Date('2026-07-16T10:00:00+09:00').getTime();
+  var CLOSED = '<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8">'
+    + '<meta name="viewport" content="width=device-width, initial-scale=1.0">'
+    + '<title>운영 종료 안내</title><style>'
+    + 'body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;'
+    + 'background:linear-gradient(160deg,#0e2a1c,#1f7a49);font-family:"Noto Sans KR",sans-serif;color:#fff}'
+    + '.box{text-align:center;padding:40px 28px;max-width:420px}'
+    + '.em{font-size:52px;margin-bottom:18px}'
+    + 'h1{font-size:21px;font-weight:900;margin:0 0 14px;line-height:1.4}'
+    + 'p{font-size:14px;line-height:1.8;color:rgba(255,255,255,.85);margin:0}'
+    + '.dt{display:inline-block;margin-top:22px;padding:8px 16px;border:1px solid rgba(255,255,255,.35);'
+    + 'border-radius:999px;font-size:12px;letter-spacing:1px;color:rgba(255,255,255,.75)}'
+    + '</style></head><body><div class="box"><div class="em">🔒</div>'
+    + '<h1>영락고 진로·대입 정보센터<br>운영이 종료되었습니다</h1>'
+    + '<p>이용해 주셔서 감사합니다.<br>필요한 자료는 1학년부로 문의해 주세요.</p>'
+    + '<div class="dt">2026. 7. 16. 10:00 종료</div></div></body></html>';
+  function closed(){ try{ document.open(); document.write(CLOSED); document.close(); }catch(e){} }
+  if (Date.now() >= T) { closed(); return; }
+  setInterval(function(){ if (Date.now() >= T) closed(); }, 1000);
+})();
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700;900&family=Noto+Sans+KR:wght@300;400;500;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
