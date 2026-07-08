@@ -1300,8 +1300,19 @@ renderUnivChips(); renderUniv();
 
 /* ════════ 내 선택 ════════ */
 const LS_KEY = 'ynk-subjsel-' + COHORT;
+/* 편제 개편 이전 저장분 정화: 현재 그룹에 없는 과목·사라진 그룹 제거.
+   (안 하면 화면 칩은 안 켜지는데 점검·전송에는 유령 과목이 남아 개수·요건이 어긋남) */
+function sanitizeSel(raw){
+  const clean = {};
+  Object.entries(raw||{}).forEach(([gid, arr])=>{
+    if(!G[gid] || !Array.isArray(arr)) return;
+    const keep = arr.filter(s => G[gid].subjects.includes(s));
+    if(keep.length) clean[gid] = keep;
+  });
+  return clean;
+}
 function loadSel(){
-  try{ return JSON.parse(localStorage.getItem(LS_KEY)) || {}; }catch(e){ return {}; }
+  try{ return sanitizeSel(JSON.parse(localStorage.getItem(LS_KEY)) || {}); }catch(e){ return {}; }
 }
 function saveSel(s){ localStorage.setItem(LS_KEY, JSON.stringify(s)); updateNavBdg(); }
 function toggleSel(gid, name){
