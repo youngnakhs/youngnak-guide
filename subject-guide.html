@@ -970,7 +970,7 @@ function submitResult(){
   const b32=all.filter(s=>BASIC32.includes(s));
   const giha=(sel['G22']||[]).includes('기하');
   const basicTotal=b31.length+b32.length+(giha?1:0);
-  let life=0; all.forEach(s=>{ if(LIFE_CREDITS[s]) life+=LIFE_CREDITS[s]; });
+  const life=lifeCredits(sel);
   const allOK = all.length>0 && checks.every(c=>c.lv==='ok');
   const issues = checks.filter(c=>c.lv!=='ok').map(c=>c.txt).join(' / ');
   // 성향(테스트 했으면 함께)
@@ -1325,7 +1325,17 @@ const SCI_LINK = {'역학과 에너지':'물리학','물질과 에너지':'화�
 const LANG_LINK = {'중국어 회화':'중국어','중국 문화':'중국어','일본어 회화':'일본어','일본 문화':'일본어'};
 const BASIC31 = ['주제 탐구 독서','미적분Ⅱ','경제 수학','세계 문화와 영어'];
 const BASIC32 = ['문학과 영상','실용 통계','미디어 영어'];
-const LIFE_CREDITS = {'중국어':3,'일본어':3,'데이터 과학':3,'중국어 회화':3,'일본어 회화':3,'소프트웨어와 생활':3,'중국 문화':3,'일본 문화':3,'교육의 이해':2,'논술':2,'인간과 철학':2,'논리와 사고':2};
+/* 생활·교양(기술가정·정보·제2외국어·한문·교양) 학점 — 편제 데이터에서 파생.
+   교양(G31E·G32E)·제2외국어(G2L) 그룹 전체 + 혼합 그룹 속 해당 교과 과목 */
+const LIFE_EXTRA = ['데이터 과학','소프트웨어와 생활','중국어 회화','일본어 회화','중국 문화','일본 문화'];
+const LIFE_CREDITS = {};
+GROUPS.forEach(g=>{
+  const lifeGroup = g.id==='G2L' || g.id.endsWith('E');
+  g.subjects.forEach(s=>{ if(lifeGroup || LIFE_EXTRA.includes(s)) LIFE_CREDITS[s] = g.credits; });
+});
+/* 같은 과목을 두 학기에 중복 선택해도 학점은 1회만 */
+const lifeCredits = sel => [...new Set(Object.values(sel).flat())].reduce((a,s)=>a+(LIFE_CREDITS[s]||0),0);
+const dupSubjects = sel => { const all=Object.values(sel).flat(); return [...new Set(all.filter((s,i)=>all.indexOf(s)!==i))]; };
 
 function validate(sel){
   const all = Object.values(sel).flat();
@@ -1349,12 +1359,16 @@ function validate(sel){
   checks.push({lv: basicTotal<=3?'ok':'bad',
     txt:`국·수·영 선택 합계 ${basicTotal}/3개 (81학점 규칙${giha?' · 기하 포함':''})`,
     sub:'지정 72학점 + 선택(2학년 기하 포함) — 국수영 교과는 총 81학점을 넘을 수 없어요'});
-  // 3. 생활·교양 10학점
-  let life = 0;
-  all.forEach(s=>{ if(LIFE_CREDITS[s]) life += LIFE_CREDITS[s]; });
+  // 3. 생활·교양 10학점 (동일 과목 중복은 1회만 집계)
+  const life = lifeCredits(sel);
   checks.push({lv: life>=10?'ok':'warn',
     txt:`기술가정·정보·제2외국어·한문·교양 ${life}/10학점`,
-    sub: life<10?'데이터 과학 / 회화 / 소프트웨어와 생활 / 문화 과목 중에서 더 골라 10학점을 채워요':'충족!'});
+    sub: life<10?'제2외국어·교양 외에 데이터 과학 / 회화 / 소프트웨어와 생활 / 문화 과목 중 1개를 더 골라 10학점을 채워요':'충족!'});
+  // 3-1. 동일 과목 중복 선택 (생태와 환경·인간과 철학은 3-1·3-2 공통 개설)
+  dupSubjects(sel).forEach(s=>{
+    checks.push({lv:'bad', txt:`'${s}' 중복 선택`,
+      sub:'같은 과목은 한 학기에만 들을 수 있어요 — 한쪽을 다른 과목으로 바꿔 주세요'});
+  });
   // 4. 과학 연계
   const g21 = sel['G21']||[];
   Object.entries(SCI_LINK).forEach(([adv, base])=>{
