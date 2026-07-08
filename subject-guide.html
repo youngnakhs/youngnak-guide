@@ -1300,6 +1300,19 @@ renderUnivChips(); renderUniv();
 
 /* ════════ 내 선택 ════════ */
 const LS_KEY = 'ynk-subjsel-' + COHORT;
+/* ── 교육과정 개편(6/30 이동·신설) 1회 초기화 ──
+   이전에 저장한 선택이 옛 편제 기준이라, 개편 버전과 다르면 한 번만 비우고 새로 시작.
+   이후 저장분은 그대로 유지(버전 일치). 다음에 편제가 또 바뀌면 SEL_VER만 올리면 됨. */
+const SEL_VER = '20260708';
+const VER_KEY = 'ynk-subjsel-ver-' + COHORT;
+let _selReset = false;
+try{
+  if(localStorage.getItem(LS_KEY) && localStorage.getItem(VER_KEY) !== SEL_VER){
+    localStorage.removeItem(LS_KEY);   // 개편 이전 선택 전부 초기화(1회)
+    _selReset = true;
+  }
+  localStorage.setItem(VER_KEY, SEL_VER);
+}catch(e){}
 /* 편제 개편 이전 저장분 정화: 현재 그룹에 없는 과목·사라진 그룹 제거.
    (안 하면 화면 칩은 안 켜지는데 점검·전송에는 유령 과목이 남아 개수·요건이 어긋남) */
 function sanitizeSel(raw){
@@ -1453,6 +1466,7 @@ startTest();
 renderDictChips(); renderDict();
 renderSel();
 updateNavBdg();
+if(_selReset) setTimeout(()=>toast('📢 교육과정 개편으로 이전 선택이 초기화됐어요. 처음부터 다시 골라 주세요 🙂'), 700);
 </script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" onload="document.body.classList.add('h2c-ready')" onerror="document.querySelectorAll('.needs-h2c').forEach(function(b){b.style.display='none'})"></script>
 </body>
