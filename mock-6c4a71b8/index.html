@@ -1,0 +1,1158 @@
+<!doctype html>
+<html lang="ko" data-mode="student">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>면접 연습실 — 성공회대 / 경기대</title>
+<style>
+/* ══════════════════════════════════════════════════════════
+   조용한 면접실 — 어두운 방, 책상 위 한 줄기 조명, 종이 한 장
+   ══════════════════════════════════════════════════════════ */
+:root{
+  --bg:#0d1216;  --bg2:#111920;  --panel:#151f27;  --panel2:#1a252e;
+  --line:#26343f; --line2:#334553;
+  --ink:#e8eef2;  --sub:#9db0bd;  --faint:#63788a;
+  --amber:#d9a441; --amber-d:#a87a24;
+  --rec:#e0574a;
+  --ok:#4bb896;
+  --skhu:#c98a3a; --kgu:#4d94d6;
+  --mono:'Cascadia Mono','Consolas','D2Coding',ui-monospace,monospace;
+  --sans:'Pretendard Variable','Pretendard','Malgun Gothic','맑은 고딕','Apple SD Gothic Neo',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--bg); color:var(--ink); font-family:var(--sans);
+  font-size:15px; line-height:1.65; -webkit-font-smoothing:antialiased;
+  letter-spacing:-.01em; overflow-x:hidden;
+}
+/* 방 안의 공기 — 위쪽 조명 + 미세한 결 */
+body::before{
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background:
+    radial-gradient(1100px 620px at 50% -12%, rgba(217,164,65,.10), transparent 62%),
+    radial-gradient(900px 700px at 50% 120%, rgba(77,148,214,.055), transparent 60%);
+}
+body::after{
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.035;
+  background-image:repeating-linear-gradient(0deg,#fff 0 1px,transparent 1px 3px);
+  mix-blend-mode:overlay;
+}
+#app{position:relative; z-index:1; min-height:100%}
+
+/* 녹음 중 — 방 가장자리가 붉게 숨쉰다 */
+#recglow{position:fixed;inset:0;pointer-events:none;z-index:40;opacity:0;
+  box-shadow:inset 0 0 190px 12px rgba(224,87,74,.42);
+  transition:opacity .5s ease}
+body.rec #recglow{opacity:1;animation:breathe 2.6s ease-in-out infinite}
+@keyframes breathe{0%,100%{opacity:.55}50%{opacity:1}}
+
+button{font-family:inherit;font-size:inherit;color:inherit;background:none;border:0;cursor:pointer}
+button:disabled{opacity:.35;cursor:not-allowed}
+.wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+
+/* ── 헤더 ─────────────────────────────────────── */
+header.top{padding:52px 0 30px;border-bottom:1px solid var(--line)}
+.kick{font:600 10.5px/1 var(--mono);letter-spacing:.28em;color:var(--amber);text-transform:uppercase}
+h1.t{font-size:33px;font-weight:800;letter-spacing:-.035em;margin:15px 0 9px}
+h1.t em{font-style:normal;color:var(--amber)}
+.sub1{color:var(--sub);font-size:13.5px;max-width:70ch}
+.sub1 b{color:var(--ink);font-weight:700}
+
+/* ── 화면 전환 ────────────────────────────────── */
+.screen{display:none}
+.screen.on{display:block;animation:fadein .45s ease both}
+@keyframes fadein{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+
+/* ── 설정 화면 ────────────────────────────────── */
+.sect{margin-top:38px}
+.sect > h2{font-size:11px;font-weight:700;letter-spacing:.2em;color:var(--faint);
+  font-family:var(--mono);text-transform:uppercase;margin-bottom:14px;
+  display:flex;align-items:center;gap:12px}
+.sect > h2::after{content:'';flex:1;height:1px;background:var(--line)}
+
+.flow{display:flex;gap:0;margin-top:26px;border:1px solid var(--line);border-radius:3px;overflow:hidden}
+.flow span{flex:1;padding:13px 16px;font-family:var(--mono);font-size:11.5px;color:var(--sub);
+  letter-spacing:.04em;border-right:1px solid var(--line);background:var(--panel);
+  display:flex;align-items:center;gap:9px}
+.flow span:last-child{border-right:0}
+.flow b{color:var(--amber);font-size:13px;font-weight:700}
+@media(max-width:760px){.flow{flex-direction:column}.flow span{border-right:0;border-bottom:1px solid var(--line)}}
+
+.uvs{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.uvs{grid-template-columns:1fr}}
+.uv{position:relative;background:var(--panel);border:1px solid var(--line);
+  border-radius:3px;padding:24px 24px 22px;text-align:left;transition:.22s;overflow:hidden}
+.uv::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c);opacity:.5;transition:.22s}
+.uv:hover{border-color:var(--line2);transform:translateY(-2px);
+  box-shadow:0 12px 34px -22px var(--c)}
+.uv,.opt,.mic{animation:rise .5s cubic-bezier(.2,.7,.3,1) both}
+.uv:nth-child(2){animation-delay:.06s}
+.opt:nth-child(2){animation-delay:.05s}.opt:nth-child(3){animation-delay:.1s}
+.mic{animation-delay:.12s}
+@keyframes rise{from{opacity:0;transform:translateY(11px)}to{opacity:1;transform:none}}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--amber-d);outline-offset:2px}
+.uv.sel{border-color:var(--c);background:var(--panel2)}
+.uv.sel::before{opacity:1;width:4px}
+.uv .nm{font-size:22px;font-weight:800;letter-spacing:-.03em}
+.uv .fm{color:var(--sub);font-size:12.5px;margin-top:5px}
+.uv .mt{display:flex;gap:20px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.uv .mt div{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.04em}
+.uv .mt b{display:block;color:var(--ink);font-size:16px;font-weight:700;margin-top:3px;letter-spacing:-.02em}
+.uv .el{margin-top:13px;font-size:11.5px;color:var(--sub);font-family:var(--mono)}
+
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.opt{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:16px 18px}
+.opt .lb{font-size:11px;font-family:var(--mono);letter-spacing:.14em;color:var(--faint);text-transform:uppercase}
+.seg{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.seg button{flex:1 1 0;min-width:52px;padding:8px 6px;border:1px solid var(--line2);border-radius:2px;
+  font-family:var(--mono);font-size:12px;color:var(--sub);transition:.16s;text-align:center}
+.seg button.wide{flex:1 0 100%;padding:8px 12px}
+.seg button:hover{border-color:var(--amber-d);color:var(--ink)}
+.seg button.on{background:var(--amber);border-color:var(--amber);color:#1a1206;font-weight:700}
+.chk{display:flex;align-items:center;gap:9px;margin-top:11px;font-size:13px;color:var(--sub);cursor:pointer}
+.chk input{width:15px;height:15px;accent-color:var(--amber);cursor:pointer}
+
+.mic{margin-top:22px;background:var(--panel);border:1px solid var(--line);border-radius:3px;
+  padding:18px 20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.mic .dot{width:9px;height:9px;border-radius:50%;background:var(--faint);flex:none}
+.mic.ok .dot{background:var(--ok);box-shadow:0 0 12px var(--ok)}
+.mic.bad .dot{background:var(--rec)}
+.mic .txt{flex:1;min-width:200px;font-size:13px;color:var(--sub)}
+.mic .txt b{color:var(--ink)}
+.meter{width:160px;height:8px;background:var(--bg2);border:1px solid var(--line);border-radius:2px;
+  overflow:hidden;flex:none;position:relative}
+.meter::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(90deg,transparent 0 15px,var(--line) 15px 16px)}
+.meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ok),var(--amber));
+  transition:width .07s linear}
+
+.btn{padding:14px 30px;border-radius:2px;font-weight:700;font-size:14.5px;letter-spacing:-.01em;
+  border:1px solid var(--line2);color:var(--ink);transition:.18s;background:var(--panel)}
+.btn:hover:not(:disabled){border-color:var(--amber);color:var(--amber)}
+.btn.pri{background:var(--amber);border-color:var(--amber);color:#171006}
+.btn.pri:hover:not(:disabled){filter:brightness(1.1);color:#171006;border-color:var(--amber)}
+.btn.sm{padding:8px 15px;font-size:12.5px;font-weight:600}
+.btn.gh{background:transparent}
+.actions{margin-top:34px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+  padding-bottom:60px}
+.hint{font-size:12px;color:var(--faint);font-family:var(--mono)}
+
+.warnbar{margin-top:20px;border:1px solid #5c3a34;background:#241a19;border-radius:3px;
+  padding:15px 18px;font-size:13px;color:#e8b5ad;display:none}
+.warnbar.on{display:block}
+.warnbar b{color:#ffcfc6}
+.warnbar code{font-family:var(--mono);background:#000;padding:2px 6px;border-radius:2px;color:#ffd9a0;font-size:12px}
+
+/* ── 면접 진행 화면 ──────────────────────────── */
+#stage{position:fixed;inset:0;z-index:50;background:var(--bg);display:none;
+  flex-direction:column;padding:0}
+#stage.on{display:flex}
+#stage::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(900px 520px at 50% 8%,rgba(217,164,65,.12),transparent 60%)}
+.stbar{position:relative;display:flex;justify-content:space-between;align-items:center;
+  padding:20px 34px;border-bottom:1px solid var(--line);flex:none}
+.stbar .l{display:flex;align-items:center;gap:16px}
+.qno{font-family:var(--mono);font-size:12.5px;color:var(--faint);letter-spacing:.1em}
+.qno b{color:var(--amber);font-size:19px;font-weight:700}
+.chip{font-family:var(--mono);font-size:10.5px;letter-spacing:.11em;padding:4px 10px;
+  border:1px solid var(--line2);border-radius:2px;color:var(--sub);text-transform:uppercase}
+.chip.u{border-color:var(--c);color:var(--c)}
+.stbar .r{display:flex;gap:9px;align-items:center}
+
+.pips{position:relative;display:flex;gap:3px;padding:12px 34px 0}
+.pips i{flex:1;height:2px;background:var(--line);transition:.35s}
+.pips i.done{background:var(--amber-d);opacity:.7}
+.pips i.cur{background:var(--amber);box-shadow:0 0 10px var(--amber)}
+.pips i.fol{opacity:.45}
+.qzone{position:relative;flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:18px 34px 6px;text-align:center}
+.phase{font-family:var(--mono);font-size:11.5px;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--faint);margin-bottom:26px}
+.phase.answer{color:var(--rec)}
+.qtext{font-size:clamp(21px,2.9vw,36px);font-weight:700;line-height:1.48;letter-spacing:-.035em;
+  max-width:27ch;margin:0 auto;text-wrap:balance;animation:qin .6s cubic-bezier(.2,.7,.3,1) both}
+@keyframes qin{from{opacity:0;transform:translateY(16px) scale(.985)}to{opacity:1;transform:none}}
+.qsmall{margin-top:20px;font-size:14px;color:var(--sub);max-width:52ch;line-height:1.7;display:none}
+.qsmall.on{display:block}
+
+.timerzone{flex:none;padding:0 34px 34px;position:relative}
+.tnum{font-family:var(--mono);font-size:clamp(46px,7vw,84px);font-weight:200;
+  letter-spacing:-.04em;text-align:center;line-height:1;color:var(--ink);
+  font-variant-numeric:tabular-nums}
+.tnum.warn{color:var(--amber)}
+.tnum.crit{color:var(--rec);animation:pulse .9s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.42}}
+.tbar{margin:18px auto 0;max-width:820px;height:2px;background:var(--line);position:relative;overflow:hidden}
+.tbar i{position:absolute;left:0;top:0;bottom:0;background:var(--amber);width:100%}
+.tbar.answer i{background:var(--rec)}
+.revwrap{position:relative;padding:0 34px 34px;animation:rise .4s cubic-bezier(.2,.7,.3,1) both}
+.revin{max-width:620px;margin:0 auto;background:var(--panel);border:1px solid var(--line2);
+  border-radius:3px;padding:20px 22px}
+.revlb{font-family:var(--mono);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--amber);text-align:center;margin-bottom:4px}
+.revin .pl{margin-top:12px}
+.revbtns{display:flex;gap:10px;justify-content:center;margin-top:16px}
+.revhint{text-align:center;font-size:12px;color:var(--faint);margin-top:12px;line-height:1.6}
+.stfoot{margin-top:18px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.recdot{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11.5px;
+  color:var(--rec);letter-spacing:.12em}
+.recdot i{width:8px;height:8px;border-radius:50%;background:var(--rec);animation:pulse 1.1s infinite}
+
+/* ── 채점 화면 ────────────────────────────────── */
+.grid{display:grid;grid-template-columns:262px 1fr;gap:22px;margin-top:26px;align-items:start}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.qlist{background:var(--panel);border:1px solid var(--line);border-radius:3px;overflow:hidden;
+  position:sticky;top:18px;max-height:calc(100vh - 40px);display:flex;flex-direction:column}
+@media(max-width:900px){.qlist{position:static;max-height:none}}
+.qlist .hd{padding:12px 15px;border-bottom:1px solid var(--line);font-family:var(--mono);
+  font-size:10.5px;letter-spacing:.16em;color:var(--faint);text-transform:uppercase;
+  display:flex;justify-content:space-between;align-items:center;flex:none}
+.qlist .hd b{color:var(--amber);letter-spacing:.04em}
+#qlist{overflow-y:auto;flex:1}
+#qlist::-webkit-scrollbar{width:6px}
+#qlist::-webkit-scrollbar-thumb{background:var(--line2);border-radius:3px}
+.qrow .fl{width:5px;height:5px;border-radius:50%;background:var(--rec);flex:none;opacity:.85}
+.qrow{display:flex;align-items:center;gap:10px;padding:10px 15px;border-bottom:1px solid var(--line);
+  width:100%;text-align:left;transition:.15s}
+.qrow:last-child{border-bottom:0}
+.qrow:hover{background:var(--panel2)}
+.qrow.cur{background:var(--panel2);box-shadow:inset 3px 0 0 var(--amber)}
+.qrow.cur .id{color:var(--amber)}
+.qrow .id{font-family:var(--mono);font-size:11px;color:var(--faint);width:34px;flex:none}
+.qrow .tx{flex:1;font-size:12.5px;color:var(--sub);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qrow.cur .tx{color:var(--ink)}
+.qrow .sc{font-family:var(--mono);font-size:12px;color:var(--faint);flex:none}
+.qrow .sc.has{color:var(--amber);font-weight:700}
+.qrow .au{width:6px;height:6px;border-radius:50%;background:var(--line2);flex:none}
+.qrow .au.has{background:var(--ok)}
+
+.pane{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:26px 28px}
+.pane .eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:var(--faint);
+  text-transform:uppercase;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.pane h3{font-size:20px;font-weight:700;line-height:1.55;letter-spacing:-.03em;margin:12px 0 0;max-width:44ch}
+
+.pl{margin-top:14px;background:var(--bg2);border:1px solid var(--line);border-radius:3px;
+  padding:13px 15px;transition:border-color .2s}
+.pl.on{border-color:var(--amber-d);background:#171e17}
+.pl .lb{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--faint);
+  text-transform:uppercase;margin-bottom:11px;display:flex;justify-content:space-between}
+.pl .lb .t{letter-spacing:.05em;color:var(--sub);text-transform:none}
+.pl .ct{display:flex;align-items:center;gap:9px}
+.pl button{flex:none;height:31px;border:1px solid var(--line2);border-radius:2px;color:var(--sub);
+  font-family:var(--mono);font-size:11.5px;transition:.15s;padding:0}
+.pl button:hover{border-color:var(--amber-d);color:var(--ink)}
+.pl .pp{width:40px;font-size:12.5px;color:var(--ink)}
+.pl.on .pp{background:var(--amber);border-color:var(--amber);color:#171006}
+.pl .bk{width:40px}
+.pl .sp{width:54px}
+.pl .sk{flex:1;min-width:60px;-webkit-appearance:none;appearance:none;height:3px;border-radius:2px;
+  background:var(--line2);outline:none;cursor:pointer}
+.pl .sk::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;
+  background:var(--amber);cursor:pointer;box-shadow:0 0 0 3px rgba(217,164,65,.16)}
+.pl audio{display:none}
+.noclip{margin-top:14px;background:var(--bg2);border:1px dashed var(--line2);border-radius:3px;
+  padding:15px;font-size:12.5px;color:var(--faint);font-family:var(--mono);text-align:center}
+
+.look{margin-top:20px;border-left:2px solid var(--amber-d);background:#1b1810;padding:14px 17px;border-radius:0 3px 3px 0}
+.look b.t{display:block;font-size:11px;font-family:var(--mono);letter-spacing:.14em;
+  color:var(--amber);text-transform:uppercase;margin-bottom:8px}
+.look ul{margin:0;padding-left:17px}
+.look li{font-size:13px;color:var(--sub);margin-bottom:5px;line-height:1.6}
+.look li:last-child{margin-bottom:0}
+.look li b{color:var(--ink);font-weight:700}
+
+.fol{margin-top:14px;font-size:13px}
+.fol .lb{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--faint);
+  text-transform:uppercase;margin-bottom:8px}
+.fol div.q{color:var(--sub);padding:7px 0 7px 15px;border-left:1px solid var(--line2);margin-bottom:6px}
+
+.rub{margin-top:24px;padding-top:20px;border-top:1px solid var(--line)}
+.rub .lb{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--faint);
+  text-transform:uppercase;margin-bottom:11px;display:flex;justify-content:space-between;
+  align-items:baseline;gap:16px;flex-wrap:wrap}
+.rub .lb span{font-size:11.5px;color:var(--faint);letter-spacing:0;font-family:var(--sans);
+  text-transform:none;line-height:1.6;max-width:62ch;text-align:right}
+.rub .lb span b{color:var(--sub);font-weight:700}
+.scale{display:grid;grid-template-columns:repeat(9,1fr);gap:4px}
+.scale button{width:auto;padding:9px 0;text-align:center;border:1px solid var(--line2);border-radius:2px;
+  font-family:var(--mono);font-size:12.5px;color:var(--sub);transition:.14s}
+.scale button:hover{border-color:var(--amber-d);color:var(--ink)}
+.scale button.on{background:var(--amber);border-color:var(--amber);color:#171006;font-weight:700}
+.gradehint{margin-top:9px;font-size:11.5px;color:var(--faint);font-family:var(--mono)}
+
+.flags{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.flag{padding:6px 12px;border:1px solid var(--line2);border-radius:2px;font-size:12px;color:var(--sub);transition:.14s}
+.flag:hover{border-color:var(--line2);color:var(--ink)}
+.flag.on{background:#2b1e1c;border-color:var(--rec);color:#f0a89e}
+
+textarea{width:100%;margin-top:16px;background:var(--bg2);border:1px solid var(--line);border-radius:3px;
+  padding:13px 15px;color:var(--ink);font-family:inherit;font-size:13.5px;line-height:1.7;
+  min-height:96px;resize:vertical}
+textarea:focus{outline:none;border-color:var(--amber-d)}
+textarea::placeholder{color:var(--faint)}
+
+.navbtns{margin-top:20px;display:flex;justify-content:space-between;gap:10px}
+
+/* ── 결과 ─────────────────────────────────────── */
+.res{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:16px;margin-top:8px}
+.rcard{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:20px 22px}
+.rcard .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.15em;color:var(--faint);text-transform:uppercase}
+.rcard .v{font-family:var(--mono);font-size:42px;font-weight:200;letter-spacing:-.04em;margin-top:8px;
+  color:var(--amber);font-variant-numeric:tabular-nums}
+.rcard .v small{font-size:15px;color:var(--faint)}
+.rcard .n{font-size:12px;color:var(--sub);margin-top:6px}
+
+table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13.5px}
+th{text-align:left;font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;color:var(--faint);
+  text-transform:uppercase;font-weight:600;padding:9px 11px;border-bottom:1px solid var(--line2)}
+td{padding:10px 11px;border-bottom:1px solid var(--line);color:var(--sub);vertical-align:top}
+td b{color:var(--ink)}
+td.num{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+.gbar{height:4px;background:var(--bg2);border-radius:2px;overflow:hidden;margin-top:5px;min-width:70px}
+.gbar i{display:block;height:100%;background:var(--amber)}
+tr.tot td{border-top:1px solid var(--line2);border-bottom:0;color:var(--ink);font-weight:700;padding-top:12px}
+
+.strip{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.strip div{border:1px solid var(--line);border-radius:2px;padding:7px 11px;background:var(--panel);
+  font-family:var(--mono);font-size:11.5px;color:var(--faint);display:flex;gap:8px;align-items:baseline}
+.strip div b{font-size:13px;font-weight:700}
+.strip .gA b{color:#4bb896}.strip .gB b{color:var(--amber)}
+.strip .gC b{color:#d98a4a}.strip .gD b{color:var(--rec)}
+.delivery{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:6px}
+.dv{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:15px 17px}
+.dv .n{font-size:13.5px;font-weight:700}
+.dv .d{font-size:11.5px;color:var(--faint);margin-top:3px;line-height:1.55}
+.dv .scale{margin-top:11px}
+.dv .scale{gap:3px}
+.dv .scale button{padding:7px 0;font-size:11px}
+
+.memo{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:16px 19px;margin-top:10px}
+.memo .q{font-family:var(--mono);font-size:11px;color:var(--amber);letter-spacing:.1em}
+.memo .t{font-size:13.5px;color:var(--sub);margin-top:5px;white-space:pre-wrap}
+.memo .f{margin-top:7px;display:flex;gap:6px;flex-wrap:wrap}
+.memo .f span{font-size:11px;padding:3px 8px;border:1px solid #5c3a34;color:#e0a89e;border-radius:2px}
+
+footer{margin-top:60px;padding:24px 0 70px;border-top:1px solid var(--line);
+  font-size:11.5px;color:var(--faint);font-family:var(--mono);line-height:1.9}
+
+html[data-mode="student"] .teacheronly{display:none!important}
+html[data-mode="student"] .flag.on{background:#12281f;border-color:var(--ok);color:#8fe0c4}
+.selfbox{margin-top:18px;border-left:2px solid var(--ok);background:#101d19;padding:14px 17px;
+  border-radius:0 3px 3px 0}
+.selfbox b.t{display:block;font-size:11px;font-family:var(--mono);letter-spacing:.14em;
+  color:var(--ok);text-transform:uppercase;margin-bottom:9px}
+.selfbox p{font-size:13px;color:var(--sub);line-height:1.65}
+.retake{margin-top:14px}
+@media print{
+  body{background:#fff;color:#111}
+  body::before,body::after,#recglow{display:none}
+  .noprint{display:none!important}
+  .rcard,.pane,.memo,.dv,.qlist{background:#fff;border-color:#ccc}
+  .rcard .v,.memo .q{color:#8a6414}
+  td,.rcard .n,.dv .d{color:#333}
+  th{color:#666;border-color:#999}
+}
+</style>
+</head>
+<body>
+<div id="recglow"></div>
+<div id="app">
+
+<!-- ══════════════ 1. 설정 ══════════════ -->
+<section class="screen on" id="scSetup">
+<div class="wrap">
+  <header class="top">
+    <div class="kick">2027학년도 수시 · 학생부종합전형</div>
+    <h1 class="t">면접 연습실 — <em>성공회대 · 경기대</em></h1>
+    <div class="sub1">경영학부 / 경영학과 · <b>연습본에 없는 새 문항 20개</b>.
+      질문이 화면에 뜨고 → 준비시간 → 답변시간이 카운트다운되며 → <b>답변이 자동으로 녹음됩니다.</b>
+      답변이 끝나면 바로 <b>내 목소리를 다시 들어 볼 수 있고</b>, 마음에 안 들면 그 자리에서 다시 녹음하면 됩니다.
+      횟수 제한 없습니다 — 언제든, 몇 번이든.</div>
+  </header>
+
+  <div class="flow">
+    <span><b>01</b> 대학 선택</span><span><b>02</b> 마이크 확인</span>
+    <span><b>03</b> 면접 · 자동 녹음</span><span><b>04</b> 녹음 들으며 채점</span>
+  </div>
+
+  <div class="sect">
+    <h2>1 · 대학 선택</h2>
+    <div class="uvs" id="uvs"></div>
+  </div>
+
+  <div class="sect">
+    <h2>2 · 진행 방식</h2>
+    <div class="opts">
+      <div class="opt">
+        <div class="lb">준비 시간</div>
+        <div class="seg" id="segPrep"></div>
+        <div class="hint" style="margin-top:9px">문항별 기본값 사용 시 검증형은 10초, 사고형은 30초</div>
+      </div>
+      <div class="opt">
+        <div class="lb">답변 시간</div>
+        <div class="seg" id="segAns"></div>
+        <div class="hint" style="margin-top:9px">기본값 = 실제 면접 기준(30~90초)</div>
+      </div>
+      <div class="opt">
+        <div class="lb">문항 순서</div>
+        <div class="seg" id="segOrder"></div>
+        <label class="chk"><input type="checkbox" id="cbReview" checked> 답변 끝나면 바로 들어보기</label>
+        <label class="chk"><input type="checkbox" id="cbFollow" checked> 꼬리질문도 진행(각 40초)</label>
+        <label class="chk"><input type="checkbox" id="cbBeep" checked> 전환음 켜기</label>
+      </div>
+    </div>
+
+    <div class="mic" id="micBox">
+      <span class="dot"></span>
+      <div class="txt" id="micTxt"><b>마이크 확인 필요</b> — 아래 버튼을 누르고 브라우저의 마이크 허용을 눌러 주세요.</div>
+      <div class="meter"><i id="micMeter"></i></div>
+      <button class="btn sm" id="btnMic">마이크 테스트</button>
+    </div>
+    <div class="warnbar" id="warnBar"></div>
+  </div>
+
+  <div class="actions">
+    <button class="btn pri" id="btnStart">면접 시작</button>
+    <button class="btn gh" id="btnToGrade">지난 녹음 들어보기</button>
+    <button class="btn gh teacheronly" id="btnImport">채점 불러오기</button>
+    <input type="file" id="fileImport" accept="application/json" hidden>
+    <span class="hint" id="savedInfo"></span>
+  </div>
+
+  <footer>
+    개인 연습용 페이지 · 검색에 노출되지 않습니다.<br>
+    <b>녹음은 이 기기의 브라우저 안에만 저장되고 어디로도 전송되지 않습니다.</b>
+    선생님도 볼 수 없으니, 편하게 몇 번이든 다시 하세요.<br>
+    브라우저 데이터(인터넷 사용 기록 삭제)를 지우면 녹음도 함께 지워집니다 —
+    남겨야 할 녹음은 <b>녹음 내려받기</b>로 파일을 받아 두세요.
+  </footer>
+</div>
+</section>
+
+<!-- ══════════════ 2. 면접 진행 ══════════════ -->
+<section id="stage">
+  <div class="stbar">
+    <div class="l">
+      <span class="qno"><b id="stNo">01</b> / <span id="stTot">10</span></span>
+      <span class="chip u" id="stUniv">성공회대</span>
+      <span class="chip" id="stElem">전공적합성</span>
+    </div>
+    <div class="r">
+      <span class="recdot" id="stRec" style="display:none"><i></i>REC</span>
+      <button class="btn sm gh" id="btnSkip">건너뛰기</button>
+      <button class="btn sm gh" id="btnQuit">종료</button>
+    </div>
+  </div>
+  <div class="pips" id="stPips"></div>
+  <div class="qzone">
+    <div class="phase" id="stPhase">준비</div>
+    <div class="qtext" id="stQ"></div>
+    <div class="qsmall" id="stNote"></div>
+  </div>
+  <div class="revwrap" id="stRev" hidden>
+    <div class="revin">
+      <div class="revlb">내 답변 다시 듣기</div>
+      <div id="revPlayer"></div>
+      <div class="revbtns">
+        <button class="btn sm gh" id="btnRetake">이 문항 다시 녹음</button>
+        <button class="btn sm pri" id="btnNextQ">다음 문항 →</button>
+      </div>
+      <div class="revhint" id="revHint"></div>
+    </div>
+  </div>
+  <div class="timerzone" id="stTimer">
+    <div class="tnum" id="stTime">30</div>
+    <div class="tbar" id="stBarWrap"><i id="stBar"></i></div>
+    <div class="stfoot">
+      <button class="btn sm gh" id="btnNow">바로 답변 시작</button>
+      <button class="btn sm gh" id="btnDone">답변 끝 · 다음</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 3. 채점 ══════════════ -->
+<section class="screen" id="scGrade">
+<div class="wrap">
+  <header class="top">
+    <div class="kick">내 연습 기록</div>
+    <h1 class="t" id="grTitle">성공회대 · 열림전형</h1>
+    <div class="sub1">녹음한 답변을 <b>끝까지 들어 보세요.</b> 배속(1×·1.25×·1.5×)과 −5초 버튼이 있습니다.
+      듣고 나서 스스로 세 가지를 확인하고, 아니다 싶으면 <b>이 문항 다시 녹음</b>. 왼쪽 <b>초록 점</b>은 녹음이 있는 문항입니다.</div>
+  </header>
+
+  <div class="grid">
+    <div class="qlist"><div class="hd">문항</div><div id="qlist"></div></div>
+    <div>
+      <div class="pane" id="gPane"></div>
+      <div class="navbtns noprint">
+        <button class="btn sm gh" id="gPrev">← 이전 문항</button>
+        <div style="display:flex;gap:9px">
+          <button class="btn sm gh" id="gDown">이 녹음 내려받기</button>
+          <button class="btn sm" id="gNext">다음 문항 →</button>
+        </div>
+      </div>
+
+      <div class="sect teacheronly">
+        <h2>전달력 · 태도 — 세션 전체 1회</h2>
+        <div class="delivery" id="delivery"></div>
+      </div>
+
+      <div class="actions noprint" style="padding-bottom:20px">
+        <button class="btn pri" id="btnResult">연습 요약 보기</button>
+        <button class="btn gh" id="btnBackSetup">설정으로</button>
+        <button class="btn gh teacheronly" id="btnExport">채점 내보내기(JSON)</button>
+        <button class="btn gh" id="btnDownAll">녹음 내려받기(선생님께 전달용)</button>
+      </div>
+    </div>
+  </div>
+  <footer class="noprint">자기 평가와 메모는 자동으로 저장됩니다. 창을 닫았다 다시 열어도 그대로 있습니다.</footer>
+</div>
+</section>
+
+<!-- ══════════════ 4. 결과 ══════════════ -->
+<section class="screen" id="scResult">
+<div class="wrap">
+  <header class="top">
+    <div class="kick">연습 요약</div>
+    <h1 class="t" id="rsTitle">성공회대 · 열림전형</h1>
+    <div class="sub1" id="rsMeta"></div>
+  </header>
+  <div class="sect"><h2>환산 점수</h2><div class="res" id="rsCards"></div></div>
+  <div class="sect"><h2>시간·자기 평가 점검</h2><div id="rsTable"></div></div>
+  <div class="sect"><h2>선생님과 함께 볼 것</h2><div id="rsDeliv"></div></div>
+  <div class="sect"><h2>문항별 메모 — 다음에 고칠 것</h2><div id="rsMemos"></div></div>
+  <div class="actions noprint">
+    <button class="btn pri" onclick="window.print()">요약 인쇄</button>
+    <button class="btn gh" id="rsBack">연습 기록으로</button>
+    <button class="btn gh" id="rsExport">JSON 내보내기</button>
+  </div>
+  <footer>여기 점수는 <b>스스로 매긴 것</b>입니다. 대학 점수도, 선생님 점수도 아닙니다 —
+    지난번보다 나아졌는지 나 혼자 확인하는 용도입니다.</footer>
+</div>
+</section>
+
+</div>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   문항 은행 — 성공회대 10 / 경기대 10 (전부 신규, 연습본과 무중복)
+   ══════════════════════════════════════════════════════════ */
+const BANK = {
+skhu:{
+  name:'성공회대', form:'열림전형(학생부종합) · 경영학부', ratio:'면접 40%',
+  color:'#c98a3a',
+  elements:[{k:'전공적합성',p:50},{k:'발전가능성',p:50}],
+  note:'인재상 — 대안을 모색하고 연대·실천할 수 있는 시민',
+  items:[
+  {id:'NS1',el:'전공적합성',prep:30,ans:90,
+   q:'마케팅은 결국 사람들이 더 많이 사게 만드는 일이라는 비판이 있습니다. 소비를 늘리는 일을 직업으로 삼으려는 학생으로서, 그 비판에 어떻게 답하겠습니까?',
+   intent:'',look:[],
+   follow:['학생이 생각하는 “사면 안 되는데 사게 만드는 마케팅”의 예를 하나 들어 보세요.',
+           '소비를 줄이자고 말하는 것도 마케팅입니까?']},
+  {id:'NS2',el:'전공적합성',prep:30,ans:90,
+   q:'영어 지문에서 시작해 패스트패션과 의류 폐기물까지 탐구했다고 했습니다. 학생이 그 패스트패션 브랜드의 마케터라면, 매출을 지키면서 폐기물을 줄일 방법을 하나만 제안해 보세요.',
+   intent:'',look:[],
+   follow:['그 방법에 돈이 든다면 회사를 어떻게 설득하겠습니까?',
+           '소비자가 그 캠페인을 그린워싱이라고 의심하면 어떻게 합니까?']},
+  {id:'NS3',el:'전공적합성',prep:30,ans:90,
+   q:'지역의 가치를 알리는 마케팅에 관심이 있다고 했습니다. 그런데 관광객이 늘면 정작 그 지역에 사는 사람은 불편해지기도 합니다. 주민에게도 좋은 마케팅인지를 학생은 어떻게 확인하겠습니까?',
+   intent:'',look:[],
+   follow:['주민과 상인의 의견이 다르면 누구 편입니까?',
+           '빵택시 사례에서 대전 주민이 얻는 것은 무엇입니까?']},
+  {id:'NS4',el:'전공적합성',prep:30,ans:90,
+   q:'브랜드 로고가 있고 없고에 따라 소비자 반응이 달라진다는 것을 직접 실험으로 확인했다고 했습니다. 그 심리를 아는 마케터가 그것을 이용해도 됩니까? 어디까지가 괜찮고 어디부터는 안 됩니까?',
+   intent:'',look:[],
+   follow:['아이들을 대상으로 한 마케팅은 어느 쪽입니까?',
+           '학생이 만든 이름 새긴 컵홀더도 그 심리를 이용한 것 아닙니까?']},
+  {id:'NS5',el:'발전가능성',prep:30,ans:90,
+   q:'성공회대는 “연대”라는 말을 자주 씁니다. 학생이 한 활동 중에서, 내가 잘해서 된 것이 아니라 다른 사람과 함께여서 가능했던 것 하나를 말해 보세요.',
+   intent:'',look:[],
+   follow:['그때 그 친구는 정확히 무엇을 했습니까?',
+           '혼자였다면 결과가 어떻게 달랐을까요?']},
+  {id:'NS6',el:'발전가능성',prep:30,ans:90,
+   q:'수학이 5등급인데 대학에서 빅데이터와 통계를 배우겠다고 했습니다. 1학년 1학기에 통계 과목 성적이 또 나오지 않으면, 그때는 어떻게 하겠습니까?',
+   intent:'',look:[],
+   follow:['그래도 안 되면 통계를 안 쓰는 길을 택하겠습니까?',
+           '고등학교 때 수학이 안 됐던 진짜 이유는 무엇이라고 생각합니까?']},
+  {id:'NS7',el:'발전가능성',prep:30,ans:90,
+   q:'대학 4년 중 한 학기를 마케팅과 전혀 상관없는 일에 써도 된다면, 무엇에 쓰겠습니까? 그리고 왜입니까?',
+   intent:'',look:[],
+   follow:['그 학기가 끝나고 돌아왔을 때 무엇이 달라져 있을 것 같습니까?']},
+  {id:'NS8',el:'전공적합성',prep:30,ans:90,
+   q:'사회적기업이나 협동조합이 대기업과 똑같은 마케팅 방식을 쓰면 안 되는 이유가 있을까요? 없다고 생각하면 없다고 답해도 됩니다.',
+   intent:'',look:[],
+   follow:['학생이 아는 사회적기업이나 협동조합이 있습니까?',
+           '착한 기업이라는 이유만으로 물건을 사야 합니까?']},
+  {id:'NS9',el:'발전가능성',prep:30,ans:90,
+   q:'지금까지 한 탐구 중에, 지금 다시 보면 결론이 틀렸거나 성급했다고 생각되는 것이 있습니까? 있다면 무엇이고 지금은 어떻게 생각합니까?',
+   intent:'',look:[],
+   follow:['그렇게 판단이 바뀐 계기가 있었습니까?']},
+  {id:'NS10',el:'전공적합성',prep:15,ans:45,
+   q:'마지막으로, 오늘 준비한 것 중에 아직 하지 못한 말이 있다면 딱 하나만 해 주세요.',
+   intent:'',look:[],
+   follow:[]}
+]},
+kgu:{
+  name:'경기대', form:'KGU학생부종합 · 경영학과', ratio:'면접 30%',
+  color:'#4d94d6',
+  elements:[{k:'잠재역량',p:50},{k:'사회역량',p:33},{k:'소통역량',p:17}],
+  note:'서류 확인 면접 — 생기부에 적힌 것을 그대로 캐묻는다',
+  items:[
+  {id:'NK1',el:'잠재역량',prep:10,ans:60,
+   q:'세특에 등비수열로 고객 수를 예측했다고 되어 있습니다. 공비를 얼마로 두었고, 그 값은 어떻게 정했습니까?',
+   intent:'',look:[],
+   follow:['공비가 0.8이면 고객 수는 어떻게 됩니까?',
+           '그 값이 현실적이라고 생각합니까?']},
+  {id:'NK2',el:'잠재역량',prep:10,ans:60,
+   q:'광고비를 계속 늘리면 매출도 계속 늘어납니까? 세특에서 다룬 내용으로 설명해 보세요.',
+   intent:'',look:[],
+   follow:['미분값이 0이라는 게 무슨 뜻입니까?',
+           '그럼 광고비를 얼마나 쓸지는 어떻게 정합니까?']},
+  {id:'NK3',el:'잠재역량',prep:10,ans:60,
+   q:'사회문화 시간에 표본을 우리 학교 학생으로 좁혔다고 했습니다. 그렇게 얻은 결과를 “청소년 전체”의 결과라고 말하면 무엇이 문제입니까?',
+   intent:'',look:[],
+   follow:['그럼 표본을 다시 뽑는다면 어떻게 하겠습니까?',
+           '그 탐구의 주제가 정확히 무엇이었습니까?']},
+  {id:'NK4',el:'잠재역량',prep:15,ans:60,
+   q:'설문과 실험을 여러 번 했는데, 그중에 결과가 예상과 달랐던 것이 있습니까? 있다면 그때 어떻게 했습니까?',
+   intent:'',look:[],
+   follow:['결과가 마음에 안 들면 설문을 다시 돌리고 싶어지지 않습니까?']},
+  {id:'NK5',el:'잠재역량',prep:15,ans:60,
+   q:'AI 추천 마케팅을 탐구했다고 했습니다. 추천 알고리즘이 소비자에게 “보여주지 않는” 상품은 누가 정합니까? 그게 왜 문제입니까?',
+   intent:'',look:[],
+   follow:['추천을 끄는 기능이 있으면 소비자가 쓸까요?']},
+  {id:'NK6',el:'잠재역량',prep:15,ans:60,
+   q:'블록체인으로 광고 거래 기록을 위조할 수 없게 한다는 탐구가 있었습니다. 그게 소비자에게 실제로 무슨 이득입니까?',
+   intent:'',look:[],
+   follow:['그 탐구에서 실제로 이해한 부분과 어려웠던 부분을 나눠서 말해 주세요.']},
+  {id:'NK7',el:'사회역량',prep:15,ans:60,
+   q:'방송부 부국장으로 익명 제안 방식을 도입했다고 했습니다. 익명이라서 무책임하거나 나쁜 의견이 올라오면 어떻게 하겠습니까?',
+   intent:'',look:[],
+   follow:['실제로 그런 일이 있었습니까?']},
+  {id:'NK8',el:'사회역량',prep:15,ans:60,
+   q:'팀에서 아무도 하지 않으려는 일을 먼저 맡았다고 했습니다. 반대로, 하고 싶었는데 양보한 적도 있습니까?',
+   intent:'',look:[],
+   follow:['그때 아쉬움은 없었습니까?']},
+  {id:'NK9',el:'소통역량',prep:20,ans:40,
+   q:'경기대 경영학과 면접관에게 자신을 30초 안에 소개해 보세요. 단, “성실”·“열정”·“노력” 이 세 단어는 쓸 수 없습니다.',
+   intent:'',look:[],
+   follow:['지금 소개에서 뺀 것 중 제일 아까운 게 무엇입니까?']},
+  {id:'NK10',el:'소통역량',prep:10,ans:30,
+   q:'오늘 함께 면접을 본 다른 지원자들과 학생이 다른 점, 딱 하나만 말해 주세요.',
+   intent:'',look:[],
+   follow:[]}
+]}};
+
+const DELIV=[
+ {k:'목소리·발음',d:'끝까지 들리는가. 말끝이 흐려지지 않는가.'},
+ {k:'말 속도·군더더기',d:'“어…”, “그…”, “저는” 반복. 너무 빠르거나 느리지 않은가.'},
+ {k:'문장 완결성',d:'문장을 끝맺는가. 중간에 다시 시작하지 않는가.'},
+ {k:'시간 관리',d:'주어진 시간의 70~100%를 쓰는가. 초과·미달 여부.'},
+ {k:'태도·시선',d:'면접관을 보는가. 자세·표정. 압박에 흔들리는 정도.'}
+];
+const FLAGS=['원고 암송','시간 초과','시간 미달','얼어붙음','질문 빗나감','서류와 불일치','근거 없음','좋은 답'];
+const SFLAGS=['질문에 그대로 답했다','내 활동을 근거로 댔다','시간 안에 끝냈다','다시 녹음할 것'];
+
+/* ══════════════ 상태 ══════════════ */
+const MODE=document.documentElement.dataset.mode||'teacher';
+const S={univ:'skhu',prepMode:'default',ansMode:'default',order:'seq',
+         follow:true,beep:true,review:true,retakes:{},queue:[],idx:0,scores:{},memos:{},flags:{},deliv:{},cur:0,startedAt:null};
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const pad=n=>String(n).padStart(2,'0');
+
+/* ── 저장 ─────────────────────────────── */
+const LSK='kgm_mock_v1';
+function save(){try{localStorage.setItem(LSK,JSON.stringify(
+  {univ:S.univ,scores:S.scores,memos:S.memos,flags:S.flags,deliv:S.deliv,startedAt:S.startedAt}))}catch(e){}}
+function load(){try{const d=JSON.parse(localStorage.getItem(LSK)||'null');
+  if(d){Object.assign(S,{scores:d.scores||{},memos:d.memos||{},flags:d.flags||{},deliv:d.deliv||{},
+       startedAt:d.startedAt||null}); if(d.univ)S.univ=d.univ; return true}}catch(e){} return false}
+
+/* ── IndexedDB (녹음) ─────────────────── */
+let DB=null;
+function db(){return new Promise((ok,no)=>{ if(DB)return ok(DB);
+  const r=indexedDB.open('kgm_mock',1);
+  r.onupgradeneeded=e=>{const d=e.target.result; if(!d.objectStoreNames.contains('clips'))d.createObjectStore('clips')};
+  r.onsuccess=e=>{DB=e.target.result;ok(DB)}; r.onerror=()=>no(r.error)})}
+async function putClip(k,blob,mime,dur){const d=await db();return new Promise((ok,no)=>{
+  const t=d.transaction('clips','readwrite'); t.objectStore('clips').put({blob,mime,dur,ts:Date.now()},k);
+  t.oncomplete=ok; t.onerror=()=>no(t.error)})}
+async function getClip(k){const d=await db();return new Promise(ok=>{
+  const r=d.transaction('clips','readonly').objectStore('clips').get(k);
+  r.onsuccess=()=>ok(r.result||null); r.onerror=()=>ok(null)})}
+async function allKeys(){const d=await db();return new Promise(ok=>{
+  const r=d.transaction('clips','readonly').objectStore('clips').getAllKeys();
+  r.onsuccess=()=>ok(r.result||[]); r.onerror=()=>ok([])})}
+
+/* ── 소리 ─────────────────────────────── */
+let AC=null;
+function beep(f=660,ms=140,vol=.07){ if(!S.beep)return;
+  try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();
+    const o=AC.createOscillator(),g=AC.createGain();
+    o.type='sine';o.frequency.value=f;g.gain.value=vol;o.connect(g);g.connect(AC.destination);
+    o.start();g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+ms/1000);
+    o.stop(AC.currentTime+ms/1000+.02)}catch(e){}}
+
+/* ══════════════ 설정 화면 ══════════════ */
+function renderSetup(){
+  $('#uvs').innerHTML=Object.entries(BANK).map(([k,u])=>`
+    <button class="uv ${k===S.univ?'sel':''}" data-u="${k}" style="--c:${u.color}">
+      <div class="nm">${u.name}</div>
+      <div class="fm">${u.form}</div>
+      <div class="mt">
+        <div>문항<b>${u.items.length}</b></div>
+        <div>면접 비중<b>${u.ratio.replace('면접 ','')}</b></div>
+        <div>예상 소요<b>${Math.round(u.items.reduce((a,i)=>a+i.prep+i.ans+8,0)/60)}분</b></div>
+      </div>
+      <div class="el">${u.elements.map(e=>e.k+' '+e.p).join(' · ')}</div>
+    </button>`).join('');
+  $$('.uv').forEach(b=>b.onclick=()=>{S.univ=b.dataset.u;renderSetup();save()});
+
+  const segs=[['#segPrep','prepMode',[['default','문항 기본'],['10','10초'],['20','20초'],['30','30초'],['0','없음']]],
+              ['#segAns','ansMode',[['default','문항 기본'],['45','45초'],['60','60초'],['90','90초'],['120','120초']]],
+              ['#segOrder','order',[['seq','순서대로'],['rand','무작위']]]];
+  segs.forEach(([sel,key,opts])=>{
+    $(sel).innerHTML=opts.map(([v,l])=>
+      `<button data-v="${v}" class="${v==='default'?'wide ':''}${S[key]===v?'on':''}">${l}</button>`).join('');
+    $$(sel+' button').forEach(b=>b.onclick=()=>{S[key]=b.dataset.v;renderSetup()})});
+
+  $('#cbFollow').checked=S.follow; $('#cbBeep').checked=S.beep; $('#cbReview').checked=S.review;
+  $('#cbReview').onchange=e=>S.review=e.target.checked;
+  $('#cbFollow').onchange=e=>S.follow=e.target.checked;
+  $('#cbBeep').onchange=e=>S.beep=e.target.checked;
+
+  const n=Object.keys(S.scores).length;
+  $('#savedInfo').textContent=n?`저장된 채점 ${n}문항 · ${S.startedAt||''}`:'';
+}
+
+/* ── 마이크 ───────────────────────────── */
+let micStream=null, micAn=null, micRaf=null;
+async function testMic(){
+  const box=$('#micBox');
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
+    box.className='mic bad';
+    $('#micTxt').innerHTML='<b>이 브라우저에서는 마이크를 쓸 수 없습니다.</b> 크롬이나 사파리 최신 버전으로 열어 주세요.';
+    showWarn(); return}
+  try{
+    micStream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}});
+    box.className='mic ok';
+    $('#micTxt').innerHTML='<b>마이크 연결됨</b> — 말해 보세요. 오른쪽 막대가 움직이면 정상입니다.';
+    $('#warnBar').classList.remove('on');
+    AC=AC||new (window.AudioContext||window.webkitAudioContext)();
+    const src=AC.createMediaStreamSource(micStream); micAn=AC.createAnalyser(); micAn.fftSize=512;
+    src.connect(micAn); const buf=new Uint8Array(micAn.frequencyBinCount);
+    (function loop(){ if(!micAn)return; micAn.getByteTimeDomainData(buf);
+      let m=0; for(const v of buf) m=Math.max(m,Math.abs(v-128));
+      $('#micMeter').style.width=Math.min(100,m/50*100)+'%'; micRaf=requestAnimationFrame(loop)})();
+  }catch(e){
+    box.className='mic bad';
+    $('#micTxt').innerHTML='<b>마이크를 켤 수 없습니다 — '+(e.name||'오류')+'</b> 주소창 왼쪽 자물쇠 아이콘 → 마이크 → 허용으로 바꾼 뒤 새로고침하세요.';
+    showWarn()}
+}
+function showWarn(){
+  $('#warnBar').classList.add('on');
+  $('#warnBar').innerHTML='<b>마이크가 잡히지 않을 때</b><br>'+
+    '① 주소창 왼쪽 <b>자물쇠 아이콘</b> → 마이크 → <b>허용</b> → 새로고침.<br>'+
+    '② 아이폰은 <b>사파리</b>, 안드로이드·PC는 <b>크롬</b>에서 가장 잘 됩니다.<br>'+
+    '③ 이어폰 마이크를 쓰면 소리가 더 깨끗하게 들어갑니다.<br>'+
+    '④ 녹음이 안 돼도 연습은 됩니다 — 질문과 타이머는 그대로 작동합니다.';
+}
+
+/* ══════════════ 면접 진행 ══════════════ */
+let REC=null, chunks=[], tick=null, curKey=null, tStart=0;
+function buildQueue(){
+  const u=BANK[S.univ]; let its=u.items.slice();
+  if(S.order==='rand') its.sort(()=>Math.random()-.5);
+  const q=[];
+  its.forEach(it=>{
+    q.push({kind:'main',it,prep:S.prepMode==='default'?it.prep:+S.prepMode,
+            ans:S.ansMode==='default'?it.ans:+S.ansMode,text:it.q,key:it.id});
+    if(S.follow) it.follow.forEach((f,i)=>
+      q.push({kind:'follow',it,prep:5,ans:40,text:f,key:it.id+'-f'+(i+1),
+              note:'꼬리질문 — '+it.id}));
+  });
+  return q;
+}
+function startInterview(){
+  S.queue=buildQueue(); S.idx=0;
+  S.startedAt=new Date().toLocaleString('ko-KR');
+  const u=BANK[S.univ];
+  $('#stUniv').textContent=u.name; $('#stUniv').style.setProperty('--c',u.color);
+  $('#stTot').textContent=S.queue.length;
+  $('#stPips').innerHTML=S.queue.map(q=>`<i class="${q.kind==='follow'?'fol':''}"></i>`).join('');
+  $('#stage').classList.add('on'); save(); nextItem();
+}
+function hideReview(){$('#stRev').hidden=true; $('#stTimer').hidden=false}
+async function showReview(){
+  clearInterval(tick); stopRec();
+  const q=S.queue[S.idx];
+  $('#stTimer').hidden=true; $('#stRev').hidden=false;
+  $('#stPhase').textContent='다시 듣기'; $('#stPhase').className='phase';
+  $('#revPlayer').innerHTML='<div class="noclip">녹음을 저장하는 중…</div>';
+  $('#revHint').textContent='';
+  await new Promise(r=>setTimeout(r,650));         // onstop → IndexedDB 저장 대기
+  const c=await getClip(q.key);
+  if(c){const url=URL.createObjectURL(c.blob); clipURLs.push(url);
+    $('#revPlayer').innerHTML=playerHTML(url,c.dur,'내 답변 · '+(c.dur||0)+'초 / 주어진 시간 '+q.ans+'초');
+    wirePlayers($('#revPlayer'));
+    const r=(c.dur||0)/q.ans;
+    $('#revHint').textContent = r<.5 ? '주어진 시간의 절반도 쓰지 않았다 — 근거를 한 겹 더 붙일 수 있다.'
+      : r>.98 ? '시간을 다 썼다 — 실제 면접이라면 여기서 잘린다. 결론을 앞으로.'
+      : '시간 배분은 적절하다. 이제 내용을 들어 보자.';}
+  else $('#revPlayer').innerHTML='<div class="noclip">녹음이 없다 — 마이크를 확인하세요</div>';
+}
+function nextItem(){
+  stopRec(); hideReview();
+  if(S.idx>=S.queue.length){endInterview();return}
+  const q=S.queue[S.idx], u=BANK[S.univ];
+  $('#stNo').textContent=pad(S.idx+1);
+  $$('#stPips i').forEach((el,i)=>{
+    el.classList.toggle('done',i<S.idx); el.classList.toggle('cur',i===S.idx)});
+  $('#stElem').textContent=q.kind==='follow'?'꼬리질문':q.it.el;
+  $('#stQ').textContent=q.text;
+  const stq=$('#stQ'); stq.style.animation='none'; void stq.offsetWidth; stq.style.animation='';
+  $('#stNote').className='qsmall'+(q.note?' on':''); $('#stNote').textContent=q.note||'';
+  if(q.prep>0){phase('prep',q.prep)} else {phase('answer',q.ans)}
+}
+function phase(kind,secs){
+  clearInterval(tick);
+  const q=S.queue[S.idx];
+  const isAns=kind==='answer';
+  $('#stPhase').textContent=isAns?'답변':'준비';
+  $('#stPhase').className='phase'+(isAns?' answer':'');
+  $('#stBarWrap').className='tbar'+(isAns?' answer':'');
+  $('#btnNow').style.display=isAns?'none':'';
+  $('#btnDone').style.display=isAns?'':'none';
+  if(isAns){beep(880,180);startRec(q.key)}else{beep(520,120);stopRec()}
+  let left=secs, total=secs; tStart=Date.now();
+  const paint=()=>{
+    const el=$('#stTime'); el.textContent=left>=60?Math.floor(left/60)+':'+pad(left%60):String(left);
+    el.className='tnum'+(left<=3?' crit':(left<=10?' warn':''));
+    $('#stBar').style.width=(left/total*100)+'%';
+  };
+  paint();
+  tick=setInterval(()=>{ left--; if(left<=3&&left>0)beep(1200,70,.05);
+    if(left<0){clearInterval(tick);
+      if(isAns){beep(400,260); if(S.review){showReview()} else {S.idx++;setTimeout(nextItem,400)}}
+      else{phase('answer',q.ans)} return}
+    paint()},1000);
+}
+async function startRec(key){
+  curKey=key;
+  if(!micStream){ try{micStream=await navigator.mediaDevices.getUserMedia({audio:true})}catch(e){return} }
+  if(!window.MediaRecorder) return;
+  try{
+    const types=['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/ogg;codecs=opus'];
+    const mt=types.find(t=>MediaRecorder.isTypeSupported(t))||'';
+    const rec=new MediaRecorder(micStream, mt?{mimeType:mt}:undefined);
+    const myKey=key, t0=Date.now(), ch=[];      // 클로저에 고정 — stopRec()이 REC를 비워도 안전
+    const mime=rec.mimeType||mt||'audio/webm';
+    rec.ondataavailable=e=>{if(e.data&&e.data.size)ch.push(e.data)};
+    rec.onstop=()=>{ if(!ch.length)return;
+      const blob=new Blob(ch,{type:mime});
+      putClip(myKey,blob,mime,Math.max(1,Math.round((Date.now()-t0)/1000))).catch(()=>{});
+    };
+    rec.onerror=()=>{};
+    REC=rec; rec.start(); document.body.classList.add('rec'); $('#stRec').style.display='';
+  }catch(e){}
+}
+function stopRec(){ document.body.classList.remove('rec'); $('#stRec').style.display='none';
+  if(REC&&REC.state!=='inactive'){try{REC.stop()}catch(e){}} REC=null}
+function endInterview(){
+  clearInterval(tick); stopRec(); hideReview(); $('#stage').classList.remove('on');
+  if(S.single){S.single=false; show('scGrade'); setTimeout(renderGrade,700); return}
+  show('scGrade'); save();
+  setTimeout(renderGrade,700);   // 마지막 녹음 저장이 끝난 뒤 목록을 그린다
+}
+$('#btnNow').onclick=()=>{const q=S.queue[S.idx];phase('answer',q.ans)};
+$('#btnDone').onclick=()=>{clearInterval(tick);stopRec();
+  if(S.review){showReview()} else {S.idx++;setTimeout(nextItem,250)}};
+$('#btnNextQ').onclick=()=>{hideReview();S.idx++;setTimeout(nextItem,150)};
+$('#btnRetake').onclick=()=>{const q=S.queue[S.idx];
+  S.retakes[q.key]=(S.retakes[q.key]||0)+1; hideReview(); phase('answer',q.ans)};
+$('#btnSkip').onclick=()=>{clearInterval(tick);stopRec();hideReview();S.idx++;setTimeout(nextItem,150)};
+$('#btnQuit').onclick=()=>{if(confirm('면접을 종료하고 채점 화면으로 갈까요?'))endInterview()};
+
+/* ══════════════ 채점 ══════════════ */
+let clipURLs=[], PLN=0;
+const fmt=s=>{s=Math.max(0,Math.round(s||0));return Math.floor(s/60)+':'+pad(s%60)};
+const SPEEDS=[[1,'1×'],[1.25,'1.25×'],[1.5,'1.5×'],[.75,'0.75×']];
+function playerHTML(url,dur,label){
+  return `<div class="pl" data-dur="${dur||0}" id="pl${++PLN}">
+    <div class="lb"><span>${label}</span><span class="t">0:00 / ${fmt(dur)}</span></div>
+    <div class="ct">
+      <button class="pp" title="재생 / 일시정지">▶</button>
+      <button class="bk" title="5초 뒤로">−5s</button>
+      <input class="sk" type="range" min="0" max="1000" value="0" aria-label="재생 위치">
+      <button class="sp" title="재생 속도">1×</button>
+    </div><audio preload="metadata" src="${url}"></audio></div>`;
+}
+function wirePlayers(root){
+  root.querySelectorAll('.pl').forEach(w=>{
+    const a=w.querySelector('audio'),pp=w.querySelector('.pp'),sk=w.querySelector('.sk'),
+          tt=w.querySelector('.t'),sp=w.querySelector('.sp'),bk=w.querySelector('.bk');
+    let si=0;
+    // MediaRecorder webm은 duration이 Infinity로 오는 일이 잦아 저장해 둔 길이를 쓴다
+    const total=()=>(isFinite(a.duration)&&a.duration>0)?a.duration:(+w.dataset.dur||0);
+    const paint=()=>{const d=total();
+      if(d)sk.value=Math.round(Math.min(1,a.currentTime/d)*1000);
+      tt.textContent=fmt(a.currentTime)+' / '+fmt(d)};
+    pp.onclick=()=>{ if(a.paused){ document.querySelectorAll('.pl audio').forEach(x=>{if(x!==a)x.pause()});
+        a.play().catch(()=>{}) } else a.pause() };
+    a.onplay =()=>{pp.textContent='❚❚';w.classList.add('on')};
+    a.onpause=()=>{pp.textContent='▶';w.classList.remove('on')};
+    a.onended=()=>{pp.textContent='▶';w.classList.remove('on');a.currentTime=0;paint()};
+    a.ontimeupdate=paint; a.onloadedmetadata=paint;
+    sk.oninput=()=>{const d=total(); if(d)a.currentTime=sk.value/1000*d};
+    bk.onclick=()=>{a.currentTime=Math.max(0,a.currentTime-5);paint()};
+    sp.onclick=()=>{si=(si+1)%SPEEDS.length;a.playbackRate=SPEEDS[si][0];sp.textContent=SPEEDS[si][1]};
+    paint();
+  });
+}
+function revokeURLs(){clipURLs.forEach(u=>URL.revokeObjectURL(u));clipURLs=[]}
+const SCALE=[1,1.5,2,2.5,3,3.5,4,4.5,5];
+const GNAME=s=>s>=4.5?'A':s>=3.5?'B':s>=2.5?'C':'D';
+
+function renderGrade(){
+  const u=BANK[S.univ];
+  $('#grTitle').textContent=u.name+' · '+u.form;
+  renderQList(); renderPane(); renderDeliv();
+}
+async function renderQList(){
+  const u=BANK[S.univ], keys=await allKeys();
+  const done=u.items.filter(i=>S.scores[i.id]!=null).length;
+  $('.qlist .hd').innerHTML=`<span>문항</span><span>${MODE==='student'?'자기평가':'채점'} <b>${done}</b>/${u.items.length}</span>`;
+  $('#qlist').innerHTML=u.items.map((it,i)=>{
+    const sc=S.scores[it.id], fl=(S.flags[it.id]||[]).length;
+    return `<button class="qrow ${i===S.cur?'cur':''}" data-i="${i}" title="${it.q.replace(/"/g,'')}">
+      <span class="au ${keys.includes(it.id)?'has':''}"></span>
+      <span class="id">${it.id}</span>
+      <span class="tx">${it.q.slice(0,24)}…</span>
+      ${fl?'<span class="fl"></span>':''}
+      <span class="sc ${sc?'has':''}">${sc?sc.toFixed(1):'–'}</span></button>`}).join('');
+  $$('.qrow').forEach(b=>b.onclick=()=>{S.cur=+b.dataset.i;renderQList();renderPane()});
+}
+async function renderPane(){
+  revokeURLs();
+  const u=BANK[S.univ], it=u.items[S.cur];
+  const p=$('#gPane');
+  p.innerHTML=`
+    <div class="eyebrow"><span>${it.id}</span><span>·</span><span>${it.el}</span><span>·</span>
+      <span>준비 ${it.prep}초 / 답변 ${it.ans}초</span></div>
+    <h3>${it.q}</h3>
+    <div id="auMain"><div class="noclip">불러오는 중…</div></div>
+    <div id="auFollows"></div>
+    <div class="retake"><button class="btn sm gh" id="btnRetakeOne">이 문항 다시 녹음</button></div>
+    ${MODE==='student'
+      ? `<div class="selfbox"><b class="t">스스로 확인</b>
+           <p>녹음을 끝까지 들어 본 다음 아래 세 가지를 체크하세요. 셋 다 되면 그 문항은 넘어가도 됩니다.
+              하나라도 아니면 <b>다시 녹음</b>이 가장 빠른 방법입니다.</p></div>`
+      : ''}
+    ${it.follow.length?`<div class="fol"><div class="lb">꼬리질문</div>${it.follow.map(f=>'<div class="q">'+f+'</div>').join('')}</div>`:''}
+    <div class="rub">
+      <div class="lb"><span style="font-family:var(--mono);text-align:left">${MODE==='student'?'스스로 매기는 점수':'내용 점수'}</span>
+        <span>${MODE==='student'
+          ? '<b>5</b> 이대로 면접장에 가도 된다 · <b>4</b> 거의 됐다, 한 곳만 · <b>3</b> 말은 됐는데 근거가 약하다 · <b>2</b> 질문에 못 미쳤다 · <b>1</b> 다시 쓰자'
+          : '<b>5</b> 그대로 면접장에 · <b>4</b> 좋음, 한 곳만 · <b>3</b> 성립하나 근거 얕음 · <b>2</b> 질문에 못 미침 · <b>1</b> 다시'}</span></div>
+      <div class="scale" id="scale"></div>
+      <div class="gradehint" id="ghint"></div>
+      <div class="flags" id="flagbox"></div>
+      <textarea id="memo" placeholder="${MODE==='student'?'다음에 고칠 것 한 줄 — 무엇을 빼고 무엇을 넣을지':'들으면서 남기는 메모 — 실제로 한 말, 막힌 지점, 꼬리질문에서의 반응…'}"></textarea>
+    </div>`;
+  // 점수
+  const paintScale=()=>{
+    $('#scale').innerHTML=SCALE.map(v=>`<button data-v="${v}" class="${S.scores[it.id]===v?'on':''}">${v}</button>`).join('');
+    $$('#scale button').forEach(b=>b.onclick=()=>{
+      const v=+b.dataset.v; S.scores[it.id]=(S.scores[it.id]===v?undefined:v);
+      if(S.scores[it.id]===undefined)delete S.scores[it.id];
+      paintScale();ghint();save();renderQList()});
+  };
+  const ghint=()=>{const s=S.scores[it.id];
+    $('#ghint').textContent = !s ? (MODE==='student'?'아직 점수를 매기지 않았다':'아직 채점하지 않음')
+      : (MODE==='student'?`내 평가 ${GNAME(s)} — 다음에 다시 녹음하면 이 점수와 비교해 보자`
+                         :`등급 ${GNAME(s)} · ${it.el} 구역에 반영`)};
+  paintScale(); ghint();
+  // 플래그
+  const FL=MODE==='student'?SFLAGS:FLAGS;
+  const paintFlags=()=>{
+    const cur=S.flags[it.id]||[];
+    $('#flagbox').innerHTML=FL.map(f=>`<button class="flag ${cur.includes(f)?'on':''}" data-f="${f}">${f}</button>`).join('');
+    $$('#flagbox button').forEach(b=>b.onclick=()=>{
+      const f=b.dataset.f, a=S.flags[it.id]||[];
+      S.flags[it.id]=a.includes(f)?a.filter(x=>x!==f):[...a,f]; paintFlags(); save()})};
+  paintFlags();
+  // 메모
+  $('#memo').value=S.memos[it.id]||'';
+  $('#memo').oninput=e=>{S.memos[it.id]=e.target.value;save()};
+  // 오디오
+  const c=await getClip(it.id);
+  if(c){const url=URL.createObjectURL(c.blob);clipURLs.push(url);
+    $('#auMain').innerHTML=playerHTML(url,c.dur,'주 답변 녹음')}
+  else $('#auMain').innerHTML='<div class="noclip">녹음 없음 — 옆에서 직접 들으며 채점하세요</div>';
+  // 꼬리질문 녹음
+  let fh='';
+  for(let i=0;i<it.follow.length;i++){
+    const fc=await getClip(it.id+'-f'+(i+1));
+    if(fc){const fu=URL.createObjectURL(fc.blob);clipURLs.push(fu);
+      fh+=playerHTML(fu,fc.dur,'꼬리질문 '+(i+1))}
+  }
+  $('#auFollows').innerHTML=fh;
+  wirePlayers(p);
+  $('#btnRetakeOne').onclick=()=>retakeOne(S.cur);
+}
+function renderDeliv(){
+  $('#delivery').innerHTML=DELIV.map(d=>`
+    <div class="dv"><div class="n">${d.k}</div><div class="d">${d.d}</div>
+      <div class="scale" data-k="${d.k}">${SCALE.map(v=>`<button data-v="${v}" class="${S.deliv[d.k]===v?'on':''}">${v}</button>`).join('')}</div>
+    </div>`).join('');
+  $$('#delivery .scale').forEach(sc=>sc.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+    const k=sc.dataset.k, v=+b.dataset.v;
+    S.deliv[k]=(S.deliv[k]===v?undefined:v); if(S.deliv[k]===undefined)delete S.deliv[k];
+    renderDeliv(); save()}));
+}
+function retakeOne(i){
+  const u=BANK[S.univ], it=u.items[i];
+  S.queue=[{kind:'main',it,prep:S.prepMode==='default'?it.prep:+S.prepMode,
+            ans:S.ansMode==='default'?it.ans:+S.ansMode,text:it.q,key:it.id}];
+  S.idx=0; S.single=true;
+  $('#stUniv').textContent=u.name; $('#stUniv').style.setProperty('--c',u.color);
+  $('#stTot').textContent=1; $('#stPips').innerHTML='<i></i>';
+  $('#stage').classList.add('on'); nextItem();
+}
+$('#gPrev').onclick=()=>{S.cur=Math.max(0,S.cur-1);renderQList();renderPane()};
+$('#gNext').onclick=()=>{S.cur=Math.min(BANK[S.univ].items.length-1,S.cur+1);renderQList();renderPane()};
+$('#gDown').onclick=async()=>{
+  const it=BANK[S.univ].items[S.cur], c=await getClip(it.id);
+  if(!c){alert('이 문항에는 녹음이 없습니다.');return}
+  dl(c.blob, `${BANK[S.univ].name}_${it.id}${ext(c.mime)}`)};
+$('#btnDownAll').onclick=async()=>{
+  const keys=await allKeys(); const mine=keys.filter(k=>BANK[S.univ].items.some(i=>k===i.id||k.startsWith(i.id+'-f')));
+  if(!mine.length){alert('내려받을 녹음이 없습니다.');return}
+  if(!confirm(mine.length+'개 파일을 하나씩 내려받습니다. 계속할까요?'))return;
+  for(const k of mine){const c=await getClip(k); if(c){dl(c.blob,`${BANK[S.univ].name}_${k}${ext(c.mime)}`);await new Promise(r=>setTimeout(r,320))}}};
+function ext(m){return (m||'').includes('mp4')?'.m4a':(m||'').includes('ogg')?'.ogg':'.webm'}
+function dl(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;
+  document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)}
+
+/* ══════════════ 결과 ══════════════ */
+function calc(){
+  const u=BANK[S.univ]; const rows=[]; let got=0, any=false;
+  u.elements.forEach(e=>{
+    const its=u.items.filter(i=>i.el===e.k);
+    const sc=its.map(i=>S.scores[i.id]).filter(v=>v!=null);
+    const avg=sc.length?sc.reduce((a,b)=>a+b,0)/sc.length:0;
+    if(sc.length)any=true;
+    const g=sc.length?avg/5*e.p:0; got+=g;
+    const low=its.filter(i=>S.scores[i.id]!=null&&S.scores[i.id]<=3).map(i=>i.id);
+    rows.push({k:e.k,p:e.p,g,avg,n:sc.length,tot:its.length,low})});
+  const dv=DELIV.map(d=>S.deliv[d.k]).filter(v=>v!=null);
+  const dAvg=dv.length?dv.reduce((a,b)=>a+b,0)/dv.length:0;
+  return {rows,got,any,dScore:dAvg/5*100,dN:dv.length}
+}
+function renderResult(){
+  const u=BANK[S.univ], r=calc();
+  $('#rsTitle').textContent=u.name+' · '+u.form;
+  const n=u.items.filter(i=>S.scores[i.id]!=null).length;
+  $('#rsMeta').innerHTML=`${S.startedAt||''} · 채점 ${n}/${u.items.length}문항 · 평가요소 ${u.elements.map(e=>e.k+' '+e.p).join(' / ')}
+    <br><b>${u.note}</b>`;
+  const comb=r.any?(r.got*.7+r.dScore*.3):0;
+  $('#rsCards').innerHTML=`
+    <div class="rcard"><div class="k">내용 환산</div><div class="v">${Math.round(r.got)}<small>/100</small></div>
+      <div class="n">대학 평가요소 배점으로 환산</div></div>
+    <div class="rcard"><div class="k">전달력·태도</div><div class="v">${r.dN?Math.round(r.dScore):'–'}<small>/100</small></div>
+      <div class="n">${r.dN?DELIV.length+'개 축 중 '+r.dN+'개 채점':'아직 채점 안 함'}</div></div>
+    <div class="rcard"><div class="k">참고 종합</div><div class="v">${r.any&&r.dN?Math.round(comb):'–'}<small>/100</small></div>
+      <div class="n">내용 70 + 전달 30 (참고값)</div></div>`;
+  $('#rsTable').innerHTML=`<table><tr><th>평가요소</th><th style="width:9%">배점</th><th style="width:10%">획득</th>
+    <th style="width:26%">비중</th><th>3점 이하 문항</th></tr>`+
+    r.rows.map(x=>`<tr><td><b>${x.k}</b><div style="font-size:11.5px;color:var(--faint)">${x.n}/${x.tot}문항 채점 · 평균 ${x.n?x.avg.toFixed(2):'–'}</div></td>
+      <td class="num">${x.p}</td><td class="num">${x.g.toFixed(1)}</td>
+      <td><div class="gbar"><i style="width:${x.p?x.g/x.p*100:0}%"></i></div></td>
+      <td>${x.low.length?x.low.join(' · '):'—'}</td></tr>`).join('')+
+    `<tr class="tot"><td>합계</td><td class="num">100</td><td class="num">${r.got.toFixed(1)}</td>
+     <td><div class="gbar"><i style="width:${r.got}%"></i></div></td><td>—</td></tr></table>
+    ${n<u.items.length?`<div class="hint" style="margin-top:10px;color:#e0a89e">⚠ 아직 ${u.items.length-n}문항이 채점되지 않았습니다 — 채점하지 않은 문항은 0점으로 계산되므로, 합계는 전 문항을 채점한 뒤에 읽으세요.</div>`:'<div class="hint" style="margin-top:10px">전 문항 채점 완료 — 합계를 그대로 읽어도 됩니다.</div>'}`;
+  if(MODE==='student'){renderStudentResult(r);return}
+  $('#rsTable').insertAdjacentHTML('beforeend',
+    '<div class="hint" style="margin-top:16px;margin-bottom:2px">문항 등급 한눈에</div><div class="strip">'+
+    u.items.map(i=>{const sc=S.scores[i.id];
+      return `<div class="${sc!=null?'g'+GNAME(sc):''}"><span>${i.id}</span><b>${sc!=null?GNAME(sc):'–'}</b></div>`}).join('')+
+    '</div>');
+  $('#rsDeliv').innerHTML=`<table><tr><th>축</th><th style="width:12%">점수</th><th>관찰 기준</th></tr>`+
+    DELIV.map(d=>`<tr><td><b>${d.k}</b></td><td class="num">${S.deliv[d.k]!=null?S.deliv[d.k].toFixed(1):'–'}</td>
+      <td>${d.d}</td></tr>`).join('')+'</table>';
+  const ms=u.items.filter(i=>(S.memos[i.id]&&S.memos[i.id].trim())||(S.flags[i.id]||[]).length||S.scores[i.id]!=null);
+  $('#rsMemos').innerHTML=ms.length?ms.map(i=>`<div class="memo">
+      <div class="q">${i.id} · ${i.el} · ${S.scores[i.id]!=null?S.scores[i.id].toFixed(1)+'점 ('+GNAME(S.scores[i.id])+')':'미채점'}</div>
+      <div class="t">${(S.memos[i.id]||'').trim()||'(메모 없음)'}</div>
+      ${(S.flags[i.id]||[]).length?'<div class="f">'+S.flags[i.id].map(f=>'<span>'+f+'</span>').join('')+'</div>':''}
+    </div>`).join(''):'<div class="hint">아직 채점한 문항이 없습니다.</div>';
+}
+
+async function renderStudentResult(r){
+  const u=BANK[S.univ];
+  const durs=[]; for(const it of u.items){const c=await getClip(it.id); if(c)durs.push({id:it.id,d:c.dur||0,ans:it.ans})}
+  const scored=u.items.map(i=>S.scores[i.id]).filter(v=>v!=null);
+  const avg=scored.length?scored.reduce((a,b)=>a+b,0)/scored.length:0;
+  const short=durs.filter(x=>x.d<x.ans*.5).map(x=>x.id);
+  const over =durs.filter(x=>x.d>=x.ans*.98).map(x=>x.id);
+  const redo =u.items.filter(i=>(S.flags[i.id]||[]).includes('다시 녹음할 것')).map(i=>i.id);
+  $('#rsCards').innerHTML=`
+    <div class="rcard"><div class="k">녹음한 문항</div><div class="v">${durs.length}<small>/${u.items.length}</small></div>
+      <div class="n">전 문항을 한 번씩은 녹음해 보자</div></div>
+    <div class="rcard"><div class="k">스스로 매긴 평균</div><div class="v">${scored.length?avg.toFixed(1):'–'}<small>/5</small></div>
+      <div class="n">${scored.length}문항 자기 평가</div></div>
+    <div class="rcard"><div class="k">평균 답변 길이</div><div class="v">${durs.length?Math.round(durs.reduce((a,b)=>a+b.d,0)/durs.length):'–'}<small>초</small></div>
+      <div class="n">주어진 시간의 70~90%가 적당</div></div>`;
+  $('#rsTable').innerHTML=`<table><tr><th>확인</th><th>문항</th></tr>
+    <tr><td><b>시간을 절반도 안 썼다</b><div style="font-size:11.5px;color:var(--faint)">근거를 한 겹 더 붙일 여지가 있다</div></td>
+        <td>${short.length?short.join(' · '):'없음'}</td></tr>
+    <tr><td><b>시간을 다 썼다</b><div style="font-size:11.5px;color:var(--faint)">실제 면접이라면 잘린다 — 결론을 앞으로</div></td>
+        <td>${over.length?over.join(' · '):'없음'}</td></tr>
+    <tr><td><b>다시 녹음할 것으로 표시</b></td><td>${redo.length?redo.join(' · '):'없음'}</td></tr>
+    </table>
+    <div class="hint" style="margin-top:14px">문항 자기 평가</div><div class="strip">`+
+    u.items.map(i=>{const sc=S.scores[i.id];
+      return `<div class="${sc!=null?'g'+GNAME(sc):''}"><span>${i.id}</span><b>${sc!=null?sc.toFixed(1):'–'}</b></div>`}).join('')+'</div>';
+  $('#rsDeliv').innerHTML='<div class="hint">태도·전달력은 선생님과 함께 보는 항목입니다. 녹음 파일을 내려받아 전달하세요.</div>';
+}
+
+/* ══════════════ 내보내기/불러오기 ══════════════ */
+function expJSON(){
+  const u=BANK[S.univ];
+  const d={app:'면접 연습실',univ:S.univ,univName:u.name,at:S.startedAt,exported:new Date().toISOString(),
+    scores:S.scores,memos:S.memos,flags:S.flags,deliv:S.deliv,
+    result:calc()};
+  dl(new Blob([JSON.stringify(d,null,1)],{type:'application/json'}),
+     `모의면접_${u.name}_${new Date().toISOString().slice(0,10)}.json`)}
+$('#btnExport').onclick=expJSON; $('#rsExport').onclick=expJSON;
+$('#btnImport').onclick=()=>$('#fileImport').click();
+$('#fileImport').onchange=e=>{const f=e.target.files[0]; if(!f)return;
+  const r=new FileReader(); r.onload=()=>{try{const d=JSON.parse(r.result);
+    if(d.univ)S.univ=d.univ; S.scores=d.scores||{};S.memos=d.memos||{};S.flags=d.flags||{};S.deliv=d.deliv||{};
+    S.startedAt=d.at||S.startedAt; save(); alert('불러왔습니다.'); show('scGrade'); renderGrade();
+  }catch(err){alert('파일을 읽을 수 없습니다.')}}; r.readAsText(f)};
+
+/* ══════════════ 화면 전환 ══════════════ */
+function show(id){$$('.screen').forEach(s=>s.classList.toggle('on',s.id===id));window.scrollTo(0,0)}
+$('#btnStart').onclick=startInterview;
+$('#btnMic').onclick=testMic;
+$('#btnToGrade').onclick=()=>{show('scGrade');renderGrade()};
+$('#btnBackSetup').onclick=()=>{show('scSetup');renderSetup()};
+$('#btnResult').onclick=()=>{show('scResult');renderResult()};
+$('#rsBack').onclick=()=>{show('scGrade');renderGrade()};
+document.addEventListener('keydown',e=>{
+  if(!$('#stage').classList.contains('on'))return;
+  if(e.code==='Space'){e.preventDefault();
+    if(!$('#stRev').hidden){$('#btnNextQ').click();return}
+    ($('#btnNow').style.display==='none'?$('#btnDone'):$('#btnNow')).click()}
+  if(e.code==='Escape')$('#btnQuit').click()});
+
+/* ══════════════ 시작 ══════════════ */
+load(); renderSetup();
+if(!window.isSecureContext&&location.protocol==='file:'){/* Chrome은 file:도 보안 컨텍스트로 취급 */}
+</script>
+</body>
+</html>
