@@ -328,6 +328,17 @@ tr.tot td{border-top:1px solid var(--line2);border-bottom:0;color:var(--ink);fon
 .dv .scale{gap:3px}
 .dv .scale button{padding:7px 0;font-size:11px}
 
+.lsq{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:20px 22px;margin-bottom:12px;
+  transition:border-color .2s}
+.lsq.playing{border-color:var(--amber);box-shadow:0 0 0 1px var(--amber-d) inset}
+.lsq .hd{display:flex;align-items:baseline;gap:11px;flex-wrap:wrap;font-family:var(--mono);
+  font-size:10.5px;letter-spacing:.13em;color:var(--faint);text-transform:uppercase}
+.lsq .hd .no{color:var(--amber);font-size:15px;font-weight:700;letter-spacing:0}
+.lsq .q{font-size:16px;font-weight:700;line-height:1.55;letter-spacing:-.025em;margin-top:9px;max-width:52ch}
+.lsq .len{font-family:var(--mono);font-size:11.5px;color:var(--faint);margin-top:9px}
+.lsq .len b{color:var(--sub)}
+.lsq .len .warn2{color:#d98a4a}
+.lsq .foot{margin-top:12px;display:flex;gap:9px;flex-wrap:wrap}
 .memo{background:var(--panel);border:1px solid var(--line);border-radius:3px;padding:16px 19px;margin-top:10px}
 .memo .q{font-family:var(--mono);font-size:11px;color:var(--amber);letter-spacing:.1em}
 .memo .t{font-size:13.5px;color:var(--sub);margin-top:5px;white-space:pre-wrap}
@@ -418,17 +429,17 @@ html[data-mode="student"] .flag.on{background:#12281f;border-color:var(--ok);col
       <div class="opt">
         <div class="lb">준비 시간</div>
         <div class="seg" id="segPrep"></div>
-        <div class="hint" style="margin-top:9px">문항별 기본값 사용 시 검증형은 10초, 사고형은 30초</div>
+        <div class="hint" style="margin-top:9px">질문을 듣고 10초 뒤 바로 답변이 시작됩니다</div>
       </div>
       <div class="opt">
         <div class="lb">답변 시간</div>
         <div class="seg" id="segAns"></div>
-        <div class="hint" style="margin-top:9px">기본값 = 실제 면접 기준(30~90초)</div>
+        <div class="hint" style="margin-top:9px">넉넉히 2분 — 짧게 끝내도 [답변 끝]으로 넘어가면 됩니다</div>
       </div>
       <div class="opt">
         <div class="lb">문항 순서</div>
         <div class="seg" id="segOrder"></div>
-        <label class="chk"><input type="checkbox" id="cbReview" checked> 답변 끝나면 바로 들어보기</label>
+        <label class="chk"><input type="checkbox" id="cbReview"> 답변마다 바로 들어보기(끄면 끝나고 한 번에)</label>
         <label class="chk"><input type="checkbox" id="cbFollow" checked> 꼬리질문도 진행(각 40초)</label>
         <label class="chk"><input type="checkbox" id="cbBeep" checked> 전환음 켜기</label>
       </div>
@@ -502,6 +513,29 @@ html[data-mode="student"] .flag.on{background:#12281f;border-color:var(--ok);col
   </div>
 </section>
 
+<!-- ══════════════ 2.5 전체 듣기 ══════════════ -->
+<section class="screen" id="scListen">
+<div class="wrap">
+  <header class="top">
+    <div class="kick">전체 듣기</div>
+    <h1 class="t" id="lsTitle">내 답변 <em>다시 듣기</em></h1>
+    <div class="sub1" id="lsMeta"></div>
+  </header>
+  <div class="actions noprint" style="padding-bottom:0;margin-top:22px">
+    <button class="btn pri" id="lsPlayAll">처음부터 이어 듣기</button>
+    <button class="btn gh" id="lsStop">멈추기</button>
+    <span class="hint" id="lsNow"></span>
+  </div>
+  <div class="sect"><h2>문항별 답변</h2><div id="listenList"></div></div>
+  <div class="actions noprint">
+    <button class="btn" id="lsToGrade">문항별로 자세히 보기 · 스스로 점수 매기기</button>
+    <button class="btn gh" id="lsAgain">처음부터 다시 면접</button>
+    <button class="btn gh" id="lsDown">녹음 내려받기</button>
+  </div>
+  <footer class="noprint">들으면서 이상하다 싶은 문항은 <b>다시 녹음</b>을 눌러 그 자리에서 바로 고쳐 보세요.</footer>
+</div>
+</section>
+
 <!-- ══════════════ 3. 채점 ══════════════ -->
 <section class="screen" id="scGrade">
 <div class="wrap">
@@ -531,6 +565,7 @@ html[data-mode="student"] .flag.on{background:#12281f;border-color:var(--ok);col
 
       <div class="actions noprint" style="padding-bottom:20px">
         <button class="btn pri" id="btnResult">연습 요약 보기</button>
+        <button class="btn gh" id="btnBackListen">전체 듣기로</button>
         <button class="btn gh" id="btnBackSetup">설정으로</button>
         <button class="btn gh teacheronly" id="btnExport">채점 내보내기(JSON)</button>
         <button class="btn gh" id="btnDownAll">녹음 내려받기(선생님께 전달용)</button>
@@ -687,18 +722,18 @@ const SFLAGS=['질문에 그대로 답했다','내 활동을 근거로 댔다','
 
 /* ══════════════ 상태 ══════════════ */
 const MODE=document.documentElement.dataset.mode||'teacher';
-const S={univ:'skhu',prepMode:'default',ansMode:'default',order:'seq',
-         follow:true,beep:true,review:true,retakes:{},queue:[],idx:0,scores:{},memos:{},flags:{},deliv:{},cur:0,startedAt:null};
+const S={univ:'skhu',prepMode:'10',ansMode:'120',order:'rand',
+         follow:true,beep:true,review:false,retakes:{},playOrder:[],queue:[],idx:0,scores:{},memos:{},flags:{},deliv:{},cur:0,startedAt:null};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const pad=n=>String(n).padStart(2,'0');
 
 /* ── 저장 ─────────────────────────────── */
 const LSK='kgm_mock_v1';
 function save(){try{localStorage.setItem(LSK,JSON.stringify(
-  {univ:S.univ,scores:S.scores,memos:S.memos,flags:S.flags,deliv:S.deliv,startedAt:S.startedAt}))}catch(e){}}
+  {univ:S.univ,scores:S.scores,memos:S.memos,flags:S.flags,deliv:S.deliv,startedAt:S.startedAt,playOrder:S.playOrder}))}catch(e){}}
 function load(){try{const d=JSON.parse(localStorage.getItem(LSK)||'null');
   if(d){Object.assign(S,{scores:d.scores||{},memos:d.memos||{},flags:d.flags||{},deliv:d.deliv||{},
-       startedAt:d.startedAt||null}); if(d.univ)S.univ=d.univ; return true}}catch(e){} return false}
+       startedAt:d.startedAt||null,playOrder:d.playOrder||[]}); if(d.univ)S.univ=d.univ; return true}}catch(e){} return false}
 
 /* ── IndexedDB (녹음) ─────────────────── */
 let DB=null;
@@ -740,12 +775,12 @@ function renderSetup(){
     </button>`).join('');
   $$('.uv').forEach(b=>b.onclick=()=>{S.univ=b.dataset.u;renderSetup();save()});
 
-  const segs=[['#segPrep','prepMode',[['default','문항 기본'],['10','10초'],['20','20초'],['30','30초'],['0','없음']]],
-              ['#segAns','ansMode',[['default','문항 기본'],['45','45초'],['60','60초'],['90','90초'],['120','120초']]],
-              ['#segOrder','order',[['seq','순서대로'],['rand','무작위']]]];
+  const segs=[['#segPrep','prepMode',[['10','10초 (기본)'],['20','20초'],['30','30초'],['0','없음'],['default','문항별 기본']]],
+              ['#segAns','ansMode',[['120','120초 (기본)'],['90','90초'],['60','60초'],['45','45초'],['default','문항별 기본']]],
+              ['#segOrder','order',[['rand','무작위 (기본)'],['seq','순서대로']]]];
   segs.forEach(([sel,key,opts])=>{
     $(sel).innerHTML=opts.map(([v,l])=>
-      `<button data-v="${v}" class="${v==='default'?'wide ':''}${S[key]===v?'on':''}">${l}</button>`).join('');
+      `<button data-v="${v}" class="${(v==='10'&&key==='prepMode')||(v==='120'&&key==='ansMode')||(v==='rand'&&key==='order')?'wide ':''}${S[key]===v?'on':''}">${l}</button>`).join('');
     $$(sel+' button').forEach(b=>b.onclick=()=>{S[key]=b.dataset.v;renderSetup()})});
 
   $('#cbFollow').checked=S.follow; $('#cbBeep').checked=S.beep; $('#cbReview').checked=S.review;
@@ -812,6 +847,7 @@ function startInterview(){
   $('#stUniv').textContent=u.name; $('#stUniv').style.setProperty('--c',u.color);
   $('#stTot').textContent=S.queue.length;
   $('#stPips').innerHTML=S.queue.map(q=>`<i class="${q.kind==='follow'?'fol':''}"></i>`).join('');
+  S.playOrder=S.queue.filter(q=>q.kind==='main').map(q=>q.it.id);
   $('#stage').classList.add('on'); save(); nextItem();
 }
 function hideReview(){$('#stRev').hidden=true; $('#stTimer').hidden=false}
@@ -892,9 +928,10 @@ function stopRec(){ document.body.classList.remove('rec'); $('#stRec').style.dis
   if(REC&&REC.state!=='inactive'){try{REC.stop()}catch(e){}} REC=null}
 function endInterview(){
   clearInterval(tick); stopRec(); hideReview(); $('#stage').classList.remove('on');
-  if(S.single){S.single=false; show('scGrade'); setTimeout(renderGrade,700); return}
-  show('scGrade'); save();
-  setTimeout(renderGrade,700);   // 마지막 녹음 저장이 끝난 뒤 목록을 그린다
+  if(S.single){S.single=false; show(S.backTo||'scListen');
+    setTimeout(S.backTo==='scGrade'?renderGrade:renderListen,700); S.backTo=null; return}
+  show('scListen'); save();
+  setTimeout(renderListen,700);   // 마지막 녹음 저장이 끝난 뒤 목록을 그린다
 }
 $('#btnNow').onclick=()=>{const q=S.queue[S.idx];phase('answer',q.ans)};
 $('#btnDone').onclick=()=>{clearInterval(tick);stopRec();
@@ -1066,6 +1103,71 @@ function ext(m){return (m||'').includes('mp4')?'.m4a':(m||'').includes('ogg')?'.
 function dl(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;
   document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)}
 
+/* ══════════════ 전체 듣기 ══════════════ */
+let chain=null;
+async function renderListen(){
+  stopChain();
+  const u=BANK[S.univ];
+  const order=(S.playOrder&&S.playOrder.length)
+    ? S.playOrder.map(id=>u.items.find(i=>i.id===id)).filter(Boolean)
+    : u.items;
+  const rest=u.items.filter(i=>!order.includes(i));
+  const list=[...order,...rest];
+  $('#lsMeta').innerHTML=`${u.name} · ${u.form} · ${S.startedAt||''}<br>
+    <b>물어본 순서 그대로</b> 담았습니다. 위에서부터 이어 들으면 실제 면접을 한 번 더 보는 셈입니다.`;
+  const rows=[];
+  for(let i=0;i<list.length;i++){
+    const it=list[i], c=await getClip(it.id);
+    let len='', url='';
+    if(c){url=URL.createObjectURL(c.blob); clipURLs.push(url)}
+    if(c){const r=(c.dur||0)/it.ans;
+      len=`<div class="len">답변 <b>${c.dur||0}초</b> / 주어진 시간 ${it.ans}초
+        ${r<.4?'<span class="warn2">— 너무 짧다</span>':r>.98?'<span class="warn2">— 시간을 다 썼다</span>':''}</div>`}
+    rows.push(`<div class="lsq" id="ls_${it.id}" data-id="${it.id}">
+      <div class="hd"><span class="no">${pad(i+1)}</span><span>${it.id}</span><span>·</span><span>${it.el}</span></div>
+      <div class="q">${it.q}</div>
+      ${c?playerHTML(url,c.dur,'내 답변'):'<div class="noclip">이 문항은 녹음이 없습니다</div>'}
+      ${len}
+      <div class="foot"><button class="btn sm gh" data-re="${it.id}">이 문항 다시 녹음</button>
+        ${it.follow.length?`<button class="btn sm gh" data-fo="${it.id}">꼬리질문 보기</button>`:''}</div>
+      <div class="fol" id="fo_${it.id}" hidden><div class="lb">꼬리질문</div>
+        ${it.follow.map(f=>'<div class="q">'+f+'</div>').join('')}</div>
+    </div>`);
+  }
+  $('#listenList').innerHTML=rows.join('');
+  wirePlayers($('#listenList'));
+  $$('#listenList [data-re]').forEach(b=>b.onclick=()=>{
+    stopChain(); S.backTo='scListen'; retakeOne(u.items.findIndex(x=>x.id===b.dataset.re))});
+  $$('#listenList [data-fo]').forEach(b=>b.onclick=()=>{
+    const el=$('#fo_'+b.dataset.fo); el.hidden=!el.hidden; b.textContent=el.hidden?'꼬리질문 보기':'꼬리질문 숨기기'});
+}
+function stopChain(){
+  if(chain){document.querySelectorAll('#listenList audio').forEach(a=>{a.onended=null});chain=null}
+  document.querySelectorAll('#listenList audio').forEach(a=>a.pause());
+  $$('.lsq').forEach(x=>x.classList.remove('playing'));
+  $('#lsNow').textContent='';
+}
+function playChain(from){
+  const items=[...document.querySelectorAll('#listenList .lsq')].filter(x=>x.querySelector('audio'));
+  if(!items.length){alert('들을 녹음이 없습니다.');return}
+  chain=true;
+  const step=i=>{
+    if(!chain||i>=items.length){stopChain();return}
+    const box=items[i], a=box.querySelector('audio');
+    $$('.lsq').forEach(x=>x.classList.remove('playing'));
+    box.classList.add('playing');
+    box.scrollIntoView({behavior:'smooth',block:'center'});
+    $('#lsNow').textContent=`이어 듣는 중 — ${i+1} / ${items.length} (${box.dataset.id})`;
+    a.currentTime=0; a.onended=()=>step(i+1); a.play().catch(()=>step(i+1));
+  };
+  step(from||0);
+}
+$('#lsPlayAll').onclick=()=>{stopChain();setTimeout(()=>playChain(0),120)};
+$('#lsStop').onclick=stopChain;
+$('#lsToGrade').onclick=()=>{stopChain();show('scGrade');renderGrade()};
+$('#lsAgain').onclick=()=>{stopChain();show('scSetup');renderSetup()};
+$('#lsDown').onclick=()=>$('#btnDownAll').click();
+
 /* ══════════════ 결과 ══════════════ */
 function calc(){
   const u=BANK[S.univ]; const rows=[]; let got=0, any=false;
@@ -1169,8 +1271,9 @@ $('#fileImport').onchange=e=>{const f=e.target.files[0]; if(!f)return;
 function show(id){$$('.screen').forEach(s=>s.classList.toggle('on',s.id===id));window.scrollTo(0,0)}
 $('#btnStart').onclick=startInterview;
 $('#btnMic').onclick=testMic;
-$('#btnToGrade').onclick=()=>{show('scGrade');renderGrade()};
+$('#btnToGrade').onclick=()=>{show('scListen');renderListen()};
 $('#btnBackSetup').onclick=()=>{show('scSetup');renderSetup()};
+$('#btnBackListen').onclick=()=>{show('scListen');renderListen()};
 $('#btnResult').onclick=()=>{show('scResult');renderResult()};
 $('#rsBack').onclick=()=>{show('scGrade');renderGrade()};
 document.addEventListener('keydown',e=>{
