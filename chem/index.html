@@ -49,7 +49,7 @@ h1{font-weight:700;font-size:34px;margin:0 0 8px;letter-spacing:-.015em}
   box-shadow:0 16px 40px -26px var(--c)}
 .lab.open:hover::before{opacity:1}
 .lab.soon{opacity:.5}
-.lab.next{background:none;border-style:dashed;color:var(--dim)}
+.lab.next{background:none;border-style:dashed;color:var(--dim);align-self:start}
 .lab.next::before{display:none}
 .lab.next .no,.lab.next h2{color:var(--dim)}
 .lab.next h2{font-size:18px}
@@ -78,6 +78,36 @@ h1{font-weight:700;font-size:34px;margin:0 0 8px;letter-spacing:-.015em}
 .howto ul{margin:0;padding-left:18px;color:var(--muted);font-size:13.5px;line-height:1.8}
 .howto li b{color:var(--ink)}
 footer{margin-top:34px;font-family:var(--mono);font-size:11px;color:var(--dim);line-height:1.9}
+
+/* ── 아이패드 (세로 744~1024 / 가로 1080~1366) ── */
+html{-webkit-text-size-adjust:100%}
+@media(min-width:744px){
+  body{padding:46px 30px 84px}
+  .wrap{max-width:900px}
+  h1{font-size:40px}
+  .sub{font-size:16px;line-height:1.75;max-width:680px}
+  .eyebrow{font-size:12.5px}
+  .rule{height:8px}
+  .rule-cap{font-size:11.5px}
+  .count{font-size:12px}
+  .lab{padding:26px 28px 24px;border-radius:16px}
+  .lab h2{font-size:25px}
+  .lab .blurb{font-size:15px;line-height:1.75}
+  .lab .act{font-size:12.5px;padding:7px 13px}   /* 터치 목표 확보 */
+  .lab .meta{font-size:12.5px;margin-top:19px;padding-top:16px}
+  .lab .no{font-size:13px}
+  .howto{padding:24px 28px}
+  .howto ul{font-size:14.5px;line-height:1.85}
+}
+/* 가로로 눕히면 카드를 두 장씩 */
+@media(min-width:1024px){
+  .wrap{max-width:1060px}
+  .labs{grid-template-columns:repeat(auto-fit,minmax(430px,1fr));gap:18px}
+  .lab .blurb{min-height:5.2em}
+}
+@supports (padding:env(safe-area-inset-bottom)){
+  body{padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+}
 
 @media(max-width:560px){
   body{padding:24px 14px 56px}
