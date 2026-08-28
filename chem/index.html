@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>화학 실험실</title>
+<meta name="description" content="고1 통합과학·화학 인터랙티브 실험 시뮬레이션 모음">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap');
+:root{
+  --bg:#10201b; --panel:#182f28; --panel-2:#1f382f; --line:#2c473d;
+  --ink:#f1ede3; --muted:#9cb0a8; --dim:#6d8279;
+  --neutral:#6fb98f; --acid:#e4572e; --acid-2:#f2a541; --base-2:#3e9c9c;
+  --base:#3b6fa0; --violet:#6b4e8e; --pink:#d95bb0;
+  --mono:'Space Mono','Courier New',monospace;
+  --sans:'Work Sans',-apple-system,'Malgun Gothic',sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;color:var(--ink);font-family:var(--sans);padding:34px 16px 70px;
+  background:
+    radial-gradient(circle at 12% -5%, rgba(111,185,143,.09), transparent 45%),
+    radial-gradient(circle at 92% 96%, rgba(59,111,160,.11), transparent 45%),
+    var(--bg);
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:920px;margin:0 auto}
+a{color:inherit;text-decoration:none}
+
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--neutral);
+  text-transform:uppercase;margin-bottom:8px}
+h1{font-weight:700;font-size:34px;margin:0 0 8px;letter-spacing:-.015em}
+.sub{color:var(--muted);font-size:14.5px;line-height:1.65;margin:0 0 24px;max-width:620px}
+.sub b{color:var(--ink);font-weight:600}
+
+/* 산·염기 실험실의 pH 띠와 같은 결 — 시리즈임을 보여주는 표식 */
+.rule{height:6px;border-radius:6px;margin:26px 0 8px;
+  background:linear-gradient(90deg,#e4572e 0%,#f2a541 15%,#f5d547 30%,#6fb98f 46%,
+    #6fb98f 54%,#3e9c9c 62%,#3b6fa0 78%,#6b4e8e 92%,#6b4e8e 100%);
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
+.rule-cap{display:flex;justify-content:space-between;font-family:var(--mono);
+  font-size:10.5px;color:var(--dim);letter-spacing:.06em;margin-bottom:30px}
+
+.count{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;color:var(--dim);
+  text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:12px}
+.count::after{content:'';flex:1;height:1px;background:var(--line)}
+
+.labs{display:grid;gap:16px}
+.lab{position:relative;display:block;background:var(--panel);border:1px solid var(--line);
+  border-radius:14px;padding:22px 24px 20px;transition:.2s;overflow:hidden}
+.lab::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:var(--c);opacity:.55;transition:.2s}
+.lab.open:hover{border-color:var(--c);transform:translateY(-2px);
+  box-shadow:0 16px 40px -26px var(--c)}
+.lab.open:hover::before{opacity:1}
+.lab.soon{opacity:.5}
+.lab.next{background:none;border-style:dashed;color:var(--dim)}
+.lab.next::before{display:none}
+.lab.next .no,.lab.next h2{color:var(--dim)}
+.lab.next h2{font-size:18px}
+.lab.next .blurb{font-size:13px;margin-top:8px}
+
+.lab .top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.lab .no{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--c);letter-spacing:.05em}
+.lab h2{font-size:22px;font-weight:700;margin:0;letter-spacing:-.02em}
+.lab .badge{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  padding:3px 9px;border-radius:20px;border:1px solid var(--line);color:var(--dim)}
+.lab .badge.new{border-color:var(--pink);color:var(--pink)}
+
+.lab .blurb{color:var(--muted);font-size:14px;line-height:1.7;margin:11px 0 0;max-width:62ch}
+.lab .acts{display:flex;flex-wrap:wrap;gap:7px;margin-top:15px}
+.lab .act{font-family:var(--mono);font-size:11.5px;color:var(--ink);background:var(--panel-2);
+  border:1px solid var(--line);border-radius:20px;padding:5px 11px}
+.lab .meta{display:flex;flex-wrap:wrap;gap:16px;margin-top:16px;padding-top:14px;
+  border-top:1px solid var(--line);font-family:var(--mono);font-size:11.5px;color:var(--dim)}
+.lab .go{margin-left:auto;color:var(--c);font-weight:700;letter-spacing:.04em}
+.lab.open:hover .go{text-decoration:underline}
+
+.howto{margin-top:34px;background:var(--panel);border:1px solid var(--line);
+  border-radius:14px;padding:20px 24px}
+.howto h3{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 12px}
+.howto ul{margin:0;padding-left:18px;color:var(--muted);font-size:13.5px;line-height:1.8}
+.howto li b{color:var(--ink)}
+footer{margin-top:34px;font-family:var(--mono);font-size:11px;color:var(--dim);line-height:1.9}
+
+@media(max-width:560px){
+  body{padding:24px 14px 56px}
+  h1{font-size:27px}
+  .lab{padding:19px 18px 17px}
+  .lab h2{font-size:19px}
+  .lab .meta{gap:10px}
+  .lab .go{margin-left:0;flex:1 0 100%}
+}
+</style></head><body><div class="wrap">
+<div class="eyebrow">고1 통합과학 · 화학</div>
+<h1>화학 실험실</h1>
+<p class="sub">교과서에서 글로만 읽던 실험을 <b>직접 만져 보는 곳</b>입니다. 용액을 고르고, 지시약을 떨어뜨리고, 슬라이더를 움직여 반응이 어떻게 달라지는지 눈으로 확인하세요. 설치할 것도, 로그인할 것도 없습니다 — 실험실을 골라 들어가면 바로 시작됩니다.</p>
+<div class="rule"></div>
+<div class="rule-cap"><span>산성</span><span>중성</span><span>염기성</span></div>
+<div class="count">실험실 1곳</div>
+<div class="labs">
+<a class="lab open" style="--c:#6fb98f" href="./acid-base/"><div class="top"><span class="no">01</span><h2>산·염기 실험실</h2></div><p class="blurb">생활 속 용액 10가지를 지시약으로 확인하고, 산과 염기를 섞어 중화되는 과정을 직접 조절해 봅니다. 마지막에는 홈판에 용액으로 그림을 그린 뒤 지시약을 부어 숨은 그림을 드러냅니다.</p><div class="acts"><span class="act">지시약 반응 실험</span><span class="act">중화 반응 적정</span><span class="act">10개 용액 한눈에 비교</span><span class="act">홈판 그림 그리기</span></div><div class="meta"><span>고1 통합과학 · 산과 염기</span><span>활동 4개</span><span>15~25분</span><span class="go">들어가기 →</span></div></a>
+<div class="lab next"><div class="top"><span class="no">02</span><h2>다음 실험실</h2></div><p class="blurb">새 실험이 준비되는 대로 여기에 추가됩니다. 해 보고 싶은 실험이 있으면 선생님께 말해 주세요.</p></div>
+</div>
+<div class="howto"><h3>알아 둘 것</h3><ul><li><b>휴대폰·태블릿·노트북 어디서나</b> 됩니다. 앱을 깔 필요 없습니다.</li><li>실험 결과는 <b>저장되지 않습니다.</b> 화면을 닫으면 처음 상태로 돌아가니, 남길 것이 있으면 화면을 캡처하세요.</li><li>실제 실험을 대신하는 것이 아니라, <b>해 보기 전에 예상하고 해 본 뒤에 확인하는</b> 용도입니다. 실험실에 들어가기 전에 결과를 먼저 예상해 보면 훨씬 잘 남습니다.</li><li>이상하게 보이거나 잘 안 되면 선생님께 알려 주세요.</li></ul></div>
+<footer>영락고등학교 · 통합과학/화학 수업자료<br>실험실은 계속 추가됩니다 — 이 주소를 즐겨찾기 해 두세요.</footer>
+</div></body></html>
