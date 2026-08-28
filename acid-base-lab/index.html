@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>산·염기 실험실</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap');
+
+:root{
+  --bg: #10201b;
+  --panel: #182f28;
+  --panel-2: #1f382f;
+  --line: #2c473d;
+  --ink: #f1ede3;
+  --muted: #9cb0a8;
+  --acid: #e4572e;
+  --acid-2: #f2a541;
+  --neutral: #6fb98f;
+  --base-2: #3e9c9c;
+  --base: #3b6fa0;
+  --violet: #6b4e8e;
+  --pink: #d95bb0;
+  --mono: 'Space Mono', 'Courier New', monospace;
+  --sans: 'Work Sans', -apple-system, sans-serif;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(111,185,143,0.08), transparent 45%),
+    radial-gradient(circle at 90% 90%, rgba(59,111,160,0.10), transparent 45%),
+    var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+  padding:28px 16px 60px;
+}
+.wrap{max-width:920px;margin:0 auto;}
+
+.eyebrow{
+  font-family:var(--mono);
+  font-size:12px;
+  letter-spacing:.14em;
+  color:var(--neutral);
+  text-transform:uppercase;
+  margin-bottom:8px;
+}
+h1{
+  font-family:var(--sans);
+  font-weight:700;
+  font-size:32px;
+  margin:0 0 6px;
+  letter-spacing:-0.01em;
+}
+.sub{color:var(--muted);font-size:14.5px;line-height:1.6;margin:0 0 26px;max-width:600px;}
+
+/* pH scale strip - the signature element */
+.ph-strip-wrap{margin:22px 0 30px;}
+.ph-strip{
+  position:relative;
+  height:34px;
+  border-radius:8px;
+  background: linear-gradient(90deg,
+    #e4572e 0%, #f2a541 15%, #f5d547 30%, #6fb98f 46%, #6fb98f 54%,
+    #3e9c9c 62%, #3b6fa0 78%, #6b4e8e 92%, #6b4e8e 100%);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.25);
+}
+.ph-labels{
+  display:flex;justify-content:space-between;
+  font-family:var(--mono);font-size:10.5px;color:var(--muted);
+  margin-top:5px;padding:0 2px;
+}
+.ph-marker{
+  position:absolute;top:-9px;
+  width:2px;height:52px;background:var(--ink);
+  transform:translateX(-1px);
+  transition:left .5s cubic-bezier(.4,0,.2,1);
+}
+.ph-marker::after{
+  content:attr(data-ph);
+  position:absolute;top:-24px;left:50%;transform:translateX(-50%);
+  font-family:var(--mono);font-size:12px;font-weight:700;
+  background:var(--panel-2);padding:2px 6px;border-radius:4px;
+  border:1px solid var(--line);white-space:nowrap;
+}
+
+/* tabs */
+.tabs{display:flex;gap:8px;margin-bottom:22px;border-bottom:1px solid var(--line);}
+.tab-btn{
+  font-family:var(--sans);font-weight:600;font-size:14px;
+  background:none;border:none;color:var(--muted);
+  padding:10px 4px;cursor:pointer;position:relative;
+  transition:color .2s;
+}
+.tab-btn.active{color:var(--ink);}
+.tab-btn.active::after{
+  content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;
+  background:var(--neutral);border-radius:2px;
+}
+.tab-btn+.tab-btn{margin-left:18px;}
+
+.panel{display:none;}
+.panel.active{display:block;animation:fade .3s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:720px){.grid{grid-template-columns:1fr;}}
+
+.card{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:18px;
+}
+.card h3{
+  font-size:12px;font-family:var(--mono);letter-spacing:.08em;
+  text-transform:uppercase;color:var(--muted);margin:0 0 14px;
+}
+
+.chip-list{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{
+  font-family:var(--sans);font-size:13px;font-weight:500;
+  background:var(--panel-2);border:1px solid var(--line);color:var(--ink);
+  padding:8px 12px;border-radius:20px;cursor:pointer;
+  transition:all .15s;
+}
+.chip:hover{border-color:var(--neutral);}
+.chip.active{background:var(--neutral);color:#0d1a15;border-color:var(--neutral);font-weight:700;}
+
+/* beaker */
+.beaker-stage{display:flex;flex-direction:column;align-items:center;gap:14px;padding:8px 0 4px;}
+.beaker-svg{width:150px;height:180px;}
+.liquid{transition:fill 0.6s ease;}
+.readout{
+  font-family:var(--mono);text-align:center;
+}
+.readout .ph-big{font-size:40px;font-weight:700;line-height:1;transition:color .4s;}
+.readout .ph-unit{font-size:12px;color:var(--muted);letter-spacing:.1em;}
+.verdict{
+  margin-top:6px;font-family:var(--sans);font-weight:600;font-size:14px;
+  padding:4px 12px;border-radius:20px;display:inline-block;
+}
+.verdict.acid{background:rgba(228,87,46,0.18);color:var(--acid-2);}
+.verdict.neutral{background:rgba(111,185,143,0.18);color:var(--neutral);}
+.verdict.base{background:rgba(59,111,160,0.18);color:#7fb0e0;}
+
+.note{
+  font-size:12.5px;color:var(--muted);line-height:1.6;
+  background:var(--panel-2);border-radius:8px;padding:10px 12px;margin-top:14px;
+}
+
+/* neutralization */
+.eq{
+  font-family:var(--mono);font-size:14px;text-align:center;
+  padding:12px;background:var(--panel-2);border-radius:8px;margin-bottom:16px;
+  letter-spacing:.02em;
+}
+.slider-row{margin:18px 0 6px;}
+.slider-row label{font-size:13px;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:8px;font-family:var(--mono);}
+input[type=range]{
+  width:100%;accent-color:var(--base-2);height:4px;
+}
+.curve-wrap{background:var(--panel-2);border-radius:10px;padding:12px;margin-top:16px;}
+svg text{font-family:var(--mono);}
+
+.endpoint-flag{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--mono);font-size:12px;font-weight:700;
+  padding:4px 10px;border-radius:20px;margin-top:10px;
+  background:rgba(217,91,176,0.18);color:var(--pink);
+}
+
+.log{margin-top:26px;}
+.log-empty{color:var(--muted);font-size:13px;font-family:var(--mono);}
+.log-item{
+  display:flex;justify-content:space-between;gap:10px;
+  padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;
+}
+.log-item:last-child{border-bottom:none;}
+.log-item .t{font-family:var(--mono);color:var(--muted);font-size:11.5px;}
+
+/* comparison grid */
+.compare-row{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(84px,1fr));
+  gap:14px;
+  margin-top:6px;
+}
+.compare-cell{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:10px 6px 12px;
+  background:var(--panel-2);
+  border:1px solid var(--line);
+  border-radius:10px;
+}
+.compare-cell .mini-beaker{width:46px;height:56px;}
+.compare-cell .c-name{
+  font-size:11.5px;text-align:center;line-height:1.3;min-height:28px;
+  display:flex;align-items:center;
+}
+.compare-cell .c-ph{
+  font-family:var(--mono);font-size:11px;color:var(--muted);
+}
+.compare-cell .c-verdict{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.04em;
+  padding:2px 7px;border-radius:10px;margin-top:2px;
+}
+.compare-cell .c-verdict.acid{background:rgba(228,87,46,0.18);color:var(--acid-2);}
+.compare-cell .c-verdict.neutral{background:rgba(111,185,143,0.18);color:var(--neutral);}
+.compare-cell .c-verdict.base{background:rgba(59,111,160,0.18);color:#7fb0e0;}
+
+/* well plate (홈판) drawing */
+.palette-row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;}
+.swatch-btn{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  background:var(--panel-2);border:2px solid var(--line);border-radius:10px;
+  padding:6px 10px;cursor:pointer;transition:border-color .15s;
+}
+.swatch-btn.active{border-color:var(--ink);}
+.swatch-dot{width:20px;height:20px;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.25);}
+.swatch-label{font-family:var(--mono);font-size:10px;color:var(--muted);}
+.swatch-btn.eraser .swatch-dot{background:var(--panel);border:1px dashed var(--muted);}
+
+.toggle-row{display:flex;gap:8px;margin:16px 0;}
+.toggle-btn{
+  font-family:var(--sans);font-weight:600;font-size:13px;
+  background:var(--panel-2);border:1px solid var(--line);color:var(--muted);
+  padding:9px 16px;border-radius:8px;cursor:pointer;flex:1;transition:all .15s;
+}
+.toggle-btn.active{background:var(--neutral);color:#0d1a15;border-color:var(--neutral);}
+
+.template-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.tmpl-btn{
+  font-family:var(--sans);font-size:12.5px;font-weight:500;
+  background:none;border:1px solid var(--line);color:var(--muted);
+  padding:7px 12px;border-radius:20px;cursor:pointer;transition:all .15s;
+}
+.tmpl-btn:hover{border-color:var(--pink);color:var(--ink);}
+
+.well-grid{
+  --cols:18;
+  display:grid;
+  grid-template-columns:repeat(var(--cols), 1fr);
+  gap:3px;
+  touch-action:none;
+  user-select:none;
+  margin-top:16px;
+  max-width:560px;
+}
+.well{
+  aspect-ratio:1;
+  border-radius:50%;
+  background:#0c1712;
+  border:1px solid var(--line);
+  cursor:crosshair;
+  position:relative;
+  transition:background .12s;
+}
+.well.filled::after{
+  content:'';position:absolute;inset:26%;border-radius:50%;
+  background:rgba(255,255,255,0.16);
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">고1 통합과학 · 인터랙티브 실험 시뮬레이션</div>
+  <h1>산·염기 실험실</h1>
+  <p class="sub">생활 속 용액을 지시약으로 확인하고, 산과 염기를 섞어 중화 반응이 일어나는 과정을 관찰해 보세요.</p>
+
+  <div class="ph-strip-wrap">
+    <div class="ph-strip">
+      <div class="ph-marker" id="phMarker" style="left:50%" data-ph="7.0"></div>
+    </div>
+    <div class="ph-labels"><span>0</span><span>2</span><span>4</span><span>6</span><span>8</span><span>10</span><span>12</span><span>14</span></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="t1">① 지시약 반응 실험</button>
+    <button class="tab-btn" data-tab="t2">② 중화 반응 실험</button>
+    <button class="tab-btn" data-tab="t3">③ 한눈에 비교</button>
+    <button class="tab-btn" data-tab="t4">④ 홈판 그림 그리기</button>
+  </div>
+
+  <!-- TAB 1 -->
+  <div class="panel active" id="t1">
+    <div class="grid">
+      <div class="card">
+        <h3>용액 선택</h3>
+        <div class="chip-list" id="solutionList"></div>
+        <div class="note" id="solutionNote">묽은 염산을 선택하면 어떤 색 변화가 나타날지 예상해 보세요.</div>
+      </div>
+      <div class="card">
+        <h3>지시약 선택</h3>
+        <div class="chip-list" id="indicatorList"></div>
+        <div class="note" id="indicatorNote"></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px;">
+      <h3>관찰 결과</h3>
+      <div class="beaker-stage">
+        <svg class="beaker-svg" viewBox="0 0 100 120">
+          <path d="M30 8 H70 V30 L88 100 Q90 112 78 112 H22 Q10 112 12 100 L30 30 Z"
+                fill="none" stroke="#5c7a70" stroke-width="2.5" stroke-linejoin="round"/>
+          <clipPath id="beakerClip">
+            <path d="M31 9 H69 V30 L87 99 Q88.5 111 78 111 H22 Q11.5 111 13 99 L31 30 Z"/>
+          </clipPath>
+          <rect id="liquid" class="liquid" x="10" y="55" width="80" height="60" fill="#f5d547" clip-path="url(#beakerClip)"/>
+          <line x1="30" y1="8" x2="30" y2="30" stroke="#5c7a70" stroke-width="2.5"/>
+          <line x1="70" y1="8" x2="70" y2="30" stroke="#5c7a70" stroke-width="2.5"/>
+        </svg>
+        <div class="readout">
+          <div class="ph-big" id="phBig">7.0</div>
+          <div class="ph-unit">PH</div>
+          <div class="verdict neutral" id="verdict">중성</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="log card">
+      <h3>관찰 기록</h3>
+      <div id="logList"><div class="log-empty">아직 기록이 없습니다. 용액과 지시약을 선택해 보세요.</div></div>
+    </div>
+  </div>
+
+  <!-- TAB 2 -->
+  <div class="panel" id="t2">
+    <div class="card">
+      <h3>중화 반응: 염산 + 수산화나트륨</h3>
+      <div class="eq">HCl + NaOH → NaCl + H₂O</div>
+
+      <div class="grid">
+        <div class="beaker-stage">
+          <svg class="beaker-svg" viewBox="0 0 100 120">
+            <path d="M30 8 H70 V30 L88 100 Q90 112 78 112 H22 Q10 112 12 100 L30 30 Z"
+                  fill="none" stroke="#5c7a70" stroke-width="2.5" stroke-linejoin="round"/>
+            <clipPath id="beakerClip2">
+              <path d="M31 9 H69 V30 L87 99 Q88.5 111 78 111 H22 Q11.5 111 13 99 L31 30 Z"/>
+            </clipPath>
+            <rect id="liquid2" class="liquid" x="10" y="55" width="80" height="60" fill="#f2a541" clip-path="url(#beakerClip2)"/>
+            <line x1="30" y1="8" x2="30" y2="30" stroke="#5c7a70" stroke-width="2.5"/>
+            <line x1="70" y1="8" x2="70" y2="30" stroke="#5c7a70" stroke-width="2.5"/>
+          </svg>
+          <div class="readout">
+            <div class="ph-big" id="phBig2">1.0</div>
+            <div class="ph-unit">PH · BTB 용액 기준</div>
+            <div class="verdict acid" id="verdict2">산성</div>
+          </div>
+          <div id="endpointFlag" style="display:none;" class="endpoint-flag">◆ 종말점 근처 — 초록색으로 변함</div>
+        </div>
+
+        <div>
+          <div class="slider-row">
+            <label><span>염산(HCl) 20 mL에 넣은 수산화나트륨(NaOH)</span><span id="ntVal">0 mL</span></label>
+            <input type="range" id="ntSlider" min="0" max="40" value="0" step="1">
+          </div>
+          <div class="note">슬라이더를 오른쪽으로 옮기며 수산화나트륨 용액을 조금씩 떨어뜨려 보세요. BTB 지시약은 산성에서 노란색, 중성 근처에서 초록색, 염기성에서 파란색으로 변합니다.</div>
+
+          <div class="curve-wrap">
+            <svg viewBox="0 0 260 140" width="100%" height="140">
+              <line x1="30" y1="10" x2="30" y2="120" stroke="#2c473d" stroke-width="1"/>
+              <line x1="30" y1="120" x2="250" y2="120" stroke="#2c473d" stroke-width="1"/>
+              <text x="4" y="14" fill="#9cb0a8" font-size="9">14</text>
+              <text x="8" y="65" fill="#9cb0a8" font-size="9">7</text>
+              <text x="14" y="124" fill="#9cb0a8" font-size="9">0</text>
+              <text x="130" y="136" fill="#9cb0a8" font-size="9" text-anchor="middle">NaOH 첨가량 (mL)</text>
+              <path id="curvePath" d="" fill="none" stroke="#3e9c9c" stroke-width="2"/>
+              <circle id="curveDot" cx="30" cy="118" r="4" fill="#d95bb0"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: 한눈에 비교 -->
+  <div class="panel" id="t3">
+    <div class="card">
+      <h3>지시약 선택 — 10가지 용액을 동시에 비교</h3>
+      <div class="chip-list" id="indicatorListCompare"></div>
+      <div class="note" id="compareNote"></div>
+      <div class="compare-row" id="compareRow"></div>
+    </div>
+    <div class="card" style="margin-top:18px;">
+      <h3>어떻게 읽나요</h3>
+      <div class="note">왼쪽부터 pH가 낮은(산성이 강한) 순서로 정렬되어 있습니다. 같은 지시약이라도 용액마다 색이 어떻게 달라지는지, 그리고 지시약을 바꿨을 때 같은 용액의 색이 어떻게 달라지는지 비교해 보세요.</div>
+    </div>
+  </div>
+
+  <!-- TAB 4: 홈판 그림 그리기 -->
+  <div class="panel" id="t4">
+    <div class="card">
+      <h3>홈판(스팟 플레이트)에 용액 채우기</h3>
+      <div class="note" style="margin-top:0;margin-bottom:14px;">각 홈에 원하는 산성·염기성 용액을 채워 그림을 그려 보세요. 용액은 원래 색이 없어서 지금은 홈이 채워졌는지만 보입니다. 다 그렸으면 아래 지시약을 골라 <b>반응 보기</b>를 눌러 숨겨진 그림을 확인하세요.</div>
+
+      <div class="palette-row" id="palette"></div>
+
+      <div class="toggle-row">
+        <button class="toggle-btn active" id="btnBefore">💧 용액 넣기</button>
+        <button class="toggle-btn" id="btnAfter">🎨 지시약 반응 보기</button>
+      </div>
+
+      <div class="chip-list" id="artIndicatorList"></div>
+
+      <div class="template-row">
+        <button class="tmpl-btn" id="tmplClear">🗑 전체 지우기</button>
+        <button class="tmpl-btn" id="tmplRainbow">🌈 무지개 예시</button>
+        <button class="tmpl-btn" id="tmplHeart">❤️ 하트 예시</button>
+        <button class="tmpl-btn" id="tmplSmiley">🙂 웃는 얼굴 예시</button>
+      </div>
+
+      <div class="well-grid" id="wellGrid"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const solutions = [
+  {name:'묽은 염산', ph:1.0},
+  {name:'레몬즙', ph:2.2},
+  {name:'식초', ph:3.0},
+  {name:'탄산음료', ph:3.5},
+  {name:'우유', ph:6.5},
+  {name:'증류수', ph:7.0},
+  {name:'베이킹소다 용액', ph:8.5},
+  {name:'비눗물', ph:9.5},
+  {name:'암모니아수(유리세정제)', ph:11.0},
+  {name:'하수구 세정제', ph:13.0},
+];
+
+const indicators = {
+  '리트머스': {
+    desc:'산성에서는 청색 리트머스가 붉게, 염기성에서는 적색 리트머스가 푸르게 변합니다. 중성에서는 색이 변하지 않아요.',
+    color(ph){ return ph<6.5 ? '#e4572e' : (ph>7.5 ? '#3b6fa0' : '#c9c4b6'); }
+  },
+  'BTB 용액': {
+    desc:'산성에서 노란색, 중성 부근에서 초록색, 염기성에서 파란색을 나타냅니다.',
+    color(ph){ return ph<6 ? '#f5d547' : (ph>7.6 ? '#3b6fa0' : '#6fb98f'); }
+  },
+  '페놀프탈레인': {
+    desc:'산성·중성에서는 무색이지만, 염기성(pH 8.2 이상)에서 선명한 붉은색(자홍색)으로 변합니다.',
+    color(ph){ return ph>8.2 ? '#d95bb0' : '#e7e2d3'; }
+  },
+  '만능지시약': {
+    desc:'pH 값에 따라 빨강→주황→노랑→초록→청록→파랑→보라의 무지개색으로 세밀하게 변합니다.',
+    color: phToUniversalColor
+  }
+};
+
+function phToUniversalColor(ph){
+  const stops = [
+    [0,'#e4572e'],[2,'#e4572e'],[4,'#f2a541'],[6,'#f5d547'],
+    [7,'#6fb98f'],[8,'#3e9c9c'],[10,'#3b6fa0'],[12,'#6b4e8e'],[14,'#6b4e8e']
+  ];
+  for(let i=0;i<stops.length-1;i++){
+    const [p1,c1]=stops[i], [p2,c2]=stops[i+1];
+    if(ph>=p1 && ph<=p2){ return lerpColor(c1,c2,(ph-p1)/(p2-p1)); }
+  }
+  return stops[stops.length-1][1];
+}
+function lerpColor(a,b,t){
+  const pa=hexToRgb(a), pb=hexToRgb(b);
+  const r=Math.round(pa[0]+(pb[0]-pa[0])*t);
+  const g=Math.round(pa[1]+(pb[1]-pa[1])*t);
+  const bl=Math.round(pa[2]+(pb[2]-pa[2])*t);
+  return `rgb(${r},${g},${bl})`;
+}
+function hexToRgb(h){h=h.replace('#','');return [parseInt(h.substr(0,2),16),parseInt(h.substr(2,2),16),parseInt(h.substr(4,2),16)];}
+
+let state = { solution: solutions[0], indicator: '리트머스' };
+const log = [];
+
+const solutionList = document.getElementById('solutionList');
+solutions.forEach(s=>{
+  const b=document.createElement('button');
+  b.className='chip'+(s===state.solution?' active':'');
+  b.textContent=s.name;
+  b.onclick=()=>{ state.solution=s; render(); addLog(); document.querySelectorAll('#solutionList .chip').forEach(c=>c.classList.remove('active')); b.classList.add('active'); };
+  solutionList.appendChild(b);
+});
+
+const indicatorList = document.getElementById('indicatorList');
+Object.keys(indicators).forEach(name=>{
+  const b=document.createElement('button');
+  b.className='chip'+(name===state.indicator?' active':'');
+  b.textContent=name;
+  b.onclick=()=>{ state.indicator=name; render(); addLog(); document.querySelectorAll('#indicatorList .chip').forEach(c=>c.classList.remove('active')); b.classList.add('active'); };
+  indicatorList.appendChild(b);
+});
+
+function verdictOf(ph){
+  if(ph<6.5) return {cls:'acid', label:'산성'};
+  if(ph>7.5) return {cls:'base', label:'염기성'};
+  return {cls:'neutral', label:'중성'};
+}
+
+function render(){
+  const ph = state.solution.ph;
+  const ind = indicators[state.indicator];
+  const color = ind.color(ph);
+  document.getElementById('liquid').setAttribute('fill', color);
+  document.getElementById('phBig').textContent = ph.toFixed(1);
+  const v = verdictOf(ph);
+  const vEl = document.getElementById('verdict');
+  vEl.className = 'verdict '+v.cls;
+  vEl.textContent = v.label;
+  document.getElementById('indicatorNote').textContent = ind.desc;
+  document.getElementById('solutionNote').textContent = `${state.solution.name}의 pH는 약 ${ph.toFixed(1)}입니다.`;
+
+  const marker = document.getElementById('phMarker');
+  marker.style.left = (ph/14*100)+'%';
+  marker.setAttribute('data-ph', 'pH '+ph.toFixed(1));
+}
+
+function addLog(){
+  const ph = state.solution.ph;
+  const ind = indicators[state.indicator];
+  const v = verdictOf(ph);
+  const now = new Date();
+  const t = now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0')+':'+now.getSeconds().toString().padStart(2,'0');
+  log.unshift({t, text:`${state.solution.name} + ${state.indicator} → ${v.label} (pH ${ph.toFixed(1)})`});
+  if(log.length>8) log.pop();
+  const el = document.getElementById('logList');
+  el.innerHTML = log.map(l=>`<div class="log-item"><span>${l.text}</span><span class="t">${l.t}</span></div>`).join('');
+}
+
+// tabs
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  };
+});
+
+// --- Neutralization tab ---
+const acidVol = 20; // mL of HCl, conceptually 1 unit conc
+const acidMol = 20; // arbitrary mol-equivalent units
+const baseConcPerML = 1.0; // NaOH mol-equiv per mL added (chosen so equivalence at 20mL)
+
+function titrationPH(addedML){
+  // simple sigmoid-like model centered at equivalence point (20 mL)
+  const eq = 20;
+  const x = addedML - eq;
+  // steep jump near equivalence
+  const ph = 7 + 6.9*Math.tanh(x/2.2);
+  return Math.max(0.5, Math.min(13.5, ph));
+}
+
+function ntColor(ph){
+  return ph<6 ? '#f5d547' : (ph>7.6 ? '#3b6fa0' : '#6fb98f');
+}
+
+function renderTitration(){
+  const val = parseInt(document.getElementById('ntSlider').value,10);
+  document.getElementById('ntVal').textContent = val+' mL';
+  const ph = titrationPH(val);
+  document.getElementById('liquid2').setAttribute('fill', ntColor(ph));
+  document.getElementById('phBig2').textContent = ph.toFixed(1);
+  const v = verdictOf(ph);
+  const vEl2 = document.getElementById('verdict2');
+  vEl2.className='verdict '+v.cls;
+  vEl2.textContent=v.label;
+
+  const flag = document.getElementById('endpointFlag');
+  flag.style.display = (Math.abs(val-20)<=2) ? 'inline-flex' : 'none';
+
+  drawCurve(val);
+}
+
+function drawCurve(currentVal){
+  const svgW=220, svgH=110, x0=30, y0=120, x1=250, y1=10;
+  let d = '';
+  for(let ml=0; ml<=40; ml++){
+    const ph = titrationPH(ml);
+    const px = x0 + (ml/40)*(x1-x0);
+    const py = y1 + ((14-ph)/14)*(y0-y1) - 10; // shift to fit
+    d += (ml===0?'M':'L')+px.toFixed(1)+','+py.toFixed(1)+' ';
+  }
+  document.getElementById('curvePath').setAttribute('d', d);
+
+  const ph = titrationPH(currentVal);
+  const px = x0 + (currentVal/40)*(x1-x0);
+  const py = y1 + ((14-ph)/14)*(y0-y1) - 10;
+  document.getElementById('curveDot').setAttribute('cx', px);
+  document.getElementById('curveDot').setAttribute('cy', py);
+}
+
+document.getElementById('ntSlider').addEventListener('input', renderTitration);
+
+render();
+renderTitration();
+
+// --- Comparison tab ---
+let compareIndicator = '리트머스';
+const sortedSolutions = [...solutions].sort((a,b)=>a.ph-b.ph);
+
+const indicatorListCompare = document.getElementById('indicatorListCompare');
+Object.keys(indicators).forEach(name=>{
+  const b=document.createElement('button');
+  b.className='chip'+(name===compareIndicator?' active':'');
+  b.textContent=name;
+  b.onclick=()=>{
+    compareIndicator=name;
+    document.querySelectorAll('#indicatorListCompare .chip').forEach(c=>c.classList.remove('active'));
+    b.classList.add('active');
+    renderCompare();
+  };
+  indicatorListCompare.appendChild(b);
+});
+
+function miniBeakerSVG(color){
+  return `<svg class="mini-beaker" viewBox="0 0 100 120">
+    <path d="M30 8 H70 V30 L88 100 Q90 112 78 112 H22 Q10 112 12 100 L30 30 Z"
+          fill="none" stroke="#5c7a70" stroke-width="4" stroke-linejoin="round"/>
+    <clipPath id="clip-${color.replace(/[^a-zA-Z0-9]/g,'')}"><path d="M31 9 H69 V30 L87 99 Q88.5 111 78 111 H22 Q11.5 111 13 99 L31 30 Z"/></clipPath>
+    <rect x="10" y="55" width="80" height="60" fill="${color}" clip-path="url(#clip-${color.replace(/[^a-zA-Z0-9]/g,'')})"/>
+    <line x1="30" y1="8" x2="30" y2="30" stroke="#5c7a70" stroke-width="4"/>
+    <line x1="70" y1="8" x2="70" y2="30" stroke="#5c7a70" stroke-width="4"/>
+  </svg>`;
+}
+
+function renderCompare(){
+  const ind = indicators[compareIndicator];
+  document.getElementById('compareNote').textContent = ind.desc;
+  const row = document.getElementById('compareRow');
+  row.innerHTML = sortedSolutions.map(s=>{
+    const color = ind.color(s.ph);
+    const v = verdictOf(s.ph);
+    return `<div class="compare-cell">
+      ${miniBeakerSVG(color)}
+      <div class="c-name">${s.name}</div>
+      <div class="c-ph">pH ${s.ph.toFixed(1)}</div>
+      <div class="c-verdict ${v.cls}">${v.label}</div>
+    </div>`;
+  }).join('');
+}
+renderCompare();
+
+// --- 홈판(spot plate) drawing tab ---
+const GRID_COLS = 18, GRID_ROWS = 12;
+const palette = [
+  {label:'레몬즙', category:'강산', ph:2.2},
+  {label:'식초', category:'약산', ph:3.0},
+  {label:'증류수', category:'중성', ph:7.0},
+  {label:'비눗물', category:'약염기', ph:9.5},
+  {label:'하수구 세정제', category:'강염기', ph:13.0},
+];
+let selectedTool = palette[0];
+let artIndicator = '만능지시약';
+let revealed = false;
+const wells = new Array(GRID_COLS*GRID_ROWS).fill(null);
+
+// palette UI
+const paletteEl = document.getElementById('palette');
+palette.forEach((p,i)=>{
+  const b=document.createElement('div');
+  b.className='swatch-btn'+(i===0?' active':'');
+  b.innerHTML = `<div class="swatch-dot" style="background:${phToUniversalColor(p.ph)}"></div><div class="swatch-label">${p.label}<br>${p.category} · pH${p.ph}</div>`;
+  b.onclick=()=>{
+    selectedTool = p;
+    document.querySelectorAll('.swatch-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+  };
+  paletteEl.appendChild(b);
+});
+const eraserBtn=document.createElement('div');
+eraserBtn.className='swatch-btn eraser';
+eraserBtn.innerHTML = `<div class="swatch-dot"></div><div class="swatch-label">지우개</div>`;
+eraserBtn.onclick=()=>{
+  selectedTool = null;
+  document.querySelectorAll('.swatch-btn').forEach(x=>x.classList.remove('active'));
+  eraserBtn.classList.add('active');
+};
+paletteEl.appendChild(eraserBtn);
+
+// indicator chip list for art
+const artIndicatorList = document.getElementById('artIndicatorList');
+Object.keys(indicators).forEach(name=>{
+  const b=document.createElement('button');
+  b.className='chip'+(name===artIndicator?' active':'');
+  b.textContent=name;
+  b.onclick=()=>{
+    artIndicator=name;
+    document.querySelectorAll('#artIndicatorList .chip').forEach(c=>c.classList.remove('active'));
+    b.classList.add('active');
+    if(revealed) renderGrid();
+  };
+  artIndicatorList.appendChild(b);
+});
+
+// grid build
+const wellGrid = document.getElementById('wellGrid');
+wellGrid.style.setProperty('--cols', GRID_COLS);
+for(let i=0;i<GRID_COLS*GRID_ROWS;i++){
+  const d=document.createElement('div');
+  d.className='well';
+  d.dataset.idx=i;
+  wellGrid.appendChild(d);
+}
+const wellEls = Array.from(wellGrid.children);
+
+function paintWell(idx){
+  wells[idx] = selectedTool ? selectedTool.ph : null;
+  renderWell(idx);
+}
+function renderWell(idx){
+  const el = wellEls[idx];
+  const ph = wells[idx];
+  if(ph===null || ph===undefined){
+    el.classList.remove('filled');
+    el.style.background = '#0c1712';
+    return;
+  }
+  el.classList.add('filled');
+  if(revealed){
+    el.style.background = indicators[artIndicator].color(ph);
+  } else {
+    el.style.background = '#233e35';
+  }
+}
+function renderGrid(){ for(let i=0;i<wells.length;i++) renderWell(i); }
+
+let isPainting=false;
+wellGrid.addEventListener('pointerdown', e=>{ isPainting=true; paintFromEvent(e); });
+document.addEventListener('pointermove', e=>{ if(isPainting) paintFromEvent(e); });
+document.addEventListener('pointerup', ()=>{ isPainting=false; });
+function paintFromEvent(e){
+  const el = document.elementFromPoint(e.clientX, e.clientY);
+  if(el && el.classList.contains('well')){
+    paintWell(parseInt(el.dataset.idx,10));
+  }
+}
+
+// before/after toggle
+document.getElementById('btnBefore').onclick=()=>{
+  revealed=false;
+  document.getElementById('btnBefore').classList.add('active');
+  document.getElementById('btnAfter').classList.remove('active');
+  renderGrid();
+};
+document.getElementById('btnAfter').onclick=()=>{
+  revealed=true;
+  document.getElementById('btnAfter').classList.add('active');
+  document.getElementById('btnBefore').classList.remove('active');
+  renderGrid();
+};
+
+// templates
+function loadTemplate(arr){
+  for(let i=0;i<wells.length;i++) wells[i]=arr[i];
+  revealed=false;
+  document.getElementById('btnBefore').classList.add('active');
+  document.getElementById('btnAfter').classList.remove('active');
+  renderGrid();
+}
+document.getElementById('tmplClear').onclick=()=>{
+  loadTemplate(new Array(GRID_COLS*GRID_ROWS).fill(null));
+};
+document.getElementById('tmplRainbow').onclick=()=>{
+  const arr=new Array(GRID_COLS*GRID_ROWS).fill(null);
+  for(let r=0;r<GRID_ROWS;r++) for(let c=0;c<GRID_COLS;c++){
+    arr[r*GRID_COLS+c] = (c/(GRID_COLS-1))*14;
+  }
+  loadTemplate(arr);
+};
+document.getElementById('tmplHeart').onclick=()=>{
+  const arr=new Array(GRID_COLS*GRID_ROWS).fill(null);
+  const cx=(GRID_COLS-1)/2, cy=(GRID_ROWS-1)/2;
+  for(let r=0;r<GRID_ROWS;r++) for(let c=0;c<GRID_COLS;c++){
+    const nx=(c-cx)/(GRID_COLS/2.6);
+    const ny=-(r-cy)/(GRID_ROWS/2.4)+0.15;
+    const eq=Math.pow(nx*nx+ny*ny-1,3)-nx*nx*Math.pow(ny,3);
+    if(eq<=0.06) arr[r*GRID_COLS+c]=1.0;
+  }
+  loadTemplate(arr);
+};
+document.getElementById('tmplSmiley').onclick=()=>{
+  const arr=new Array(GRID_COLS*GRID_ROWS).fill(null);
+  const cx=(GRID_COLS-1)/2, cy=(GRID_ROWS-1)/2;
+  const R=Math.min(GRID_ROWS,GRID_COLS)/2-0.8;
+  for(let r=0;r<GRID_ROWS;r++) for(let c=0;c<GRID_COLS;c++){
+    const dx=c-cx, dy=r-cy;
+    const dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist<=R && dist>=R-1.1) arr[r*GRID_COLS+c]=13.0; // face outline
+    const ex=Math.abs(dx)-R*0.4, ey=dy+R*0.25;
+    if(Math.abs(dx)>R*0.15 && Math.sqrt(ex*ex+ey*ey)<=0.9) arr[r*GRID_COLS+c]=1.0; // eyes
+    const mouthDist=Math.sqrt(dx*dx+(dy-R*0.15)*(dy-R*0.15));
+    if(dy>R*0.05 && mouthDist>=R*0.45 && mouthDist<=R*0.6) arr[r*GRID_COLS+c]=8.0; // mouth
+  }
+  loadTemplate(arr);
+};
+
+renderGrid();
+</script>
+</body>
+</html>
