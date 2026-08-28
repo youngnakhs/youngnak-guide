@@ -5,7 +5,7 @@
 <meta name="theme-color" content="#08120f">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Gaegu:wght@700&family=Nanum+Pen+Script&display=swap');
 :root{
   --bg:#08120f; --card:#122019; --card-2:#16281f; --line:#22392e; --line-2:#2f4d3e;
   --ink:#f2f7f3; --muted:#a8c0b4; --dim:#6f8a7c;
@@ -13,6 +13,8 @@
   --disp:'Space Grotesk','Pretendard Variable',Pretendard,sans-serif;
   --sans:'Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
   --mono:'Space Grotesk',ui-monospace,monospace;
+  --hand:'Gaegu','Pretendard Variable',sans-serif;
+  --pen:'Nanum Pen Script','Gaegu',cursive;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -80,7 +82,9 @@ h1 .g{background:linear-gradient(96deg,var(--neon),var(--cyan) 46%,var(--violet)
 .lab:nth-child(2){animation-delay:.07s}
 .lab:nth-child(3){animation-delay:.14s}
 .lab:nth-child(4){animation-delay:.21s}
-@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes pop{
+  from{opacity:0;transform:translateY(14px) scale(.98) rotate(var(--tilt,0deg))}
+  to{opacity:1;transform:rotate(var(--tilt,0deg))}}
 .lab.open{transition:transform .2s cubic-bezier(.22,1,.3,1),border-color .2s,box-shadow .2s}
 .lab.open::before{content:'';position:absolute;inset:0;z-index:-1;opacity:0;transition:.25s;
   background:radial-gradient(120% 90% at 0% 0%,var(--c),transparent 62%)}
@@ -263,6 +267,103 @@ body:not(.ready) .wrap{opacity:0}
 @media (prefers-reduced-motion:reduce){
   #boot{display:none}
   body:not(.ready) .wrap{opacity:1}
+}
+/* ══ 스티커 · 손글씨 · 테이프 · 모눈종이 ═══════════════════
+   컨셉 — '실험 노트를 뜯어 스티커를 붙인 것'
+   무작정 시끄럽게가 아니라, 노트 위에 붙인 것처럼 각도와 자리를 정해서 배치한다. */
+
+/* 모눈종이 격자 */
+body{
+  background-image:
+    linear-gradient(rgba(255,255,255,.030) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.030) 1px,transparent 1px);
+  background-size:26px 26px;
+  background-attachment:fixed;
+}
+
+/* ── 스티커 ───────────────────────────────── */
+.stk{display:inline-flex;align-items:center;gap:7px;
+  font-family:var(--hand);font-size:20px;font-weight:700;line-height:1;
+  color:#0d1712;background:var(--sc,#ffe066);
+  padding:9px 15px 11px;border-radius:12px;white-space:nowrap;
+  box-shadow:0 0 0 4px #fff,0 10px 24px -10px rgba(0,0,0,.75);
+  transform:rotate(var(--r,-4deg));user-select:none}
+.stk.abs{position:absolute;z-index:6}
+.stk.sm{font-size:16px;padding:7px 12px 9px;box-shadow:0 0 0 3px #fff,0 8px 18px -9px rgba(0,0,0,.7)}
+.stk.ghost{background:#0f1c16;color:var(--ink);box-shadow:0 0 0 3px var(--sc,#58f0a5),0 8px 18px -9px #000}
+
+/* 반짝이 */
+.spark{position:absolute;color:var(--sc,#ffe066);font-size:22px;z-index:6;
+  animation:twinkle 2.6s ease-in-out infinite;pointer-events:none;text-shadow:0 0 14px currentColor}
+@keyframes twinkle{0%,100%{opacity:.35;transform:scale(.85) rotate(0)}50%{opacity:1;transform:scale(1.15) rotate(18deg)}}
+
+/* ── 손글씨 메모 ──────────────────────────── */
+.hand{font-family:var(--pen);font-size:23px;line-height:1.25;color:var(--neon);
+  transform:rotate(var(--r,-3deg));display:inline-block}
+.hand.abs{position:absolute;z-index:6}
+.hand.pink{color:var(--pink)}
+.hand.warm{color:var(--warm)}
+
+/* 낙서 화살표 — 그려지는 애니메이션 */
+.doodle{position:absolute;pointer-events:none;z-index:6;overflow:visible}
+.doodle path{fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;
+  stroke-dasharray:220;stroke-dashoffset:220;animation:draw 1.1s ease-out .5s forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+
+/* 형광펜 */
+.hl{background:linear-gradient(transparent 56%,var(--hlc,rgba(88,240,165,.34)) 56%);
+  padding:0 3px;border-radius:2px}
+.hl.p{--hlc:rgba(255,111,174,.32)}
+.hl.w{--hlc:rgba(255,177,92,.32)}
+
+/* ── 마스킹 테이프 ────────────────────────── */
+.tape{position:absolute;width:92px;height:27px;z-index:6;
+  background:repeating-linear-gradient(90deg,rgba(255,240,200,.30) 0 6px,rgba(255,240,200,.20) 6px 12px);
+  box-shadow:0 3px 10px -4px rgba(0,0,0,.7);transform:rotate(var(--r,-7deg));
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 3px,#000 calc(100% - 3px),transparent 100%);
+          mask-image:linear-gradient(90deg,transparent 0,#000 3px,#000 calc(100% - 3px),transparent 100%)}
+
+/* ── 흐르는 띠 ────────────────────────────── */
+.ticker{position:relative;overflow:hidden;margin:26px 0 0;padding:11px 0;
+  border-top:1.5px dashed var(--line-2);border-bottom:1.5px dashed var(--line-2)}
+.ticker .roll{display:flex;gap:30px;white-space:nowrap;width:max-content;
+  animation:roll 26s linear infinite}
+.ticker span{font-family:var(--hand);font-size:19px;font-weight:700;color:var(--muted)}
+.ticker span b{color:var(--neon);font-weight:700}
+.ticker:hover .roll{animation-play-state:paused}
+@keyframes roll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ── 말풍선 ───────────────────────────────── */
+.bubble{position:relative;display:inline-block;font-family:var(--hand);font-size:18px;
+  color:#0d1712;background:#fff;padding:9px 14px 11px;border-radius:14px;
+  transform:rotate(var(--r,2deg));box-shadow:0 8px 20px -10px rgba(0,0,0,.8)}
+.bubble::after{content:'';position:absolute;left:20px;bottom:-9px;width:0;height:0;
+  border:9px solid transparent;border-top-color:#fff;border-bottom:0}
+
+/* ── 카드를 삐뚤게, 올리면 반듯하게 ───────── */
+.lab{transform:rotate(var(--tilt,0deg))}
+.labs > .lab:nth-child(odd){--tilt:-.55deg}
+.labs > .lab:nth-child(even){--tilt:.65deg}
+.lab.open:hover{transform:rotate(0deg) translateY(-4px)}
+.lab.open:active{transform:rotate(0deg) scale(.985)}
+.lab{overflow:visible}
+.lab .inner{position:relative;z-index:1}
+
+/* 제목을 스티커처럼 */
+h1{position:relative}
+h1 .g{filter:drop-shadow(0 5px 0 rgba(0,0,0,.55)) drop-shadow(0 0 22px rgba(88,240,165,.25))}
+h1{text-shadow:0 5px 0 rgba(0,0,0,.45)}
+
+@media(max-width:700px){
+  .stk{font-size:17px;padding:8px 12px 10px}
+  .stk.sm{font-size:14px}
+  .hand{font-size:20px}
+  .ticker span{font-size:17px}
+  .doodle.hide-sm{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  .ticker .roll{animation:none}
+  .doodle path{stroke-dashoffset:0;animation:none}
 }</style></head><body>
 <div id="boot"><div class="in">
 
@@ -311,20 +412,25 @@ body:not(.ready) .wrap{opacity:0}
 <div class="wrap">
 <header style="position:relative">
 <div class="floaters"><div class="fm f1"><div class="mol"><span class="at o"></span><span class="arm a1"><i class="bond"></i><b class="at h"></b></span><span class="arm a2"><i class="bond"></i><b class="at h"></b></span></div></div><div class="fm f2"><div class="mol"><span class="at o"></span><span class="arm a1"><i class="bond"></i><b class="at h"></b></span><span class="arm a2"><i class="bond"></i><b class="at h"></b></span></div></div><div class="fm f3"><div class="mol"><span class="at o"></span><span class="arm a1"><i class="bond"></i><b class="at h"></b></span><span class="arm a2"><i class="bond"></i><b class="at h"></b></span></div></div></div>
+<span class="stk abs sm" style="--sc:#ff6fae;--r:7deg;right:2%;top:14px">🧪 암기 금지</span>
+<span class="stk abs sm" style="--sc:#a78bfa;--r:-9deg;right:24%;top:150px">pH 7 = 평화</span>
+<span class="spark" style="--sc:#ffe066;right:16%;top:96px">✦</span>
 <span class="tagchip"><span class="dot"></span>고1 통합과학 · 화학</span>
 <h1>화학 <span class="g">실험실</span></h1>
-<p class="punch">읽으면 3분, <em>해 보면 안 잊는다.</em></p>
-<p class="sub">용액을 고르고, 지시약을 떨어뜨리고, 슬라이더를 움직여 보세요. 왜 그렇게 되는지는 그다음에 이해해도 늦지 않습니다.</p>
+<div style="position:relative;display:inline-block;margin-top:14px"><span class="stk" style="--sc:#58f0a5;--r:-3deg">⚗️ 눌러보면 알아</span><span class="hand pink abs" style="--r:7deg;left:112%;top:2px;white-space:nowrap">진짜 5분컷</span></div>
+<p class="punch">읽으면 3분, <em class="hl">해 보면 안 잊는다.</em></p>
+<p class="sub">용액을 고르고, 지시약을 떨어뜨리고, 슬라이더를 움직여 보세요. 왜 그렇게 되는지는 <span class="hl w">그다음에 이해해도</span> 늦지 않습니다.</p>
 <div class="stats"><div class="stat" style="--c:var(--neon)"><b data-n="1">1</b><span>열린 실험실</span></div><div class="stat" style="--c:var(--cyan)"><b data-n="4">4</b><span>해 볼 수 있는 활동</span></div><div class="stat" style="--c:var(--warm)"><b>0</b><span>설치 · 로그인</span></div></div>
 </header>
+<div class="ticker"><div class="roll"><span>산·염기<b> ✦ </b></span><span>중화반응<b> ✦ </b></span><span>지시약<b> ✦ </b></span><span>홈판 아트<b> ✦ </b></span><span>pH 0~14<b> ✦ </b></span><span>리트머스<b> ✦ </b></span><span>BTB<b> ✦ </b></span><span>페놀프탈레인<b> ✦ </b></span><span>만능지시약<b> ✦ </b></span><span>적정곡선<b> ✦ </b></span><span>산·염기<b> ✦ </b></span><span>중화반응<b> ✦ </b></span><span>지시약<b> ✦ </b></span><span>홈판 아트<b> ✦ </b></span><span>pH 0~14<b> ✦ </b></span><span>리트머스<b> ✦ </b></span><span>BTB<b> ✦ </b></span><span>페놀프탈레인<b> ✦ </b></span><span>만능지시약<b> ✦ </b></span><span>적정곡선<b> ✦ </b></span></div></div>
 <div class="phbar"></div>
 <div class="phcap"><span>산성</span><span>중성</span><span>염기성</span></div>
-<div class="sechead"><h2>실험실 고르기</h2><span class="n">01</span></div>
+<div class="sechead" style="position:relative"><h2>실험실 고르기</h2><span class="n">01</span><span class="hand abs hide-sm" style="--r:-5deg;right:2px;top:-4px">골라서 눌러 👇</span></div>
 <div class="labs">
-<a class="lab open" style="--c:#58f0a5" href="./acid-base/"><span class="ghost">01</span><div class="thumb" style="color:#58f0a5"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><defs><linearGradient id="pg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff5a3c"/><stop offset=".5" stop-color="#58f0a5"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><rect x="2" y="10.5" width="20" height="3" rx="1.5" fill="url(#pg)"/><path d="M9 3h6v4l4 9.5a2 2 0 0 1-1.8 2.9H6.8A2 2 0 0 1 5 16.5L9 7V3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" opacity=".85"/></svg></div><h3>산·염기 실험실<span class="pill new">NEW</span></h3><p>생활 속 용액 10가지를 지시약으로 확인하고, 산과 염기를 섞어 중화되는 과정을 직접 조절해 봅니다. 마지막에는 홈판에 용액으로 그림을 그린 뒤 지시약을 부어 숨은 그림을 드러냅니다.</p><div class="tags"><span class="tag">지시약 반응 실험</span><span class="tag">중화 반응 적정</span><span class="tag">10개 용액 한눈에 비교</span><span class="tag">홈판 그림 그리기</span></div><div class="foot"><div class="info"><span>⏱ 15~25분</span><span>활동 4개</span><span>고1 통합과학 · 산과 염기</span></div><span class="cta">들어가기 →</span></div></a>
-<div class="lab next" style="--c:var(--dim)"><span class="ghost">02</span><h3>다음 실험실</h3><p>새 실험이 준비되는 대로 여기 열립니다. 해 보고 싶은 실험이 있으면 말해 주세요.</p></div>
+<a class="lab open" style="--c:#58f0a5" href="./acid-base/"><span class="tape" style="--r:-7deg;left:26px;top:-13px"></span><span class="tape" style="--r:6deg;right:34px;top:-13px;width:74px"></span><span class="ghost">01</span><div class="thumb" style="color:#58f0a5"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><defs><linearGradient id="pg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff5a3c"/><stop offset=".5" stop-color="#58f0a5"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><rect x="2" y="10.5" width="20" height="3" rx="1.5" fill="url(#pg)"/><path d="M9 3h6v4l4 9.5a2 2 0 0 1-1.8 2.9H6.8A2 2 0 0 1 5 16.5L9 7V3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" opacity=".85"/></svg></div><span class="stk abs sm" style="--sc:#ffe066;--r:5deg;right:96px;top:16px">색 바뀜 주의 ⚠</span><h3>산·염기 실험실<span class="pill new">NEW</span></h3><p>생활 속 용액 10가지를 지시약으로 확인하고, 산과 염기를 섞어 중화되는 과정을 직접 조절해 봅니다. 마지막에는 홈판에 용액으로 그림을 그린 뒤 지시약을 부어 숨은 그림을 드러냅니다.</p><div class="tags"><span class="tag">지시약 반응 실험</span><span class="tag">중화 반응 적정</span><span class="tag">10개 용액 한눈에 비교</span><span class="tag">홈판 그림 그리기</span></div><div class="foot"><div class="info"><span>⏱ 15~25분</span><span>활동 4개</span><span>고1 통합과학 · 산과 염기</span></div><span class="cta">들어가기 →</span><svg class="doodle hide-sm" style="color:var(--c);right:184px;bottom:16px;width:86px;height:46px;opacity:.9" viewBox="0 0 86 46"><path d="M4 10 C24 38 50 40 76 27 M76 27 L63 28 M76 27 L69 17"/></svg></div></a>
+<div class="lab next" style="--c:var(--dim)"><span class="ghost">02</span><div style="margin-bottom:12px"><span class="bubble" style="--r:-2deg">뭐 만들까 🤔</span></div><h3>다음 실험실</h3><p>새 실험이 준비되는 대로 여기 열립니다. 해 보고 싶은 실험 있으면 말해 주세요 — 진짜로 만듭니다.</p></div>
 </div>
-<div class="howto"><h3>들어가기 전에</h3><ul><li><b>먼저 예상하고 들어가세요.</b> 무슨 색이 될지 찍어 보고 확인하면 훨씬 잘 남습니다.</li><li>휴대폰·아이패드·노트북 <b>아무 데서나</b> 됩니다. 깔 것도 로그인도 없습니다.</li><li>결과는 <b>저장되지 않습니다.</b> 남기고 싶으면 화면을 캡처하세요.</li><li>진짜 실험을 대신하는 건 아닙니다. 실험 전에 미리 보고, 하고 나서 다시 확인하는 용도.</li><li>이상하게 보이거나 안 되면 알려 주세요.</li></ul></div>
+<div class="howto" style="position:relative"><span class="stk abs sm" style="--sc:#4fd6e0;--r:-6deg;right:18px;top:-16px">읽으면 이득</span><h3>들어가기 전에</h3><ul><li><b>먼저 찍고 들어가세요.</b> 무슨 색이 될지 예상한 다음 확인하면 훨씬 잘 남습니다.</li><li>휴대폰·아이패드·노트북 <b>아무 데서나</b> 됩니다. 깔 것도 로그인도 없습니다.</li><li>결과는 <b>저장되지 않습니다.</b> 남기고 싶으면 화면을 캡처하세요.</li><li>진짜 실험을 대신하는 건 아닙니다. 실험 전에 미리 보고, 하고 나서 다시 확인하는 용도.</li><li>이상하게 보이거나 안 되면 알려 주세요.</li></ul></div>
 <footer>영락고등학교 · 통합과학/화학<br>실험실은 계속 늘어납니다 — 이 주소를 즐겨찾기 해 두세요.</footer>
 <script>
 (function(){
