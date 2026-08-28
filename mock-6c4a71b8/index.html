@@ -442,11 +442,12 @@ html[data-mode="student"] .flag.on{background:#12281f;border-color:var(--ok);col
         <div class="lb">답변 시간</div>
         <div class="seg" id="segAns"></div>
         <div class="hint" style="margin-top:9px">넉넉히 2분 — 짧게 끝내면 [답변 끝]으로 넘기면 됩니다.
-          <b style="color:var(--amber)">단, 실전 권장 길이는 문항당 45~90초</b>이고 피드백은 그 기준으로 나옵니다.</div>
+          <b style="color:var(--amber)">단, 실전 권장 길이는 문항당 30~90초</b>이고 피드백은 그 기준으로 나옵니다.</div>
       </div>
       <div class="opt">
         <div class="lb">문항 순서</div>
         <div class="seg" id="segOrder"></div>
+        <div class="hint" style="margin:8px 0 10px">[약한 것만] = 점수를 3점 이하로 매겼거나 「다시 녹음할 것」으로 표시해 둔 문항만 골라서 진행합니다.</div>
         <label class="chk"><input type="checkbox" id="cbReview"> 답변마다 바로 들어보기(끄면 끝나고 한 번에)</label>
         <label class="chk"><input type="checkbox" id="cbFollow" checked> 꼬리질문도 진행(각 40초)</label>
         <label class="chk"><input type="checkbox" id="cbBeep" checked> 전환음 켜기</label>
@@ -627,7 +628,7 @@ html[data-mode="student"] .flag.on{background:#12281f;border-color:var(--ok);col
 
 <script>
 /* ══════════════════════════════════════════════════════════
-   문항 은행 — 성공회대 10 / 경기대 10 (전부 신규, 연습본과 무중복)
+   문항 은행 — 성공회대 12 / 경기대 12 (전부 신규, 연습본과 무중복)
    ══════════════════════════════════════════════════════════ */
 const BANK = {
 skhu:{
@@ -767,7 +768,7 @@ const MODE=document.documentElement.dataset.mode||'teacher';
 const IOS=/iPad|iPhone|iPod/.test(navigator.userAgent)
        || (navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 const S={univ:'skhu',prepMode:'10',ansMode:'120',order:'rand',
-         follow:true,beep:true,review:false,retakes:{},playOrder:[],queue:[],idx:0,scores:{},memos:{},flags:{},deliv:{},cur:0,startedAt:null};
+         follow:true,beep:true,review:true,retakes:{},playOrder:[],queue:[],idx:0,scores:{},memos:{},flags:{},deliv:{},cur:0,startedAt:null};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const pad=n=>String(n).padStart(2,'0');
 
@@ -805,10 +806,19 @@ function beep(f=660,ms=140,vol=.07){ if(!S.beep)return;
     o.stop(AC.currentTime+ms/1000+.02)}catch(e){}}
 
 /* ══════════════ 설정 화면 ══════════════ */
+function weakList(u){
+  return u.items.filter(it=>(S.scores[it.id]!=null&&S.scores[it.id]<=3)
+                         ||(S.flags[it.id]||[]).includes('다시 녹음할 것'));
+}
+function pickItems(u){
+  if(S.order==='weak'){const w=weakList(u); if(w.length)return w}
+  return u.items;
+}
 function estMin(u){
   const pv=S.prepMode==='default'?null:+S.prepMode, av=S.ansMode==='default'?null:+S.ansMode;
-  let sec=u.items.reduce((a,i)=>a+(pv==null?i.prep:pv)+(av==null?i.ans:av)+6,0);
-  if(S.follow) sec+=u.items.reduce((a,i)=>a+i.follow.length,0)*(5+40+4);
+  const its=pickItems(u);
+  let sec=its.reduce((a,i)=>a+(pv==null?i.prep:pv)+(av==null?i.ans:av)+6,0);
+  if(S.follow) sec+=its.reduce((a,i)=>a+i.follow.length,0)*(5+40+4);
   return Math.round(sec/60);
 }
 function renderSetup(){
@@ -817,7 +827,7 @@ function renderSetup(){
       <div class="nm">${u.name}</div>
       <div class="fm">${u.form}</div>
       <div class="mt">
-        <div>문항<b>${u.items.length}</b></div>
+        <div>문항<b>${pickItems(u).length}</b></div>
         <div>면접 비중<b>${u.ratio.replace('면접 ','')}</b></div>
         <div>이 설정 소요<b>${estMin(u)}분</b></div>
       </div>
@@ -827,7 +837,7 @@ function renderSetup(){
 
   const segs=[['#segPrep','prepMode',[['10','10초 (기본)'],['20','20초'],['30','30초'],['0','없음'],['default','문항별 기본']]],
               ['#segAns','ansMode',[['120','120초 (기본)'],['90','90초'],['60','60초'],['45','45초'],['default','문항별 기본']]],
-              ['#segOrder','order',[['rand','무작위 (기본)'],['seq','순서대로']]]];
+              ['#segOrder','order',[['rand','무작위 (기본)'],['seq','순서대로'],['weak','약한 것만']]]];
   segs.forEach(([sel,key,opts])=>{
     $(sel).innerHTML=opts.map(([v,l])=>
       `<button data-v="${v}" class="${(v==='10'&&key==='prepMode')||(v==='120'&&key==='ansMode')||(v==='rand'&&key==='order')?'wide ':''}${S[key]===v?'on':''}">${l}</button>`).join('');
@@ -886,8 +896,8 @@ function showWarn(){
 /* ══════════════ 면접 진행 ══════════════ */
 let REC=null, chunks=[], tick=null, curKey=null, tStart=0;
 function buildQueue(){
-  const u=BANK[S.univ]; let its=u.items.slice();
-  if(S.order==='rand') its.sort(()=>Math.random()-.5);
+  const u=BANK[S.univ]; let its=pickItems(u).slice();
+  if(S.order!=='seq') its.sort(()=>Math.random()-.5);
   const q=[];
   its.forEach(it=>{
     q.push({kind:'main',it,prep:S.prepMode==='default'?it.prep:+S.prepMode,
@@ -899,6 +909,8 @@ function buildQueue(){
   return q;
 }
 function startInterview(){
+  if(S.order==='weak'&&!weakList(BANK[S.univ]).length&&
+     !confirm('아직 「약한 문항」으로 표시된 것이 없습니다.\n(점수 3점 이하 또는 「다시 녹음할 것」 표시)\n\n이번에는 전 문항으로 진행할까요?')) return;
   S.queue=buildQueue(); S.idx=0;
   S.startedAt=new Date().toLocaleString('ko-KR');
   const u=BANK[S.univ];
@@ -909,11 +921,11 @@ function startInterview(){
   $('#stage').classList.add('on'); save(); nextItem();
 }
 function hideReview(){$('#stRev').hidden=true; $('#stTimer').hidden=false}
-async function showReview(){
+async function showReview(cut){
   clearInterval(tick); stopRec();
   const q=S.queue[S.idx];
   $('#stTimer').hidden=true; $('#stRev').hidden=false;
-  $('#stPhase').textContent='다시 듣기'; $('#stPhase').className='phase';
+  $('#stPhase').textContent=cut?'녹음 중단됨':'다시 듣기'; $('#stPhase').className='phase';
   $('#revPlayer').innerHTML='<div class="noclip">녹음을 저장하는 중…</div>';
   $('#revHint').textContent='';
   await new Promise(r=>setTimeout(r,650));         // onstop → IndexedDB 저장 대기
@@ -922,11 +934,12 @@ async function showReview(){
     $('#revPlayer').innerHTML=playerHTML(url,c.dur,'내 답변 · '+(c.dur||0)+'초');
     wirePlayers($('#revPlayer'));
     const rec=q.rec||q.ans, d=c.dur||0, r=d/rec;
-    $('#revHint').innerHTML='실전 권장 <b>'+rec+'초</b> · 이번 답변 <b>'+d+'초</b> — '+(
+    $('#revHint').innerHTML=(cut?'<b style="color:var(--amber)">화면이 꺼지거나 다른 앱으로 나가면 녹음이 멈춥니다.</b> 여기까지만 저장됐습니다 — 아래 [이 문항 다시 녹음]으로 다시 하세요.<br>':'')
+      +'실전 권장 <b>'+rec+'초</b> · 이번 답변 <b>'+d+'초</b> — '+(
         r<.55 ? '너무 짧다. 근거를 한 겹 더 붙일 수 있다.'
       : r>1.05 ? '실제 면접이라면 여기서 잘린다. 결론을 앞으로 옮기자.'
       : '길이는 적정하다. 이제 내용을 들어 보자.');}
-  else $('#revPlayer').innerHTML='<div class="noclip">녹음이 없다 — 마이크를 확인하세요</div>';
+  else $('#revPlayer').innerHTML='<div class="noclip">'+(cut?'화면이 꺼져 녹음이 저장되지 않았습니다 — [이 문항 다시 녹음]을 누르세요':'녹음이 없다 — 마이크를 확인하세요')+'</div>';
 }
 function nextItem(){
   stopRec(); hideReview();
@@ -988,7 +1001,8 @@ document.addEventListener('visibilitychange',()=>{
     // iOS는 화면이 꺼지거나 앱을 나가면 녹음이 끊긴다 — 지금까지의 답변만 저장하고 멈춘다
     clearInterval(tick); stopRec();
     if(!$('#stage').classList.contains('on'))return;
-    setTimeout(()=>{ if(S.review){showReview()} },300);
+    // 다시 듣기 설정과 무관하게 '중단됨' 화면을 띄운다 — 안 그러면 타이머가 죽은 채 멈춰 보인다
+    setTimeout(()=>{ if($('#stage').classList.contains('on'))showReview(true) },300);
   }});
 function stopRec(){ document.body.classList.remove('rec'); $('#stRec').style.display='none';
   if(REC&&REC.state!=='inactive'){try{REC.stop()}catch(e){}} REC=null}
@@ -1148,7 +1162,7 @@ function renderDeliv(){
 function retakeOne(i){
   const u=BANK[S.univ], it=u.items[i];
   S.queue=[{kind:'main',it,prep:S.prepMode==='default'?it.prep:+S.prepMode,
-            ans:S.ansMode==='default'?it.ans:+S.ansMode,text:it.q,key:it.id}];
+            ans:S.ansMode==='default'?it.ans:+S.ansMode,rec:it.ans,text:it.q,key:it.id}];
   S.idx=0; S.single=true;
   $('#stUniv').textContent=u.name; $('#stUniv').style.setProperty('--c',u.color);
   $('#stTot').textContent=1; $('#stPips').innerHTML='<i></i>';
@@ -1326,7 +1340,7 @@ async function renderStudentResult(r){
     <div class="rcard"><div class="k">스스로 매긴 평균</div><div class="v">${scored.length?avg.toFixed(1):'–'}<small>/5</small></div>
       <div class="n">${scored.length}문항 자기 평가</div></div>
     <div class="rcard"><div class="k">평균 답변 길이</div><div class="v">${durs.length?Math.round(durs.reduce((a,b)=>a+b.d,0)/durs.length):'–'}<small>초</small></div>
-      <div class="n">실전 권장은 문항당 45~90초</div></div>`;
+      <div class="n">실전 권장은 문항당 30~90초</div></div>`;
   $('#rsTable').innerHTML=`<table><tr><th>확인</th><th>문항</th></tr>
     <tr><td><b>실전 권장보다 짧다</b><div style="font-size:11.5px;color:var(--faint)">근거를 한 겹 더 붙일 여지가 있다</div></td>
         <td>${short.length?short.join(' · '):'없음'}</td></tr>
