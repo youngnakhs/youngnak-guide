@@ -1,133 +1,418 @@
 <!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>화학 실험실</title>
-<meta name="description" content="고1 통합과학·화학 인터랙티브 실험 시뮬레이션 모음">
+<meta name="description" content="고1 통합과학·화학 — 직접 만져 보는 실험 시뮬레이션">
+<meta name="theme-color" content="#08120f">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap');
 :root{
-  --bg:#10201b; --panel:#182f28; --panel-2:#1f382f; --line:#2c473d;
-  --ink:#f1ede3; --muted:#9cb0a8; --dim:#6d8279;
-  --neutral:#6fb98f; --acid:#e4572e; --acid-2:#f2a541; --base-2:#3e9c9c;
-  --base:#3b6fa0; --violet:#6b4e8e; --pink:#d95bb0;
-  --mono:'Space Mono','Courier New',monospace;
-  --sans:'Work Sans',-apple-system,'Malgun Gothic',sans-serif;
+  --bg:#08120f; --card:#122019; --card-2:#16281f; --line:#22392e; --line-2:#2f4d3e;
+  --ink:#f2f7f3; --muted:#a8c0b4; --dim:#6f8a7c;
+  --neon:#58f0a5; --cyan:#4fd6e0; --warm:#ffb15c; --pink:#ff6fae; --violet:#a78bfa;
+  --disp:'Space Grotesk','Pretendard Variable',Pretendard,sans-serif;
+  --sans:'Pretendard Variable',Pretendard,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  --mono:'Space Grotesk',ui-monospace,monospace;
 }
 *{box-sizing:border-box}
-body{margin:0;color:var(--ink);font-family:var(--sans);padding:34px 16px 70px;
-  background:
-    radial-gradient(circle at 12% -5%, rgba(111,185,143,.09), transparent 45%),
-    radial-gradient(circle at 92% 96%, rgba(59,111,160,.11), transparent 45%),
-    var(--bg);
-  -webkit-font-smoothing:antialiased}
-.wrap{max-width:920px;margin:0 auto}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  padding:0 16px 80px;overflow-x:hidden;-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+
+/* 배경 — 느리게 흐르는 빛 + 미세한 결 */
+.aura{position:fixed;inset:-20%;z-index:0;pointer-events:none;filter:blur(60px);opacity:.5}
+.aura i{position:absolute;border-radius:50%;display:block}
+.aura .a{width:46vw;height:46vw;left:-6%;top:-8%;background:#1f6b4a;animation:drift 19s ease-in-out infinite}
+.aura .b{width:40vw;height:40vw;right:-8%;top:14%;background:#1b5566;animation:drift 24s ease-in-out infinite reverse}
+.aura .c{width:44vw;height:44vw;left:22%;bottom:-14%;background:#3d2a63;animation:drift 28s ease-in-out infinite}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(4%,-3%) scale(1.14)}}
+.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.045;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+.wrap{position:relative;z-index:2;max-width:960px;margin:0 auto}
 a{color:inherit;text-decoration:none}
 
-.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--neutral);
-  text-transform:uppercase;margin-bottom:8px}
-h1{font-weight:700;font-size:34px;margin:0 0 8px;letter-spacing:-.015em}
-.sub{color:var(--muted);font-size:14.5px;line-height:1.65;margin:0 0 24px;max-width:620px}
-.sub b{color:var(--ink);font-weight:600}
+/* ── 히어로 ────────────────────────────── */
+header{padding:56px 0 8px}
+.tagchip{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;
+  font-weight:500;letter-spacing:.06em;color:var(--neon);background:rgba(88,240,165,.10);
+  border:1px solid rgba(88,240,165,.28);border-radius:999px;padding:7px 14px}
+.tagchip .dot{width:6px;height:6px;border-radius:50%;background:var(--neon);
+  box-shadow:0 0 10px var(--neon);animation:blink 2.4s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
 
-/* 산·염기 실험실의 pH 띠와 같은 결 — 시리즈임을 보여주는 표식 */
-.rule{height:6px;border-radius:6px;margin:26px 0 8px;
-  background:linear-gradient(90deg,#e4572e 0%,#f2a541 15%,#f5d547 30%,#6fb98f 46%,
-    #6fb98f 54%,#3e9c9c 62%,#3b6fa0 78%,#6b4e8e 92%,#6b4e8e 100%);
-  box-shadow:inset 0 0 0 1px rgba(0,0,0,.25)}
-.rule-cap{display:flex;justify-content:space-between;font-family:var(--mono);
-  font-size:10.5px;color:var(--dim);letter-spacing:.06em;margin-bottom:30px}
+h1{font-size:clamp(42px,10vw,76px);line-height:.98;font-weight:800;letter-spacing:-.045em;margin:20px 0 0}
+h1 .g{background:linear-gradient(96deg,var(--neon),var(--cyan) 46%,var(--violet));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.punch{font-size:clamp(17px,3.4vw,22px);font-weight:700;letter-spacing:-.03em;margin:18px 0 0}
+.punch em{font-style:normal;color:var(--neon)}
+.sub{color:var(--muted);font-size:15px;line-height:1.75;margin:10px 0 0;max-width:52ch}
 
-.count{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;color:var(--dim);
-  text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:12px}
-.count::after{content:'';flex:1;height:1px;background:var(--line)}
+.stats{display:flex;gap:10px;margin:26px 0 0;flex-wrap:wrap}
+.stat{flex:1;min-width:96px;background:rgba(255,255,255,.03);border:1px solid var(--line);
+  border-radius:16px;padding:14px 16px}
+.stat b{display:block;font-family:var(--disp);font-size:30px;font-weight:700;line-height:1;
+  letter-spacing:-.04em;color:var(--c,var(--ink))}
+.stat span{display:block;font-size:11.5px;color:var(--dim);margin-top:6px}
 
+.phbar{height:10px;border-radius:999px;margin:34px 0 6px;position:relative;overflow:hidden;
+  background:linear-gradient(90deg,#ff5a3c,#ffb15c 18%,#ffe066 32%,#58f0a5 48%,
+    #4fd6e0 64%,#4a9bff 80%,#a78bfa 100%)}
+.phbar::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(100deg,transparent 35%,rgba(255,255,255,.5) 50%,transparent 65%);
+  transform:translateX(-100%);animation:sweep 4.5s ease-in-out infinite}
+@keyframes sweep{0%{transform:translateX(-100%)}55%,100%{transform:translateX(100%)}}
+.phcap{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;
+  color:var(--dim);letter-spacing:.06em;margin-bottom:36px}
+
+/* ── 스테이지 헤더 ─────────────────────── */
+.sechead{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.sechead h2{font-size:15px;font-weight:700;margin:0;letter-spacing:-.02em}
+.sechead .n{font-family:var(--mono);font-size:12px;color:var(--dim)}
+.sechead::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--line-2),transparent)}
+
+/* ── 스테이지 카드 ─────────────────────── */
 .labs{display:grid;gap:16px}
-.lab{position:relative;display:block;background:var(--panel);border:1px solid var(--line);
-  border-radius:14px;padding:22px 24px 20px;transition:.2s;overflow:hidden}
-.lab::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;
-  background:var(--c);opacity:.55;transition:.2s}
-.lab.open:hover{border-color:var(--c);transform:translateY(-2px);
-  box-shadow:0 16px 40px -26px var(--c)}
-.lab.open:hover::before{opacity:1}
-.lab.soon{opacity:.5}
-.lab.next{background:none;border-style:dashed;color:var(--dim);align-self:start}
-.lab.next::before{display:none}
-.lab.next .no,.lab.next h2{color:var(--dim)}
-.lab.next h2{font-size:18px}
-.lab.next .blurb{font-size:13px;margin-top:8px}
+.lab{position:relative;display:block;border-radius:22px;padding:24px 24px 22px;
+  background:linear-gradient(160deg,var(--card),var(--card-2));
+  border:1px solid var(--line);overflow:hidden;isolation:isolate;
+  animation:pop .55s cubic-bezier(.22,1,.3,1) both}
+.lab:nth-child(2){animation-delay:.07s}
+.lab:nth-child(3){animation-delay:.14s}
+.lab:nth-child(4){animation-delay:.21s}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+.lab.open{transition:transform .2s cubic-bezier(.22,1,.3,1),border-color .2s,box-shadow .2s}
+.lab.open::before{content:'';position:absolute;inset:0;z-index:-1;opacity:0;transition:.25s;
+  background:radial-gradient(120% 90% at 0% 0%,var(--c),transparent 62%)}
+.lab.open:hover::before{opacity:.16}
+.lab.open:hover{border-color:var(--c);transform:translateY(-3px)}
+.lab.open:active{transform:scale(.985)}
 
-.lab .top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
-.lab .no{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--c);letter-spacing:.05em}
-.lab h2{font-size:22px;font-weight:700;margin:0;letter-spacing:-.02em}
-.lab .badge{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
-  padding:3px 9px;border-radius:20px;border:1px solid var(--line);color:var(--dim)}
-.lab .badge.new{border-color:var(--pink);color:var(--pink)}
+.ghost{position:absolute;right:16px;top:2px;font-family:var(--disp);font-weight:700;
+  font-size:96px;line-height:1;letter-spacing:-.06em;color:var(--c);opacity:.10;
+  pointer-events:none;user-select:none}
+.thumb{width:54px;height:54px;border-radius:16px;display:grid;place-items:center;
+  background:rgba(255,255,255,.05);border:1px solid var(--line);margin-bottom:16px}
+.lab h3{font-size:24px;font-weight:800;letter-spacing:-.035em;margin:0;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pill{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.08em;
+  padding:4px 9px;border-radius:999px}
+.pill.new{background:var(--pink);color:#1a0812}
+.pill.soon{background:rgba(255,255,255,.07);color:var(--dim);border:1px solid var(--line)}
 
-.lab .blurb{color:var(--muted);font-size:14px;line-height:1.7;margin:11px 0 0;max-width:62ch}
-.lab .acts{display:flex;flex-wrap:wrap;gap:7px;margin-top:15px}
-.lab .act{font-family:var(--mono);font-size:11.5px;color:var(--ink);background:var(--panel-2);
-  border:1px solid var(--line);border-radius:20px;padding:5px 11px}
-.lab .meta{display:flex;flex-wrap:wrap;gap:16px;margin-top:16px;padding-top:14px;
-  border-top:1px solid var(--line);font-family:var(--mono);font-size:11.5px;color:var(--dim)}
-.lab .go{margin-left:auto;color:var(--c);font-weight:700;letter-spacing:.04em}
-.lab.open:hover .go{text-decoration:underline}
+.lab p{color:var(--muted);font-size:14.5px;line-height:1.72;margin:12px 0 0;max-width:56ch}
+.tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+.tag{font-size:12.5px;font-weight:600;color:var(--ink);background:rgba(255,255,255,.055);
+  border:1px solid var(--line);border-radius:999px;padding:7px 13px}
+.tag::before{content:'#';color:var(--c);margin-right:2px;font-weight:700}
 
-.howto{margin-top:34px;background:var(--panel);border:1px solid var(--line);
-  border-radius:14px;padding:20px 24px}
-.howto h3{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;
-  color:var(--muted);margin:0 0 12px}
-.howto ul{margin:0;padding-left:18px;color:var(--muted);font-size:13.5px;line-height:1.8}
-.howto li b{color:var(--ink)}
-footer{margin-top:34px;font-family:var(--mono);font-size:11px;color:var(--dim);line-height:1.9}
+.foot{display:flex;align-items:center;gap:14px;margin-top:20px;flex-wrap:wrap}
+.foot .info{font-family:var(--mono);font-size:12px;color:var(--dim);display:flex;gap:12px;flex-wrap:wrap}
+.cta{margin-left:auto;display:inline-flex;align-items:center;gap:9px;
+  background:var(--c);color:#07130e;font-weight:800;font-size:15px;letter-spacing:-.02em;
+  border-radius:999px;padding:13px 24px;transition:.2s}
+.lab.open:hover .cta{gap:14px;box-shadow:0 10px 30px -12px var(--c)}
 
-/* ── 아이패드 (세로 744~1024 / 가로 1080~1366) ── */
-html{-webkit-text-size-adjust:100%}
+.lab.next{background:none;border-style:dashed;align-self:start;padding:22px 24px}
+.lab.next h3{font-size:19px;color:var(--dim)}
+.lab.next p{font-size:13.5px;margin-top:8px}
+.lab.next .ghost{opacity:.06}
+
+/* ── 안내 ──────────────────────────────── */
+.howto{margin-top:38px;border-radius:22px;padding:24px 26px;
+  background:rgba(255,255,255,.03);border:1px solid var(--line)}
+.howto h3{font-size:14px;font-weight:700;margin:0 0 14px;letter-spacing:-.02em}
+.howto ul{margin:0;padding:0;list-style:none;display:grid;gap:11px}
+.howto li{color:var(--muted);font-size:14px;line-height:1.65;padding-left:26px;position:relative}
+.howto li::before{content:'';position:absolute;left:0;top:.55em;width:10px;height:2px;
+  border-radius:2px;background:var(--neon)}
+.howto li b{color:var(--ink);font-weight:700}
+footer{margin-top:34px;font-family:var(--mono);font-size:11.5px;color:var(--dim);line-height:1.9}
+
+/* ── 태블릿(아이패드) ──────────────────── */
 @media(min-width:744px){
-  body{padding:46px 30px 84px}
+  body{padding:0 30px 90px}
   .wrap{max-width:900px}
-  h1{font-size:40px}
-  .sub{font-size:16px;line-height:1.75;max-width:680px}
-  .eyebrow{font-size:12.5px}
-  .rule{height:8px}
-  .rule-cap{font-size:11.5px}
-  .count{font-size:12px}
-  .lab{padding:26px 28px 24px;border-radius:16px}
-  .lab h2{font-size:25px}
-  .lab .blurb{font-size:15px;line-height:1.75}
-  .lab .act{font-size:12.5px;padding:7px 13px}   /* 터치 목표 확보 */
-  .lab .meta{font-size:12.5px;margin-top:19px;padding-top:16px}
-  .lab .no{font-size:13px}
-  .howto{padding:24px 28px}
-  .howto ul{font-size:14.5px;line-height:1.85}
+  header{padding:66px 0 8px}
+  .sub{font-size:16px}
+  .stat b{font-size:34px}
+  .lab{padding:28px 28px 26px;border-radius:26px}
+  .lab h3{font-size:27px}
+  .lab p{font-size:15.5px}
+  .tag{font-size:13.5px;padding:9px 15px}
+  .cta{font-size:16px;padding:15px 28px}
+  .ghost{font-size:118px;right:20px}
+  .thumb{width:60px;height:60px}
+  .howto li{font-size:15px}
 }
-/* 가로로 눕히면 카드를 두 장씩 */
 @media(min-width:1024px){
   .wrap{max-width:1060px}
-  .labs{grid-template-columns:repeat(auto-fit,minmax(430px,1fr));gap:18px}
-  .lab .blurb{min-height:5.2em}
+  .labs{grid-template-columns:repeat(auto-fit,minmax(440px,1fr));gap:18px}
+  .lab p{min-height:5.2em}
+  .lab.next p{min-height:0}
 }
 @supports (padding:env(safe-area-inset-bottom)){
-  body{padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+  body{padding-bottom:calc(90px + env(safe-area-inset-bottom))}
+}
+@media(max-width:560px){
+  header{padding:42px 0 6px}
+  .lab{padding:22px 20px 20px;border-radius:20px}
+  .lab h3{font-size:21px}
+  .ghost{font-size:78px;right:12px}
+  .cta{margin-left:0;width:100%;justify-content:center}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ══ 로딩 화면 · 3D 분자 · 카드 틸트 ═══════════════════════ */
+body:not(.ready) .wrap{opacity:0}
+.wrap{transition:opacity .5s ease}
+
+#boot{position:fixed;inset:0;z-index:99;display:grid;place-items:center;background:var(--bg);
+  transition:opacity .55s ease,visibility .55s}
+#boot.gone{opacity:0;visibility:hidden}
+#boot .in{display:grid;justify-items:center;gap:24px;padding:24px;text-align:center}
+
+/* ── 장면: 플라스크 + 분자 ───────────────── */
+.scene{position:relative;width:210px;height:180px;perspective:700px}
+
+/* 삼각플라스크 */
+.flask{position:absolute;left:50%;bottom:0;transform:translateX(-52%);width:150px;height:175px}
+.flask .glass{fill:none;stroke:#7fa899;stroke-width:2.6;stroke-linejoin:round;stroke-linecap:round}
+.flask .tick{stroke:#7fa899;stroke-width:1.6;opacity:.5}
+.flask .liq{transform:translateY(140px);animation:fillUp 1.9s cubic-bezier(.4,0,.25,1) forwards;
+  fill:#ff5a3c;animation-name:fillUp,phShift;animation-duration:1.9s,1.9s;
+  animation-timing-function:cubic-bezier(.4,0,.25,1),linear;animation-fill-mode:forwards,forwards}
+@keyframes fillUp{from{transform:translateY(140px)}to{transform:translateY(62px)}}
+@keyframes phShift{
+  0%{fill:#ff5a3c} 22%{fill:#ffb15c} 42%{fill:#ffe066}
+  60%{fill:#58f0a5} 78%{fill:#4fd6e0} 100%{fill:#7aa8ff}}
+
+.flask .bub{fill:#fff;opacity:0;animation:rise 1.5s ease-in infinite}
+.flask .b1{animation-delay:.35s}
+.flask .b2{animation-delay:.75s}
+.flask .b3{animation-delay:.55s}
+.flask .b4{animation-delay:1.0s}
+.flask .b5{animation-delay:.9s}
+@keyframes rise{
+  0%{opacity:0;transform:translateY(0) scale(.6)}
+  18%{opacity:.55}
+  100%{opacity:0;transform:translateY(-46px) scale(1.15)}}
+
+/* 3D 물 분자 — 산소 1 + 수소 2, Y축 회전 */
+.mol{position:absolute;right:2px;top:6px;width:70px;height:70px;transform-style:preserve-3d;
+  animation:molSpin 5.5s linear infinite}
+@keyframes molSpin{
+  from{transform:rotateX(-16deg) rotateY(0deg)}
+  to{transform:rotateX(-16deg) rotateY(360deg)}}
+.at{position:absolute;border-radius:50%;transform-style:preserve-3d;
+  /* 부모가 Y축으로 돌아도 원자는 항상 정면을 보게(납작해지지 않게) 되돌린다 */
+  animation:molFace 5.5s linear infinite}
+@keyframes molFace{from{transform:rotateY(0deg)}to{transform:rotateY(-360deg)}}
+.at.o{left:50%;top:50%;width:30px;height:30px;margin:-15px 0 0 -15px;
+  background:radial-gradient(circle at 32% 28%,#fff,#ff7a6a 42%,#c0392b);
+  box-shadow:0 0 22px rgba(255,122,106,.55)}
+.at.h{width:17px;height:17px;
+  background:radial-gradient(circle at 32% 28%,#fff,#dff3ea 45%,#8fb9ab);
+  box-shadow:0 0 14px rgba(223,243,234,.45)}
+.arm{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d}
+.arm .bond{position:absolute;left:0;top:-2px;width:30px;height:4px;border-radius:3px;
+  background:linear-gradient(90deg,#c0392b,#cfe6dc);transform-origin:0 50%}
+.arm .at.h{left:26px;top:-8.5px}
+.arm.a1{transform:rotate(-38deg) translateZ(9px)}
+.arm.a2{transform:rotate(38deg) translateZ(-9px)}
+
+/* ── 진행 표시 ───────────────────────────── */
+#boot .eq sub{font-size:.72em;vertical-align:-.18em}
+#boot .eq{font-family:var(--mono);font-size:13.5px;color:var(--dim);letter-spacing:.05em;
+  opacity:0;animation:bootUp .6s ease .3s forwards}
+@keyframes bootUp{from{opacity:0;transform:translateY(8px)}to{opacity:.9;transform:none}}
+#boot .barwrap{width:min(260px,64vw)}
+#boot .bar{height:6px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
+#boot .bar i{display:block;height:100%;width:0;border-radius:999px;
+  background:linear-gradient(90deg,#ff5a3c,#ffb15c 20%,#ffe066 36%,#58f0a5 54%,#4fd6e0 72%,#a78bfa)}
+#boot .lbl{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11.5px;
+  color:var(--dim);margin-top:9px}
+#boot .lbl b{color:var(--ink);font-weight:500}
+#boot .skip{font-size:11.5px;color:var(--dim);opacity:.7}
+
+/* ── 히어로 뒤에 떠 있는 분자들 ──────────── */
+.floaters{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:-1}
+.floaters .fm{position:absolute;transform-style:preserve-3d;opacity:.2;
+  animation:floatY 15s ease-in-out infinite}
+.floaters .fm .mol{position:relative;right:auto;top:auto;animation-duration:9s}
+.floaters .fm .at{animation-duration:9s}
+.floaters .f1{right:2%;top:6%;transform:scale(.9)}
+.floaters .f2{right:20%;top:48%;transform:scale(.55);animation-delay:-5s;opacity:.15}
+.floaters .f3{right:36%;top:10%;transform:scale(.4);animation-delay:-9s;opacity:.12}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-24px)}}
+@media(max-width:700px){
+  .floaters .f2,.floaters .f3{display:none}
+  .floaters .f1{opacity:.12;right:-6%;top:0}
 }
 
-@media(max-width:560px){
-  body{padding:24px 14px 56px}
-  h1{font-size:27px}
-  .lab{padding:19px 18px 17px}
-  .lab h2{font-size:19px}
-  .lab .meta{gap:10px}
-  .lab .go{margin-left:0;flex:1 0 100%}
-}
-</style></head><body><div class="wrap">
-<div class="eyebrow">고1 통합과학 · 화학</div>
-<h1>화학 실험실</h1>
-<p class="sub">교과서에서 글로만 읽던 실험을 <b>직접 만져 보는 곳</b>입니다. 용액을 고르고, 지시약을 떨어뜨리고, 슬라이더를 움직여 반응이 어떻게 달라지는지 눈으로 확인하세요. 설치할 것도, 로그인할 것도 없습니다 — 실험실을 골라 들어가면 바로 시작됩니다.</p>
-<div class="rule"></div>
-<div class="rule-cap"><span>산성</span><span>중성</span><span>염기성</span></div>
-<div class="count">실험실 1곳</div>
+/* ── 카드 3D 틸트 + 커서를 따라오는 광택 ─── */
+.labs{perspective:1100px}
+.lab.open{transform-style:preserve-3d;will-change:transform}
+.lab.open::after{content:'';position:absolute;inset:0;z-index:-1;opacity:0;transition:opacity .25s;
+  background:radial-gradient(340px circle at var(--gx,50%) var(--gy,50%),
+    rgba(255,255,255,.10),transparent 60%)}
+.lab.open:hover::after{opacity:1}
+.thumb{transition:transform .45s cubic-bezier(.22,1,.3,1)}
+.lab.open:hover .thumb{transform:rotateY(180deg) scale(1.06)}
+
+@media (prefers-reduced-motion:reduce){
+  #boot{display:none}
+  body:not(.ready) .wrap{opacity:1}
+}</style></head><body>
+<div id="boot"><div class="in">
+
+  <div class="scene">
+    <!-- 삼각플라스크 — 용액이 차오르며 pH 색이 변하고 기포가 오른다 -->
+    <svg class="flask" viewBox="0 0 120 140" aria-hidden="true">
+      <defs>
+        <clipPath id="fclip">
+          <path d="M47 12 h26 v30 l26 62 a10 10 0 0 1-9 14 H30 a10 10 0 0 1-9-14 l26-62 z"/>
+        </clipPath>
+      </defs>
+      <g clip-path="url(#fclip)">
+        <rect class="liq" x="0" y="0" width="120" height="140"/>
+        <circle class="bub b1" cx="44" cy="118" r="3"/>
+        <circle class="bub b2" cx="58" cy="122" r="2.2"/>
+        <circle class="bub b3" cx="70" cy="116" r="3.4"/>
+        <circle class="bub b4" cx="52" cy="126" r="1.8"/>
+        <circle class="bub b5" cx="78" cy="124" r="2.6"/>
+      </g>
+      <path class="glass"
+            d="M47 12 h26 v30 l26 62 a10 10 0 0 1-9 14 H30 a10 10 0 0 1-9-14 l26-62 z"/>
+      <line class="glass" x1="47" y1="12" x2="73" y2="12"/>
+      <line class="tick" x1="86" y1="96" x2="96" y2="96"/>
+      <line class="tick" x1="90" y1="108" x2="98" y2="108"/>
+    </svg>
+
+    <!-- 3D 물 분자 — 산소 하나에 수소 둘, Y축으로 회전 -->
+    <div class="mol">
+      <span class="at o"></span>
+      <span class="arm a1"><i class="bond"></i><b class="at h"></b></span>
+      <span class="arm a2"><i class="bond"></i><b class="at h"></b></span>
+    </div>
+  </div>
+
+  <div class="eq">HCl + NaOH &#8594; NaCl + H<sub>2</sub>O</div>
+
+  <div class="barwrap">
+    <div class="bar"><i id="bootBar"></i></div>
+    <div class="lbl"><b id="bootTxt">시약 준비 중</b><span id="bootPct">0%</span></div>
+  </div>
+
+  <div class="skip">화면을 누르면 바로 시작</div>
+</div></div>
+<div class="aura"><i class="a"></i><i class="b"></i><i class="c"></i></div>
+<div class="grain"></div>
+<div class="wrap">
+<header style="position:relative">
+<div class="floaters"><div class="fm f1"><div class="mol"><span class="at o"></span><span class="arm a1"><i class="bond"></i><b class="at h"></b></span><span class="arm a2"><i class="bond"></i><b class="at h"></b></span></div></div><div class="fm f2"><div class="mol"><span class="at o"></span><span class="arm a1"><i class="bond"></i><b class="at h"></b></span><span class="arm a2"><i class="bond"></i><b class="at h"></b></span></div></div><div class="fm f3"><div class="mol"><span class="at o"></span><span class="arm a1"><i class="bond"></i><b class="at h"></b></span><span class="arm a2"><i class="bond"></i><b class="at h"></b></span></div></div></div>
+<span class="tagchip"><span class="dot"></span>고1 통합과학 · 화학</span>
+<h1>화학 <span class="g">실험실</span></h1>
+<p class="punch">읽으면 3분, <em>해 보면 안 잊는다.</em></p>
+<p class="sub">용액을 고르고, 지시약을 떨어뜨리고, 슬라이더를 움직여 보세요. 왜 그렇게 되는지는 그다음에 이해해도 늦지 않습니다.</p>
+<div class="stats"><div class="stat" style="--c:var(--neon)"><b data-n="1">1</b><span>열린 실험실</span></div><div class="stat" style="--c:var(--cyan)"><b data-n="4">4</b><span>해 볼 수 있는 활동</span></div><div class="stat" style="--c:var(--warm)"><b>0</b><span>설치 · 로그인</span></div></div>
+</header>
+<div class="phbar"></div>
+<div class="phcap"><span>산성</span><span>중성</span><span>염기성</span></div>
+<div class="sechead"><h2>실험실 고르기</h2><span class="n">01</span></div>
 <div class="labs">
-<a class="lab open" style="--c:#6fb98f" href="./acid-base/"><div class="top"><span class="no">01</span><h2>산·염기 실험실</h2></div><p class="blurb">생활 속 용액 10가지를 지시약으로 확인하고, 산과 염기를 섞어 중화되는 과정을 직접 조절해 봅니다. 마지막에는 홈판에 용액으로 그림을 그린 뒤 지시약을 부어 숨은 그림을 드러냅니다.</p><div class="acts"><span class="act">지시약 반응 실험</span><span class="act">중화 반응 적정</span><span class="act">10개 용액 한눈에 비교</span><span class="act">홈판 그림 그리기</span></div><div class="meta"><span>고1 통합과학 · 산과 염기</span><span>활동 4개</span><span>15~25분</span><span class="go">들어가기 →</span></div></a>
-<div class="lab next"><div class="top"><span class="no">02</span><h2>다음 실험실</h2></div><p class="blurb">새 실험이 준비되는 대로 여기에 추가됩니다. 해 보고 싶은 실험이 있으면 선생님께 말해 주세요.</p></div>
+<a class="lab open" style="--c:#58f0a5" href="./acid-base/"><span class="ghost">01</span><div class="thumb" style="color:#58f0a5"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><defs><linearGradient id="pg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff5a3c"/><stop offset=".5" stop-color="#58f0a5"/><stop offset="1" stop-color="#a78bfa"/></linearGradient></defs><rect x="2" y="10.5" width="20" height="3" rx="1.5" fill="url(#pg)"/><path d="M9 3h6v4l4 9.5a2 2 0 0 1-1.8 2.9H6.8A2 2 0 0 1 5 16.5L9 7V3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" opacity=".85"/></svg></div><h3>산·염기 실험실<span class="pill new">NEW</span></h3><p>생활 속 용액 10가지를 지시약으로 확인하고, 산과 염기를 섞어 중화되는 과정을 직접 조절해 봅니다. 마지막에는 홈판에 용액으로 그림을 그린 뒤 지시약을 부어 숨은 그림을 드러냅니다.</p><div class="tags"><span class="tag">지시약 반응 실험</span><span class="tag">중화 반응 적정</span><span class="tag">10개 용액 한눈에 비교</span><span class="tag">홈판 그림 그리기</span></div><div class="foot"><div class="info"><span>⏱ 15~25분</span><span>활동 4개</span><span>고1 통합과학 · 산과 염기</span></div><span class="cta">들어가기 →</span></div></a>
+<div class="lab next" style="--c:var(--dim)"><span class="ghost">02</span><h3>다음 실험실</h3><p>새 실험이 준비되는 대로 여기 열립니다. 해 보고 싶은 실험이 있으면 말해 주세요.</p></div>
 </div>
-<div class="howto"><h3>알아 둘 것</h3><ul><li><b>휴대폰·태블릿·노트북 어디서나</b> 됩니다. 앱을 깔 필요 없습니다.</li><li>실험 결과는 <b>저장되지 않습니다.</b> 화면을 닫으면 처음 상태로 돌아가니, 남길 것이 있으면 화면을 캡처하세요.</li><li>실제 실험을 대신하는 것이 아니라, <b>해 보기 전에 예상하고 해 본 뒤에 확인하는</b> 용도입니다. 실험실에 들어가기 전에 결과를 먼저 예상해 보면 훨씬 잘 남습니다.</li><li>이상하게 보이거나 잘 안 되면 선생님께 알려 주세요.</li></ul></div>
-<footer>영락고등학교 · 통합과학/화학 수업자료<br>실험실은 계속 추가됩니다 — 이 주소를 즐겨찾기 해 두세요.</footer>
+<div class="howto"><h3>들어가기 전에</h3><ul><li><b>먼저 예상하고 들어가세요.</b> 무슨 색이 될지 찍어 보고 확인하면 훨씬 잘 남습니다.</li><li>휴대폰·아이패드·노트북 <b>아무 데서나</b> 됩니다. 깔 것도 로그인도 없습니다.</li><li>결과는 <b>저장되지 않습니다.</b> 남기고 싶으면 화면을 캡처하세요.</li><li>진짜 실험을 대신하는 건 아닙니다. 실험 전에 미리 보고, 하고 나서 다시 확인하는 용도.</li><li>이상하게 보이거나 안 되면 알려 주세요.</li></ul></div>
+<footer>영락고등학교 · 통합과학/화학<br>실험실은 계속 늘어납니다 — 이 주소를 즐겨찾기 해 두세요.</footer>
+<script>
+(function(){
+  var boot = document.getElementById('boot'), body = document.body;
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var seen = false;
+  try { seen = sessionStorage.getItem('chem_boot') === '1'; } catch(e){}
+
+  /* 숫자 카운트업 */
+  function counts(){
+    document.querySelectorAll('.stat b[data-n]').forEach(function(el){
+      var n = +el.dataset.n;
+      if(!n || reduce){ el.textContent = n; return; }
+      var i = 0, step = Math.max(1, Math.ceil(n / 16));
+      el.textContent = '0';
+      (function tick(){
+        i += step;
+        if(i >= n){ el.textContent = n; return; }
+        el.textContent = i;
+        requestAnimationFrame(tick);
+      })();
+    });
+  }
+  function ready(){ body.classList.add('ready'); setTimeout(counts, 260); }
+
+  function finish(){
+    if(!boot || boot.classList.contains('gone')) return;
+    boot.classList.add('gone');
+    ready();
+    try { sessionStorage.setItem('chem_boot','1'); } catch(e){}
+    setTimeout(function(){ if(boot && boot.parentNode) boot.parentNode.removeChild(boot); }, 700);
+  }
+
+  if(seen || reduce){
+    if(boot && boot.parentNode) boot.parentNode.removeChild(boot);
+    ready();
+  } else {
+    var bar = document.getElementById('bootBar'),
+        txt = document.getElementById('bootTxt'),
+        pct = document.getElementById('bootPct');
+    var steps = [[0,'시약 준비 중'],
+                 [38,'용액 채우는 중'],
+                 [72,'실험실 여는 중']];
+    var t0 = performance.now(), DUR = 1900;
+    (function run(now){
+      var p = Math.min(1, (now - t0) / DUR);
+      var v = Math.round(100 * (1 - Math.pow(1 - p, 2.2)));
+      bar.style.width = v + '%';
+      pct.textContent = v + '%';
+      for(var i = steps.length - 1; i >= 0; i--){
+        if(v >= steps[i][0]){
+          if(txt.textContent !== steps[i][1]) txt.textContent = steps[i][1];
+          break;
+        }
+      }
+      if(p < 1) requestAnimationFrame(run); else setTimeout(finish, 240);
+    })(t0);
+    boot.addEventListener('pointerdown', finish);
+    setTimeout(finish, 4200);            /* 안전장치 — 무슨 일이 있어도 넘어간다 */
+  }
+
+  if(reduce) return;
+
+  /* 카드 3D 틸트 (마우스에서만 — 손가락은 눌림 효과로 충분) */
+  document.querySelectorAll('.lab.open').forEach(function(el){
+    el.addEventListener('pointermove', function(e){
+      if(e.pointerType !== 'mouse') return;
+      var r = el.getBoundingClientRect();
+      var x = (e.clientX - r.left) / r.width - 0.5,
+          y = (e.clientY - r.top) / r.height - 0.5;
+      el.style.transform = 'perspective(1100px) rotateY(' + (x * 5.5).toFixed(2) +
+        'deg) rotateX(' + (-y * 5.5).toFixed(2) + 'deg) translateY(-3px)';
+      el.style.setProperty('--gx', (x * 100 + 50).toFixed(1) + '%');
+      el.style.setProperty('--gy', (y * 100 + 50).toFixed(1) + '%');
+    });
+    el.addEventListener('pointerleave', function(){ el.style.transform = ''; });
+  });
+
+  /* 스크롤에 따라 배경 빛이 살짝 따라온다 */
+  var aura = document.querySelector('.aura'), ticking = false;
+  addEventListener('scroll', function(){
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){
+      aura.style.transform = 'translateY(' + (scrollY * -0.06).toFixed(1) + 'px)';
+      ticking = false;
+    });
+  }, {passive:true});
+})();
+</script>
 </div></body></html>
