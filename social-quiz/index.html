@@ -273,6 +273,37 @@
             font-size: 12px;
             word-break: keep-all;
         }
+        .opt-select { background:#1E1E2A; color:#E0E6ED; border:1px solid #3F3F56; border-radius:8px; padding:8px 10px; font-size:15px; }
+        small.cov { display:block; font-weight:normal; font-size:12px; opacity:.7; margin-top:3px; }
+
+        /* [휴대폰·패드 화면 최적화] */
+        html { -webkit-text-size-adjust: 100%; }
+        button, select { touch-action: manipulation; -webkit-tap-highlight-color: transparent; font-family: inherit; }
+        .btn { padding: 15px 16px; margin: 8px 0; font-size: 15px; min-height: 50px; line-height: 1.4; }
+        .home-btn { padding: 13px 15px; min-height: 46px; }
+        #result { font-size: 15px; line-height: 1.55; }
+        .review-list { max-height: none; overflow: visible; padding-right: 0; }
+        .review-item { font-size: 14px; }
+        .review-exp { font-size: 14px; }
+        .user-btn { text-align: left; gap: 10px; }
+        @media (max-width: 600px) {
+            body { padding: 10px 10px 40px; align-items: flex-start; } /* 아래 여백 = 제작자 표시 자리 */
+            .card { padding: 20px 16px; border-radius: 12px; }
+            .main-title { font-size: 20px; }
+            .progress-header { flex-wrap: wrap; gap: 6px; }
+            .setting-box { padding: 12px 14px; }
+        }
+        @media (min-width: 768px) {
+            .card { max-width: 680px; padding: 36px; }
+            h2 { font-size: 20px; }
+            .btn { font-size: 17px; padding: 18px 20px; }
+            .user-btn { font-size: 17px; padding: 18px 22px; }
+            #result { font-size: 16px; }
+            .next-btn, .home-btn { font-size: 16px; }
+            .review-q { font-size: 16px; }
+            .review-item, .review-exp { font-size: 15px; }
+            small.cov { font-size: 13px; }
+        }
     </style>
 </head>
 <body>
@@ -283,40 +314,49 @@
     <div class="main-subtitle">모드를 선택하여 퀴즈를 시작하세요</div>
     
     <div class="setting-box">
-        <span>⏱️ 문제당 제한시간 (30초 타이머)</span>
-        <label class="switch">
-            <input type="checkbox" id="timer-toggle" checked>
-            <span class="slider"></span>
-        </label>
+        <span>⏱️ 문제당 제한시간</span>
+        <select id="timer-select" class="opt-select">
+            <option value="0" selected>없음</option><option value="20">20초</option><option value="30">30초</option><option value="45">45초</option>
+        </select>
+    </div>
+    <div class="setting-box">
+        <span>📝 한 번에 풀 문항 수</span>
+        <select id="count-select" class="opt-select">
+            <option value="10">10</option><option value="20">20</option><option value="40" selected>40</option><option value="all">전체</option>
+        </select>
     </div>
 
     <div class="user-btn-group">
+        <button id="my-wrong-btn" class="user-btn" style="display:none; border-color:#EB3B5A;" onclick="startQuiz('내 오답')">
+            <span>📝 내 오답 다시 풀기 <small id="my-wrong-count" class="cov"></small></span>
+            <span>▶</span>
+        </button>
         <!-- 전체 파트 100문항 완주 버튼 -->
-        <button class="user-btn all-part" onclick="startQuiz('전체 파트 (100문항 완주)', 100)">
-            <span>🌐 사회 파트 테스트 (100문항 추출)</span>
+        <button class="user-btn all-part" onclick="startQuiz('전체 파트')">
+            <span>🌐 사회 파트 테스트 (한국사 제외 3개 파트 통합) <small class="cov" data-pool="전체 파트"></small></span>
             <span>▶</span>
         </button>
 
         <!-- 이동준 사용자 버튼 -->
         <button class="user-btn" onclick="startQuiz('이동준', 40)">
-            <span>👤 이동준 (정의와 사회 불평등 / 40문항)</span>
+            <span>👤 이동준 (정의와 사회 불평등) <small class="cov" data-pool="이동준"></small></span>
             <span>▶</span>
         </button>
 
         <!-- 정유미 사용자 버튼 -->
         <button class="user-btn" onclick="startQuiz('정유미', 40)">
-            <span>👤 정유미 (인권과 헌법 / 40문항)</span>
+            <span>👤 정유미 (인권과 헌법) <small class="cov" data-pool="정유미"></small></span>
             <span>▶</span>
         </button>
 
         <!-- 최혁순 사용자 버튼 (활성화 완료) -->
         <button class="user-btn" onclick="startQuiz('최혁순', 40)">
-            <span>👤 최혁순 (시장 경제와 경제 주체 / 40문항)</span>
+            <span>👤 최혁순 (시장 경제와 경제 주체) <small class="cov" data-pool="최혁순"></small></span>
             <span>▶</span>
         </button>
         
         <button class="user-btn" onclick="startQuiz('민기백', 100)">
-        <span>👤 민기백 (한국사 / 역사 파트 / 100문항)</span>
+        <span>👤 민기백 (한국사 / 역사 파트) <small class="cov" data-pool="민기백"></small></span>
         <span>▶</span>
         </button>
     </div>
@@ -338,6 +378,7 @@
     <div id="options"></div>
     <div id="result"></div>
     <button id="next-btn" class="next-btn" onclick="nextQuestion()">다음 문제로 ▶</button>
+    <button id="finish-btn" class="home-btn" onclick="finishEarly()">🏁 여기까지만 풀고 채점하기</button>
     <button class="home-btn" onclick="goHome()">🏠 메인 화면으로 돌아가기</button>
 </div>
 
@@ -1786,7 +1827,77 @@ let wrongAnswers = [];
 // 타이머 변수
 let timerInterval = null;
 let timeLeft = 30;
-let isTimerEnabled = true;
+let isTimerEnabled = false;
+let timeLimit = 30;
+let inProgress = false; // 풀이 중인지 (메인 이동 시 확인용)
+let answered = false;   // 현재 문제에 답했는지
+
+// 풀어본 문제·틀린 문제를 브라우저에 저장 (문제 문장으로 식별)
+let store = {};
+try { store = JSON.parse(localStorage.getItem('socialQuiz_v1')) || {}; } catch (e) {}
+store.seen = store.seen || [];
+store.wrong = store.wrong || [];
+function saveStore() { try { localStorage.setItem('socialQuiz_v1', JSON.stringify(store)); } catch (e) {} }
+
+// ponytail: 한 번 맞히면 오답에서 뺌(찍어서 맞혀도 빠짐). 필요하면 "2번 연속 정답 시 제거"로.
+function record(q, isCorrect) {
+    if (!store.seen.includes(q)) store.seen.push(q);
+    const i = store.wrong.indexOf(q);
+    if (isCorrect && i >= 0) store.wrong.splice(i, 1);
+    if (!isCorrect && i < 0) store.wrong.push(q);
+    saveStore();
+}
+
+const POOLS = { '이동준': dongjunQuizData, '정유미': yumiQuizData, '최혁순': hyuksoonQuizData, '민기백': mingibaekQuizData };
+function getPool(name) {
+    if (name === '내 오답') return [...allQuizData, ...mingibaekQuizData].filter(x => store.wrong.includes(x.q));
+    return POOLS[name] || allQuizData;
+}
+
+// 문제 은행에서의 원래 번호 (오답노트 표시용: "최혁순 83번")
+function qLabel(q) {
+    for (const [name, arr] of Object.entries(POOLS)) {
+        const i = arr.findIndex(x => x.q === q);
+        if (i >= 0) return `${name} ${i + 1}번`;
+    }
+    return '';
+}
+
+// 메인 화면: 풀어본 문제 수, 내 오답 버튼, 지난 설정 복원
+function updateMain() {
+    document.querySelectorAll('.cov[data-pool]').forEach(el => {
+        const pool = getPool(el.dataset.pool);
+        el.innerText = `풀어본 문제 ${pool.filter(x => store.seen.includes(x.q)).length} / ${pool.length}`;
+    });
+    const n = getPool('내 오답').length;
+    document.getElementById('my-wrong-btn').style.display = n ? 'flex' : 'none';
+    document.getElementById('my-wrong-count').innerText = `지금까지 틀린 ${n}문제`;
+    if (store.timer) document.getElementById('timer-select').value = store.timer;
+    if (store.count) document.getElementById('count-select').value = store.count;
+}
+
+// 중간에 끝내고 푼 데까지만 채점
+function finishEarly() {
+    const n = currentQ + (answered ? 1 : 0);
+    if (n === 0) { inProgress = false; goHome(); return; }
+    clearInterval(timerInterval);
+    activeQuizData = activeQuizData.slice(0, n);
+    showFinalResult();
+}
+
+// 키보드: 1~4 선택, Enter 다음 문제
+document.addEventListener('keydown', e => {
+    if (!inProgress) return;
+    const btns = document.querySelectorAll('#options .btn');
+    if (!answered && e.key >= '1' && e.key <= '4' && btns[e.key - 1]) {
+        btns[e.key - 1].click();
+    } else if (answered && e.key === 'Enter') {
+        e.preventDefault();
+        nextQuestion();
+    }
+});
+
+updateMain();
 
 // 배열 셔플 함수
 function shuffle(array) {
@@ -1801,7 +1912,11 @@ function shuffle(array) {
 // 퀴즈 시작 (사용자명 및 문항수 설정)
 function startQuiz(userName, count) {
     currentUser = userName;
-    isTimerEnabled = document.getElementById('timer-toggle').checked;
+    store.timer = document.getElementById('timer-select').value;
+    store.count = document.getElementById('count-select').value;
+    saveStore();
+    timeLimit = Number(store.timer);
+    isTimerEnabled = timeLimit > 0;
 
     document.getElementById("user-badge").innerText = `학습자: ${currentUser}`;
     document.getElementById("main-card").style.display = "none";
@@ -1813,29 +1928,26 @@ function startQuiz(userName, count) {
 
 // 메인 화면 이동
 function goHome() {
+    if (inProgress && (currentQ > 0 || answered) && !confirm('여기서 그만할까요?\n틀린 문제는 "내 오답"에 저장되어 있어요.')) return;
+    inProgress = false;
     clearInterval(timerInterval);
     document.getElementById("quiz-card").style.display = "none";
     document.getElementById("review-card").style.display = "none";
     document.getElementById("main-card").style.display = "block";
+    updateMain();
+    window.scrollTo(0, 0);
 }
 
 // 퀴즈 초기화
 function initQuiz(userName, count) {
-    let pool = [];
-    if (userName === '이동준') {
-        pool = dongjunQuizData;
-    } else if (userName === '정유미') {
-        pool = yumiQuizData;
-    } else if (userName === '최혁순') {
-        pool = hyuksoonQuizData;
-    } else if (userName === '민기백') {
-        pool = mingibaekQuizData;
-    } else {
-        pool = allQuizData; // 전체 파트
-    }
-
-    const shuffledPool = shuffle(pool);
-    const selectedQuestions = count >= shuffledPool.length ? shuffledPool : shuffledPool.slice(0, count);
+    const pool = getPool(userName);
+    if (pool.length === 0) { inProgress = false; goHome(); return; }
+    const sel = document.getElementById('count-select').value;
+    const n = sel === 'all' ? pool.length : Math.min(Number(sel), pool.length);
+    // 아직 안 풀어본 문제를 먼저 뽑는다
+    const unseen = pool.filter(x => !store.seen.includes(x.q));
+    const seen = pool.filter(x => store.seen.includes(x.q));
+    const selectedQuestions = shuffle([...shuffle(unseen), ...shuffle(seen)].slice(0, n));
     
     activeQuizData = selectedQuestions.map(item => {
         const correctText = item.a[item.correct];
@@ -1858,6 +1970,10 @@ function initQuiz(userName, count) {
 
 // 문제 로드
 function loadQuiz() {
+    inProgress = true;
+    answered = false;
+    document.getElementById("finish-btn").style.display = "block";
+    window.scrollTo(0, 0);
     clearInterval(timerInterval);
     document.getElementById("result").innerText = "";
     document.getElementById("next-btn").style.display = "none";
@@ -1891,10 +2007,11 @@ function loadQuiz() {
 function startTimer() {
     const timerDisplay = document.getElementById("timer-display");
     timerDisplay.style.display = "inline-block";
-    timeLeft = 30;
+    timeLeft = timeLimit;
     updateTimerUI();
 
     timerInterval = setInterval(() => {
+        if (document.hidden) return; // 다른 탭·화면 꺼짐 동안은 멈춤
         timeLeft--;
         updateTimerUI();
 
@@ -1932,6 +2049,8 @@ function timeOutAnswer() {
         }
     });
 
+    answered = true;
+    record(qObj.q, false);
     wrongAnswers.push({ ...qObj, userChoice: -1 });
 
     resDiv.style.color = "#EB3B5A";
@@ -1958,6 +2077,9 @@ function checkAnswer(selected) {
         }
     });
 
+    answered = true;
+    record(qObj.q, selected === qObj.correct);
+
     if (selected === qObj.correct) {
         score++;
         resDiv.style.color = "#20BF6B";
@@ -1980,6 +2102,7 @@ function showNextButton() {
         nextBtn.innerText = "다음 문제로 ▶";
     }
     nextBtn.style.display = "block";
+    nextBtn.scrollIntoView({ block: "nearest", behavior: "smooth" });
 }
 
 function nextQuestion() {
@@ -2003,6 +2126,9 @@ function getGradeInfo(percentage) {
 
 // 최종 결과 화면
 function showFinalResult() {
+    inProgress = false;
+    document.getElementById("finish-btn").style.display = "none";
+    window.scrollTo(0, 0);
     clearInterval(timerInterval);
     document.getElementById("progress-bar-fill").style.width = "100%";
     document.getElementById("progress").innerText = "풀이 완료";
@@ -2035,7 +2161,7 @@ function showFinalResult() {
     }
 
     htmlContent += `
-        <button class="btn" style="text-align:center; font-weight:bold; background-color:#252536; color:#CBD5E0;" onclick="initQuiz('${currentUser}', ${activeQuizData.length})">🔄 처음부터 다시 풀기</button>
+        <button class="btn" style="text-align:center; font-weight:bold; background-color:#252536; color:#CBD5E0;" onclick="startQuiz('${currentUser}')">🔄 처음부터 다시 풀기</button>
     `;
 
     document.getElementById("options").innerHTML = htmlContent;
@@ -2046,6 +2172,7 @@ function showFinalResult() {
 function showReview() {
     document.getElementById("quiz-card").style.display = "none";
     document.getElementById("review-card").style.display = "block";
+    window.scrollTo(0, 0);
 
     const listDiv = document.getElementById("review-list");
     listDiv.innerHTML = "";
@@ -2058,7 +2185,7 @@ function showReview() {
         const correctAnsText = `${item.correct + 1}. ${item.a[item.correct]}`;
 
         itemBox.innerHTML = `
-            <div class="review-q">Q${idx + 1}. ${item.q}</div>
+            <div class="review-q">Q${idx + 1}. ${item.q} <small style="opacity:.55; font-weight:normal;">[${qLabel(item.q)}]</small></div>
             <div class="review-user-ans">❌ 내가 선택한 답: ${userAnsText}</div>
             <div class="review-correct-ans">⭕ 정답: ${correctAnsText}</div>
             <div class="review-exp">💡 <strong>해설:</strong> ${item.exp}</div>
