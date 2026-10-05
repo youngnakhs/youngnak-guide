@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>헤스 법칙 시뮬레이션: CaO + 묽은 염산</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f3f6f4;--panel:#fff;--ink:#16302b;--mute:#5d716c;--line:#cfdad6;--acc:#0b7a75;--hot:#d1432b;--ok:#2a8a4a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1a18;--panel:#172523;--ink:#e3efeb;--mute:#90a8a1;--line:#2c403c;--acc:#45c2b9;--hot:#ff7a5c;--ok:#5fd68a}}
+:root[data-theme="dark"]{--bg:#0f1a18;--panel:#172523;--ink:#e3efeb;--mute:#90a8a1;--line:#2c403c;--acc:#45c2b9;--hot:#ff7a5c;--ok:#5fd68a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;line-height:1.55}
+main{max-width:860px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:1.4rem;margin:0 0 4px}
+p.sub{margin:0 0 16px;color:var(--mute);font-size:.92rem}
+section{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:14px}
+h2{font-size:1rem;margin:0 0 10px}
+.rx{display:grid;gap:8px}
+.rx button{text-align:left;padding:10px 12px;border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:8px;font:inherit;cursor:pointer}
+.rx button:hover,.rx button:focus-visible{border-color:var(--acc);outline:2px solid var(--acc);outline-offset:1px}
+.rx b{display:block;font-size:.95rem}
+.rx span{font-size:.82rem;color:var(--mute)}
+.ctl{display:flex;flex-wrap:wrap;gap:18px;margin-bottom:12px;font-size:.9rem}
+.ctl label{display:flex;flex-direction:column;gap:2px;min-width:180px}
+.stage{display:flex;gap:14px;align-items:stretch}
+.therm{width:54px;flex:none;text-align:center;font-size:.85rem}
+.tube{height:200px;width:16px;margin:0 auto 6px;border:2px solid var(--line);border-radius:10px;position:relative;overflow:hidden}
+.tube i{position:absolute;bottom:0;left:0;right:0;background:var(--hot);height:20%}
+.cv{flex:1;min-width:0}
+canvas{width:100%;height:auto;display:block}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.88rem;min-width:640px}
+th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:right}
+th:first-child,td:first-child{text-align:left}
+.eq{font-size:1rem;padding:10px 12px;border-left:4px solid var(--acc);background:var(--bg);margin-top:10px;overflow-x:auto}
+input.num{width:92px;padding:4px 6px;font:inherit;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);text-align:right}
+select{font:inherit;padding:4px 6px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);max-width:100%}
+.ok{color:var(--ok);font-weight:700}
+.reset{margin-top:10px;padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--ink);font:inherit;cursor:pointer}
+
+/* == IPAD-FIT BEGIN (자동 생성 · 직접 수정하지 말 것) == */
+/* ══ 아이패드 대응 (자동 삽입 · 화학실험실 파이프라인) ══════════
+   대상 폭 — 세로 744(mini)/810(10.9")/834(Air·Pro11)/1024(Pro12.9")
+            가로 1080/1133/1194/1366
+   원칙 — 손가락 터치 목표 44px 이상, 본문 글자 키우기, 홈판을 화면 폭에 맞춰 확대 */
+html{-webkit-text-size-adjust:100%;}
+
+/* 태블릿 세로부터 */
+@media (min-width:744px){
+  body{padding:38px 30px 78px;font-size:15.5px;}
+  .wrap{max-width:900px;}
+  h1{font-size:38px;}
+  .sub{font-size:16px;line-height:1.7;max-width:680px;}
+
+  /* 탭 — 손가락으로 누를 크기 */
+  .tabs{flex-wrap:wrap;gap:0 4px;}
+  .tab-btn{font-size:15.5px;padding:15px 6px;}
+  .tab-btn+.tab-btn{margin-left:26px;}
+
+  /* 선택 칩 — 44px 이상 */
+  .chip{font-size:14.5px;padding:12px 17px;border-radius:24px;}
+  .card{padding:22px 24px;}
+  .card h3{font-size:12.5px;margin-bottom:16px;}
+  .note{font-size:13.5px;padding:12px 14px;}
+
+  /* 비커·수치 */
+  .beaker-svg{width:172px;height:206px;}
+  .readout .ph-big{font-size:46px;}
+  .verdict{font-size:15px;padding:6px 15px;}
+  .ph-strip-wrap{margin-top:38px;}   /* pH 마커 라벨이 위 설명문과 겹치지 않게 */
+  .ph-strip{height:38px;}
+  .ph-labels{font-size:11.5px;}
+
+  /* 중화 반응 */
+  input[type=range]{height:6px;}
+  .slider-row label{font-size:14px;}
+  .eq{font-size:15.5px;padding:14px;}
+
+  /* 한눈에 비교 */
+  .compare-row{grid-template-columns:repeat(auto-fit,minmax(98px,1fr));gap:16px;}
+  .compare-cell .mini-beaker{width:54px;height:66px;}
+  .compare-cell .c-name{font-size:12.5px;min-height:32px;}
+
+  /* 홈판 — 화면 폭을 다 쓰고 칸을 키운다(손가락으로 칠할 크기) */
+  .well-grid{max-width:100%;gap:5px;margin-top:20px;}
+  .palette-row{gap:10px;}
+  .swatch-btn{padding:10px 14px;}
+  .swatch-dot{width:24px;height:24px;}
+  .swatch-label{font-size:11px;}
+  .toggle-btn{font-size:14.5px;padding:14px 18px;}
+  .tmpl-btn{font-size:13.5px;padding:11px 17px;}
+}
+
+/* 태블릿 가로 · 큰 화면 */
+@media (min-width:1024px){
+  .wrap{max-width:1000px;}
+  .grid{gap:24px;}
+  .well-grid{max-width:840px;}
+  .compare-row{gap:18px;}
+}
+
+/* 아이패드 세로에서 2단이 좁아지는 구간 — 카드 안쪽 여백만 줄여 숨통 */
+@media (min-width:744px) and (max-width:860px){
+  .grid{gap:16px;}
+  .card{padding:20px;}
+}
+
+/* 안전영역(홈 인디케이터) */
+@supports (padding:env(safe-area-inset-bottom)){
+  body{padding-bottom:calc(78px + env(safe-area-inset-bottom));}
+}
+/* == IPAD-FIT END == */
+</style>
+</head>
+<body>
+  <a href="../" style="display:inline-flex;align-items:center;gap:7px;margin-bottom:18px;
+  font-family:'Space Mono','Courier New',monospace;font-size:12px;letter-spacing:.06em;
+  color:#9cb0a8;text-decoration:none;border:1px solid #2c473d;border-radius:20px;
+  padding:6px 13px;transition:.15s"
+  onmouseover="this.style.color='#f1ede3';this.style.borderColor='#6fb98f'"
+  onmouseout="this.style.color='#9cb0a8';this.style.borderColor='#2c473d'">← 실험실 목록</a>
+<main>
+<h1>헤스 법칙 시뮬레이션: CaO + 묽은 염산</h1>
+<p class="sub">직접 반응 ①의 ΔH를 우회 경로 ② + ③의 합과 비교해 ΔH₁ = ΔH₂ + ΔH₃ 가 성립하는지 확인해 보세요.</p>
+
+<section>
+<h2>1. 실험할 반응 선택</h2>
+<div class="rx">
+<button data-r="1"><b>반응 ① CaO(s) + 2HCl(aq) → CaCl₂(aq) + H₂O(l)</b><span>직접 경로: CaO를 묽은 염산에 넣는다</span></button>
+<button data-r="2"><b>반응 ② CaO(s) + H₂O(l) → Ca(OH)₂(s)</b><span>우회 경로 1단계: CaO를 물에 넣는다</span></button>
+<button data-r="3"><b>반응 ③ Ca(OH)₂(s) + 2HCl(aq) → CaCl₂(aq) + 2H₂O(l)</b><span>우회 경로 2단계: 같은 몰수의 Ca(OH)₂를 묽은 염산에 넣는다</span></button>
+</div>
+</section>
+
+<section>
+<h2>2. 조건 설정 및 측정</h2>
+<div class="ctl">
+<label>CaO 양: <b><span id="mv">1.0</span> g</b> (<span id="nv">0.018</span> mol)<input id="mass" type="range" min="0.5" max="1.5" step="0.25" value="1"></label>
+<label>열손실: <b><span id="lv">3</span> %</b><input id="loss" type="range" min="0" max="10" step="1" value="3"></label>
+<label>용액 질량 m: <b><span id="sv">100</span> g</b><input id="sol" type="range" min="50" max="200" step="10" value="100"></label>
+<label>용액 비열 c: <b><span id="shv">4.18</span> J/(g·K)</b><input id="sh" type="range" min="3.5" max="4.5" step="0.02" value="4.18"></label>
+</div>
+<div class="stage">
+<div class="therm"><div class="tube"><i id="fill"></i></div><b id="tnow">25.0</b>°C</div>
+<div class="cv"><canvas id="cv" width="600" height="260"></canvas></div>
+</div>
+<p class="sub" id="msg" style="margin:8px 0 0">반응을 선택하면 측정이 시작됩니다. (0~60초: 초기 온도 측정, 60초에 시약 투입)</p>
+</section>
+
+<section>
+<h2>3. 결과와 헤스 법칙 확인</h2>
+<p class="sub">측정된 ΔT와 측정 조건으로 q = mcΔT, ΔH = −q ÷ n 을 직접 계산해 빈칸에 입력하세요. (q는 J, ΔH는 kJ/mol 단위이고 발열 반응의 ΔH는 음수입니다.)</p>
+<div class="tw"><table>
+<thead><tr><th>반응</th><th>ΔT (K)</th><th>측정 조건</th><th>q (J)</th><th>ΔH (kJ/mol)</th><th>확인</th></tr></thead>
+<tbody id="tb"></tbody>
+</table></div>
+<div class="eq" id="eq">
+<div>ΔH₂ + ΔH₃ = <input class="num" id="hs" inputmode="decimal"> kJ/mol</div>
+<div style="margin-top:6px">ΔH₁ (직접 경로) = <input class="num" id="h1v" inputmode="decimal"> kJ/mol</div>
+<div style="margin-top:6px">ΔH₁과의 차이 = |ΔH₂ + ΔH₃ − ΔH₁| ÷ |ΔH₁| × 100 = <input class="num" id="he" inputmode="decimal"> %</div>
+<div style="margin-top:6px">결론: <select id="hc"><option value="">선택</option><option value="y">오차 범위에서 헤스 법칙이 성립한다 (차이 5 % 미만)</option><option value="n">헤스 법칙이 성립하지 않는다 (차이 5 % 이상)</option></select></div>
+<div id="hm" style="margin-top:8px"></div>
+</div>
+<button class="reset" id="chk">내 답 확인</button> <button class="reset" id="ans">정답 보기</button> <button class="reset" id="reset">측정값 초기화</button>
+</section>
+<p class="sub">열량계의 열용량은 무시했습니다. Ca(OH)₂의 용해는 고려하지 않았으며, 정답 기준값은 표준 생성엔탈피로 계산한 근삿값입니다.</p>
+</main>
+<script>
+var TMAX=40,LIT={1:-193.4,2:-65.2,3:-128.2},C=4.18,M=100,T0=25,res={},timer=null;
+var $=function(i){return document.getElementById(i)};
+function n(){return +$("mass").value/56.08}
+$("mass").oninput=$("loss").oninput=function(){$("mv").textContent=(+$("mass").value).toFixed(1);$("nv").textContent=n().toFixed(3);$("lv").textContent=$("loss").value};
+function col(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim()}
+function draw(pts,k){
+ var c=$("cv"),g=c.getContext("2d"),W=c.width,H=c.height,L=44,B=28,R=10,Tp=10;
+ g.clearRect(0,0,W,H);g.font="12px sans-serif";g.fillStyle=col("--mute");g.strokeStyle=col("--line");g.lineWidth=1;
+ var tmin=24,tmax=TMAX;
+ function X(t){return L+(W-L-R)*t/180}function Y(T){return H-B-(H-B-Tp)*(T-tmin)/(tmax-tmin)}
+ var st=Math.ceil((tmax-tmin)/4);for(var T=tmin;T<=tmax;T+=st){g.beginPath();g.moveTo(L,Y(T));g.lineTo(W-R,Y(T));g.stroke();g.fillText(T+"",12,Y(T)+4)}
+ for(var t=0;t<=180;t+=60)g.fillText(t+"s",X(t)-8,H-10);
+ g.fillText("T(°C)",4,10);
+ g.setLineDash([4,4]);g.beginPath();g.moveTo(X(60),Tp);g.lineTo(X(60),H-B);g.stroke();g.setLineDash([]);
+ g.strokeStyle=col("--hot");g.lineWidth=2.5;g.beginPath();
+ for(var i=0;i<=k&&i<pts.length;i++){var x=X(pts[i][0]),y=Y(pts[i][1]);i?g.lineTo(x,y):g.moveTo(x,y)}
+ g.stroke();
+}
+function run(r){
+ clearInterval(timer);
+ M=+$("sol").value;C=+$("sh").value;var nn=n(),loss=+$("loss").value/100;
+ var dT=Math.abs(LIT[r])*1000*nn/(M*C)*(1-loss)*(1+(Math.random()-.5)*.03);
+ var pts=[];
+ for(var t=0;t<=180;t+=2){
+  var T=t<60?T0:t<100?T0+dT*(1-Math.exp(-(t-60)/8))/(1-Math.exp(-5)):T0+dT*Math.exp(-(t-100)/400);
+  pts.push([t,T+(Math.random()-.5)*.06]);
+ }
+ TMAX=Math.max(34,Math.ceil(T0+dT+3));var i=0;$("msg").textContent="측정 중: 반응 "+"①②③".charAt(r-1);
+ timer=setInterval(function(){
+  draw(pts,i);var T=pts[Math.min(i,pts.length-1)][1];
+  $("tnow").textContent=T.toFixed(1);$("fill").style.height=(10+(T-24)/(TMAX-24)*90)+"%";
+  if(++i>=pts.length){clearInterval(timer);finish(r,pts,nn)}
+ },35);
+}
+function tmin(){return 24}
+function finish(r,pts,nn){
+ var base=0;for(var i=0;i<25;i++)base+=pts[i][1];base/=25;
+ var mx=Math.max.apply(null,pts.map(function(p){return p[1]}));
+ var dT=mx-base,q=M*C*dT,dH=-q/nn/1000;
+ res[r]={dT:dT,q:q,dH:dH,m:M,c:C,n:nn,qi:"",hi:""};
+ $("msg").textContent="반응 "+"①②③".charAt(r-1)+" 측정 완료: 최고 온도 "+mx.toFixed(2)+" °C";
+ table();
+}
+function num(v){return parseFloat(String(v).replace(",","."))}
+function table(){
+ var h="";
+ for(var r=1;r<=3;r++){var x=res[r],nm="반응 "+"①②③".charAt(r-1);
+  if(x)h+='<tr><td>'+nm+'</td><td>'+x.dT.toFixed(2)+'</td><td style="line-height:1.4">m = '+x.m+' g<br>c = '+x.c.toFixed(2)+'<br>n = '+x.n.toFixed(4)+' mol</td><td><input class="num" id="q'+r+'" inputmode="decimal" value="'+x.qi+'"></td><td><input class="num" id="h'+r+'" inputmode="decimal" value="'+x.hi+'"></td><td id="s'+r+'"></td></tr>';
+  else h+='<tr><td>'+nm+'</td><td colspan="5" style="text-align:left;color:var(--mute)">아직 측정하지 않았습니다.</td></tr>';
+ }
+ $("tb").innerHTML=h;
+ [1,2,3].forEach(function(r){if(!res[r])return;
+  $("q"+r).oninput=$("h"+r).oninput=function(){res[r].qi=$("q"+r).value;res[r].hi=$("h"+r).value;$("s"+r).textContent="";hess()}});
+ hess();
+}
+function check(){
+ [1,2,3].forEach(function(r){var x=res[r];if(!x)return;
+  var q=num(x.qi),h=num(x.hi),t="";
+  if(isNaN(q)||isNaN(h))t="입력 필요";
+  else{var qo=Math.abs(q-x.q)/x.q<.03,ho=Math.abs(h-x.dH)/Math.abs(x.dH)<.03;
+   t=(qo?"q ✓":"q ✗")+" / "+(ho?"ΔH ✓":"ΔH ✗");
+   if(!ho&&h>0)t+="<br>발열 반응의 ΔH 부호를 확인하세요";
+   else if(!ho&&qo)t+="<br>ΔH = −q ÷ n (kJ 단위)";}
+  $("s"+r).innerHTML=t});
+ checkHess();
+}
+function show(){
+ [1,2,3].forEach(function(r){var x=res[r];if(!x)return;
+  x.qi=x.q.toFixed(0);x.hi=x.dH.toFixed(1);$("q"+r).value=x.qi;$("h"+r).value=x.hi;$("s"+r).textContent=""});
+ var v=hv();
+ if(!v.some(isNaN)){var es=v[1]+v[2],ee=Math.abs(es-v[0])/Math.abs(v[0])*100;$("h1v").value=v[0].toFixed(1);$("hs").value=es.toFixed(1);$("he").value=ee.toFixed(1);$("hc").value=ee<5?"y":"n"}
+ hess();
+}
+function hess(){$("hm").textContent=""}
+function hv(){return [1,2,3].map(function(r){return res[r]?num(res[r].hi):NaN})}
+function checkHess(){
+ var v=hv(),m=$("hm");
+ if(v.some(isNaN)){m.textContent="먼저 세 반응의 ΔH를 표에 입력하세요.";return}
+ var es=v[1]+v[2],ee=Math.abs(es-v[0])/Math.abs(v[0])*100,ec=ee<5?"y":"n";
+ var h1=num($("h1v").value),sv=num($("hs").value),ev=num($("he").value),cv=$("hc").value;
+ if(isNaN(h1)||isNaN(sv)||isNaN(ev)||!cv){m.textContent="네 칸을 모두 입력하세요.";return}
+ m.innerHTML="ΔH₁ "+(Math.abs(h1-v[0])<=.2?"✓":"✗ (표의 반응 ①의 ΔH를 옮겨 쓰세요)")+" / 합 "+(Math.abs(sv-es)<=.2?"✓":"✗ (ΔH₂와 ΔH₃를 더해 보세요)")+" / 차이 "+(Math.abs(ev-ee)<=Math.max(.3,.05*ee)?"✓":"✗")+" / 결론 "+(cv===ec?"✓":"✗");
+}
+Array.prototype.forEach.call(document.querySelectorAll(".rx button"),function(b){b.onclick=function(){run(+b.dataset.r)}});
+$("sol").oninput=$("sh").oninput=function(){$("sv").textContent=$("sol").value;$("shv").textContent=(+$("sh").value).toFixed(2)};
+$("chk").onclick=check;$("ans").onclick=show;
+$("reset").onclick=function(){clearInterval(timer);res={};table();$("hs").value=$("he").value=$("h1v").value="";$("hc").value="";draw([],0);$("tnow").textContent="25.0";$("fill").style.height="20%";$("msg").textContent="초기화했습니다. 반응을 선택해 다시 측정하세요."};
+table();draw([],0);
+</script>
+</body>
+</html>
