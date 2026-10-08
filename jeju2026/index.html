@@ -218,7 +218,7 @@ function showPart(i, target=null){
  const m=menus[i];
  sectionbar.innerHTML=`<div class="subnav">${m.items.map(x=>`<a href="${x[1]}">${x[0]}</a>`).join('')}</div>`;
  if(target){setTimeout(()=>document.querySelector(target)?.scrollIntoView({behavior:'smooth',block:'start'}),20)}
- else if(target!==false) document.querySelector('.topnav').scrollIntoView({behavior:'smooth',block:'start'});
+ else if(target!==false){const nav=document.querySelector('.topnav');const de=document.documentElement;de.style.scrollBehavior='auto';scrollTo(0,parts[i].getBoundingClientRect().top+scrollY-nav.offsetHeight);de.style.scrollBehavior='';}
 }
 tabs.forEach((t,i)=>t.addEventListener('click',()=>showPart(i)));
 document.querySelectorAll('.homepart').forEach(b=>b.addEventListener('click',()=>showPart(Number(b.dataset.part))));
