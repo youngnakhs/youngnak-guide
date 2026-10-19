@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610191547"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610191549"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <title>영락고 상담 도우미</title>
 <style>
@@ -985,7 +985,8 @@ function clampAll(root){
 const moreBtn = n => n > 0 ? `<button class="morebtn noprint" onclick="this.textContent = this.previousElementSibling.classList.toggle('all') ? '줄여 보기' : '나머지 ${n}곳 더 보기'">나머지 ${n}곳 더 보기</button>` : '';
 function bandBlock(my){
   const tr = JOB() ? null : SIDE(ME.k) === '자연' ? '자연' : SIDE(ME.k) === '인문' ? '인문' : null;
-  const regs = ['전체', ...new Set(D.band.rows.map(o => o.g).filter(Boolean))];
+  // 지역 목록 = 입결 밴드·다온(교과·종합·정시)·정시 배치표에 나오는 지역을 모두(밴드에 없는 세종·경남·경북·울산·제주 포함)
+  const regs = ['전체', ...new Set([...D.band.rows.map(o => o.g), ...D.daon.gyo.map(r => r[3]), ...D.daon.jong.map(r => r[4]), ...D.daon.js.map(r => r[8]), ...D.jeongsi.map(r => r[1])].filter(Boolean))];
   const R = bandRows().filter(r => (!tr || !r.t || r.t.includes(tr)) && (REGION === '전체' || r.g === REGION));
   const v = r => my <= r.lo - .1 ? 0 : my <= r.hi ? 1 : my <= r.hi + .4 ? 2 : 3;
   const col = k => R.filter(r => v(r) === k).sort((a, b) => k === 0 ? a.lo - b.lo : a.hi - b.hi).slice(0, 14);
