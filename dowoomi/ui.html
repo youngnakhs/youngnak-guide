@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610200840"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610200846"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <title>영락고 상담 도우미</title>
 <style>
@@ -200,6 +200,8 @@ body.pub .hero>.pubbar,body.pub main>.pubbar{background:#c46a00;border:0;color:#
 .goal td,.goal th{font-size:16.5px}.goal .need{font-size:19px;font-weight:800;color:var(--navy)}
 .gseg{display:flex;gap:0;margin:12px 0 4px;border-bottom:1px solid var(--rule)}.gseg button{border:0;border-bottom:3px solid transparent;background:none;padding:8px 18px;font-size:17px;cursor:pointer;color:var(--ink2)}.gseg button.on{border-bottom-color:var(--navy);color:var(--navy);font-weight:700}
 .grdu details.gwho summary{cursor:pointer;color:var(--navy)}.grdu details.gwho div{margin:4px 0;line-height:1.7}.grdu details.gwho a{color:var(--ink);text-decoration:none;font-weight:600;margin-left:6px}.grdu details.gwho a:hover{text-decoration:underline}.grdu td,.grdu th{text-align:center}.grdu td.l{text-align:left}
+.grdv details.gall summary{cursor:pointer;list-style-position:outside}.grdv details.gall[open] summary{margin-bottom:4px}.grdv details.gall div{margin:2px 0 2px 14px;line-height:1.6}.gtog button{font-size:13px;padding:3px 8px;border:1px solid var(--rule);background:#fff;cursor:pointer}
+@media print{.grdv details.gall>div{display:block}}.grdv td:nth-child(2){white-space:nowrap}
 .hgo{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.hgo button{padding:9px 16px;font-size:16px;border:1px solid #9fc0ea;background:transparent;color:#fff;cursor:pointer;border-radius:2px}.hgo button:hover{background:rgba(255,255,255,.12)}
 .clsv th{cursor:pointer;user-select:none}.clsv th.sorted::after{content:' ▾'}.clsv th.sorted.asc::after{content:' ▴'}
 .clsv td.l a{color:var(--ink);text-decoration:none;font-weight:600}.clsv td.l a:hover{color:var(--navy);text-decoration:underline}
@@ -1222,13 +1224,13 @@ function gradeView(tab){
   const pass = s => (!GF.ban || banOf(s.id) === +GF.ban) && (!GF.k || (s.k || '미제출') === GF.k);
   const bans = [...new Set(gd.stu.map(s => banOf(s.id)))], ks = [...new Set(gd.stu.map(s => s.k || '미제출'))].sort();
   const sel = (id, v, opts) => `<select id="${id}">${opts.map(([val, lab]) => `<option value="${esc(val)}" ${String(val) === String(v) ? 'selected' : ''}>${esc(lab)}</option>`).join('')}</select>`;
-  const filt = `<div class="ctrl noprint">반 ${sel('gfB', GF.ban, [['', '전체'], ...bans.map(b => [b, b + '반'])])} 희망 계열 ${sel('gfK', GF.k, [['', '전체'], ...ks.map(k => [k, k])])}${GRDV === 'univ' ? ` 대학 지역 ${sel('gfR', GF.reg, [...regSel().matchAll(/<option[^>]*>([^<]*)<\/option>/g)].map(m => [m[1], m[1]]))}` : ''}</div>`;
+  const filt = `<div class="ctrl noprint">반 ${sel('gfB', GF.ban, [['', '전체'], ...bans.map(b => [b, b + '반'])])} 희망 계열 ${sel('gfK', GF.k, [['', '전체'], ...ks.map(k => [k, k])])}${GRDV === 'rank' ? ' <span class="gtog"><button id="gAll">대학 모두 펼치기</button></span>' : ''}${GRDV === 'univ' ? ` 대학 지역 ${sel('gfR', GF.reg, [...regSel().matchAll(/<option[^>]*>([^<]*)<\/option>/g)].map(m => [m[1], m[1]]))}` : ''}</div>`;
   const seg = `<div class="gseg noprint"><button data-t="rank" class="${GRDV === 'rank' ? 'on' : ''}">석차순 명단</button><button data-t="univ" class="${GRDV === 'univ' ? 'on' : ''}">대학별 가능 인원</button></div>`;
   const S = gd.stu.filter(pass);
   let body;
   if (GRDV === 'rank'){
     const L = S.map(s => { const r = clsRow(s), J = jm.get(s.id) || [], c = LABS.map(l => J.filter(x => x.lab === l).length), pa = mockPa(s.mk[gd.last]);
-      return {...r, ban: banOf(s.id), pa: pa ?? -1, st: c[0], jt: c[1], top: J.slice(0, 3), sum: c[0] * 100 + c[1]}; });
+      return {...r, ban: banOf(s.id), pa: pa ?? -1, st: c[0], jt: c[1], sh: c[2], all: J, top: J.slice(0, 3), sum: c[0] * 100 + c[1]}; });
     const [k, dir] = GSORT, cv = r => Array.isArray(r[k]) ? r[k].length : r[k];
     L.sort((a, b) => (cv(a) > cv(b) ? 1 : cv(a) < cv(b) ? -1 : 0) * dir || a.rk - b.rk || a.s.id - b.s.id);
     const th = (key, lab) => `<th data-k="${key}" class="${k === key ? 'sorted' + (dir > 0 ? ' asc' : '') : ''}">${lab}</th>`;
@@ -1236,8 +1238,8 @@ function gradeView(tab){
       <td><b>${r.cum < 9 ? r.cum.toFixed(2) : '–'}</b></td><td>${r.s.srk ? (r.mv > 0 ? `<span class="up">▲${r.mv}</span>` : r.mv < 0 ? `<span class="dn">▼${-r.mv}</span>` : '–') : '–'}</td><td>${r.now < 9 ? r.now.toFixed(2) : '–'}</td>
       <td>${r.ms < 99 ? r.ms : '–'}</td><td>${r.pa >= 0 ? r.pa.toFixed(1) : '–'}</td>
       <td class="l small">${r.edge ? `<span class="flag f-edge">경계 ${r.edge}</span>` : ''}${r.down.map(g => `<span class="flag f-dn">${g}↓</span>`).join('')}</td>
-      <td class="l small"><b class="lab-안정권">${r.st}</b> · <b class="lab-적정권">${r.jt}</b> <span class="mu">|</span> ${r.top.map(x => `<span class="lab-${x.lab}">${short(x.nm)}</span>`).join(' · ') || '<span class="mu">–</span>'}</td></tr>`).join('');
-    body = `<table class="tb clsv grdv"><thead><tr>${th('rk', '교내 순위')}${th('ban', '반-번호')}${th('nm', '이름')}${th('k', '희망')}${th('cum', '누적')}${th('mv', '학기 순위 변화')}${th('now', curSem() + ' 중간')}${th('ms', gd.last + ' 국수영 합')}${th('pa', '국수탐 백분위')}${th('edge', '눈여겨볼 것')}${th('sum', '대학 가능권 <small>안정·적정 | 위 3곳</small>')}</tr></thead><tbody>${tb}</tbody></table>
+      <td class="l small">${r.all.length ? `<details class="gall"><summary><b class="lab-안정권">${r.st}</b> · <b class="lab-적정권">${r.jt}</b> · <b class="lab-상향">${r.sh}</b> <span class="mu">|</span> ${r.top.map(x => `<span class="lab-${x.lab}">${short(x.nm)}</span>`).join(' · ')} <span class="mu">… 전체 ${r.all.length}곳</span></summary>${LABS.filter(l => r.all.some(x => x.lab === l)).map(l => `<div><b class="lab-${l}">${l}</b> ${r.all.filter(x => x.lab === l).map(x => esc(x.nm.replace('대학교', '대').replace(/학교$/, ''))).join(' · ')}</div>`).join('')}</details>` : '<span class="mu">–</span>'}</td></tr>`).join('');
+    body = `<table class="tb clsv grdv"><thead><tr>${th('rk', '교내 순위')}${th('ban', '반-번호')}${th('nm', '이름')}${th('k', '희망')}${th('cum', '누적')}${th('mv', '학기 순위 변화')}${th('now', curSem() + ' 중간')}${th('ms', gd.last + ' 국수영 합')}${th('pa', '국수탐 백분위')}${th('edge', '눈여겨볼 것')}${th('sum', '대학 가능권 <small>안정·적정·상향 | 위 3곳 · 누르면 전체</small>')}</tr></thead><tbody>${tb}</tbody></table>
      <div class="note">교내 순위·누적은 학생 화면 맨 위 숫자와 같습니다(2학기 중간 추정 포함). 경계 n = 1등급 선 바로 아래 과목 수, 교과↓ = 가장 좋았던 학기보다 학년 석차 10%p 넘게 내려온 교과. 대학 가능권 = 학생 화면 판정표와 같은 계산(희망 계열 학과만 · 선배 범위 ±${WIN}%p · 전국)으로 안정권·적정권 대학 수와 위에서 3곳.</div>`;
   } else {
     const U = {};
@@ -1256,7 +1258,8 @@ function gradeView(tab){
   m.querySelectorAll('.gseg button').forEach(b => b.onclick = () => gradeView(b.dataset.t));
   $('gfB').onchange = () => { GF.ban = $('gfB').value; gradeView(); }; $('gfK').onchange = () => { GF.k = $('gfK').value; gradeView(); };
   if ($('gfR')) $('gfR').onchange = () => { GF.reg = $('gfR').value; gradeView(); };
-  m.querySelectorAll('.grdv th').forEach(h => h.onclick = () => { const key = h.dataset.k; GSORT = [key, GSORT[0] === key ? -GSORT[1] : (['mv', 'edge', 'pa', 'sum', 'down'].includes(key) ? -1 : 1)]; gradeView(); });
+  if ($('gAll')) $('gAll').onclick = e => { e.stopPropagation(); const ds = m.querySelectorAll('details.gall'), op = ![...ds].every(d => d.open); ds.forEach(d => d.open = op); $('gAll').textContent = op ? '대학 모두 접기' : '대학 모두 펼치기'; };
+  m.querySelectorAll('.grdv th[data-k]').forEach(h => h.onclick = () => { const key = h.dataset.k; GSORT = [key, GSORT[0] === key ? -GSORT[1] : (['mv', 'edge', 'pa', 'sum', 'down'].includes(key) ? -1 : 1)]; gradeView(); });
   m.querySelectorAll('a[data-id]').forEach(a => a.onclick = e => { e.preventDefault(); pick(+a.dataset.id); });
   foldNotes(m); window.scrollTo(0, 0);
 }
