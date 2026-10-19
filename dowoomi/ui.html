@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610191518"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610191523"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <title>영락고 상담 도우미</title>
 <style>
@@ -821,10 +821,14 @@ const ANYGYE = m => !m.trim() || /^전체|^전\s*모집단위|자유전공|무�
 function subjBlock(){
   const us = topUnivs(8), hk = (ME.k || ''), on = HOPEONLY && hk && hk !== '취업';
   const R = on ? D.daon.subj.filter(r => ANYGYE(r[1]) || gyeOf(r) === hk) : D.daon.subj;
-  const blocks = us.map(k => { const rs = R.filter(r => K(r[0]) === k); if (!rs.length) return '';
-    const rows = rs.slice(0, 40).map(r => `<tr><td class="l">${esc(r[1])}${r[2] ? ' <small>' + esc(r[2]) + '</small>' : ''}</td><td class="l small">${subjMark(r[3])}</td><td class="l small">${subjMark(r[4])}</td><td class="l small mu">${esc(r[5] && r[5] !== '-' ? r[5] : '')}</td></tr>`).join('');
-    return `<details class="dblk" open><summary><b>${esc(rs[0][0])}</b> <small class="mu">모집단위 ${rs.length}개</small></summary><table class="tb"><thead><tr><th>모집단위</th><th>핵심 과목</th><th>권장 과목</th><th>비고</th></tr></thead><tbody>${rows}</tbody></table>${rs.length > 40 ? '<p class="small mu">앞 40개만 표시</p>' : ''}</details>`; }).join('');
-  return (blocks || '<p class="mu">판정표·관심 대학 중 권장 과목 자료가 있는 대학이 없습니다.</p>') + `<div class="note">모두 펼쳐 둡니다(대학 이름을 누르면 접힘). 핵심 = 꼭 들을 과목, 권장 = 들으면 좋은 과목(대학 발표 기준). ✓ = 이 학생이 들었거나 3학년에 신청한 과목, ✗ = 없는 과목(과목명이 조금 달라도 ✗일 수 있음 — 교과만 적힌 칸은 그 교과 과목이 하나라도 있으면 ✓). ${on ? `희망 계열(${esc(hk)}) 모집단위와 전 모집단위 공통 안내만 보여 줍니다(학과 이름으로 계열을 나눠 일부 어긋날 수 있음 — 전체는 B의 '희망 계열 학과만'을 끄면 나옴).` : '희망 계열이 없어 모든 모집단위를 보여 줍니다.'} 출처: ${esc(D.daon.src)}.</div>`;
+  // 선택과목으로 추천: 핵심 ✓는 2점·권장 ✓는 1점 → 들었거나 신청한 과목이 많이 맞는 모집단위부터(과목명이 없는 문장형 안내는 맨 뒤)
+  const n = (h, c) => (h.match(new RegExp(c, 'g')) || []).length;
+  const blocks = us.map(k => { const rs = R.filter(r => K(r[0]) === k).map(r => { const a = subjMark(r[3]), b = subjMark(r[4]);
+      const ok = 2 * n(a, 'sj-ok') + n(b, 'sj-ok'), all = ok + 2 * n(a, 'sj-no') + n(b, 'sj-no'); return {r, a, b, ok, all, fit: all ? ok / all : -1}; })
+      .sort((x, y) => y.fit - x.fit || y.all - x.all); if (!rs.length) return '';
+    const rows = rs.slice(0, 40).map(({r, a, b, ok, all}) => `<tr><td class="l">${esc(r[1])}${r[2] ? ' <small>' + esc(r[2]) + '</small>' : ''}</td><td>${all ? `<b>${Math.round(ok / all * 100)}%</b>` : '<span class="mu">–</span>'}</td><td class="l small">${a}</td><td class="l small">${b}</td><td class="l small mu">${esc(r[5] && r[5] !== '-' ? r[5] : '')}</td></tr>`).join('');
+    return `<details class="dblk" open><summary><b>${esc(rs[0].r[0])}</b> <small class="mu">모집단위 ${rs.length}개 · 내 과목과 잘 맞는 순</small></summary><table class="tb"><thead><tr><th>모집단위</th><th>과목 맞음</th><th>핵심 과목</th><th>권장 과목</th><th>비고</th></tr></thead><tbody>${rows}</tbody></table>${rs.length > 40 ? '<p class="small mu">앞 40개만 표시</p>' : ''}</details>`; }).join('');
+  return (blocks || '<p class="mu">판정표·관심 대학 중 권장 과목 자료가 있는 대학이 없습니다.</p>') + `<div class="note">모두 펼쳐 둡니다(대학 이름을 누르면 접힘). 핵심 = 꼭 들을 과목, 권장 = 들으면 좋은 과목(대학 발표 기준). 과목 맞음 = 핵심 ✓ 2점·권장 ✓ 1점으로 매긴 비율이고, 높은 모집단위부터 보여 줍니다(1학년은 2·3학년 신청 과목까지 포함). ✓ = 이 학생이 들었거나 3학년에 신청한 과목, ✗ = 없는 과목(과목명이 조금 달라도 ✗일 수 있음 — 교과만 적힌 칸은 그 교과 과목이 하나라도 있으면 ✓). ${on ? `희망 계열(${esc(hk)}) 모집단위와 전 모집단위 공통 안내만 보여 줍니다(학과 이름으로 계열을 나눠 일부 어긋날 수 있음 — 전체는 B의 '희망 계열 학과만'을 끄면 나옴).` : '희망 계열이 없어 모든 모집단위를 보여 줍니다.'} 출처: ${esc(D.daon.src)}.</div>`;
 }
 function t28Block(){
   const us = new Set(topUnivs(10)), T = D.daon.t28, NM = {gyo: '교과', jong: '종합', nonsul: '논술', jungsi: '정시'};
