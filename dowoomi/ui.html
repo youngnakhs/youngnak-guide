@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610191530"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610191532"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <title>영락고 상담 도우미</title>
 <style>
@@ -208,7 +208,7 @@ body.pub .hero>.pubbar,body.pub main>.pubbar{background:#c46a00;border:0;color:#
 #memoS{background:var(--navy);color:#fff;border:0;border-radius:4px;padding:8px 18px;font:inherit;font-size:15px;cursor:pointer;margin:2px 0 8px}
 .sumbox{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin:8px 0}.sumbox .k{border:1px solid var(--rule);border-radius:6px;padding:6px 10px;background:var(--paper)}.sumbox b{display:block;font-size:22px;color:var(--navy);line-height:1.2}.sumbox .k>span{font-size:13px;color:var(--mute)}
 .sumline{font-size:14.5px;line-height:1.7;margin:0 0 10px}.sumline b{display:inline-block;min-width:84px;color:var(--ink2)}
-.sj-ok{color:#0f7a6c;font-weight:700;margin-right:4px;white-space:nowrap}.sj-no{color:var(--up);font-weight:700;margin-right:4px;white-space:nowrap}.sj-na{color:#888;margin-right:4px;white-space:nowrap}
+.sj-ok{color:#0f7a6c;font-weight:700;margin-right:4px;white-space:nowrap}.sj-no{color:var(--up);font-weight:700;margin-right:4px;white-space:nowrap}.sj-late{color:#b8541a}.sj-late small{font-weight:400;margin-left:1px}.sj-na{color:#888;margin-right:4px;white-space:nowrap}
 .jline{margin:10px 0 0;padding:8px 12px;border-left:4px solid var(--navy);background:var(--soft);font-size:15.5px;line-height:1.7}.jline b.lab{display:inline-block;min-width:58px}
 .favl{margin-right:6px;cursor:pointer;color:#b07800}.favl input{vertical-align:-1px;margin:0 2px 0 0}
 .jchart{width:100%;height:auto;display:block;margin:2px 0 4px}
@@ -798,18 +798,21 @@ const SALIAS = {'사화와 문화': '사회와 문화', '사회와 문학': '사
 const SNA = /체육|운동과 건강|스포츠|예술|미술|음악|전 과목/;   // 체육·예술은 성적 자료에 없어 판정하지 않음(?)
 function subjMark(txt){
   if (!txt || txt === '-') return '–';
-  const mine = semsAll().flatMap(t => ME.S[t] || []).concat((ME.s32 || []).map(n => ({n}))), names = mine.map(x => SNRM(x.n)), guns = new Set(mine.map(x => x.u));   // 3-2 신청(s32)은 학기 표에 없어 따로 더함
+  // 수시는 3-1까지 반영 → ✓는 3-1까지(학기 표). 3-2 신청(s32)으로만 채워지면 △(수시 미반영)
+  const m31 = semsAll().flatMap(t => ME.S[t] || []), m32 = m31.concat((ME.s32 || []).map(n => ({n})));
   const FL = /중국어|일본어|독일어|프랑스어|스페인어|러시아어|아랍어|베트남어/;
   // 정확히 같은 이름이거나 뒤에 Ⅰ·Ⅱ만 붙은 이름(영어 → 영어Ⅰ) — '경제'가 '경제 수학'에 ✓ 받지 않게
-  const has = w => { const n = SNRM(w); if (GUNS.includes(w)) return guns.has(w); if (/제2외국어/.test(w)) return mine.some(x => FL.test(x.n)); if (SGRP[w]) return SGRP[w].some(has);
-    return names.some(m => m.startsWith(n) && /^\d*$/.test(m.slice(n.length))); };
+  const hasIn = mine => { const names = mine.map(x => SNRM(x.n)), guns = new Set(mine.map(x => x.u));
+    const f = w => { const n = SNRM(w); if (GUNS.includes(w)) return guns.has(w); if (/제2외국어/.test(w)) return mine.some(x => FL.test(x.n)); if (SGRP[w]) return SGRP[w].some(f);
+      return names.some(m => m.startsWith(n) && /^\d*$/.test(m.slice(n.length))); }; return f; };
+  const has = hasIn(m31), has32 = hasIn(m32);
   // 낱말 하나 판정. 'A 또는 B ~2' = A·B 가운데 2과목 이상이면 ✓(기본 1과목)
   const mark = w => { let t = w.replace(/^[-\s]+|\s+$/g, '').replace(/^[^:]{1,15}:\s*/, '').replace(/\s*교과(\s*(적극|영역))?(\s*이수)?(\s*권장)?$/, '').replace(/\s+등$/, ''); t = SALIAS[t] || t;
     const need = +(t.match(/~(\d)$/) || [, 1])[1]; t = t.replace(/\s*~\d$/, ''); const alt = t.split(/\s*또는\s*/);
     if (!t) return ''; if (alt.some(a => a.length > 16) || /이수|고려|추천|권장|따라|포함|필요|이상/.test(t)) return esc(w);
     if (SNA.test(t)) return `<span class="sj-na">?${esc(t)}</span>`;
     const lab = esc(t) + (need > 1 ? ` 중 ${need}과목` : '');
-    return alt.filter(has).length >= need ? `<span class="sj-ok">✓${lab}</span>` : `<span class="sj-no">✗${lab}</span>`; };
+    return alt.filter(has).length >= need ? `<span class="sj-ok">✓${lab}</span>` : alt.filter(has32).length >= need ? `<span class="sj-no sj-late" title="3학년 2학기 신청 — 수시에는 반영되지 않음">△${lab}<small>3-2</small></span>` : `<span class="sj-no">✗${lab}</span>`; };
   // 문장형 안내(쉼표 없이 '이수·고려…')는 그대로 / 줄 앞 '-일반선택:'·'○○ 관련 과목:' 머리말은 떼고 / [A, B 중 n과목]·A/B 중 n과목·A 또는 B = 묶음 하나로 판정
   return txt.split('\n').map(raw => {
     let line = raw.replace(/\([^)]*\)/g, '').replace(/^\s*-\s*/, '').replace(/^[^:,]{1,15}:\s*/, '');
@@ -852,7 +855,7 @@ function subjBlock(){
       .sort((x, y) => y.fit - x.fit || y.all - x.all); if (!rs.length) return '';
     const rows = rs.slice(0, 40).map(({r, a, b, ok, all}) => `<tr><td class="l">${esc(r[1])}${r[2] ? ' <small>' + esc(r[2]) + '</small>' : ''}</td><td>${all ? `<b>${Math.round(ok / all * 100)}%</b>` : '<span class="mu">–</span>'}</td><td class="l small">${a}</td><td class="l small">${b}</td><td class="l small mu">${esc(r[5] && r[5] !== '-' ? r[5] : '')}</td></tr>`).join('');
     return `<details class="dblk" open><summary><b>${esc(rs[0].r[0])}</b> <small class="mu">모집단위 ${rs.length}개 · 내 과목과 잘 맞는 순</small></summary><table class="tb"><thead><tr><th>모집단위</th><th>과목 맞음</th><th>핵심 과목</th><th>권장 과목</th><th>비고</th></tr></thead><tbody>${rows}</tbody></table>${rs.length > 40 ? '<p class="small mu">앞 40개만 표시</p>' : ''}</details>`; }).join('');
-  return (blocks || '<p class="mu">판정표·관심 대학 중 권장 과목 자료가 있는 대학이 없습니다.</p>') + `<div class="note">모두 펼쳐 둡니다(대학 이름을 누르면 접힘). 핵심 = 꼭 들을 과목, 권장 = 들으면 좋은 과목(대학 발표 기준). 과목 맞음 = 핵심 ✓ 2점·권장 ✓ 1점으로 매긴 비율이고, 높은 모집단위부터 보여 줍니다(1학년은 2·3학년 신청 과목까지 포함). ✓ = 이 학생이 들었거나 신청한 과목(3-2 포함), ✗ = 없는 과목(대부분 우리 학교에 개설되지 않은 과목), ? = 체육·예술처럼 성적 자료에 없어 판정하지 않은 과목. 교과·영역만 적힌 칸(일반사회·역사·지리·윤리·한문·교양 등)은 그 안의 과목이 하나라도 있으면 ✓, 'A 또는 B'·'중 n과목'은 그 수만큼 있으면 ✓. ${on ? `희망 계열(${esc(hk)}) 모집단위와 전 모집단위 공통 안내만 보여 줍니다(학과 이름으로 계열을 나눠 일부 어긋날 수 있음 — 전체는 B의 '희망 계열 학과만'을 끄면 나옴).` : hk && hk !== '취업' ? "'희망 계열 학과만'을 꺼서 모든 모집단위를 보여 줍니다." : '희망 계열이 없어 모든 모집단위를 보여 줍니다.'} 출처: ${esc(D.daon.src)}.</div>`;
+  return (blocks || '<p class="mu">판정표·관심 대학 중 권장 과목 자료가 있는 대학이 없습니다.</p>') + `<div class="note">모두 펼쳐 둡니다(대학 이름을 누르면 접힘). 핵심 = 꼭 들을 과목, 권장 = 들으면 좋은 과목(대학 발표 기준). 과목 맞음 = 핵심 ✓ 2점·권장 ✓ 1점으로 매긴 비율이고, 높은 모집단위부터 보여 줍니다(1학년은 2·3학년 신청 과목까지 포함). ✓ = 3학년 1학기까지 들었거나 신청한 과목(수시 반영 범위), △ = 3학년 2학기에만 신청해 수시에는 반영되지 않는 과목(과목 맞음 %에서도 ✗로 셈), ✗ = 없는 과목(대부분 우리 학교에 개설되지 않은 과목), ? = 체육·예술처럼 성적 자료에 없어 판정하지 않은 과목. 교과·영역만 적힌 칸(일반사회·역사·지리·윤리·한문·교양 등)은 그 안의 과목이 하나라도 있으면 ✓, 'A 또는 B'·'중 n과목'은 그 수만큼 있으면 ✓. ${on ? `희망 계열(${esc(hk)}) 모집단위와 전 모집단위 공통 안내만 보여 줍니다(학과 이름으로 계열을 나눠 일부 어긋날 수 있음 — 전체는 B의 '희망 계열 학과만'을 끄면 나옴).` : hk && hk !== '취업' ? "'희망 계열 학과만'을 꺼서 모든 모집단위를 보여 줍니다." : '희망 계열이 없어 모든 모집단위를 보여 줍니다.'} 출처: ${esc(D.daon.src)}.</div>`;
 }
 function t28Block(){
   const us = new Set(topUnivs(10)), T = D.daon.t28, NM = {gyo: '교과', jong: '종합', nonsul: '논술', jungsi: '정시'};
