@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610190922"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610190930"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <title>영락고 상담 도우미</title>
 <style>
@@ -582,7 +582,7 @@ function figFlow(){
     b += `<text x="${xs[i]}" y="${B + 16}" font-size="12" text-anchor="middle" fill="#4d4c48">${gd.sems[i]}${est ? ' 중간' : ''}</text>`; });
   if (s.srk && !PUB){ const pts = s.srk.map((r, i) => `${xs[i]},${Yr(r)}`).join(' ');
     b += `<polyline points="${pts}" fill="none" stroke="#d62828" stroke-width="2"/>` + s.srk.map((r, i) => `<circle cx="${xs[i]}" cy="${Yr(r)}" r="4" fill="#d62828" stroke="#fff" stroke-width="1.5"/><text x="${xs[i] + 8}" y="${Yr(r) - 9}" font-size="13" font-weight="700" fill="#c62828" stroke="#fff" stroke-width="3" paint-order="stroke">${r}위</text>`).join(''); }
-  return `<svg viewBox="0 0 ${W} ${H}" width="100%">${b}</svg><div class="note">연한 막대 = 중간고사 지필 점수로 낸 추정 등급. 순위 = ${gd.n}명 중.</div>`;
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%">${b}</svg><div class="note">연한 막대 = 중간고사 지필 점수로 낸 추정 등급.${PUB ? '' : ' 순위 = ' + gd.n + '명 중.'}</div>`;
 }
 function gunTable(){
   const s = ME, gd = GD();
@@ -936,7 +936,7 @@ function clampAll(root){
   root.querySelectorAll('table').forEach(t => { const b = t.tBodies[0]; if (!b || b.id === 'jb' || b.querySelector('tr.more')) return; cut([...b.rows], SHOW, t); });
   root.querySelectorAll('.dlist').forEach(d => cut([...d.children], 4, d));
 }
-const moreBtn = n => n > 0 ? `<button class="morebtn" onclick="this.textContent = this.previousElementSibling.classList.toggle('all') ? '줄여 보기' : '나머지 ${n}곳 더 보기'">나머지 ${n}곳 더 보기</button>` : '';
+const moreBtn = n => n > 0 ? `<button class="morebtn noprint" onclick="this.textContent = this.previousElementSibling.classList.toggle('all') ? '줄여 보기' : '나머지 ${n}곳 더 보기'">나머지 ${n}곳 더 보기</button>` : '';
 function bandBlock(my){
   const tr = JOB() ? null : SIDE(ME.k) === '자연' ? '자연' : SIDE(ME.k) === '인문' ? '인문' : null;
   const regs = ['전체', ...new Set(D.band.rows.map(o => o.g).filter(Boolean))];
