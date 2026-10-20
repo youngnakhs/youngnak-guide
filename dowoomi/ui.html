@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610201422"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610201504"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <title>영락고 상담 도우미</title>
 <style>
@@ -916,7 +916,7 @@ function renderUniv(){
    <div class="ctrl noprint">지역 ${regSel()} <span class="small mu">판정표·합격선 차트·A·B·C·E가 모두 이 지역 대학만 보여 줍니다</span></div>
    ${tgtBlock(mp)}
    ${judgeBlock(mp, agg, senU)}
-   <div class="what">위 표는 대학마다 근거를 모아 낸 판정입니다. 표의 대학 이름을 누르면 그 대학 상세(학과·전형·선배 원서·입결·최저)가 바로 아래 펼쳐집니다. 아래 A는 근거별 상세(앞 6줄 · '더 보기'로 전부), B~G는 접혀 있어 제목을 누르면 펼쳐집니다.${PUB ? ' 합격을 약속하는 표가 아니라, 지금 성적에서 어느 쪽이 가까운지 보는 표입니다.' : ''}</div>
+   <div class="what">위 표는 대학마다 근거를 모아 낸 판정입니다. 표의 대학 이름을 누르면 그 대학 상세(학과·전형·선배 원서·입결·최저)가 바로 아래 펼쳐집니다. 아래 A는 근거별 상세(앞 6줄 · '더 보기'로 전부), B~H는 펼쳐져 있고, 제목을 누르면 접힙니다(접은 칸은 기억).${PUB ? ' 합격을 약속하는 표가 아니라, 지금 성적에서 어느 쪽이 가까운지 보는 표입니다.' : ''}</div>
    <h3>A. 우리 선배 <small>같은 시점 교내 위치가 비슷한 선배(2021~23 입학)의 원서${PUB ? '' : ' · 합격/지원 = 지원 대비 합격'}</small></h3>
    <div class="ctrl noprint">범위 ±<select id="win">${[1,2,3,4,5].map(w => `<option ${w === WIN ? 'selected' : ''}>${w}</option>`).join('')}</select>%p${PUB ? '' : ` (선배 ${near.length}명)`}
      ${JOB() ? '<span class="small mu">희망이 취업이라 전체 학과를 보여 줍니다 — 대학 진학을 고민 중이면 관심 계열을 먼저 물어보세요.</span>' : `<label><input type="checkbox" id="hope" ${HOPEONLY ? 'checked' : ''}> 희망 계열(${esc(ME.k || '미제출')}) 학과만</label>`}</div>
@@ -1788,11 +1788,11 @@ function foldNotes(root){
     const d = document.createElement('details'); d.className = 'how';
     d.innerHTML = '<summary>계산 방법·가정</summary>'; n.replaceWith(d); d.appendChild(n); });
 }
-const FOLD = {};   // 대학 B~G(10-20): 처음엔 접힘 · 사용자가 열거나 닫은 것만 기억 — 교사 보관용 인쇄는 직접 닫은 것만 빼고 펼쳐 인쇄(예전과 같게)
+const FOLD = {};   // 대학 B~H(10-20 사용자): 처음엔 펼침 · 사용자가 열거나 닫은 것만 기억 — 교사 보관용 인쇄는 직접 닫은 것만 빼고 펼쳐 인쇄(예전과 같게)
 function foldParts(root, keys){
   root.querySelectorAll(':scope > h3').forEach(h => {
     const k = keys.find(x => h.textContent.trim().startsWith(x)); if (!k) return;
-    const d = document.createElement('details'); d.className = 'fold'; d.open = FOLD[k] === true; d.dataset.k = k;
+    const d = document.createElement('details'); d.className = 'fold'; d.open = FOLD[k] !== false; d.dataset.k = k;
     const sm = document.createElement('summary'); h.replaceWith(d); sm.appendChild(h); d.appendChild(sm); sm.addEventListener('click', () => { FOLD[k] = !d.open; });
     let n = d.nextSibling;
     while (n && !(n.nodeType === 1 && (n.tagName === 'H3' || n.tagName === 'DETAILS'))) { const nx = n.nextSibling; d.appendChild(n); n = nx; }
