@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610201214"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610201310"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <title>영락고 상담 도우미</title>
 <style>
@@ -376,8 +376,8 @@ details.guide>summary::before{content:'▸ '}details.guide[open]>summary::before
 .chk{display:flex;flex-wrap:wrap;gap:2px 16px;font-size:15px;margin:2px 0 8px;color:var(--ink2)}.chk label{white-space:nowrap}.chk input[type=date]{font-size:14px;padding:0 2px;border:1px solid var(--rule)}
 .lastc{font-size:15px;color:var(--ink2);margin-top:4px;grid-column:1/-1}.lastc b{color:var(--ink)}
 #jb td:first-child>b{cursor:pointer;text-decoration:underline dotted #b7bcc6;text-underline-offset:4px}#jb tr.jdet>td{background:#f7f6fb;text-align:left;padding:8px 14px 12px;font-size:15px;line-height:1.65}
-#tgtU{margin:4px 0 14px}#tgtU .tgr{display:grid;grid-template-columns:170px 1fr 64px 190px 30px;gap:10px;align-items:center;margin:3px 0}#tgtU .tgr>b{font-size:15px}.tgts{width:100%;height:26px;display:block;overflow:visible}
-.tgtd{font-size:14px;text-align:right}.tgtx{border:1px solid var(--rule);background:#fff;border-radius:2px;cursor:pointer;color:var(--mute)}
+#tgtU{margin:4px 0 14px}#tgtU .tgr{display:grid;grid-template-columns:170px 1fr 160px 190px 30px;gap:10px;align-items:center;margin:3px 0}#tgtU .tgr>b{font-size:15px}.tgts{width:100%;height:26px;display:block;overflow:visible}
+.tgtd{font-size:14px;text-align:right;line-height:1.25}.tgtd small{display:block;color:var(--mute);font-size:12px}.tgtdt{font-size:14px;font-weight:400;white-space:nowrap;margin-left:12px}.tgtpub{margin:6px 0 0;padding:6px 10px;background:var(--soft);border-left:3px solid var(--navy);font-size:14px}.tgtx{border:1px solid var(--rule);background:#fff;border-radius:2px;cursor:pointer;color:var(--mute)}
 .tgtb{margin-left:6px;font-size:12px;padding:0 6px;border:1px solid var(--rule);background:#fff;border-radius:2px;cursor:pointer;color:var(--navy)}.tgtb.on{font-weight:800;border-color:var(--navy)}
 #jb tr.tgtpick>td{background:#f4f7fb;text-align:left;padding:6px 14px}.tgtpick button{margin:0 4px;padding:2px 10px;border:1px solid var(--rule);background:#fff;border-radius:2px;cursor:pointer}.tgtpick button.on{font-weight:800;border-color:var(--navy)}
 .jdet h5{margin:6px 0 2px;font-size:14.5px;color:#5b3fa6}.jdet .tb td,.jdet .tb th{font-size:14.5px;padding:3px 6px}
@@ -832,18 +832,24 @@ function tgtTypes(k){ const has = new Set(D.apps.filter(a => K(a.u) === k).map(a
   if ((dn.gyo || []).some(r => K(r[0]) === k)) has.add('교과'); if ((dn.jong || []).some(r => K(r[0]) === k)) has.add('종합');
   if (((dn.t28 || {}).nonsul || {rows: []}).rows.some(r => K(r[1]) === k)) has.add('논술');
   return TGTY.filter(t => has.has(t)); }
-function tgtBand(k, t){
+function tgtBand(k, t){ return tgtBandFor(ME, k, t); }
+function tgtBandFor(s, k, t){   // s = 학생(희망 계열 s.k로 거름) — 반 보기는 ME 없이 학생마다 부름
   const rng = (v, src, mid) => { v.sort((a, b) => a - b); const n = v.length, q = f => v[Math.round(f * (n - 1))];
-    return {lo: mid ? q(.25) : v[0], hi: mid ? q(.75) : v[n - 1], med: n % 2 ? v[(n - 1) / 2] : (v[n / 2 - 1] + v[n / 2]) / 2, src, n}; };
-  const A = D.apps, hk = (ME.k || '').trim(), C = GD().cohort, ps = [];   // 희망 계열 필터 = seniorsAdmitted(목표 역산)과 같음
+    return {lo: mid ? q(.25) : v[0], hi: mid ? q(.75) : v[n - 1], med: n % 2 ? v[(n - 1) / 2] : (v[n / 2 - 1] + v[n / 2]) / 2, src, n, few: src === '선배' && n <= 3, ps: src === '선배' && n <= 3 ? v.slice() : [], wide: false}; };
+  const A = D.apps, hk = (s.k || '').trim(), C = GD().cohort, ps = [];   // 희망 계열 필터 = seniorsAdmitted(목표 역산)과 같음
   GD().seniors.forEach(([p, ids]) => ids.forEach(i => { const a = A[i]; if (!a.ok || a.t !== t || K(a.u) !== k) return; if (hk && hk !== '취업' && hk !== '미제출' && a.gy !== hk) return; ps.push(p); }));
   if (ps.length >= 2) return rng(ps.map(p => C[Math.min(C.length - 1, Math.max(0, Math.round(p / 100 * C.length) - 1))]), '선배', ps.length >= 4);
   const dn = D.daon || {}, src = t === '교과' ? [dn.gyo, 2, 10] : t === '종합' ? [dn.jong, 3, 5] : null;   // [표, 계열 칸, 28컷 칸]
-  if (src && src[0]){ const tr = JOB() || !(ME.k || '').trim() ? null : SIDE(ME.k) === '자연' ? '자연' : SIDE(ME.k) === '인문' ? '인문' : null;   // daonBlock과 같은 계열 규칙
+  if (src && src[0]){ const tr = hk === '취업' || !hk ? null : SIDE(s.k) === '자연' ? '자연' : SIDE(s.k) === '인문' ? '인문' : null;   // daonBlock과 같은 계열 규칙
     const R = src[0].filter(r => K(r[0]) === k && r[src[2]] != null), F = tr ? R.filter(r => String(r[src[1]] || '').includes(tr)) : R, U = F.length ? F : R;
-    if (U.length) return rng(U.map(r => +r[src[2]]), '다온', false); }
-  return {lo: null, hi: null, med: null, src: null, n: 0};
+    if (U.length) return {...rng(U.map(r => +r[src[2]]), '다온', false), wide: !!tr && !F.length}; }   // wide = 계열 학과가 없어 전체로 넓힘
+  return {lo: null, hi: null, med: null, src: null, n: 0, few: false, ps: [], wide: false};
 }
+/* 목표까지 거리: gap = 지금 누적 − 합격선(양수 = 아직 멂) · need = tgtUpdate와 같은 식, 남은 학기 평균 */
+function tgtNeed(med){
+  const cur = tgtPoints(ME).at(-1), sc = scen(), fs = futSems(); let past = 0, pu = 0, fu = 0;
+  Object.entries(sc.per).forEach(([t, [a, u]]) => { if (fs.includes(t)) fu += u; else { past += a; pu += u; } });
+  return {gap: cur ? cur.v - med : null, need: fu ? (med * (pu + fu) - past) / fu : null}; }
 function tgtBlock(mp){
   const err = TGTERR && !PUB ? ` <span class="bad">⚠ ${esc(TGTERR)}</span>` : '';
   if (!TGT.length) return PUB ? '' : `<div id="tgtU"><p class="small mu noprint">목표 대학 — 판정표의 [목표]로 1~3곳을 고르면 합격선과 내 위치가 여기에 막대로 나옵니다.${err}</p></div>`;
@@ -854,19 +860,22 @@ function tgtBlock(mp){
   let a0 = Math.max(1, Math.floor(Math.min(...vs) * 2) / 2), a1 = Math.min(5, Math.ceil(Math.max(...vs) * 2) / 2); if (a1 - a0 < .5){ if (a1 < 5) a1 = a0 + .5; else a0 = a1 - .5; }
   const X = v => (2 + (v - a0) / (a1 - a0) * 96).toFixed(2) + '%';   // 왼쪽일수록 좋은 등급
   const d = P.length >= 2 ? cur.v - P.at(-2).v : null;
-  const dt = d == null || Math.abs(d) < .005 ? '–' : d < 0 ? `<span class="up">▲ ${(-d).toFixed(2)}</span>` : `<span class="dn">▼ ${d.toFixed(2)}</span>`;
+  const dt = d == null || Math.abs(d) < .005 ? '–' : d < 0 ? `<span class="up">▲${(-d).toFixed(2)}</span>` : `<span class="dn">▼${d.toFixed(2)}</span>`;
+  const far = o => { const g = o.gap, n = o.need; return `${g == null || Math.abs(g) < .005 ? '합격선 –' : g > 0 ? `합격선 가운데까지 ${g.toFixed(2)}` : `합격선 가운데보다 ${(-g).toFixed(2)} 앞`}<small>남은 학기 평균 ${n == null || Math.abs(n) < .005 ? '–' : n < 1 ? '<b class="bad">1.0 미만(어려움)</b>' : n > 5 ? '5등급이어도 도달' : n.toFixed(2)}</small>`; };
   const dot = (p, r, st) => `<circle cx="${X(p.v)}" cy="13" r="${r}" style="${st}"><title>${esc(p.lab)} ${p.v.toFixed(2)}${p.est ? ' (중간 추정)' : ''}</title></circle>`;
   const rows = B.map(({g, b}) => {
-    const lab = b.src === '선배' ? (PUB ? '우리 선배' : `선배 ${b.n}명`) : b.src === '다온' ? '다온 28컷' + (GR === 1 ? ' · 2028 자료 참고' : '') : '합격선 근거 없음';
+    const lab = (b.src === '선배' ? (PUB ? '우리 선배' : `선배 ${b.n}명`) : b.src === '다온' ? '다온 28컷' + (GR === 1 ? ' · 2028 자료 참고' : '') : '합격선 근거 없음') + (b.few ? ' · 근거 적음' : '') + (b.wide ? ' · 학과 전체 범위(넓음)' : '');
+    const dia = b.few && !PUB;   // PUB: 마름모 개수 = 선배 인원수라 띠(최소~최대)로 둠
     const svg = `<svg class="tgts" role="img" aria-label="${esc(g.nm)} ${esc(g.t)} 합격선과 내 위치"><rect x="0" y="5" width="100%" height="16" style="fill:var(--soft)"/>`
-      + (b.src ? `<rect x="${X(b.lo)}" y="5" width="${Math.max(.6, (b.hi - b.lo) / (a1 - a0) * 96).toFixed(2)}%" height="16" style="fill:#cfe0f5"/><line x1="${X(b.med)}" x2="${X(b.med)}" y1="1" y2="25" style="stroke:var(--navy);stroke-width:2"/>` : '')
+      + (dia ? b.ps.map(p => `<svg class="tgt-few" x="${X(p)}" y="13" overflow="visible"><path d="M0,-6L6,0L0,6L-6,0Z" style="fill:#7fa6d6;stroke:var(--navy);stroke-width:1"/><title>선배 위치 ${p.toFixed(2)}</title></svg>`).join('') : '')
+      + (b.src && !dia ? `<rect x="${X(b.lo)}" y="5" width="${Math.max(.6, (b.hi - b.lo) / (a1 - a0) * 96).toFixed(2)}%" height="16" style="fill:#cfe0f5"/>` : '') + (b.src ? `<line x1="${X(b.med)}" x2="${X(b.med)}" y1="1" y2="25" style="stroke:var(--navy);stroke-width:2"/>` : '')
       + past.map(p => dot(p, 4, 'fill:#bbb')).join('') + (hyp != null ? `<circle class="tgt-hyp" cx="${X(hyp)}" cy="13" r="6" style="fill:none;stroke:var(--up);stroke-width:2"><title>가정 ${hyp.toFixed(2)}</title></circle>` : '')
       + (cur ? dot(cur, 7, 'fill:var(--up)') : '') + '</svg>';
-    return `<div class="tgr"><b>${esc(g.nm.replace('학교', ''))} ${esc(g.t)}</b>${svg}<span class="tgtd">${dt}</span><small class="${b.src ? 'mu' : 'bad'}">${lab}${b.src ? ` · ${b.lo.toFixed(2)}~${b.hi.toFixed(2)}` : ''}</small><button class="tgtx t-only noprint" data-k="${esc(g.k)}" title="목표에서 빼기">×</button></div>`; }).join('');
+    return `<div class="tgr"><b>${esc(g.nm.replace('학교', ''))} ${esc(g.t)}</b>${svg}<span class="tgtd">${b.src ? far(tgtNeed(b.med)) : '–'}</span><small class="${b.src ? 'mu' : 'bad'}">${lab}${b.src ? ` · ${b.lo.toFixed(2)}~${b.hi.toFixed(2)}` : ''}</small><button class="tgtx t-only noprint" data-k="${esc(g.k)}" title="목표에서 빼기">×</button></div>`; }).join('');
   const tk = []; for (let v = a0; v <= a1 + 1e-9; v += .5) tk.push(v);
   const ax = `<div class="tgr tga"><span></span><svg class="tgts" style="height:16px">${tk.map((v, i) => `<text x="${X(v)}" y="12" font-size="11" fill="#7a7974" text-anchor="${i === 0 ? 'start' : i === tk.length - 1 ? 'end' : 'middle'}">${v.toFixed(1)}</text>`).join('')}</svg></div>`;
-  return `<div id="tgtU"><h3>목표 대학 <small>5등급 누적 · 왼쪽일수록 좋음 · 파란 띠 = 합격선 범위 · 남색 선 = 가운데 값 · 빨간 점 = 지금${cur && cur.est ? `(${esc(cur.lab)} 중간 추정)` : ''} · 회색 점 = 지난 학기${hyp != null ? ' · 속 빈 점 = 내신 예측 가정' : ''}</small>${err}</h3>${rows}${ax}
-   <div class="note">오른쪽 ▲▼ = 직전 학기 누적 대비(빨강 ▲ 좋아짐 · 파랑 ▼ 내려감, 가정 점과는 비교하지 않음). ${PUB ? '우리 선배 = 그 대학·전형에 합격한 선배의 당시 교내 위치를 우리 학년 누적으로 옮긴 범위' : '선배 = 그 대학·전형에 합격한 희망 계열 선배의 당시 교내 위치를 우리 학년 누적으로 옮긴 범위(4명 이상이면 가운데 50%, 아니면 최소~최대)'}, 다온 28컷 = 그 대학 희망 계열 모집단위 28컷의 최소~최대. 합격을 약속하는 선이 아닙니다.</div></div>`;
+  return `<div id="tgtU"><h3>목표 대학 <small>5등급 누적 · 왼쪽일수록 좋음 · 파란 띠 = 합격선 범위 · 남색 선 = 가운데 값 · 빨간 점 = 지금${cur && cur.est ? '(<b>중간고사 추정</b>)' : ''} · 회색 점 = 지난 학기${hyp != null ? ' · 속 빈 점 = 내신 예측 가정' : ''}${!PUB && B.some(({b}) => b.few) ? ' · ◆ = 선배 위치(근거 적음)' : ''}</small> <span class="tgtdt">지난 시점 대비 ${dt}</span>${err}</h3>${rows}${ax}${PUB ? '<div class="tgtpub">띠 안에 있어도 합격 보장은 아닙니다 — 우리 선배·입결로 본 참고 범위입니다.</div>' : ''}
+   <div class="note">오른쪽 = 지금 누적에서 합격선(남색 선)까지 거리와, 남은 학기를 그 평균으로 받으면 누적이 합격선이 되는 값(지금 내신 예측 기준). 제목 줄 ▲▼ = 직전 학기 누적 대비(빨강 ▲ 좋아짐 · 파랑 ▼ 내려감, 가정 점과는 비교하지 않음). ${PUB ? '우리 선배 = 그 대학·전형에 합격한 선배의 당시 교내 위치를 우리 학년 누적으로 옮긴 범위' : '선배 = 그 대학·전형에 합격한 희망 계열 선배의 당시 교내 위치를 우리 학년 누적으로 옮긴 범위(4명 이상이면 가운데 50%, 2~3명이면 ◆ 위치와 "근거 적음")'}, 다온 28컷 = 그 대학 희망 계열 모집단위 28컷의 최소~최대(계열 학과가 없으면 학과 전체 범위). 합격을 약속하는 선이 아닙니다.</div></div>`;
 }
 
 /* ── ④ 진학 가능권 ── */
@@ -1067,7 +1076,7 @@ const UMETH = [
   {u: '국민대', j: '교과우수자(학교장추천)Ⅰ', gyo: USIDE, w: {cg: .85, jr: .15}, ex: ['융합'], tbl: [100, 97, 90, 70, 0], note: '인문 국수영사(한) · 자연 국수영과 · 공통·일반 85 : 진로 15 · 100/97/90/70/0 · 학점 가중 [국수영사/과]'},
   {u: '국민대', j: '교과우수자(학교장추천)Ⅱ', gyo: USIDE, jr: 'skip', ach: true, note: '졸업자 전형(인문 국수영사(한)) · 공통·일반 등급(85)만 · 진로는 성취도(15)라 뺌 · 5등급 환산표 없음 [9등급 표·진로 A=100, B=98, C=90]'},
   {u: '숭실대', j: '교과우수자전형', gyo: USIDE, gw: {인문: UGW('국35 수15 영35 사한15'), 자연: UGW('국15 수35 영25 과25')}, jr: 'skip', ach: true, note: '인문 국수영사한 35/15/35/15 · 자연 국수영과 15/35/25/25 · 공통·일반 등급(80)만, 진로는 성취도(20)라 뺌 [진로반영: A,B=1등급…]'},
-  {u: '세종대', j: '지역균형전형', gyo: USIDE, gw: {인문: UGW('국35 수15 영35 사한15'), 자연: UGW('국15 수35 영25 과25')}, w: {cg: .8, jr: .2}, ex: ['융합'], jr: 'better', ach: true, note: '인문 국수영사(한) 35/15/35/15 · 자연 15/35/25/25 · 공통·일반 80 : 진로 20(유리값, 등급으로 계산) · 학점 가중'},
+  {u: '세종대', j: '지역균형전형', gyo: USIDE, gw: {인문: UGW('국35 수15 영35 사한15'), 자연: UGW('국15 수35 영25 과25')}, w: {cg: .8, jr: .2}, ex: ['융합'], jr: 'better', ach: true, note: '인문 국수영사(한) 35/15/35/15 · 자연 국수영과 15/35/25/25 · 공통·일반 80 : 진로 20(유리값, 등급으로 계산) · 학점 가중'},
   {u: '세종대', j: '지역균형전형(자율전공)', gyo: UGY('국수영사과한'), gw: UGW('국20 수30 영30 사한과20'), w: {cg: .8, jr: .2}, ex: ['융합'], jr: 'better', ach: true, note: '국수영 + 사회(한)·과학 20/30/30/20 · 공통·일반 80 : 진로 20(유리값) · 방법이 빈칸이라 지역균형 행의 자전 비율을 씀 [자전(20/30/30/20)]'},
   {u: '광운대', j: '지역균형전형', gyo: UGY('국수영사과한'), jr: 'skip', ach: true, note: '국수영사과(한) 공통·일반 등급×학점 · 진로·융합은 성취도라 뺌'},
   {u: '서울과학기술대', j: '고교추천전형', gyo: USIDE, tbl: [1000, 990, 977, 967, 0], note: '인문 국수영사한 · 자연 국수영과 · 1000/990/977/967/0 · 학점 가중 (ST자전·건축은 국수영사과한)'},
@@ -1075,7 +1084,7 @@ const UMETH = [
   {u: '성신여대', j: '지역균형Ⅱ', gyo: USIDE, top: 10, topx: ['공통'], ach: true, note: '국수영+사(한)/과 공통 전 과목 + 선택 상위 10과목 · 등급·성취도 환산이라 등급만 · 학점 가중 [지정 4개 교과영역]'},
   {u: '서울여대', j: '교과우수자전형', gyo: UGY('국수영사과한'), tbl: [100, 96, 88, 50, 0], note: '국수영사과(한) · 100/96/88/50/0 · 학점 가중'},
   {u: '덕성여대', j: '고교추천전형', gyo: UGY('국수영사과한'), jr: 'better', tbl: [100, 98, 95, 85, 0], ach: true, note: '국수영사과(한) 등급·성취도 중 높은 값(등급으로 계산) · 100/98/95/85/0 · 학점 가중 · 관련 진로 3% 가산은 뺌'},
-  {u: '동덕여대', j: '학생부교과우수자전형', gyo: USIDE, tbl: [100, 95, 86, 70, 40], note: '국영수 전 과목 + 인문 사회(한) · 자연 과학 · 100/95/86/70/40 · 학점 가중 [사회,과학 중 1개 교과]'},
+  {u: '동덕여대', j: '학생부교과우수자전형', gyo: USIDE, tbl: [100, 95, 86, 70, 40], note: '인문 국영수사(한) · 자연 국영수과 · 100/95/86/70/40 · 학점 가중 [사회,과학 중 1개 교과]'},
   {u: '가천대', j: '학생부우수자전형', gyo: UGY('국수영사과한'), drop: [[UGY('국수영'), 5], [UGY('사과한'), 5]], tbl: [100, 99, 98, 80, 30], note: '국수영 5과목 · 사과(한) 5과목을 낮은 등급부터 빼고 나머지 · 100/99/98/80/30 · 학점 가중'},
   {u: '가천대', j: '지역균형전형', gyo: UGY('사과한'), st: '미확정', note: '사회(한)·과학 상위 10과목 성취도만 반영 — 등급을 안 써서 계산하지 않음'},
   {u: '가천대', j: '지역의사전형', gyo: UGY('국수영과'), note: '의예 국수영과 전 과목 등급 · 학점 가중 [학생부우수와 같은 방식인지?]'},
@@ -1084,7 +1093,7 @@ const UMETH = [
   {u: '경북대', j: '교과우수자전형·지역인재전형', gyo: UGY('국수영사과한'), tbl: [400, 380, 360, 300, 0], note: '국수영사과한 · 400/380/360/300/0 · 학점 가중으로 봄'},
   {u: '경남대', j: '일반전형·지역인재전형', gyo: UGY('국수영사과한'), top: 15, unit: false, tbl: [100, 97, 92, 85, 76], note: '국수영한사과 상위 15과목 · 100/97/92/85/76 · 학점 미반영(단순 평균) · 융합 최대 2과목'},
   {u: '부산대', j: '교과우수전형·교과지역전형', gyo: UGY('국수영사과한'), tbl: [100, 98, 95, 90, 0], note: '국수영사과(한) · 100/98/95/90/0 · 학점 가중으로 봄'},
-  {u: '부산대', j: '탐구전형', gyo: {인문: UGY('국수영사한'), 자연: UGY('국수영과')}, gw: {인문: UGW('국30 수10 영30 사한30'), 자연: UGW('국10 수40 영10 과40')}, tbl: [99.5, 97.5, 94.5, 90, 0], note: '인문 국수영사(한) 30/10/30/30 · 자연 10/40/10/40 · 99.5/97.5/94.5/90/0 · 학점 가중 · 경제·경영 비율과 우수과목 가산은 안 씀'},
+  {u: '부산대', j: '탐구전형', gyo: {인문: UGY('국수영사한'), 자연: UGY('국수영과')}, gw: {인문: UGW('국30 수10 영30 사한30'), 자연: UGW('국10 수40 영10 과40')}, tbl: [99.5, 97.5, 94.5, 90, 0], note: '인문 국수영사(한) 30/10/30/30 · 자연 국수영과 10/40/10/40 · 99.5/97.5/94.5/90/0 · 학점 가중 · 경제·경영 비율과 우수과목 가산은 안 씀'},
   {u: '충북대', j: '학생부교과전형·지역인재전형', gyo: UGY('국수영사과한'), ach: true, note: '국수영사과(한) · 등급·성취도 결합 점수표(안 실림)라 등급만 · 학점 가중으로 봄'},
   {u: '충북대', j: '지역의사진료권전형·지역의사광역권전형', gyo: UGY('국수영사과한'), ach: true, note: '국수영사과(한) · 등급·성취도 결합 점수표(안 실림)라 등급만 · 학점 가중으로 봄 [지역의사도 동일 교과 산출방식]'},
   {u: '충남대', j: '일반전형·지역인재전형', gyo: UGY('국수영사과한기'), tbl: [50, 40, 30, 10, 0], ach: true, note: '국수영사과(한)·정보·제2외국어·한문 등급 50/40/30/10/0 + 성취도 · 학점 가중'},
@@ -1094,13 +1103,13 @@ const UMETH = [
 const UTB = (T, v) => { v = Math.min(5, Math.max(1, v)); const k = Math.min(3, Math.floor(v) - 1); return T[k] + (T[k + 1] - T[k]) * (v - 1 - k); };   // 등급 → 점수(구간 직선)
 const UTBI = (T, s) => { for (let k = 0; k < 4; k++) if (s >= T[k + 1]) return k + 1 + (T[k] - s) / (T[k] - T[k + 1]); return 5; };   // 점수 → 등급 눈금
 function umethGrade(m){
-  const fin = scen().fin, NO = {v: null, d: null, flag: '미확정'};
+  const fin = scen().fin, NO = {v: null, d: null, flag: '미확정', loss: []};
   if (m.st !== 'ok' || fin == null) return NO;
   const sd = SIDE(ME.k) === '자연' ? '자연' : '인문', pk = o => o && !Array.isArray(o) && o.인문 ? o[sd] : o;
   const gyo = pk(m.gyo), gw = pk(m.gw), fut = futSems();
   let L = [];
   semsAll().forEach(t => ME.S[t].forEach((x, i) => { if (x.x) return; const v = (FUT != null && fut.includes(t)) ? FUT : G[t + '|' + i]; if (v == null) return;
-    L.push({g: /^한국사/.test(x.n) ? '한국사' : x.u, t: SUBTYPE[x.n], c: x.c, v}); }));
+    L.push({g: /^한국사/.test(x.n) ? '한국사' : x.u, t: SUBTYPE[x.n], c: x.c, v, n: x.n, s: t, real: x.v != null && v === x.v}); }));
   L = L.filter(x => (gyo === '전체' || gyo.includes(x.g)) && !(m.ex || []).includes(x.t) && !(m.jr === 'skip' && UBK.jr.includes(x.t)));
   const best = (a, b) => a.v - b.v || b.c - a.c;
   (m.drop || []).forEach(([gs, n]) => { const D = L.filter(x => gs.includes(x.g)).sort(best).slice(-n); L = L.filter(x => !D.includes(x)); });
@@ -1108,25 +1117,41 @@ function umethGrade(m){
   if (!L.length) return NO;
   const W = m.w || {all: 1}, inB = (b, x) => b === 'all' || UBK[b].includes(x.t), tb = b => m.tbl && (Array.isArray(m.tbl) ? m.tbl : m.tbl[b]);
   const sc = (x, b) => tb(b) ? UTB(tb(b), x.v) : x.v, wt = x => (m.unit ? x.c : 1) * ((m.cw || {})[x.t] ?? 1);
-  const GW = gw || [[null, 1]], used = new Set(); let num = 0, den = 0;
+  const GW = gw || [[null, 1]], used = new Set(), inc = new Set(); let num = 0, den = 0;
   GW.forEach(([gs, gk]) => { let a = 0, u = 0;   // 교과별 → 그 안에서 묶음(공통·일반 / 진로) 비중
     Object.entries(W).forEach(([b, wb]) => { const X = L.filter(x => (!gs || gs.includes(x.g)) && inB(b, x)), s = X.reduce((q, x) => q + wt(x), 0);
-      if (s){ a += wb * X.reduce((q, x) => q + sc(x, b) * wt(x), 0) / s; u += wb; used.add(b); } });
+      if (s){ X.forEach(x => inc.add(x)); a += wb * X.reduce((q, x) => q + sc(x, b) * wt(x), 0) / s; u += wb; used.add(b); } });
     if (u){ num += gk * a / u; den += gk; } });
   if (!den) return NO;
   let v = num / den;
   if (m.tbl){ const B = [...used], ws = B.reduce((q, b) => q + W[b], 0); v = UTBI([0, 1, 2, 3, 4].map(k => B.reduce((q, b) => q + W[b] * tb(b)[k], 0) / ws), v); }   // 묶음 표를 비중대로 섞은 표로 거꾸로
-  const d = v - fin;
-  return {v, d, flag: m.ach ? '참고' : Math.abs(d) < .005 ? '유불리 없음' : ''};
+  const d = v - fin;   // 손해 과목: 실제로 들어간 실제 성적 중 (등급 − 대학 방식 등급) × 학점 큰 순 2개
+  const loss = [...inc].filter(x => x.real && x.v - v > 0).sort((a, b) => (b.v - v) * b.c - (a.v - v) * a.c).slice(0, 2).map(x => ({n: x.n, t: x.s, v: x.v}));
+  return {v, d, flag: m.ach ? '참고' : Math.abs(d) < .005 ? '유불리 없음' : '', loss};
+}
+/* 올리면 효과 큰 교과: 남은 학기 그 교과 과목을 1등급씩 올려(최소 1) umethGrade를 다시 부른 차이 ΔV. 좋아지는 앞 2개, G·FUT는 끝나면 되돌림 */
+function hGain(m){
+  const ft = futSems(), G0 = G, F0 = FUT, base = {...G}, us = new Set(), ids = [];
+  ft.forEach(t => ME.S[t].forEach((x, i) => { if (x.x) return; const id = t + '|' + i; if (F0 != null) base[id] = F0; if (base[id] != null){ us.add(x.u); ids.push([id, x.u]); } }));
+  try { FUT = null; G = base; const v0 = umethGrade(m).v; if (v0 == null) return [];
+    return [...us].map(u => { G = {...base}; ids.forEach(([id, uu]) => { if (uu === u) G[id] = Math.max(1, G[id] - 1); }); return {u, dv: umethGrade(m).v - v0}; })
+      .filter(o => o.dv < -.005).sort((a, b) => a.dv - b.dv).slice(0, 2);
+  } finally { G = G0; FUT = F0; }
 }
 /* H. 대학 방식으로 본 내 등급: UMETH 40행 — 목표·★ 대학 먼저, 그다음 유리한 순(d 오름차순), 미확정은 맨 아래. 접기·인쇄는 foldParts('H.')가 만든 details.fold가 맡음 */
 function hBlock(){
   const mine = new Set([...TGT, ...FAV].map(x => x.k)), FL = {'참고': '등급만 반영한 참고', '미확정': '방식 미확정', '유불리 없음': '방식 유불리 없음'};
-  const R = UMETH.map(m => ({m, o: umethGrade(m), f: mine.has(K(m.u))}));
+  const R = UMETH.map(m => ({m, o: umethGrade(m), f: mine.has(K(m.u))})), sd = SIDE(ME.k) === '자연' ? '자연' : '인문';
+  const cnt = {}; R.forEach(r => r.o.loss.forEach(x => { const k = `${x.n}(${x.t}) ${+x.v.toFixed(2)}${x.t === curSem() ? ' (중간 추정)' : ''}`; cnt[k] = (cnt[k] || 0) + 1; }));
+  const top = Object.keys(cnt).filter(k => cnt[k] >= 2).sort((a, b) => cnt[b] - cnt[a]).slice(0, 2), lossLine = top.length ? `<p class="hloss small">지난 성적 중 여러 대학에서 손해: ${top.map(esc).join(' · ')}</p>` : '';
   R.sort((a, b) => b.f - a.f || (a.o.v == null) - (b.o.v == null) || (a.o.d ?? 0) - (b.o.d ?? 0));
-  const tr = ({m, o, f}) => { const nd = o.v == null || o.flag === '유불리 없음', d = nd ? '–' : `<span class="${o.d < 0 ? 'up' : 'dn'}">${o.d < 0 ? '▲' : '▼'} ${Math.abs(o.d).toFixed(2)}</span>`;
-    return `<tr><td class="l">${f ? '★ ' : ''}<b>${esc(m.u)}</b> <small class="mu">${esc(m.j)}</small></td><td>${o.v == null ? '–' : o.v.toFixed(2)}</td><td>${d}</td><td class="l small">${esc(m.note)}</td><td class="small">${FL[o.flag] || ''}</td></tr>`; };
-  return `${GR === 1 ? '<div class="hmsg">2028 시행계획 방식 기준 참고 — 1학년은 2029 입시</div>' : ''}<table class="tb"><thead><tr><th>대학·전형</th><th>대학 방식 등급</th><th>차이 <small>(내 누적 대비)</small></th><th>규칙</th><th>표시</th></tr></thead><tbody>${R.map(tr).join('')}</tbody></table><div class="note">각 대학이 보는 교과·학점·등급 점수표를 내 성적에 적용한 참고값입니다. ▲ = 누적보다 유리, ▼ = 불리. 공식 환산이 아닙니다.</div>`;
+  const tr = ({m, o, f}) => { const nd = o.v == null || Math.abs(o.d) < .005, d = nd ? '–' : `<span class="${o.d < 0 ? 'up' : 'dn'}">${o.d < 0 ? '▲' : '▼'} ${Math.abs(o.d).toFixed(2)}</span>`;
+    const gn = hGain(m), ls = gn.length ? gn.map(x => `<span style="white-space:nowrap">${esc(x.u)} <span class="up">▲${Math.abs(x.dv).toFixed(2)}</span></span>`).join(' · ') : '–';
+    const sg = m.note.split(' · '), nt = PUB ? (sg.find(x => x.startsWith(sd + ' ')) || sg[0]).replace(/\s*\[[^\]]*\]/g, '') : m.note;
+    return `<tr><td class="l">${f ? '★ ' : ''}<b>${esc(m.u)}</b> <small class="mu">${esc(m.j)}</small></td><td>${o.v == null ? '–' : o.v.toFixed(2)}</td><td>${d}</td><td class="l small">${ls}</td><td class="l small">${esc(nt)}</td><td class="small">${FL[o.flag] || ''}</td></tr>`; };
+  const hd = '<thead><tr><th>대학·전형</th><th>대학 방식 등급</th><th>차이 <small>(내 누적 대비)</small></th><th>올리면 효과 큰 교과</th><th>규칙</th><th>표시</th></tr></thead>';
+  const bad = R.filter(r => r.o.v != null && r.o.d >= .005).sort((a, b) => b.o.d - a.o.d).slice(0, 3);   // 3줄이라 clampAll(SHOW+2 초과만 자름)이 건드리지 않음
+  return `${GR === 1 ? '<div class="hmsg">2028 시행계획 방식 기준 참고 — 1학년은 2029 입시</div>' : ''}${lossLine}<table class="tb">${hd}<tbody>${R.map(tr).join('')}</tbody></table>${bad.length ? `<h4 class="dsub">불리한 곳</h4><table class="tb">${hd}<tbody>${bad.map(tr).join('')}</tbody></table>` : ''}<div class="note">각 대학이 보는 교과·학점·등급 점수표를 내 성적에 적용한 참고값입니다. ▲ = 누적보다 유리, ▼ = 불리. 올리면 효과 큰 교과 = 남은 학기 그 교과를 1등급씩 올렸을 때 이 대학 방식 등급이 좋아지는 정도. 공식 환산이 아닙니다.</div>`;
 }
 function t28Block(){
   const us = new Set(topUnivs(10)), T = D.daon.t28, NM = {gyo: '교과', jong: '종합', nonsul: '논술', jungsi: '정시'};
@@ -1173,13 +1198,19 @@ async function favLoad(id){ FAVERR = ''; try { if (api()){ const r = await api()
 let TGT = [], TGTERR = '';
 async function tgtLoad(id){ TGTERR = ''; try { const L = api() ? ((await api().memo_load('tgt:' + id)) || {}).list || [] : JSON.parse(localStorage.getItem('tgt:' + id) || '[]');
     const last = L.slice().sort((a, b) => a.d < b.d ? -1 : a.d > b.d ? 1 : 0).at(-1);
-    TGT = last ? JSON.parse(last.t) : []; if (!Array.isArray(TGT)) throw 0;
-    TGT = TGT.filter(x => x && typeof x.k === 'string' && TGTY.includes(x.t)).map(x => ({...x, nm: String(x.nm || x.k)})).slice(0, 3);
+    TGT = tgtNorm(last ? JSON.parse(last.t) : []);
   } catch (e) { TGT = []; TGTERR = '목표 대학을 불러오지 못했습니다'; } }
+function tgtNorm(a){ if (!Array.isArray(a)) throw 0; return a.filter(x => x && typeof x.k === 'string' && TGTY.includes(x.t)).map(x => ({...x, nm: String(x.nm || x.k)})).slice(0, 3); }
+/* 반 보기: 학생마다 목표를 읽어 돌려줌(전역 TGT·ME는 안 건드림). 못 읽으면 빈 목록 → TGTC[id]에 캐시 */
+let TGTC = {}, TGTV = 0;   // TGTV: 목표가 바뀔 때마다 올림 — 반 보기 읽기가 낡은 결과를 덮어쓰지 않게
+async function tgtLoadMany(ids){ const out = {};
+  for (const id of ids){ try { const L = api() ? ((await api().memo_load('tgt:' + id)) || {}).list || [] : JSON.parse(localStorage.getItem('tgt:' + id) || '[]');
+      const last = L.slice().sort((a, b) => a.d < b.d ? -1 : a.d > b.d ? 1 : 0).at(-1); out[id] = tgtNorm(last ? JSON.parse(last.t) : []); } catch (e) { out[id] = []; } }
+  return out; }
 async function tgtSet(k, t, on){
   const old = TGT, rest = TGT.filter(x => x.k !== k); if (on && rest.length >= 3) return false;
   const r = on ? JUDGE.find(x => x.k === k) : null;
-  TGT = on ? [...rest, {k, t, nm: r ? r.nm : k}] : rest;
+  TGT = on ? [...rest, {k, t, nm: r ? r.nm : k}] : rest; delete TGTC[ME.id]; TGTV++;
   const L = [{d: nowLocal().slice(0, 16), t: JSON.stringify(TGT)}];
   try { if (api()){ const r = await api().memo_set('tgt:' + ME.id, L); if (r && r.ok === false) throw 0; } else localStorage.setItem('tgt:' + ME.id, JSON.stringify(L)); TGTERR = ''; return true; }
   catch (e) { TGT = old; TGTERR = '목표 대학을 저장하지 못했습니다'; return false; } }
@@ -1418,7 +1449,8 @@ function clsRow(s){
   const down = Object.keys(pp).filter(g => pp[g].at(-1) - Math.min(...pp[g]) >= 15);   // 10-20: 10%p → 15%p
   const m = s.mk[gd.last], ms = m && m.kor && m.mat && m.eng ? m.kor[0] + m.mat[0] + m.eng[0] : null;
   const mv = s.srk ? s.srk[0] - s.srk.at(-1) : null, left = it.reduce((a, x) => a + ((D.perf[x.n] || []).filter(y => perfState(y.timing) !== 'done').reduce((b, y) => b + y.pct, 0) * x.c), 0) / Math.max(1, it.reduce((a, x) => a + x.c, 0));
-  return {s, no: s.id % 100, nm: s.nm, k: s.k || '', cum: s.cum ?? 9, rk: s.rk ?? 999, mv: mv ?? 0, now: s.sem.at(-1) ?? 9, edge, down, ms: ms ?? 99, left};
+  const tg = TGTC[s.id], gs = s.cum == null ? [] : (tg || []).map(g => tgtBandFor(s, g.k, g.t).med).filter(v => v != null).map(v => s.cum - v);   // 가장 가까운 목표 = 누적 − 합격선 최솟값(양수 = 아직 멂)
+  return {s, tg, tgn: tg ? tg.length : -1, tgg: !tg ? 99 : gs.length ? Math.min(...gs) : 98, no: s.id % 100, nm: s.nm, k: s.k || '', cum: s.cum ?? 9, rk: s.rk ?? 999, mv: mv ?? 0, now: s.sem.at(-1) ?? 9, edge, down, ms: ms ?? 99, left};
 }
 /* ── 7. 모의 등급별 반 분포(솔루션 '수능 등급별 반별 분포표' 꼴): 최근 회차, 과목마다 1~9등급 인원 + 반·학년 평균 ── */
 function mockDist(ban){
@@ -1482,18 +1514,20 @@ function renderClass(){
   const tb = L.map(r => `<tr><td>${r.no}</td><td class="l"><a href="#" data-id="${r.s.id}">${esc(r.nm)}</a></td><td>${!NOK(r.k) ? esc(r.k) : '<span class="flag f-none">미제출</span>'}</td>
     <td><b>${r.cum < 9 ? r.cum.toFixed(2) : '–'}</b></td><td class="rkc">${r.rk < 999 ? r.rk + `<small>상위 ${RKP(r.rk, GD().n)}%</small>` : '–'}</td><td>${r.s.srk ? (r.mv > 0 ? `<span class="up">▲${r.mv}</span>` : r.mv < 0 ? `<span class="dn">▼${-r.mv}</span>` : '–') : '–'}</td>
     <td>${r.now < 9 ? r.now.toFixed(2) : '–'}</td><td>${r.edge ? `<span class="flag f-edge">${r.edge}과목</span>` : ''}</td><td class="l">${r.down.map(g => `<span class="flag f-dn">${g}</span>`).join(', ')}</td>
-    <td>${r.ms < 99 ? r.ms : '–'}</td><td class="nw">${r.ml === '…' ? '<span class="mu">…</span>' : r.ml ? `${r.ml.slice(5)}${daysAgo(r.ml) >= 30 ? ' <small class="bad">' + daysAgo(r.ml) + '일 전</small>' : ''}` : '<span class="mu">없음</span>'}</td><td>${w(r.mn)}</td><td>${w(r.mf)}</td><td><b>${w(r.pri)}</b></td></tr>`).join('');
+    <td>${r.ms < 99 ? r.ms : '–'}</td><td class="nw">${r.ml === '…' ? '<span class="mu">…</span>' : r.ml ? `${r.ml.slice(5)}${daysAgo(r.ml) >= 30 ? ' <small class="bad">' + daysAgo(r.ml) + '일 전</small>' : ''}` : '<span class="mu">없음</span>'}</td><td>${w(r.mn)}</td><td>${w(r.mf)}</td><td><b>${w(r.pri)}</b></td>
+    <td class="l tgc">${!r.tg ? '…' : r.tg.length ? r.tg.map(g => `${esc(g.nm)}<small>${esc(g.t[0])}</small>`).join(' · ') : '–'}</td><td class="tgg">${!r.tg ? '…' : r.tgg > 90 || Math.abs(r.tgg) < .005 ? '–' : (r.tgg > 0 ? '+' : '') + r.tgg.toFixed(2)}</td></tr>`).join('');
   CLS = true; document.body.classList.remove('home'); document.body.classList.add('cls'); prnLab();
   $('main').innerHTML = `<div class="hd"><h1>${GR}학년 ${ban}반</h1><span class="meta">${L.length}명 · 열 제목을 누르면 정렬 · 이름을 누르면 학생 화면</span><button class="cpy noprint" data-t=".clsv">표 복사</button></div>
    ${clsSummary(L)}
-   <table class="tb clsv"><thead><tr>${th('no', '번호')}${th('nm', '이름')}${th('k', '희망')}${th('cum', '누적')}${th('rk', '교내 순위')}${th('mv', '학기 순위 변화')}${th('now', curSem() + ' 중간')}${th('edge', '1등급까지 한 발', '중간 추정 2등급인데 학년 상위 13% 안인 과목 수')}${th('down', '내려온 교과', '가장 좋았던 학기보다 학년 석차가 15%p 넘게 내려온 교과')}${th('ms', GD().last + ' 국수영 합')}${th('ml', '마지막 상담', '이 PC에 저장한 상담 기록 중 가장 최근 날짜')}${th('mn', '기록')}${th('mf', '관심 대학')}${th('pri', '상담 우선', '점수가 클수록 먼저 상담 — 아래 설명 참고')}</tr></thead><tbody>${tb}</tbody></table>
+   <table class="tb clsv"><thead><tr>${th('no', '번호')}${th('nm', '이름')}${th('k', '희망')}${th('cum', '누적')}${th('rk', '교내 순위')}${th('mv', '학기 순위 변화')}${th('now', curSem() + ' 중간')}${th('edge', '1등급까지 한 발', '중간 추정 2등급인데 학년 상위 13% 안인 과목 수')}${th('down', '내려온 교과', '가장 좋았던 학기보다 학년 석차가 15%p 넘게 내려온 교과')}${th('ms', GD().last + ' 국수영 합')}${th('ml', '마지막 상담', '이 PC에 저장한 상담 기록 중 가장 최근 날짜')}${th('mn', '기록')}${th('mf', '관심 대학')}${th('pri', '상담 우선', '점수가 클수록 먼저 상담 — 아래 설명 참고')}${th('tgn', '목표', '판정표에서 고른 목표 대학(최대 3곳) · 작은 글자 = 교과/종합/논술 · 이 PC에 저장한 것만')}${th('tgg', '가장 쉬운 목표까지', '누적 − 합격선(가운데) 중 가장 작은 값 · 양수 = 아직 멂(등급)')}</tr></thead><tbody>${tb}</tbody></table>
    ${mockDist(ban)}
    ${mockTrend(ban)}
    <div class="note">1등급까지 한 발 = 2학기 중간 추정 2등급인데 학년 상위 13% 이내인 과목 수. 내려온 교과 = 가장 좋았던 학기보다 학년 석차가 15%p 넘게 내려온 교과. 남은 수행 = 이번 학기 과목의 남은 수행 비중(학점 가중, 반 평균). 마지막 상담·기록·관심 대학 = 이 PC에 저장한 것만(다른 선생님 PC 기록은 '가져오기'로 합쳐야 보임). 상담 우선 = 학기 순위 하락(10계단당 1점, 최대 4) + 1등급까지 한 발 과목(1개당 1점, 최대 3) + 희망 미제출 2 + 기록 없음 3 또는 마지막 상담 30일 넘음 2.</div>`;
   $('main').querySelectorAll('.clsv th').forEach(h => h.onclick = () => { const key = h.dataset.k; CSORT = [key, CSORT[0] === key ? -CSORT[1] : (['mv', 'edge', 'left', 'pri', 'mn', 'mf'].includes(key) ? -1 : 1)]; renderClass(); });
   $('main').querySelectorAll('.clsv a, .mtrend a').forEach(a => a.onclick = e => { e.preventDefault(); pick(+a.dataset.id); });
   foldNotes($('main'));
-  if (wait.length) (async () => { for (const id of wait) await memoCount(id); if (CLS && +$('selB').value === ban && !GRDV) renderClass(); })();   // 느리면 '…'로 두고 다 읽은 뒤 한 번 다시 그림
+  const tw = L.filter(r => !r.tg).map(r => r.s.id);
+  if (wait.length || tw.length) (async () => { for (const id of wait) await memoCount(id); { const gen = TGTV, got = await tgtLoadMany(tw); if (gen === TGTV) Object.assign(TGTC, got); } if (CLS && +$('selB').value === ban && !GRDV) renderClass(); })();   // 느리면 '…'로 두고 다 읽은 뒤 한 번 다시 그림
 }
 
 /* ── 학년 전체 보기(교사만): 석차순 명단 + 학생별 요약 / 대학별 가능 인원(지역·반·계열) — 판정은 학생 화면 판정표와 같은 계산(지역 '전체'로 낸 뒤 거름) ── */
@@ -1683,7 +1717,7 @@ async function renderMemo(){
   $('memoS').onclick = async () => { if (await memoSave('m')) renderMemo(); };
   $('logP').onclick = printLog;
   if (api()){ $('mExp').onclick = async () => { $('mMsg').textContent = (await api().memo_export()).msg; };
-    $('mImp').onclick = async () => { const r = await api().memo_import(); $('mMsg').textContent = r.msg; if (r.ok){ MEMOC = {}; await favLoad(ME.id); await tgtLoad(ME.id); render(); } }; }
+    $('mImp').onclick = async () => { const r = await api().memo_import(); $('mMsg').textContent = r.msg; if (r.ok){ MEMOC = {}; TGTC = {}; TGTV++; await favLoad(ME.id); await tgtLoad(ME.id); render(); } }; }
   lastLine(L);
 }
 /* 25. 맨 위 숫자 아래: 지난 상담(스냅샷) 대비 누적·순위 변화 + 최근 기록 날짜·목표 한 줄(교사만) */
