@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610201032"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610201037"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <title>영락고 상담 도우미</title>
 <style>
@@ -822,7 +822,8 @@ const RKP = (rk, n) => (100 * rk / n).toFixed(1);   // 교내 순위 → 상위 
 const JOB = () => (ME.k || '').trim() === '취업';   // 취업 희망 = 계열 없음 → 대학 목록은 전체 학과
 const SIDE = h => ['공학','자연','간호,보건'].includes(h) ? '자연' : h === '예술,체육' ? '예체능' : '인문';
 function uniAgg(mp){   // 비슷한 위치 선배 원서 → 대학·전형별(agg)·대학별 선배(senU) — 학생 화면과 학년 전체 보기가 같이 씀
-  const A = D.apps, near = GD().seniors.filter(([p]) => Math.abs(p - mp.pct) <= WIN);
+  const top = TOPW && mp.pct <= 5;   // 상위 5% 안은 비슷한 선배가 너무 적어(상위 4% 선배 19명) 0~max(6, 내 위치+범위)%로 넓힘
+  const A = D.apps, near = GD().seniors.filter(([p]) => top ? p <= Math.max(6, mp.pct + WIN) : Math.abs(p - mp.pct) <= WIN);
   const agg = {};
   const hk = (ME.k || '').trim(), senU = {};
   near.forEach(([, ids], j) => ids.forEach(i => { const a = A[i]; if (!a.t || !inReg(a.u)) return; if (HOPEONLY && hk && hk !== '취업' && hk !== '미제출' && a.gy !== hk) return; const o = senU[K(a.u)] = senU[K(a.u)] || {ap: new Set(), ok: new Set()}; o.ap.add(j); if (a.ok) o.ok.add(j); }));
@@ -1041,7 +1042,7 @@ function myRank(v){ return posOf(v).rank; }
 function g9now(v){ const same = ME.cum != null && Math.abs(v - ME.cum) < 0.005; return g9of(busanTop(same ? ME.cum : v, GR === 1 ? 'B' : 'C')); }   // 맨 위 '9등급으로 치면'과 같은 값
 function convAt(conv, g9){ if (!conv) return null; const g = Math.min(9, Math.max(1, g9)), i = Math.floor(g) - 1, t = g - Math.floor(g); return i >= 8 ? conv[8] : conv[i] + t * (conv[i + 1] - conv[i]); }
 function recFit(y, v){ const n = y.rec_n != null ? y.rec_n : y.rec_pct != null ? Math.round(GD().stu.length * y.rec_pct / 100) : null; if (n == null) return null; const r = myRank(v); return {n, r, ok: r <= n}; }   // % 기준 = 학년 재적(명렬) 인원
-let JUDGE = [];
+let JUDGE = [], TOPW = false, TOPF = 5;   // TOPW(상위 5% 선배 범위 넓히기)는 SKY 안정이 늘어 끔(10-20 사용자: 상위권일수록 치열)
 function judgeBlock(mp, sen, senU){
   const L = judgeRows(mp, sen, senU); JUDGE = L;
   const tr = JOB() || !(ME.k || '').trim() ? null : SIDE(ME.k) === '자연' ? '자연' : SIDE(ME.k) === '인문' ? '인문' : null, my = mp.v;
@@ -1052,9 +1053,11 @@ function judgeRows(mp, sen, senU, all){   // all = 지역·30곳 제한 없이(�
   Object.values(sen).forEach(o => { const r = get(K(o.u), o.u); r.sen[0] += o.ok; r.sen[1] += o.n; if (!r.choe || o.t === '교과'){ const v = ME.choe[o.u + '|' + o.t]; if (v){ r.choe = v; r.choeK = o.u + '|' + o.t; } } if (o.u.length < r.nm.length) r.nm = o.u; });
   const tr = JOB() || !(ME.k || '').trim() ? null : SIDE(ME.k) === '자연' ? '자연' : SIDE(ME.k) === '인문' ? '인문' : null;
   const my = mp.v, vb = r => my <= r.lo - .1 ? 0 : my <= r.hi ? 1 : my <= r.hi + .4 ? 2 : 3;
-  const bv = {}; bandRows().filter(r => (!tr || !r.t || r.t.includes(tr))).forEach(r => (bv[K(r.u)] = bv[K(r.u)] || {u: r.u, v: []}).v.push(vb(r)));
+  const bv = {}; bandRows().filter(r => (!tr || !r.t || r.t.includes(tr))).forEach(r => { const o = bv[K(r.u)] = bv[K(r.u)] || {u: r.u, v: [], lo: []}; o.v.push(vb(r)); o.lo.push(r.lo); });
+  const fill = [];
   Object.entries(bv).forEach(([k, o]) => { const vs = o.v.sort((a, b) => a - b), med = vs[Math.floor((vs.length - 1) / 2)];   // 학과 중앙값(가장 쉬운 학과 하나로 '안정' 주지 않음)
-    if (med > 2) return; if (!rows[k] && med !== 1) return; get(k, o.u).band = med; });
+    if (med > 2) return; if (!rows[k] && med === 0){ const ls = o.lo.sort((a, b) => a - b); fill.push({k, u: o.u, lo: ls[Math.floor((ls.length - 1) / 2)]}); return; } if (!rows[k] && med !== 1) return; get(k, o.u).band = med; });
+  fill.sort((a, b) => a.lo - b.lo).slice(0, mp.pct <= 5 ? TOPF : 0).forEach(f => get(f.k, f.u).band = 0);   // 상위 5% 안만: 선배 기록은 없지만 입결로 안정인 대학 중 가장 높은 TOPF곳 — 안정권 문턱(3점)은 그대로
   const pa = latestPa();
   if (pa != null) jeongsiAgg(pa, SIDE(ME.k), '전체').forEach(o => { const k = K(o.u); if (rows[k]) rows[k].js = Math.max(rows[k].js ?? -1, o.b); });
   const yg = D.yogang, pl = D.plan28;
@@ -1080,7 +1083,7 @@ function judgeHtml(L, my, tr){
   return `${judgeChart(L, my, tr)}<h3>근거 종합 판정 <small>대학 단위 · 선배 합격 + 입결 밴드 + 정시선을 점수로 합친 추정 · 위에서부터 유력</small></h3>
    <div class="legend"><span><i style="background:#14325c"></i><b>안정권</b> 지금 성적으로 여유가 있는 곳</span><span><i style="background:#0f7a6c"></i><b>적정권</b> 지금 성적과 비슷한 곳</span><span><i style="background:#b8541a"></i><b>상향</b> 성적을 더 올려야 하는 곳</span><span class="mu">정시선은 안정·적정·상향 + <b class="vl-도전">도전</b>(상향보다 더 높은 곳)</span></div>
    <table class="tb"><thead><tr><th>대학</th><th>판정<span class="est">추정</span></th><th>${PUB ? '선배 합격' : '<span class="tt" title="비슷한 위치 선배 중 이 대학에 합격한 사람 / 지원한 사람">선배 합격/지원</span>'}</th><th><span class="tt" title="대학·학과 합격선(70%컷)을 우리 학년 5등급 분포로 옮긴 범위와 내 누적 비교">입결 밴드</span></th><th><span class="tt" title="최근 모의 국·수·탐 백분위를 정시 배치표에 대 본 위치">정시선</span></th><th><span class="tt" title="수능최저학력기준 — 예: '2합 7' = 두 영역 등급 합이 7 이내">최저</span> <small>지금 학평 기준</small></th><th class="t-only">교내 추천</th>${GR === 2 ? '<th>2028 변경</th>' : ''}</tr></thead><tbody id="jb">${tb || '<tr><td colspan="8" class="mu">근거가 겹치는 대학이 없습니다.</td></tr>'}</tbody></table>${L.length > 15 ? `<button class="morebtn" onclick="this.previousElementSibling.querySelector('tbody').classList.toggle('all'); this.textContent = this.textContent.startsWith('나머지') ? '15곳만 보기' : '나머지 ${L.length - 15}곳 더 보기'">나머지 ${L.length - 15}곳 더 보기</button>` : ''}
-   <div class="note">점수: 선배(사람 수 기준) 합격 2명↑이면서 합격률 40%↑ 2점 · 합격률 25%↑ 1점 · 그 밖의 합격 0.5점 + 입결 밴드(희망 계열 학과들의 중앙값) 안정 2·적정 1 + 정시 안정 1·적정 0.5 → 3점↑이면서 입결 안정이거나 선배 합격률 40%↑일 때 안정권, 1.5점↑이거나 입결 밴드·정시선 중 하나라도 적정 이상이면 적정권. 최저 = 지금 학평 등급을 그 대학 최저에 대 본 것 — 학평은 N수생이 없어 실제 수능보다 보통 잘 나오므로 '충족'이어도 여유가 없으면 위험합니다.${PUB ? '' : ' 교내 추천 = 모집요강 추천 인원(명 또는 3학년 재적 %) vs 내 교내 순위(기대 내신 기준) — 학교 추천 기준은 따로 정하므로 참고만.'}${g1note}</div>`;
+   <div class="note">점수: 선배(사람 수 기준) 합격 2명↑이면서 합격률 40%↑ 2점 · 합격률 25%↑ 1점 · 그 밖의 합격 0.5점 + 입결 밴드(희망 계열 학과들의 중앙값) 안정 2·적정 1 + 정시 안정 1·적정 0.5 → 3점↑이면서 입결 안정이거나 선배 합격률 40%↑일 때 안정권, 1.5점↑이거나 입결 밴드·정시선 중 하나라도 적정 이상이면 적정권. 교내 상위 5% 안 학생은 비슷한 선배가 적어, 선배 기록이 없어도 입결로 안정인 대학 중 가장 높은 5곳을 함께 판정합니다(안정권 문턱은 같음). 최저 = 지금 학평 등급을 그 대학 최저에 대 본 것 — 학평은 N수생이 없어 실제 수능보다 보통 잘 나오므로 '충족'이어도 여유가 없으면 위험합니다.${PUB ? '' : ' 교내 추천 = 모집요강 추천 인원(명 또는 3학년 재적 %) vs 내 교내 순위(기대 내신 기준) — 학교 추천 기준은 따로 정하므로 참고만.'}${g1note}</div>`;
 }
 function detailBlock(mp){
   const g9 = g9now(mp.v), yg = D.yogang, pl = D.plan28;
