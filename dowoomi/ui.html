@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610201332"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610201345"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <title>영락고 상담 도우미</title>
 <style>
@@ -222,6 +222,7 @@ body.pub .hero>.pubbar,body.pub main>.pubbar{background:#c46a00;border:0;color:#
 .sumbox{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin:8px 0}.sumbox .k{border:1px solid var(--rule);border-radius:6px;padding:6px 10px;background:var(--paper)}.sumbox b{display:block;font-size:22px;color:var(--navy);line-height:1.2}.sumbox .k>span{font-size:13px;color:var(--mute)}
 .sumline{font-size:14.5px;line-height:1.7;margin:0 0 10px}.sumline b{display:inline-block;min-width:84px;color:var(--ink2)}
 .sj-ok{color:#0f7a6c;font-weight:700;margin-right:4px;white-space:nowrap}.sj-no{color:var(--up);font-weight:700;margin-right:4px;white-space:nowrap}.sj-late{color:#b8541a}.sj-late small{font-weight:400;margin-left:1px}.sj-na{color:#888;margin-right:4px;white-space:nowrap}
+.hsum{margin:4px 0 2px;padding:8px 12px;border-left:4px solid var(--navy);background:var(--soft);font-size:16px}.hloss{margin:2px 0 10px;font-size:14px;color:var(--mute)}.tb.hcol{table-layout:fixed}.htag{display:table;margin-top:3px;font-size:12.5px;font-weight:400;color:var(--mute);border:1px solid var(--rule);border-radius:2px;padding:0 5px;line-height:1.5}.hbad{margin:20px 0 6px;font-size:17px;font-weight:700;color:var(--ink)}
 .jline{margin:10px 0 0;padding:8px 12px;border-left:4px solid var(--navy);background:var(--soft);font-size:15.5px;line-height:1.7}.jline b.lab{display:inline-block;min-width:58px}
 .favl{margin-right:6px;cursor:pointer;color:#b07800}.favl input{vertical-align:-1px;margin:0 2px 0 0}
 .jchart{width:100%;height:auto;display:block;margin:2px 0 4px}
@@ -376,9 +377,9 @@ details.guide>summary::before{content:'▸ '}details.guide[open]>summary::before
 .chk{display:flex;flex-wrap:wrap;gap:2px 16px;font-size:15px;margin:2px 0 8px;color:var(--ink2)}.chk label{white-space:nowrap}.chk input[type=date]{font-size:14px;padding:0 2px;border:1px solid var(--rule)}
 .lastc{font-size:15px;color:var(--ink2);margin-top:4px;grid-column:1/-1}.lastc b{color:var(--ink)}
 #jb td:first-child>b{cursor:pointer;text-decoration:underline dotted #b7bcc6;text-underline-offset:4px}#jb tr.jdet>td{background:#f7f6fb;text-align:left;padding:8px 14px 12px;font-size:15px;line-height:1.65}
-#tgtU{margin:4px 0 14px}#tgtU .tgr{display:grid;grid-template-columns:170px 1fr 160px 190px 30px;gap:10px;align-items:center;margin:3px 0}#tgtU .tgr>b{font-size:15px}.tgts{width:100%;height:26px;display:block;overflow:visible}
-.tgtd{font-size:14px;text-align:right;line-height:1.25}.tgtd small{display:block;color:var(--mute);font-size:12px}.tgtdt{font-size:14px;font-weight:400;white-space:nowrap;margin-left:12px}.tgtpub{margin:6px 0 0;padding:6px 10px;background:var(--soft);border-left:3px solid var(--navy);font-size:14px}.tgtx{border:1px solid var(--rule);background:#fff;border-radius:2px;cursor:pointer;color:var(--mute)}
-.tgtb{margin-left:6px;font-size:12px;padding:0 6px;border:1px solid var(--rule);background:#fff;border-radius:2px;cursor:pointer;color:var(--navy)}.tgtb.on{font-weight:800;border-color:var(--navy)}
+#tgtU{margin:4px 0 14px}#tgtU .tgr{display:grid;grid-template-columns:170px 1fr 320px 30px;gap:10px;align-items:center;margin:8px 0}#tgtU .tgr.tga{margin-top:2px}#tgtU .tgr>b{font-size:15px}.tgts{width:100%;height:26px;display:block;overflow:visible}
+.tgtd{font-size:14px;text-align:left;line-height:1.3}.tgtd>b{display:block;font-size:16px;font-weight:700;color:var(--ink)}.tgtd small{display:block;color:var(--mute);font-size:12.5px}.tgtdt{display:inline-block;font-size:14px;font-weight:600;white-space:nowrap;margin-left:10px;padding:0 8px;background:var(--soft);border-radius:2px;color:var(--ink2);vertical-align:1px}.tgtlg{font-size:13.5px;color:var(--mute);margin:4px 0 0;line-height:1.5}.tgtlg b{color:var(--ink2)}#tgtU .tga .tgood{font-size:12px;color:var(--mute);text-align:right;align-self:start;line-height:16px}.tgtpub{margin:6px 0 0;padding:6px 10px;background:var(--soft);border-left:3px solid var(--navy);font-size:14px}.tgtx{border:1px solid var(--rule);background:#fff;border-radius:2px;cursor:pointer;color:var(--mute)}
+.tgtb{margin-left:6px;font-size:12px;padding:0 6px;border:1px solid var(--rule);background:#fff;border-radius:2px;cursor:pointer;color:var(--navy)}.tgtb{color:var(--mute)}.tgtb.on{font-weight:800;border-color:var(--navy);background:var(--navy);color:#fff}
 #jb tr.tgtpick>td{background:#f4f7fb;text-align:left;padding:6px 14px}.tgtpick button{margin:0 4px;padding:2px 10px;border:1px solid var(--rule);background:#fff;border-radius:2px;cursor:pointer}.tgtpick button.on{font-weight:800;border-color:var(--navy)}
 .jdet h5{margin:6px 0 2px;font-size:14.5px;color:#5b3fa6}.jdet .tb td,.jdet .tb th{font-size:14.5px;padding:3px 6px}
 .cpy{font-size:14px;padding:3px 10px;border:1px solid var(--rule);background:#fff;cursor:pointer;margin-left:8px}
@@ -861,7 +862,7 @@ function tgtBlock(mp){
   const X = v => (2 + (v - a0) / (a1 - a0) * 96).toFixed(2) + '%';   // 왼쪽일수록 좋은 등급
   const d = P.length >= 2 ? cur.v - P.at(-2).v : null;
   const dt = d == null || Math.abs(d) < .005 ? '–' : d < 0 ? `<span class="up">▲${(-d).toFixed(2)}</span>` : `<span class="dn">▼${d.toFixed(2)}</span>`;
-  const far = o => { const g = o.gap, n = o.need; return `${g == null || Math.abs(g) < .005 ? '합격선 –' : g > 0 ? `합격선 가운데까지 ${g.toFixed(2)}` : `합격선 가운데보다 ${(-g).toFixed(2)} 앞`}<small>남은 학기 평균 ${n == null || Math.abs(n) < .005 ? '–' : n < 1 ? '<b class="bad">1.0 미만(남은 학기만으로는 불가)</b>' : n > 5 ? '5등급이어도 도달' : n.toFixed(2)}</small>`; };
+  const far = o => { const g = o.gap, n = o.need; return `<b>${g == null || Math.abs(g) < .005 ? '합격선 –' : g > 0 ? `합격선 가운데까지 ${g.toFixed(2)}` : `합격선 가운데보다 ${(-g).toFixed(2)} 앞`}</b><small>남은 학기 평균 ${n == null || Math.abs(n) < .005 ? '–' : n < 1 ? '<b class="bad">1.0 미만(남은 학기만으로는 불가)</b>' : n > 5 ? '5등급이어도 도달' : n.toFixed(2)}`; };   // <small>은 호출하는 쪽에서 출처·범위를 붙여 닫음
   const dot = (p, r, st) => `<circle cx="${X(p.v)}" cy="13" r="${r}" style="${st}"><title>${esc(p.lab)} ${p.v.toFixed(2)}${p.est ? ' (중간 추정)' : ''}</title></circle>`;
   const rows = B.map(({g, b}) => {
     const lab = (b.src === '선배' ? (PUB ? '우리 선배' : `선배 ${b.n}명`) : b.src === '다온' ? (PUB ? '전국 입결 예측' : '다온 28컷') + (GR === 1 ? ' · 2028 자료 참고' : '') : '합격선 근거 없음') + (b.few ? ' · 근거 적음' : '') + (b.wide ? ' · 학과 전체 범위(넓음)' : '');
@@ -871,11 +872,11 @@ function tgtBlock(mp){
       + (b.src && !dia ? `<rect x="${X(b.lo)}" y="5" width="${Math.max(.6, (b.hi - b.lo) / (a1 - a0) * 96).toFixed(2)}%" height="16" style="fill:#cfe0f5"/>` : '') + (b.src ? `<line x1="${X(b.med)}" x2="${X(b.med)}" y1="1" y2="25" style="stroke:var(--navy);stroke-width:2"/>` : '')
       + past.map(p => dot(p, 4, 'fill:#bbb')).join('') + (hyp != null ? `<circle class="tgt-hyp" cx="${X(hyp)}" cy="13" r="6" style="fill:none;stroke:var(--up);stroke-width:2"><title>가정 ${hyp.toFixed(2)}</title></circle>` : '')
       + (cur ? dot(cur, 7, 'fill:var(--up)') : '') + '</svg>';
-    return `<div class="tgr"><b>${esc(g.nm.replace('학교', ''))} ${esc(g.t)}</b>${svg}<span class="tgtd">${b.src ? far(tgtNeed(b.med)) : '–'}</span><small class="${b.src ? 'mu' : 'bad'}">${lab}${b.src ? ` · ${b.lo.toFixed(2)}~${b.hi.toFixed(2)}` : ''}</small><button class="tgtx t-only noprint" data-k="${esc(g.k)}" title="목표에서 빼기">×</button></div>`; }).join('');
+    return `<div class="tgr"><b>${esc(g.nm.replace('학교', ''))} ${esc(g.t)}</b>${svg}<span class="tgtd">${b.src ? `${far(tgtNeed(b.med))} · ${lab} · ${b.lo.toFixed(2)}~${b.hi.toFixed(2)}</small>` : `<b>–</b><small class="bad">${lab}</small>`}</span><button class="tgtx t-only noprint" data-k="${esc(g.k)}" title="목표에서 빼기">×</button></div>`; }).join('');
   const tk = []; for (let v = a0; v <= a1 + 1e-9; v += .5) tk.push(v);
-  const ax = `<div class="tgr tga"><span></span><svg class="tgts" style="height:16px">${tk.map((v, i) => `<text x="${X(v)}" y="12" font-size="11" fill="#7a7974" text-anchor="${i === 0 ? 'start' : i === tk.length - 1 ? 'end' : 'middle'}">${v.toFixed(1)}</text>`).join('')}</svg></div>`;
-  return `<div id="tgtU"><h3>목표 대학 <small>5등급 누적 · 왼쪽일수록 좋음 · 파란 띠 = 합격선 범위 · 남색 선 = 가운데 값 · 빨간 점 = 지금${cur && cur.est ? '(<b>중간고사 추정</b>)' : ''} · 회색 점 = 지난 학기${hyp != null ? ' · 속 빈 점 = 내신 예측 가정' : ''}${!PUB && B.some(({b}) => b.few) ? ' · ◆ = 선배 위치(근거 적음)' : ''}</small> <span class="tgtdt">지난 시점 대비 ${dt}</span>${err}</h3>${rows}${ax}${PUB ? '<div class="tgtpub">띠 안에 있어도 합격 보장은 아닙니다 — 우리 선배·입결로 본 참고 범위입니다.</div>' : ''}
-   <div class="note">오른쪽 = 지금 누적에서 합격선(남색 선)까지 거리와, 남은 학기를 그 평균으로 받으면 누적이 합격선이 되는 값(지금 내신 예측 기준). 제목 줄 ▲▼ = 직전 학기 누적 대비(빨강 ▲ 좋아짐 · 파랑 ▼ 내려감, 가정 점과는 비교하지 않음). ${PUB ? '우리 선배 = 그 대학·전형에 합격한 선배의 당시 교내 위치를 우리 학년 누적으로 옮긴 범위' : '선배 = 그 대학·전형에 합격한 희망 계열 선배의 당시 교내 위치를 우리 학년 누적으로 옮긴 범위(4명 이상이면 가운데 50%, 2~3명이면 ◆ 위치와 "근거 적음")'}, ${PUB ? '전국 입결 예측' : '다온 28컷'} = 그 대학 희망 계열 모집단위 28컷(4곳 이상이면 가운데 50%, 그보다 적으면 최소~최대 · 계열 학과가 없으면 학과 전체 범위). 합격을 약속하는 선이 아닙니다.</div></div>`;
+  const ax = `<div class="tgr tga"><span class="tgood">← 좋음</span><svg class="tgts" style="height:16px">${tk.map((v, i) => `<text x="${X(v)}" y="12" font-size="11" fill="#7a7974" text-anchor="${i === 0 ? 'start' : i === tk.length - 1 ? 'end' : 'middle'}">${v.toFixed(1)}</text>`).join('')}</svg></div>`;
+  return `<div id="tgtU"><h3>목표 대학<span class="tgtdt">지난 시점 대비 ${dt}</span> <small>5등급 누적</small>${err}</h3>${rows}${ax}<div class="tgtlg">파란 띠 = 합격선 범위 · 남색 선 = 가운데 값 · 빨간 점 = 지금${cur && cur.est ? '(<b>중간고사 추정</b>)' : ''} · 회색 점 = 지난 학기${hyp != null ? ' · 속 빈 점 = 내신 예측 가정' : ''}${!PUB && B.some(({b}) => b.few) ? ' · ◆ = 선배 위치(근거 적음)' : ''}</div>${PUB ? '<div class="tgtpub">띠 안에 있어도 합격 보장은 아닙니다 — 우리 선배·입결로 본 참고 범위입니다.</div>' : ''}
+   <div class="note">오른쪽 굵은 줄 = 지금 누적에서 합격선(남색 선)까지 거리, 작은 줄 = 남은 학기를 그 평균으로 받으면 누적이 합격선이 되는 값(지금 내신 예측 기준). 제목 줄 ▲▼ = 직전 학기 누적 대비(빨강 ▲ 좋아짐 · 파랑 ▼ 내려감, 가정 점과는 비교하지 않음). ${PUB ? '우리 선배 = 그 대학·전형에 합격한 선배의 당시 교내 위치를 우리 학년 누적으로 옮긴 범위' : '선배 = 그 대학·전형에 합격한 희망 계열 선배의 당시 교내 위치를 우리 학년 누적으로 옮긴 범위(4명 이상이면 가운데 50%, 2~3명이면 ◆ 위치와 "근거 적음")'}, ${PUB ? '전국 입결 예측' : '다온 28컷'} = 그 대학 희망 계열 모집단위 28컷(4곳 이상이면 가운데 50%, 그보다 적으면 최소~최대 · 계열 학과가 없으면 학과 전체 범위). 합격을 약속하는 선이 아닙니다.</div></div>`;
 }
 
 /* ── ④ 진학 가능권 ── */
@@ -1143,18 +1144,18 @@ function hBlock(){
   const mine = new Set([...TGT, ...FAV].map(x => x.k)), FL = {'참고': '등급만 반영한 참고', '미확정': '방식 미확정', '유불리 없음': '방식 유불리 없음'};
   const R = UMETH.map(m => ({m, o: umethGrade(m), f: mine.has(K(m.u))})), sd = SIDE(ME.k) === '자연' ? '자연' : '인문';
   const cnt = {}; R.forEach(r => r.o.loss.forEach(x => { const k = `${x.n}(${x.t}) ${+x.v.toFixed(2)}${x.t === curSem() ? ' (중간 추정)' : ''}`; cnt[k] = (cnt[k] || 0) + 1; }));
-  const top = Object.keys(cnt).filter(k => cnt[k] >= 2).sort((a, b) => cnt[b] - cnt[a]).slice(0, 2), lossLine = top.length ? `<p class="hloss small">지난 성적 중 여러 대학에서 손해: ${top.map(esc).join(' · ')}</p>` : '';
+  const top = Object.keys(cnt).filter(k => cnt[k] >= 2).sort((a, b) => cnt[b] - cnt[a]).slice(0, 2), lossLine = top.length ? `<p class="hloss">지난 성적 중 여러 대학에서 손해: ${top.map(esc).join(' · ')}</p>` : '';
   const GN = new Map(R.map(r => [r.m, hGain(r.m)])), wg = [...GN.values()].filter(g => g.length), top2 = i => { const c = {}; wg.forEach(g => g[i] && (c[g[i].u] = (c[g[i].u] || 0) + 1)); const e = Object.entries(c).sort((a, b) => b[1] - a[1])[0]; return e && e[1] >= .6 * wg.length ? e[0] : null; };
   const sm = []; { const a = top2(0); if (a){ sm.push(a); const b = top2(1); if (b && b !== a) sm.push(b); } }
-  const sumLine = sm.length ? `<p class="hsum small">남은 학기엔 <b>${sm.map(esc).join('·')}</b>${(sm.at(-1).charCodeAt(sm.at(-1).length - 1) - 44032) % 28 ? '을' : '를'} 올리면 대부분 대학에서 효과가 커요.</p>` : '';
+  const sumLine = sm.length ? `<p class="hsum">남은 학기엔 <b>${sm.map(esc).join('·')}</b>${(sm.at(-1).charCodeAt(sm.at(-1).length - 1) - 44032) % 28 ? '을' : '를'} 올리면 대부분 대학에서 효과가 커요.</p>` : '';
   R.sort((a, b) => b.f - a.f || (a.o.v == null) - (b.o.v == null) || (a.o.d ?? 0) - (b.o.d ?? 0));
   const tr = ({m, o, f}) => { const nd = o.v == null || Math.abs(o.d) < .005, d = nd ? '–' : `<span class="${o.d < 0 ? 'up' : 'dn'}">${o.d < 0 ? '▲' : '▼'} ${Math.abs(o.d).toFixed(2)}</span>`;
     const gn = GN.get(m), same = sm.length && gn.length === sm.length && gn.every((x, i) => x.u === sm[i]), ls = same ? '<span class="mu">같음</span>' : gn.length ? gn.map(x => `<span style="white-space:nowrap">${esc(x.u)} <span class="up">▲${Math.abs(x.dv).toFixed(2)}</span></span>`).join(' · ') : '–';
     const sg = m.note.split(' · '), nt = PUB ? (sg.find(x => x.startsWith(sd + ' ')) || sg[0]).replace(/\s*\[[^\]]*\]/g, '') : m.note;
-    return `<tr><td class="l">${f ? '★ ' : ''}<b>${esc(m.u)}</b> <small class="mu">${esc(m.j)}</small></td><td>${o.v == null ? '–' : o.v.toFixed(2)}</td><td>${d}</td><td class="l small">${ls}</td><td class="l small">${esc(nt)}</td><td class="small">${FL[o.flag] || ''}</td></tr>`; };
-  const hd = '<thead><tr><th>대학·전형</th><th>대학 방식 등급</th><th>차이 <small>(내 누적 대비)</small></th><th>올리면 효과 큰 교과</th><th>규칙</th><th>표시</th></tr></thead>';
+    return `<tr><td class="l">${f ? '★ ' : ''}<b>${esc(m.u)}</b> <small class="mu">${esc(m.j)}</small>${FL[o.flag] ? `<span class="htag" title="${FL[o.flag]}">${o.flag}</span>` : ''}</td><td>${o.v == null ? '–' : o.v.toFixed(2)}</td><td>${d}</td><td class="l small">${ls}</td><td class="l small">${esc(nt)}</td></tr>`; };
+  const hd = '<colgroup><col style="width:24%"><col style="width:9%"><col style="width:8%"><col style="width:19%"><col></colgroup><thead><tr><th>대학·전형</th><th>대학 방식 등급</th><th class="tt" title="내 누적 대비 — ▲ 유리, ▼ 불리">차이</th><th class="tt" title="남은 학기에 그 교과를 1등급씩 올렸을 때 이 대학 방식 등급이 가장 많이 좋아지는 교과(▲ = 좋아지는 정도) · 같음 = 위 상자의 교과와 같음">효과 큰 교과</th><th>규칙</th></tr></thead>';   // 두 표 칸 폭 같게(규칙 = 나머지)
   const bad = R.filter(r => r.o.v != null && r.o.d >= .005).sort((a, b) => b.o.d - a.o.d).slice(0, 3);   // 3줄이라 clampAll(SHOW+2 초과만 자름)이 건드리지 않음
-  return `${GR === 1 ? '<div class="hmsg">2028 시행계획 방식 기준 참고 — 1학년은 2029 입시</div>' : ''}${lossLine}${sumLine}<table class="tb">${hd}<tbody>${R.map(tr).join('')}</tbody></table>${bad.length ? `<h4 class="dsub">불리한 곳</h4><table class="tb">${hd}<tbody>${bad.map(tr).join('')}</tbody></table>` : ''}<div class="note">각 대학이 보는 교과·학점·등급 점수표를 내 성적에 적용한 참고값입니다. ▲ = 누적보다 유리, ▼ = 불리. 올리면 효과 큰 교과 = 남은 학기 그 교과를 1등급씩 올렸을 때 이 대학 방식 등급이 좋아지는 정도. 공식 환산이 아닙니다.</div>`;
+  return `${GR === 1 ? '<div class="hmsg">2028 시행계획 방식 기준 참고 — 1학년은 2029 입시</div>' : ''}${sumLine}${lossLine}<table class="tb hcol">${hd}<tbody>${R.map(tr).join('')}</tbody></table>${bad.length ? `<h4 class="hbad"><span class="dn">▼</span> 불리한 곳</h4><table class="tb hcol">${hd}<tbody>${bad.map(tr).join('')}</tbody></table>` : ''}<div class="note">각 대학이 보는 교과·학점·등급 점수표를 내 성적에 적용한 참고값입니다. ▲ = 누적보다 유리, ▼ = 불리. 올리면 효과 큰 교과 = 남은 학기 그 교과를 1등급씩 올렸을 때 이 대학 방식 등급이 좋아지는 정도. 공식 환산이 아닙니다.</div>`;
 }
 function t28Block(){
   const us = new Set(topUnivs(10)), T = D.daon.t28, NM = {gyo: '교과', jong: '종합', nonsul: '논술', jungsi: '정시'};
@@ -1177,7 +1178,7 @@ function judgeChart(L, my, tr){
   const C = L.slice(0, 15).map(r => { const b = by[r.k]; if (!b) return null; return {r, lo: Math.min(...b.map(x => x.lo)), hi: Math.max(...b.map(x => x.hi)), n: b.length}; }).filter(Boolean);
   if (C.length < 2) return '';
   const top = Math.max(1, Math.floor(Math.min(my, ...C.map(c => c.lo)) * 2) / 2), bot = Math.min(5, Math.ceil(Math.max(my, ...C.map(c => c.hi)) * 2) / 2 + .5);
-  const W = 900, H = 248, x0 = 40, y0 = 10, h = 160, sw = (W - x0 - 10) / C.length, y = g => y0 + (g - top) / (bot - top) * h;
+  const W = 900, H = 170 + (C.length > 8 ? 40 : 22), x0 = 40, y0 = 10, h = 160, sw = (W - x0 - 10) / C.length, y = g => y0 + (g - top) / (bot - top) * h;
   const col = {'안정권': '#14325c', '적정권': '#0f7a6c', '상향': '#b8541a'};
   const ticks = []; for (let g = Math.ceil(top * 2) / 2; g <= bot + 1e-9; g += .5) ticks.push(g);
   const svg = `<svg viewBox="0 0 ${W} ${H}" class="jchart" role="img" aria-label="대학별 입결 밴드와 내 누적">
@@ -1518,7 +1519,7 @@ function renderClass(){
     <td><b>${r.cum < 9 ? r.cum.toFixed(2) : '–'}</b></td><td class="rkc">${r.rk < 999 ? r.rk + `<small>상위 ${RKP(r.rk, GD().n)}%</small>` : '–'}</td><td>${r.s.srk ? (r.mv > 0 ? `<span class="up">▲${r.mv}</span>` : r.mv < 0 ? `<span class="dn">▼${-r.mv}</span>` : '–') : '–'}</td>
     <td>${r.now < 9 ? r.now.toFixed(2) : '–'}</td><td>${r.edge ? `<span class="flag f-edge">${r.edge}과목</span>` : ''}</td><td class="l">${r.down.map(g => `<span class="flag f-dn">${g}</span>`).join(', ')}</td>
     <td>${r.ms < 99 ? r.ms : '–'}</td><td class="nw">${r.ml === '…' ? '<span class="mu">…</span>' : r.ml ? `${r.ml.slice(5)}${daysAgo(r.ml) >= 30 ? ' <small class="bad">' + daysAgo(r.ml) + '일 전</small>' : ''}` : '<span class="mu">없음</span>'}</td><td>${w(r.mn)}</td><td>${w(r.mf)}</td><td><b>${w(r.pri)}</b></td>
-    <td class="l tgc">${!r.tg ? '…' : r.tg.length ? r.tg.map(g => `${esc(g.nm.replace('학교', ''))} ${esc(g.t)}`).join(' · ') : '–'}</td><td class="tgg">${!r.tg ? '…' : r.tgg > 90 || Math.abs(r.tgg) < .005 ? '–' : (r.tgg > 0 ? `${r.tgg.toFixed(2)} 남음` : `${(-r.tgg).toFixed(2)} 앞`)}</td></tr>`).join('');
+    <td class="${r.tg && r.tg.length ? 'l ' : ''}tgc">${!r.tg ? '…' : r.tg.length ? r.tg.map(g => `<span style="white-space:nowrap">${esc(g.nm.replace('학교', ''))} ${esc(g.t)}</span>`).join('<br>') : '–'}</td><td class="tgg">${!r.tg ? '…' : r.tgg > 90 || Math.abs(r.tgg) < .005 ? '–' : (r.tgg > 0 ? `${r.tgg.toFixed(2)} 남음` : `${(-r.tgg).toFixed(2)} 앞`)}</td></tr>`).join('');
   CLS = true; document.body.classList.remove('home'); document.body.classList.add('cls'); prnLab();
   $('main').innerHTML = `<div class="hd"><h1>${GR}학년 ${ban}반</h1><span class="meta">${L.length}명 · 열 제목을 누르면 정렬 · 이름을 누르면 학생 화면</span><button class="cpy noprint" data-t=".clsv">표 복사</button></div>
    ${clsSummary(L)}
