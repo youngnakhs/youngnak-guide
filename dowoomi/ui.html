@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610201345"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610201405"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <title>영락고 상담 도우미</title>
 <style>
@@ -194,6 +194,7 @@ body.home #rail .nav{visibility:hidden}body.home .bar .nav{display:none}body.grd
 .modebtn{border:2px solid #c46a00!important;background:#fff4e2!important;color:#8a4a00!important;font-weight:800!important}
 .modebtn::before{content:'◉ ';color:#c46a00}
 .modebtn:hover{background:#ffe6bf!important}
+.bar button:disabled,.bar .modebtn:disabled,#rail button:disabled{background:#fff!important;color:#aab!important;border:1px solid var(--rule)!important;font-weight:400!important;cursor:default}.modebtn:disabled::before{color:#c8cdd6}
 .modebtn.on{background:#c46a00!important;color:#fff!important;border-color:#c46a00!important}.modebtn.on::before{content:'↩ ';color:#fff}
 body.pub .bar{border-bottom:4px solid #c46a00}
 body.pub #rail{border-right:4px solid #c46a00}
@@ -224,7 +225,7 @@ body.pub .hero>.pubbar,body.pub main>.pubbar{background:#c46a00;border:0;color:#
 .sj-ok{color:#0f7a6c;font-weight:700;margin-right:4px;white-space:nowrap}.sj-no{color:var(--up);font-weight:700;margin-right:4px;white-space:nowrap}.sj-late{color:#b8541a}.sj-late small{font-weight:400;margin-left:1px}.sj-na{color:#888;margin-right:4px;white-space:nowrap}
 .hsum{margin:4px 0 2px;padding:8px 12px;border-left:4px solid var(--navy);background:var(--soft);font-size:16px}.hloss{margin:2px 0 10px;font-size:14px;color:var(--mute)}.tb.hcol{table-layout:fixed}.htag{display:table;margin-top:3px;font-size:12.5px;font-weight:400;color:var(--mute);border:1px solid var(--rule);border-radius:2px;padding:0 5px;line-height:1.5}.hbad{margin:20px 0 6px;font-size:17px;font-weight:700;color:var(--ink)}
 .jline{margin:10px 0 0;padding:8px 12px;border-left:4px solid var(--navy);background:var(--soft);font-size:15.5px;line-height:1.7}.jline b.lab{display:inline-block;min-width:58px}
-.favl{margin-right:6px;cursor:pointer;color:#b07800}.favl input{vertical-align:-1px;margin:0 2px 0 0}
+.favl{margin-right:6px;cursor:pointer;color:#b7bcc6}.favl.on{color:#b07800}.tgta{margin-bottom:4px}.tgta b{white-space:nowrap}.jtgt>b:first-child{display:inline-block;min-width:58px}.favl input{vertical-align:-1px;margin:0 2px 0 0}
 .jchart{width:100%;height:auto;display:block;margin:2px 0 4px}
 #logp{display:none}
 @media print{body.logprint>*:not(#logp){display:none!important}body.logprint #logp{display:block}body.logprint #logp .hist .mu{display:block!important}}
@@ -433,8 +434,10 @@ details.guide>summary::before{content:'▸ '}details.guide[open]>summary::before
     <li><b>위에서부터 읽기</b> — 맨 위 큰 숫자(누적 등급·순위) → 요약 → 내신 흐름 순서로 보면 학생 상황이 잡힙니다.</li>
     <li><b>내신 예측에서 바꿔 보기</b> — 과목 등급 옆 − / + 를 누르거나, 기말 학년 등수를 넣거나, [평소대로] 같은 버튼을 누르면 최종 내신이 바로 다시 계산됩니다.</li>
     <li><b>대학 보기</b> — 바꾼 내신을 기준으로 '근거 종합 판정'과 '우리 선배' 표가 따라 바뀝니다.</li>
+    <li><b>목표 대학</b> — 판정표 대학 이름 옆 [목표]로 1~3곳을 고르면 막대가 나옵니다. 합격선 가운데까지 거리와 남은 학기에 필요한 평균을 보여 주고, 선배가 2~3명뿐이면 '근거 적음'이 붙습니다. ★는 관심 대학(상담 파일에 인쇄)입니다.</li>
+    <li><b>H. 대학 방식으로 본 내 등급</b> — 대학마다 반영 교과·점수표로 다시 낸 내 등급입니다. ▲ 유리 · ▼ 불리, 효과 큰 교과 = 올리면 그 대학 등급이 가장 많이 좋아지는 교과.</li>
     <li><b>학생·학부모에게 보여 줄 때</b> — [학생·학부모 보기]를 누르면 석차·다른 학생 정보가 숨겨집니다. 그 상태로 [이 학생 인쇄]를 누르면 배부용입니다.</li>
-    <li><b>반 전체</b> — [반 전체 보기]에서 열 제목을 누르면 정렬, 이름을 누르면 그 학생으로 갑니다.</li>
+    <li><b>반 전체</b> — [반 전체 보기]에서 열 제목을 누르면 정렬, 이름을 누르면 그 학생으로 갑니다. 목표 열 = 학생마다 고른 목표 대학과 가장 쉬운 목표까지 거리(이 PC에 저장한 것만).</li>
     <li><b>키보드</b> — ← / → 이전·다음 학생, / 검색 칸, Esc 열린 창 닫기.</li>
   </ol>
   <h3>용어 풀이</h3>
@@ -580,7 +583,7 @@ async function pick(id, asked){
   ME = GD().stu.find(s => s.id === id); $('selS').value = id;
   DEF = defaults(ME); G = {...DEF}; FUT = null;
   if (CLS){ CLS = false; $('clsBtn').classList.remove('on'); }
-  gradeOff(); document.body.classList.remove('home', 'cls'); closeQpick();
+  gradeOff(); document.body.classList.remove('home', 'cls'); barOn(true); closeQpick();
   render(); window.scrollTo(0, 0);
 }
 
@@ -701,6 +704,7 @@ function gunTable(){
 /* ── ③ 기대 내신 ── */
 function renderExp(){
   const s = ME, gd = GD(), cs = curSem(), fs = futSems();
+  const pv = $('tgt') && $('tgt').dataset.id == ME.id ? $('tgt').value : null;   // 대학별 필요 평균: 같은 학생이면 고른 대학 유지
   const cur = (s.S[cs] || []).map((x, i) => ({x, i})).filter(o => !o.x.x);
   const rowsCur = cur.map(({x, i}) => { const id = cs + '|' + i, v = G[id], chg = v !== DEF[id];
     const sim = (x.s === 1 && s.ms[x.n] != null && gd.mids[x.n]) ? simCell(x, id) : '<td class="mu small">중간 지필 없음</td>';
@@ -739,7 +743,7 @@ function renderExp(){
    </div>
    ${s.why ? `<div class="small bad">참고값 — ${WHY(s.why)}. 남아 있는 학기 성적만으로 낸 값이라 실제와 크게 다를 수 있습니다.</div>` : ''}
    <div class="small">대입 조합별 최종: ${Object.entries(sc.combo).map(([k, v]) => `${k} <b>${f2(v)}</b>`).join(' · ')}</div>
-   <h3 class="t-only">목표 역산 <small>그 대학 교과·종합·논술에 합격한 희망 계열 선배의 당시 교내 위치(중앙값) → 남은 학기에 필요한 평균</small></h3>
+   <h3 class="t-only">대학별 필요 평균 <small>그 대학 교과·종합·논술에 합격한 희망 계열 선배의 당시 교내 위치(중앙값) → 남은 학기에 필요한 평균</small></h3>
    <div class="ctrl noprint t-only"><select id="tgt">${targetOptions()}</select><span id="tgtOut"></span></div>`;
   $('exp').querySelectorAll('.step button').forEach(b => b.onclick = () => { const id = b.dataset.id; const base = (FUT != null && futSems().includes(id.split('|')[0])) ? Math.round(FUT) : G[id];
     if (FUT != null && futSems().includes(id.split('|')[0])){ futSems().forEach(t => ME.S[t].forEach((x, i) => G[t + '|' + i] = Math.round(FUT))); FUT = null; }
@@ -754,6 +758,8 @@ function renderExp(){
   $('pAll1').onclick = () => { cur.forEach(({i}) => { const id = cs + '|' + i; G[id] = Math.max(1, DEF[id] - 1); }); renderExp(); renderUniv(); };
   $('pAll-1').onclick = () => { cur.forEach(({i}) => { const id = cs + '|' + i; G[id] = Math.min(5, DEF[id] + 1); }); renderExp(); renderUniv(); };
   $('pReset').onclick = () => { G = {...DEF}; FUT = null; renderExp(); renderUniv(); };
+  const tv = pv != null ? pv : (TGT.map(g => { const os = [...$('tgt').options].filter(o => o.value && K(o.value) === g.k); return os.find(o => o.value === g.nm) || os[0]; }).find(Boolean) || {}).value;   // 캠퍼스를 합친 키는 이름이 같은 것 먼저   // 처음 그릴 때 = 첫 목표 대학, 다시 그릴 때 = 고른 그대로
+  if (tv) $('tgt').value = tv; $('tgt').dataset.id = ME.id;
   $('tgt').onchange = tgtUpdate; tgtUpdate();
   $('exp').querySelectorAll('.sim input').forEach(simUpdate);
 }
@@ -811,19 +817,21 @@ function simUpdate(inp){
 function seniorsAdmitted(){ const A = D.apps; const m = {}, hk = (ME.k || '').trim(); GD().seniors.forEach(([p, ids]) => ids.forEach(i => { const a = A[i]; if (!a.ok || !a.t) return; if (hk && hk !== '취업' && hk !== '미제출' && a.gy !== hk) return; const k = a.u; (m[k] = m[k] || {g: a.gr, ps: []}).ps.push(p); })); return m; }
 function targetOptions(){ const m = seniorsAdmitted(); const order = ['서울 상위권','서울 중상위권','교대·특수목적','수도권 4년제','지방 거점국립대','그 밖의 지방대','전문대학'];
   const ks = Object.keys(m).filter(k => m[k].ps.length >= 2).sort((a, b) => order.indexOf(m[a].g) - order.indexOf(m[b].g) || a.localeCompare(b));
-  let out = '<option value="">대학 고르기(합격 선배 2명 이상)</option>', g0 = '';
-  ks.forEach(k => { if (m[k].g !== g0){ if (g0) out += '</optgroup>'; out += `<optgroup label="${esc(m[k].g)}">`; g0 = m[k].g; } out += `<option value="${esc(k)}">${esc(k)} (${m[k].ps.length}명)</option>`; });
+  let out = `<option value="">대학 고르기${PUB ? '' : '(합격 선배 2명 이상)'}</option>`, g0 = '';
+  ks.forEach(k => { if (m[k].g !== g0){ if (g0) out += '</optgroup>'; out += `<optgroup label="${esc(m[k].g)}">`; g0 = m[k].g; } out += `<option value="${esc(k)}">${esc(k)}${PUB ? '' : ` (${m[k].ps.length}명)`}</option>`; });
   return out + (g0 ? '</optgroup>' : ''); }
 function tgtUpdate(){
   const k = $('tgt').value, o = $('tgtOut'); if (!k){ o.textContent = ''; return; }
+  const g = TGT.find(x => x.k === K(k)), b = g && tgtBand(g.k, g.t), nd = b && b.med != null ? tgtNeed(b.med) : null;   // 목표 대학이면 목표 막대와 같은 줄을 먼저(그 전형 합격선 가운데)
+  const pre = (g ? `<div class="tgta">목표 대학 기준(${esc(g.t)} 합격선 가운데): <b>${nd ? tgtGap(nd.gap) : '합격선 근거 없음'}</b>${nd ? ` · 남은 학기 평균 ${tgtNeedTxt(nd.need)}` : ''}</div>` : '') + '<span class="mu">전형 구분 없이(교과·종합·논술 합격 선배):</span> ';
   const ps = seniorsAdmitted()[k].ps.slice().sort((a, b) => a - b), med = ps[Math.floor(ps.length / 2)];
   const C = GD().cohort, target = C[Math.min(C.length - 1, Math.max(0, Math.round(med / 100 * C.length) - 1))];
   const sc = scen(), fs = futSems(); let past = 0, pu = 0, fu = 0;
   Object.entries(sc.per).forEach(([t, [a, u]]) => { if (fs.includes(t)) fu += u; else { past += a; pu += u; } });
-  if (!fu){ o.innerHTML = '남은 학기 자료가 없어 계산할 수 없습니다.'; return; }
+  if (!fu){ o.innerHTML = pre + '남은 학기 자료가 없어 계산할 수 없습니다.'; return; }
   const need = (target * (pu + fu) - past) / fu;
   const recent = ME.sem.filter(v => v != null).at(-1), z = (need - recent) / GD().sd;
-  o.innerHTML = `합격 선배 중앙값 교내 상위 <b>${med.toFixed(1)}%</b> → 우리 학년 같은 위치 누적 <b>${target.toFixed(2)}</b> → 남은 학기 평균 <b class="${need < 1 ? 'bad' : ''}">${need < 1 ? '1.0 미만(남은 학기만으로는 불가)' : need > 5 ? '5.0 초과(이미 충분)' : need.toFixed(2)}</b> 필요` +
+  o.innerHTML = pre + `합격 선배 중앙값 교내 상위 <b>${med.toFixed(1)}%</b> → 우리 학년 같은 위치 누적 <b>${target.toFixed(2)}</b> → 남은 학기 평균 <b class="${need < 1 ? 'bad' : ''}">${need < 1 ? '1.0 미만(남은 학기만으로는 불가)' : need > 5 ? '5.0 초과(이미 충분)' : need.toFixed(2)}</b> 필요` +
     (need >= 1 && need <= 5 ? ` · 최근 학기(${recent.toFixed(2)}) 수준이면 가능성 약 <b>${Math.round(ncdf(z) * 100)}%</b><span class="est">추정</span>` : '');
 }
 
@@ -930,7 +938,7 @@ function renderUniv(){
   $('win').onchange = () => { WIN = +$('win').value; savePref(); renderUniv(); };
   if ($('hope')) $('hope').onchange = () => { HOPEONLY = $('hope').checked; savePref(); renderUniv(); };
   el.querySelectorAll('select.regsel').forEach(rs => rs.onchange = () => { REGION = rs.value; savePref(); renderUniv(); });
-  el.querySelectorAll('input.fav').forEach(c => c.onchange = () => favToggle(c.dataset.k, c.checked));
+  el.querySelectorAll('input.fav').forEach(c => c.onchange = () => { c.parentNode.classList.toggle('on', c.checked); c.nextElementSibling.textContent = c.checked ? '★' : '☆'; favToggle(c.dataset.k, c.checked); });
   el.querySelectorAll('#jb td:first-child > b').forEach(b => { b.title = '누르면 이 대학 상세(학과·전형·선배·입결·최저)'; b.onclick = () => { const tr = b.closest('tr'), nx = tr.nextElementSibling;
     if (nx && nx.classList.contains('jdet')){ nx.remove(); return; } tr.insertAdjacentHTML('afterend', `<tr class="jdet"><td colspan="${tr.children.length}">${judgeDetail(tr.dataset.k)}</td></tr>`); }; });
   el.querySelectorAll('#jb .tgtb').forEach(bt => bt.onclick = () => { const tr = bt.closest('tr'), k = bt.dataset.k, old = [...el.querySelectorAll('#jb tr.tgtpick')].find(x => x.dataset.k === k);
@@ -1169,8 +1177,16 @@ function fillJline(){
   const el = $('jline'); if (!el) return;
   const g = l => JUDGE.filter(r => r.lab === l).slice(0, 4).map(r => { const b = r.nm.replace(/\(.*?\)/g, ''); return esc((r.k.includes('|') ? r.nm : b).replace('대학교', '대')); }), C = {'안정권': '#14325c', '적정권': '#0f7a6c', '상향': '#b8541a'};
   const L = ['안정권', '적정권', '상향'].map(l => [l, g(l)]).filter(([, v]) => v.length);
-  el.className = L.length ? 'jline' : ''; el.innerHTML = L.length ? `<b>대학 가능권<span class="est">추정</span>${REGION !== '전체' ? ` <small class="bad">(${esc(REGION)} 대학만)</small>` : ''}</b> ` + L.map(([l, v]) => `<b class="lab" style="color:${C[l]}">${l}</b> ${v.join(' · ')}`).join('<br>') + ' <a href="#univ" class="small noprint">자세히 ↓</a>' : '';
+  const tl = tgtLine(), tg = tl ? `<div class="jtgt"><b>목표 대학</b> ${tl}</div>` : '';
+  el.className = L.length || tl ? 'jline' : ''; el.innerHTML = (L.length ? `<b>대학 가능권<span class="est">추정</span>${REGION !== '전체' ? ` <small class="bad">(${esc(REGION)} 대학만)</small>` : ''}</b> ` + L.map(([l, v]) => `<b class="lab" style="color:${C[l]}">${l}</b> ${v.join(' · ')}`).join('<br>') + ' <a href="#univ" class="small noprint">자세히 ↓</a>' : '') + tg;
+  if ($('mTgt')) $('mTgt').innerHTML = tgtMemo();
 }
+/* 목표 대학 한 줄(요약·상담 기록·상담 파일): 막대와 같은 거리 — 지금 누적 − 합격선 가운데(양수 = 남음) · 인원수 없음 */
+const tgtGap = d => d == null ? '–' : Math.abs(d) < .005 ? '합격선 가운데' : d > 0 ? d.toFixed(2) + ' 남음' : (-d).toFixed(2) + ' 앞';
+const tgtNeedTxt = n => n == null || Math.abs(n) < .005 ? '–' : n < 1 ? '<b class="bad">1.0 미만(남은 학기만으로는 불가)</b>' : n > 5 ? '5등급이어도 도달' : n.toFixed(2);   // 목표 막대 작은 줄과 같은 말
+const tgtLine = () => TGT.map(g => { const b = tgtBand(g.k, g.t);
+  return `${esc(g.nm.replace('학교', ''))} ${esc(g.t)} ${b.med == null ? '근거 없음' : tgtGap(tgtNeed(b.med).gap)}`; }).join(' · ');
+const tgtMemo = () => TGT.length ? tgtLine() : '<span class="mu small">아직 없습니다 — 판정표에서 대학 이름 옆 [목표]를 누르면 담깁니다(1~3곳).</span>';
 /* ── 4. 합격선 차트(다온 '수시 합격선 차트' 꼴): 판정표 대학마다 희망 계열 학과들의 입결 밴드(5등급) 최고~최저 + 내 누적 선 ── */
 function judgeChart(L, my, tr){
   const B = bandRows().filter(r => !tr || !r.t || r.t.includes(tr)), by = {};
@@ -1282,7 +1298,7 @@ function judgeHtml(L, my, tr){
   const tb = L.map(r => { const rf = r.yg && r.yg.rec ? recFit(r.yg, my) : null;
     const rec = rf ? `${rf.n}명 · 내 ${rf.r}위 <b class="${rf.ok ? '' : 'dn'}">${rf.ok ? '추천권' : '경쟁'}</b>` : r.yg && r.yg.rec ? esc(r.yg.rec_raw) : dash;
     const plc = GR === 2 ? `<td class="small">${r.pl ? (r.pl.join('·') || '변경 문장만') : dash}</td>` : '';
-    return `<tr class="${L.indexOf(r) >= 15 ? 'more' : ''} jl-${r.lab}" data-k="${esc(r.k)}"><td class="l"><label class="favl t-only noprint" title="관심 대학에 담기(상담 파일에 인쇄)"><input type="checkbox" class="fav" data-k="${esc(r.k)}" ${FAV.some(f => f.k === r.k) ? 'checked' : ''}>★</label><b>${esc(r.nm.replace('학교', ''))}</b><button class="tgtb t-only noprint${TGT.some(x => x.k === r.k) ? ' on' : ''}" data-k="${esc(r.k)}" title="목표 대학으로 정하기(1~3곳)">목표</button></td><td><b class="lab-${r.lab}">${r.lab}</b></td><td>${r.su && r.su[1] ? (PUB ? (r.su[0] ? (r.su[0] <= 2 ? '있음(근거 적음)' : r.su[0] + '명') : dash) : r.su[0] + ' / ' + r.su[1] + '명') : dash}</td>`
+    return `<tr class="${L.indexOf(r) >= 15 ? 'more' : ''} jl-${r.lab}" data-k="${esc(r.k)}"><td class="l"><label class="favl t-only noprint${FAV.some(f => f.k === r.k) ? ' on' : ''}" title="관심 대학에 담기(상담 파일에 인쇄)"><input type="checkbox" class="fav" data-k="${esc(r.k)}" ${FAV.some(f => f.k === r.k) ? 'checked' : ''}><span class="fs">${FAV.some(f => f.k === r.k) ? '★' : '☆'}</span></label><b>${esc(r.nm.replace('학교', ''))}</b><button class="tgtb t-only noprint${TGT.some(x => x.k === r.k) ? ' on' : ''}" data-k="${esc(r.k)}" title="목표 대학으로 정하기(1~3곳)">목표</button></td><td><b class="lab-${r.lab}">${r.lab}</b></td><td>${r.su && r.su[1] ? (PUB ? (r.su[0] ? (r.su[0] <= 2 ? '있음(근거 적음)' : r.su[0] + '명') : dash) : r.su[0] + ' / ' + r.su[1] + '명') : dash}</td>`
       + `<td>${r.band == null ? dash : VL(VB[r.band])}</td><td>${r.js == null ? dash : VL(VJ[r.js])}</td>`
       + `<td class="v-${r.choe || 'x'}">${CHL(r.choe) || dash}${(() => { const gp = r.choeK && (ME.choe_gap || {})[r.choeK]; return gp && /미충족|일부/.test(r.choe || '') ? `<br><span class="small">${esc(gp)}</span>` : ''; })()}</td><td class="small t-only">${rec}</td>${plc}</tr>`; }).join('');
   const g1note = GR === 1 ? ' 2028 변경은 2학년(2028 대입) 대상이라 1학년 화면에서는 뺐습니다.' : '';
@@ -1520,7 +1536,7 @@ function renderClass(){
     <td>${r.now < 9 ? r.now.toFixed(2) : '–'}</td><td>${r.edge ? `<span class="flag f-edge">${r.edge}과목</span>` : ''}</td><td class="l">${r.down.map(g => `<span class="flag f-dn">${g}</span>`).join(', ')}</td>
     <td>${r.ms < 99 ? r.ms : '–'}</td><td class="nw">${r.ml === '…' ? '<span class="mu">…</span>' : r.ml ? `${r.ml.slice(5)}${daysAgo(r.ml) >= 30 ? ' <small class="bad">' + daysAgo(r.ml) + '일 전</small>' : ''}` : '<span class="mu">없음</span>'}</td><td>${w(r.mn)}</td><td>${w(r.mf)}</td><td><b>${w(r.pri)}</b></td>
     <td class="${r.tg && r.tg.length ? 'l ' : ''}tgc">${!r.tg ? '…' : r.tg.length ? r.tg.map(g => `<span style="white-space:nowrap">${esc(g.nm.replace('학교', ''))} ${esc(g.t)}</span>`).join('<br>') : '–'}</td><td class="tgg">${!r.tg ? '…' : r.tgg > 90 || Math.abs(r.tgg) < .005 ? '–' : (r.tgg > 0 ? `${r.tgg.toFixed(2)} 남음` : `${(-r.tgg).toFixed(2)} 앞`)}</td></tr>`).join('');
-  CLS = true; document.body.classList.remove('home'); document.body.classList.add('cls'); prnLab();
+  CLS = true; document.body.classList.remove('home'); barOn(true); document.body.classList.add('cls'); prnLab();
   $('main').innerHTML = `<div class="hd"><h1>${GR}학년 ${ban}반</h1><span class="meta">${L.length}명 · 열 제목을 누르면 정렬 · 이름을 누르면 학생 화면</span><button class="cpy noprint" data-t=".clsv">표 복사</button></div>
    ${clsSummary(L)}
    <table class="tb clsv"><thead><tr>${th('no', '번호')}${th('nm', '이름')}${th('k', '희망')}${th('cum', '누적')}${th('rk', '교내 순위')}${th('mv', '학기 순위 변화')}${th('now', curSem() + ' 중간')}${th('edge', '1등급까지 한 발', '중간 추정 2등급인데 학년 상위 13% 안인 과목 수')}${th('down', '내려온 교과', '가장 좋았던 학기보다 학년 석차가 15%p 넘게 내려온 교과')}${th('ms', GD().last + ' 국수영 합')}${th('ml', '마지막 상담', '이 PC에 저장한 상담 기록 중 가장 최근 날짜')}${th('mn', '기록')}${th('mf', '관심 대학')}${th('pri', '상담 우선', '점수가 클수록 먼저 상담 — 아래 설명 참고')}${th('tgn', '목표', '판정표에서 고른 목표 대학(최대 3곳) · 이 PC에 저장한 것만')}${th('tgg', '가장 쉬운 목표까지', '누적과 합격선(가운데)의 차이 중 가장 가까운 목표 · 남음 = 아직 멂, 앞 = 합격선보다 좋음(등급)')}</tr></thead><tbody>${tb}</tbody></table>
@@ -1554,7 +1570,7 @@ let GLAST = null, CMPSEL = new Set();   // 학년 화면에서 학생으로 갔�
 function gradeView(tab, back){
   if (!GRDV){ GPREV = {me: ME, g: G, def: DEF, fut: FUT, cls: CLS}; if (back && back.gr === GR){ GF = {...back.gf, us: [...back.gf.us]}; } else { GF.ban = ''; GF.us = []; } }   // 들어올 땐 학년 전체로 · [학년 전체]로 돌아오면 보던 탭·거르기 그대로
   if (!GF.us) GF.us = []; if (!GF.lv) GF.lv = '적정';
-  if (tab) GRDV = tab; ME = null; CLS = false; $('clsBtn').classList.remove('on'); $('grdBtn').classList.add('on'); document.body.classList.remove('home', 'cls'); document.body.classList.add('grd'); $('selS').value = ''; placeRail();
+  if (tab) GRDV = tab; ME = null; CLS = false; $('clsBtn').classList.remove('on'); $('grdBtn').classList.add('on'); document.body.classList.remove('home', 'cls'); barOn(true); document.body.classList.add('grd'); $('selS').value = ''; placeRail();
   const gd = GD(), J = gradeJudge(), jm = new Map(J.map(o => [o.s.id, o.rows]));
   const uok = s => !GF.us.length || (jm.get(s.id) || []).some(r => GF.us.includes(r.k) && LVS[GF.lv].includes(r.lab));
   const pass = s => (!GF.ban || banOf(s.id) === +GF.ban) && (!GF.k || (s.k || '미제출') === GF.k) && (GRDV !== 'rank' || uok(s));
@@ -1591,7 +1607,7 @@ function gradeView(tab, back){
       const o = U[r.k] = U[r.k] || {k: r.k, nm: r.nm, by: {안정권: [], 적정권: [], 상향: []}}; if (r.nm.length < o.nm.length) o.nm = r.nm; o.by[r.lab].push(s); }));
     const L = Object.values(U).sort((a, b) => b.by.안정권.length + b.by.적정권.length - a.by.안정권.length - a.by.적정권.length || b.by.안정권.length - a.by.안정권.length || b.by.상향.length - a.by.상향.length);
     const who = a => a.slice().sort((x, y) => (x.rk ?? 999) - (y.rk ?? 999)).map(s => `<a href="#" data-id="${s.id}">${esc(s.nm)}</a><small class="rkn">${s.rk ? s.rk + '위' : '–'}</small><small class="mu">${banOf(s.id)}반</small>`).join(' ');
-    const tb = L.map((o, i) => `<tr class="${i >= 30 ? 'more' : ''}"><td class="l"><b class="gu" data-k="${esc(o.k)}" title="이 대학으로 석차 명단 거르기" style="cursor:pointer;text-decoration:underline dotted #b7bcc6;text-underline-offset:4px">${esc(o.nm.replace('대학교', '대').replace(/학교$/, ''))}</b></td><td class="small mu">${[...uReg(o.k)].join('·') || '–'}</td>${LABS.map(l => `<td><b class="lab-${l}">${o.by[l].length || '<span class="mu">·</span>'}</b></td>`).join('')}<td><b>${o.by.안정권.length + o.by.적정권.length}</b></td>
+    const tb = L.map((o, i) => `<tr class="${i >= 30 ? 'more' : ''}"><td class="l"><b class="gu" data-k="${esc(o.k)}" title="이 대학으로 석차 명단 거르기" style="cursor:pointer;text-decoration:underline dotted #b7bcc6;text-underline-offset:4px">${esc(o.nm.replace('대학교', '대').replace(/학교$/, ''))}</b></td><td class="small mu">${[...uReg(o.k)].join('·') || '–'}</td>${LABS.map(l => `<td><b class="lab-${l}">${o.by[l].length || '<span class="mu">–</span>'}</b></td>`).join('')}<td><b>${o.by.안정권.length + o.by.적정권.length}</b></td>
       <td class="l"><details class="gwho"><summary>명단</summary>${LABS.filter(l => o.by[l].length).map(l => `<div><b class="lab-${l}">${l}</b> ${who(o.by[l])}</div>`).join('')}</details></td></tr>`).join('');
     body = `<div class="noprint" style="margin:4px 0"><button class="cpy" data-t=".grdu" style="margin-left:0">표 복사</button> <span class="small mu" id="cpyMsg"></span></div><table class="tb grdu"><thead><tr><th>대학</th><th>지역</th>${LABS.map(l => `<th class="lab-${l}">${l}</th>`).join('')}<th>안정+적정</th><th>학생</th></tr></thead><tbody>${tb || '<tr><td colspan="7" class="mu">조건에 맞는 대학이 없습니다.</td></tr>'}</tbody></table>${moreBtn(L.length - 30)}${L.length > 30 ? `<p class="small mu printonly">※ 위 30곳만 인쇄했습니다(전체 ${L.length}곳) — 화면에서 '더 보기'를 펼친 뒤 인쇄하면 모두 나옵니다.</p>` : ''}
      <div class="note">학생마다 학생 화면 판정표(${HOPEONLY ? '희망 계열 학과만' : '전체 학과'} · 선배 범위 ±${WIN}%p)를 지역 '전체'로 낸 뒤, 그 대학을 안정권·적정권·상향으로 받은 학생 수를 셉니다. 판정표에 안 나온 대학(근거가 없는 곳)은 0으로 칩니다. 지역은 대학 캠퍼스 기준이라 단국대처럼 두 지역에 다 나올 수 있습니다. 명단은 교내 순위 순. 대학 이름을 누르면 그 대학을 적정권 이상으로 받은 학생만 석차 명단으로 봅니다.</div>`;
@@ -1659,10 +1675,12 @@ function gradeCard(id, jm){   // 석차 명단에서 학생 한 명 간단 요�
    <div class="gcr"><span class="gk">대학 가능권</span><div>${uv.map(([l, a]) => `<div><b class="lab-${l}">${l} ${a.length}</b> ${a.slice(0, 6).map(r => esc(r.nm.replace('대학교', '대').replace(/학교$/, ''))).join(' · ')}${a.length > 6 ? ` <span class="mu">외 ${a.length - 6}곳</span>` : ''}</div>`).join('') || '<span class="mu">판정 근거가 없습니다</span>'}</div></div></div>`;
 }
 const gradeOff = () => { GRDV = null; $('grdBtn').classList.remove('on'); document.body.classList.remove('grd', 'cls'); prnLab(); };
+const barOn = on => ['prev', 'next', 'modeBtn', 'prn'].forEach(i => $(i).disabled = !on && !(i === 'modeBtn' && PUB));   // 시작 화면(학생 없음)에서는 꺼 둠 — 학생·학부모 보기 중이면 돌아갈 버튼은 남김
 const prnLab = () => { $('prn').textContent = CLS ? '반 표 인쇄' : GRDV || !ME ? '이 화면 인쇄' : '이 학생 인쇄'; };
 
 /* ── 3·6. 상담 기록(교사·이 PC에만 암호화 저장): 진단·처방·목표 3칸(솔루션 대시보드 꼴) + 관심 대학 + 상담 파일 인쇄 ── */
-const MEMO3 = ['진단', '처방', '목표'], MEMOPH = ['지금 상태 — 성적·태도·고민', '해결책 — 할 일·과목·전형', '다음 상담까지 목표'];
+const MEMO3 = ['진단', '처방', '목표'], MEMOLB = ['진단', '처방', '약속'], MEMOPH = ['지금 상태 — 성적·태도·고민', '해결책 — 할 일·과목·전형', '다음 상담까지 약속한 것'];   // MEMO3 = 저장 글머리([목표] — 예전 기록과 같게 둠), MEMOLB = 화면 이름
+const memoShow = t => memoTxt(t).replace(/^\[목표\] /gm, '[약속] ');   // 보여 줄 때만 '목표' → '약속'
 let MEMOL = [];
 const favRow = f => `<tr><td class="l"><b>${esc(f.nm)}</b></td><td><b class="lab-${f.lab}">${esc(f.lab)}</b></td><td>${f.su && f.su[1] ? f.su[0] + ' / ' + f.su[1] + '명' : '–'}</td><td>${f.band == null ? '–' : VB[f.band]}</td><td>${f.js == null ? '–' : VJ[f.js]}</td><td>${esc(CHL(f.choe) || '–')}</td><td class="small mu">${esc(f.d || '')}</td></tr>`;
 const favTable = () => FAV.length ? `<table class="tb"><thead><tr><th>대학</th><th>판정</th><th>선배 합격/지원</th><th>입결 밴드</th><th>정시선</th><th>최저</th><th>담은 날</th></tr></thead><tbody>${FAV.map(favRow).join('')}</tbody></table>` : '<p class="mu small">아직 없습니다 — 대학 가능권 판정표에서 대학 이름 앞 ★를 누르면 담깁니다.</p>';
@@ -1715,8 +1733,9 @@ async function renderMemo(){
   MEMOL = L; syncDraft();
   el.innerHTML = `<h2>상담 기록 <small>이 PC에만 암호화해 저장 · 다른 선생님 PC와 공유되지 않음</small><span style="margin-left:auto" class="noprint">${api() ? '<button id="mExp" class="morebtn">기록 내보내기</button> · <button id="mImp" class="morebtn">가져오기</button> · ' : ''}<button id="logP" class="morebtn">상담 파일 인쇄</button></span></h2><div id="mMsg" class="small ${err ? 'bad' : 'mu'}">${err ? '⚠ ' + esc(err) + ' — 지금 쓰는 기록이 저장되지 않을 수 있습니다. 관리자에게 알려 주세요.' : ''}</div>
    <h3>관심 대학 <small>${FAV.length}곳 · 담을 때의 판정</small></h3>${favTable()}
-   <div class="memo">${MEMO3.map((k, i) => `<label class="m3"><b>${k}</b><textarea id="memo${i}" placeholder="${MEMOPH[i]}"></textarea></label>`).join('')}${chkHtml('m')}<button id="memoS">기록 저장</button>
-   <div class="hist">${L.slice().reverse().map(m => `<div><b>${esc(m.d)}</b>${esc(memoTxt(m.t))}</div>`).join('') || '<div class="mu">저장된 기록이 없습니다.</div>'}</div></div>`;
+   <h3>목표 대학 <small>${TGT.length}곳 · 지금 누적과 합격선 가운데 사이</small></h3><p id="mTgt">${tgtMemo()}</p>
+   <div class="memo">${MEMO3.map((k, i) => `<label class="m3"><b>${MEMOLB[i]}</b><textarea id="memo${i}" placeholder="${MEMOPH[i]}"></textarea></label>`).join('')}${chkHtml('m')}<button id="memoS">기록 저장</button>
+   <div class="hist">${L.slice().reverse().map(m => `<div><b>${esc(m.d)}</b>${esc(memoShow(m.t))}</div>`).join('') || '<div class="mu">저장된 기록이 없습니다.</div>'}</div></div>`;
   restoreDraft('m'); restoreDraft('q');
   $('memoS').onclick = async () => { if (await memoSave('m')) renderMemo(); };
   $('logP').onclick = printLog;
@@ -1732,7 +1751,7 @@ function lastLine(L){
   if (sp){ const dc = sp.c != null && ME.cum != null ? Math.round((sp.c - ME.cum) * 100) / 100 : null, dr = sp.r && ME.rk ? sp.r - ME.rk : null;   // 숫자가 작아지면 좋아짐(▲ 빨강)
     const ar = (v, f) => v == null ? '–' : !v ? '그대로' : `<b class="${v > 0 ? 'up' : 'dn'}">${v > 0 ? '▲' : '▼'}${f(Math.abs(v))}</b>`;
     out.push(`지난 상담(${esc(sn.d.slice(0, 10))}) 대비 누적 ${ar(dc, v => v.toFixed(2))} · 순위 ${ar(dr, v => v + '계단')}`); }
-  const g = memoTxt(last.t).split('\n').find(l => /^\[(목표|메모)\]/.test(l)) || memoTxt(last.t).split('\n')[0] || '';
+  const g = memoShow(last.t).split('\n').find(l => /^\[(약속|메모)\]/.test(l)) || memoShow(last.t).split('\n')[0] || '';
   out.push(`최근 기록 <b>${esc(last.d.slice(0, 10))}</b>${g ? ' · ' + esc(g.length > 60 ? g.slice(0, 60) + '…' : g) : ''}`);
   el.innerHTML = out.join(' <span class="mu">|</span> ');
 }
@@ -1743,7 +1762,8 @@ function printLog(){
   const p = document.createElement('div'); p.id = 'logp';
   p.innerHTML = `<div class="hd"><h1>${esc(s.nm)} 상담 파일</h1><span class="meta">${s.id} · ${GR}학년 ${ban}반 ${s.id % 100}번 · 희망 ${esc(s.k || '미제출')} · 누적 ${f2(s.cum)}${s.rk ? ' · 교내 ' + s.rk + '/' + GD().n : ''} · 출력 ${nowLocal().slice(0, 10)}</span></div>
     <h3>관심 대학</h3>${favTable()}
-    <h3>상담 기록 <small>${MEMOL.length}건</small></h3><div class="memo"><div class="hist">${MEMOL.map(m => `<div><b>${esc(m.d)}</b>${esc(memoTxt(m.t))}</div>`).join('') || '<div>기록 없음</div>'}</div></div>
+    <h3>목표 대학</h3><p>${tgtMemo()}</p>
+    <h3>상담 기록 <small>${MEMOL.length}건</small></h3><div class="memo"><div class="hist">${MEMOL.map(m => `<div><b>${esc(m.d)}</b>${esc(memoShow(m.t))}</div>`).join('') || '<div>기록 없음</div>'}</div></div>
     <div class="note" style="display:block">판정은 담은 날 기준 추정입니다. 교사용 · 외부 반출 금지.</div>`;
   document.body.appendChild(p); document.body.classList.add('logprint');
   const done = () => { p.remove(); document.body.classList.remove('logprint'); window.removeEventListener('afterprint', done); };
@@ -1756,7 +1776,7 @@ $('modeBtn').onclick = () => { syncDraft(); if (!PUB && GRDV){ gradeOff(); home(
   if (PUB) WHO = null; else { $('cmp').style.display = 'none'; closeQpick(); }   // 교사 보기로 돌아오면 다음 학생에서 다시 묻기 · 학생 비교(다른 학생 정보)는 닫음
   PUB = !PUB; document.body.classList.toggle('pub', PUB); $('modeBtn').classList.toggle('on', PUB); $('modeBtn').textContent = PUB ? '교사 보기로' : '학생·학부모 보기'; if (CLS && PUB){ CLS = false; } render(); };
 $('grdBtn').onclick = () => { if (!GRDV){ gradeView(GLAST && GLAST.gr === GR ? GLAST.tab : 'rank', GLAST); return; } const p = GPREV; gradeOff(); GPREV = null;
-  if (p && p.me){ ME = p.me; G = p.g; DEF = p.def; FUT = p.fut; $('selS').value = ME.id; document.body.classList.remove('home'); }
+  if (p && p.me){ ME = p.me; G = p.g; DEF = p.def; FUT = p.fut; $('selS').value = ME.id; document.body.classList.remove('home'); barOn(true); }
   if (p && p.cls && $('selB').value){ CLS = true; $('clsBtn').classList.add('on'); renderClass(); } else if (ME) render(); else home(); };
 $('clsBtn').onclick = () => { gradeOff(); if (!CLS && !$('selB').value){ home('반 전체 보기는 반을 먼저 고른 뒤 누르세요.'); return; } CLS = !CLS; $('clsBtn').classList.toggle('on', CLS); if (CLS) renderClass(); else render(); window.scrollTo(0, 0); };
 $('selB').addEventListener('change', () => { if (CLS) setTimeout(renderClass, 0); });
@@ -1821,7 +1841,7 @@ window.addEventListener('afterprint', () => document.querySelectorAll('details.h
 
 /* ── 초임 교사용(10-16): 시작 화면 · 누구와 보나 · 인쇄 확인 · 섹션별 상담 팁 ── */
 function home(msg){
-  gradeOff(); ME = null; placeRail(); document.body.classList.add('home');
+  gradeOff(); ME = null; placeRail(); document.body.classList.add('home'); barOn(false);
   const b = $('selB').value, step = !b ? 1 : 2;
   const st = (n, t, d) => `<li class="${n < step ? 'done' : n === step ? 'now' : ''}"><b>${n}</b><span>${t}</span><small>${d}</small></li>`;
   const P = [10, 24, 32, 24, 10], C = ['#e4eefc', '#b9d0f2', '#8fb3e6', '#6593d6', '#4475bd'];   // 10-20: 남색 한 색 진하기
@@ -1853,8 +1873,10 @@ function home(msg){
     <tr><th class="l">내신 예측</th><td class="l">이번 기말·남은 학기 등급을 바꾸면 최종 누적이 바뀜</td><td class="l">학생이 − / + 를 직접 누르게 하면 목표가 자기 것이 됩니다.</td><td class="l">결과는 가정입니다. "이렇게 되면"으로 말합니다.</td></tr>
     <tr><th class="l">기말 목표</th><td class="l">과목별로 기말에서 들어야 할 위치(상위 %), 남은 수행평가</td><td class="l">과목 1~2개만 골라 약속합니다.</td><td class="l">모든 과목을 다 올리자고 하지 않습니다.</td></tr>
     <tr><th class="l">대학</th><td class="l">안정·적정·상향 판정, 우리 선배 합격, 수능최저</td><td class="l">희망 계열을 먼저 묻고 그 줄부터 봅니다.</td><td class="l">합격 보장이 아닙니다. "비슷한 선배가 이랬다"로 말합니다.</td></tr>
+    <tr><th class="l">목표 대학</th><td class="l">판정표 [목표]로 고른 1~3곳의 막대 — 합격선 가운데까지 거리, 남은 학기에 필요한 평균</td><td class="l">학생이 직접 고르게 하고, 거리를 "이만큼 남았어"로 보여 줍니다.</td><td class="l">'근거 적음'이 붙은 곳은 선배가 2~3명뿐입니다. 띠 안이어도 보장이 아닙니다.</td></tr>
+    <tr><th class="l">H. 대학 방식으로 본 내 등급</th><td class="l">대학마다 반영 교과·점수표로 다시 낸 내 등급, 유리·불리, 효과 큰 교과</td><td class="l">유리한 대학을 먼저 보고, 효과 큰 교과를 공부 계획에 넣습니다.</td><td class="l">'참고'가 붙은 대학은 방식이 확정되지 않았습니다.</td></tr>
     <tr><th class="l">모의</th><td class="l">회차별 등급, 1학년은 영역별 강약</td><td class="l">수능최저가 걸린 대학을 볼 때 함께 봅니다.</td><td class="l">1학년 모의는 범위가 좁아 참고만 합니다.</td></tr>
-    <tr><th class="l">반 전체 보기</th><td class="l">반 학생 전체 한 표</td><td class="l">상담 순서를 정할 때 씁니다. 열 제목을 누르면 정렬됩니다.</td><td class="l">교사 혼자 볼 때만 씁니다(학생·학부모 보기에서는 꺼짐).</td></tr>
+    <tr><th class="l">반 전체 보기</th><td class="l">반 학생 전체 한 표, 목표 열(학생마다 고른 목표 대학과 가장 쉬운 목표까지 거리)</td><td class="l">상담 순서를 정할 때 씁니다. 열 제목을 누르면 정렬됩니다.</td><td class="l">교사 혼자 볼 때만 씁니다(학생·학부모 보기에서는 꺼짐). 목표는 이 PC에 저장한 것만 보입니다.</td></tr>
     <tr><th class="l">상담 메모</th><td class="l">이 PC에만 암호화 저장</td><td class="l">약속한 것과 다음에 확인할 것을 적습니다.</td><td class="l">다른 선생님 PC에는 보이지 않습니다.</td></tr>
    </tbody></table></section>
    <section class="hs"><h2>입시가 처음이라면 — 꼭 알아 둘 말</h2>
