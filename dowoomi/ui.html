@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610210443"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610210716"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <script>/* 화면 내용 긁어가기 방지(입력칸 제외). 뷰소스는 원리상 못 막음 */['contextmenu','copy','cut','dragstart'].forEach(e=>document.addEventListener(e,v=>{if(!(v.target.closest&&v.target.closest('input,textarea,[contenteditable]')))v.preventDefault()}));</script>
 <title>영락고 상담 도우미</title>
@@ -2247,10 +2247,11 @@ function sheetPlanA(s, ctx, ups){
   const bar = b => `<svg viewBox="0 0 300 26" class="sh-bar"><rect x="0" y="6" width="300" height="14" fill="#f0f1f3"/>${b.src ? `<rect x="${X(b.lo)}" y="6" width="${Math.max(2, X(b.hi) - X(b.lo))}" height="14" fill="#c9dcec"/><line x1="${X(b.med)}" x2="${X(b.med)}" y1="2" y2="24" stroke="#0e5a8a" stroke-width="2.5"/>` : ''}${past.map(p => `<circle cx="${X(p.v)}" cy="13" r="3.5" fill="#b6bcc5"/>`).join('')}${cur ? `<circle cx="${X(cur.v)}" cy="13" r="6" fill="#b45309" stroke="#fff" stroke-width="1.5"/>` : ''}</svg>`;
   const tk = []; for (let v = a0; v <= a1 + 1e-9; v += .5) tk.push(v);
   const axis = `<div class="sh-step sh-axis"><span class="sh-sm">← 좋은 등급</span><svg viewBox="0 0 300 14" class="sh-bar">${tk.map(v => `<text x="${X(v)}" y="11" font-size="11" fill="#8a919c" text-anchor="middle">${v.toFixed(1)}</text>`).join('')}</svg><span></span></div>`;
-  const rec = s.sem.filter(v => v != null).at(-1), needTx = n => n == null || Math.abs(n) < .005 ? '–' : n < 1 ? '<span class="sh-gl">남은 학기를 모두 1등급 받아도 가운데엔 못 미쳐요 — 길게 보는 목표</span>' : n > 5 ? '남은 학기 5등급이어도 닿아요'
+  const rec = s.sem.filter(v => v != null).at(-1), needTx = n => n == null || Math.abs(n) < .005 ? '–' : n < 1 ? '<span class="sh-gl">지금도 최상위예요 — 남은 학기를 모두 1등급 받아도 가운데값까지는 길게 보는 목표고, 지금 성적만으로도 선택지가 넓어요</span>' : n > 5 ? '남은 학기 5등급이어도 닿아요'
     : rec == null || n >= rec - .5 ? `남은 학기를 평균 <b>${n.toFixed(2)}</b>로 받으면 닿아요` : `남은 학기 평균 <b>${n.toFixed(2)}</b> — 최근 학기(${rec.toFixed(2)})보다 크게 올려야 하는 거리예요`;
   const u0 = ups[0], g0 = u0 && u0.need ? u0.need : null;
-  const steps = !ups.length ? `<div class="sh-blk sh-g sh-steps"><h2>상향 대학 — 성적을 올려서 여기를 가자</h2><p class="sh-say">${s.cum == null || s.why ? '성적 자료가 쌓이면 다음 상담에서 목표 대학을 함께 정해요.' : '<b>추천 대학 없음</b> — 지금 성적보다 한 단계 위의 대학을 자료에서 찾지 못했어요 — 상담하며 함께 정해요.'}</p></div>`
+  const mjr = !ups.length && my != null && s.cum != null && s.cum < 1.2 && !s.why ? bandRows().filter(r => (!tr || !r.t || r.t.includes(tr)) && my > r.hi && my <= r.hi + .4).sort((a, b) => b.hi - a.hi).slice(0, 3) : [];
+  const steps = !ups.length ? (mjr.length ? blk('상향 — 같은 계열에서 한 단계 위 학과', '최상위', `지금도 최상위라 더 올릴 '대학'은 거의 없어요. 대신 같은 계열에서 한 단계 어려운 <b>학과</b>를 다음 눈높이로 잡았어요. <i class="sh-est">추정 · 길게 보는 목표</i>`, `<ul class="sh-pts">${mjr.map(r => `<li><span class="sh-tag">상향</span><span><b>${esc(r.u)} ${esc(String(r.d).replace(/\s*\(.*$/, ''))}</b> <i class="sh-est">합격선 ${r.lo.toFixed(2)}~${r.hi.toFixed(2)}</i></span></li>`).join('')}</ul><p class="sh-note">같은 계열에서 내 누적보다 조금 어려운 학과예요(가장 가까운 순). 특정 인기학과를 권하는 게 아니라 '학과 눈높이'를 한 단계 올리는 참고예요.</p>`, true).replace('sh-blk sh-g', 'sh-blk sh-g sh-steps') : `<div class="sh-blk sh-g sh-steps"><h2>상향 대학 — 성적을 올려서 여기를 가자</h2><p class="sh-say">${s.cum == null || s.why ? '성적 자료가 쌓이면 다음 상담에서 목표 대학을 함께 정해요.' : '<b>추천 대학 없음</b> — 지금 성적보다 한 단계 위의 대학을 자료에서 찾지 못했어요 — 상담하며 함께 정해요.'}</p></div>`)
     : blk('상향 대학 — 성적을 올려서 여기를 가자', g0 ? tgtGap(g0.gap) : '–', g0 ? `${u0.alt ? '' : '1단계 '}<b>${esc(u0.nm.replace('학교', ''))} ${esc(u0.t)}</b> 합격선 가운데까지의 거리예요.${g0.need != null && Math.abs(g0.need) >= .005 ? ' ' + needTx(g0.need) + '.' : ''} <i class="sh-est">추정</i>` : `${esc(u0.nm.replace('학교', ''))} ${esc(u0.t)}은 합격선 근거가 없어 거리를 재지 못했어요.`,
       (u0.auto ? `<p class="sh-info">목표 대학을 아직 정하지 않아, ${ups.some(u => u.dn) ? `${ups.some(u => !u.dn) ? "판정표 '상향'과 " : ''}<b>전국 입결 예측 기준 자동 추천</b>으로` : "판정표 '상향'에서"} 합격선 가운데까지 가까운 순으로 골랐어요. 상담하며 바꿀 수 있어요.</p>` : '')
       + ups.map(u => `<div class="sh-step"><div class="sh-stn"><span class="sh-sn">${u.alt ? '다음 계단' : u.step + '단계'}</span><b>${esc(u.nm.replace('학교', ''))}</b> ${esc(u.t)}<small>${u.alt ? '적정권 중 가장 먼 곳' : SL(u.need && u.need.gap)}</small></div>${bar(u.band)}<div class="sh-stg">${u.need ? `<b>${tgtGap(u.need.gap)}</b><span>${needTx(u.need.need)}</span>` : `<b class="na">–</b>`}<i>${src(u.band)}${u.band.src ? ` · ${u.band.lo.toFixed(2)}~${u.band.hi.toFixed(2)}` : ''}</i></div></div>`).join('') + axis
@@ -2299,7 +2300,16 @@ function sheetPlanA(s, ctx, ups){
   if ((s.s32 || []).length && !fs.includes('3-2')) FX.push(['3-2', s.s32.map(n => ({n, s: 2}))]);
   const subj = blk('남은 학기 과목', null, FX.length ? '앞으로 들을 과목이에요. 지정 = 학년 공통, 신청 = 본인이 고른 과목입니다.' : '남은 학기 과목 자료가 없어요.',
     FX.length ? `<table class="sh-tb sh-kv"><tbody>${FX.map(([t, a]) => `<tr><th>${esc(t)}</th><td>${a.map(x => `${esc(x.n)}${x.c ? ` <small class="sh-sm">${x.c}학점</small>` : ''} <i class="sh-est">${x.s === 2 ? '신청' : '지정'}</i>`).join(' · ')}</td></tr>`).join('')}</tbody></table>` : '');
-  return now + chart + steps + cards + jt + band + e28 + js + gap + fav + subj;
+  const hk2 = (s.k || '').trim(), jobWant = hk2 === '취업', low = my != null && my >= 4;
+  const gR = sheetGoalT(s, ctx, ups), raised = gR.R.filter(o => Number.isInteger(gR.T[o.id]) && o.x.v != null && gR.T[o.id] < o.x.v).map(o => o.x.n);
+  const pos = my == null ? '아직 누적을 내지 않았어요(일부 학기 성적 없음) — 받은 성적으로 함께 봐요.' : `지금 누적 <b>${f2(my)}</b>등급${s.rk != null ? `, 학년 ${pctBand(100 * s.rk / GD().n)}` : ''}.`;
+  const goalLine = s.cum == null || s.why ? '성적 자료가 쌓이면 목표 대학을 함께 정해요.'
+    : jobWant ? `취업 희망 — 대학 상향은 참고로만 보고, 이번 기말 ${raised.length ? `<b>${esc(raised.slice(0, 2).join('·'))}</b>` : '목표 과목'}부터 챙겨요.`
+    : u0 ? `${u0.alt ? '다음 계단' : '1단계'} <b>${esc(u0.nm.replace('학교', ''))} ${esc(u0.t)}</b>${u0.need ? ` (${tgtGap(u0.need.gap)})` : ''}` + (low ? ' — 현실 거리는 큰 편, 이번 기말부터 한 칸씩' : '')
+    : mjr.length ? "지금도 최상위 — '대학'보다 같은 계열 <b>한 단계 위 학과</b>가 다음 눈높이예요." : '다음 목표는 담임과 함께 정해요.';
+  const homeLine = raised.length ? `집에서는 이번 기말 <b>${esc(raised.slice(0, 3).join('·'))}</b>부터 한 칸씩 올리게 도와주세요.` : low ? '집에서는 수행평가 마감을 빠뜨리지 않게 챙겨 주세요.' : '집에서는 이번 기말 목표(다음 장)대로 챙겨 주세요.';
+  const brief = `<div class="sh-blk sh-g sh-brief"><h2>한눈에 — 지금·목표·집에서</h2><ul class="sh-pts"><li><span class="sh-tag">지금</span><span>${pos}</span></li><li><span class="sh-tag">목표</span><span>${goalLine}</span></li><li><span class="sh-tag">집에서</span><span>${homeLine}</span></li></ul></div>`;
+  return brief + now + chart + steps + cards + jt + band + e28 + js + gap + fav + subj;
 }
 /* 계획 쪽 2(10-20): 이번 기말 목표 — 저장값(plan:<학번>) 먼저, 없으면 1단계 대학 남은 학기 평균보다 중간 등급이 나쁜 과목부터 한 칸씩(이번 학기 과목 수의 절반까지, 1 미만 없음) */
 function sheetGoalT(s, ctx, ups){
