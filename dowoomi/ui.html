@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610200904"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610200925"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <title>영락고 상담 도우미</title>
 <style>
@@ -203,6 +203,9 @@ body.pub .hero>.pubbar,body.pub main>.pubbar{background:#c46a00;border:0;color:#
 .grdu details.gwho summary{cursor:pointer;color:var(--navy)}.grdu details.gwho div{margin:4px 0;line-height:1.7}.grdu details.gwho a{color:var(--ink);text-decoration:none;font-weight:600;margin-left:6px}.grdu details.gwho a:hover{text-decoration:underline}.grdu td,.grdu th{text-align:center}.grdu td.l{text-align:left}
 .grdv details.gall summary{cursor:pointer;list-style-position:outside}.grdv details.gall[open] summary{margin-bottom:4px}.grdv details.gall div{margin:2px 0 2px 14px;line-height:1.6}.gtog button{font-size:13px;padding:3px 8px;border:1px solid var(--rule);background:#fff;cursor:pointer}
 @media print{.grdv details>summary,.grdu details>summary{list-style:none}.grdv details>summary::-webkit-details-marker,.grdu details>summary::-webkit-details-marker{display:none}body.grd #prev,body.grd #next{display:none}}body.grd #prev,body.grd #next{display:none}.grdv th{white-space:nowrap}.gopt select{padding:2px 4px}.grdv td:nth-child(2){white-space:nowrap}
+.grdv tr.gopen td{background:#f3f6fb}.grdv tr.gsum>td{background:#f3f6fb;padding:4px 14px 16px;border-bottom:2px solid var(--navy)}
+.gcard{text-align:left}.gch{display:flex;align-items:baseline;gap:10px;margin:6px 0 8px}.gch b{font-size:19px}.gfull{margin-left:auto;padding:6px 14px;border:0;background:var(--navy);color:#fff;font-size:15px;cursor:pointer;border-radius:2px}
+.gcr{display:flex;gap:12px;align-items:baseline;padding:5px 0;border-bottom:1px solid var(--soft);flex-wrap:wrap}.gcr .gk{flex:none;width:96px;color:var(--mute);font-size:14px}.gcard .notes li{padding:5px 0;font-size:15.5px}
 .hgo{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.hgo button{padding:9px 16px;font-size:16px;border:1px solid #9fc0ea;background:transparent;color:#fff;cursor:pointer;border-radius:2px}.hgo button:hover{background:rgba(255,255,255,.12)}
 .clsv th{cursor:pointer;user-select:none}.clsv th.sorted::after{content:' ▾'}.clsv th.sorted.asc::after{content:' ▴'}
 .clsv td.l a{color:var(--ink);text-decoration:none;font-weight:600}.clsv td.l a:hover{color:var(--navy);text-decoration:underline}
@@ -1262,7 +1265,7 @@ function gradeView(tab){
      <div class="note">학생마다 학생 화면 판정표(${HOPEONLY ? '희망 계열 학과만' : '전체 학과'} · 선배 범위 ±${WIN}%p)를 지역 '전체'로 낸 뒤, 그 대학을 안정권·적정권·상향으로 받은 학생 수를 셉니다. 판정표에 안 나온 대학(근거가 없는 곳)은 0으로 칩니다. 지역은 대학 캠퍼스 기준이라 단국대처럼 두 지역에 다 나올 수 있습니다. 명단은 교내 순위 순.</div>`;
   }
   const n0 = S.filter(s => !(jm.get(s.id) || []).length).length;
-  $('main').innerHTML = `<div class="hd"><h1>${GR}학년 전체</h1><span class="meta">${S.length}명${GF.ban || GF.k ? ' (거른 결과)' : ''} · 교사만 보는 화면 · 이름을 누르면 학생 화면${n0 ? ` · 판정 근거가 없는 학생 ${n0}명` : ''}</span></div>${seg}${filt}${body}`;
+  $('main').innerHTML = `<div class="hd"><h1>${GR}학년 전체</h1><span class="meta">${S.length}명${GF.ban || GF.k ? ' (거른 결과)' : ''} · 교사만 보는 화면 · ${GRDV === 'rank' ? '이름을 누르면 간단 요약 → [전체 보기]로 학생 화면' : '이름을 누르면 학생 화면'}${n0 ? ` · 판정 근거가 없는 학생 ${n0}명` : ''}</span></div>${seg}${filt}${body}`;
   const m = $('main');
   m.querySelectorAll('.gseg button').forEach(b => b.onclick = () => gradeView(b.dataset.t));
   $('gfB').onchange = () => { GF.ban = $('gfB').value; gradeView(); }; $('gfK').onchange = () => { GF.k = $('gfK').value; gradeView(); };
@@ -1270,8 +1273,25 @@ function gradeView(tab){
   if ($('gfR')) $('gfR').onchange = () => { GF.reg = $('gfR').value; gradeView(); };
   if ($('gAll')) $('gAll').onclick = e => { e.stopPropagation(); const ds = m.querySelectorAll('details.gall'), op = ![...ds].every(d => d.open); ds.forEach(d => d.open = op); $('gAll').textContent = op ? '대학 모두 접기' : '대학 모두 펼치기'; };
   m.querySelectorAll('.grdv th[data-k]').forEach(h => h.onclick = () => { const key = h.dataset.k; GSORT = [key, GSORT[0] === key ? -GSORT[1] : (['mv', 'edge', 'pa', 'sum'].includes(key) ? -1 : 1)]; gradeView(); });
-  m.querySelectorAll('a[data-id]').forEach(a => a.onclick = e => { e.preventDefault(); pick(+a.dataset.id); });
+  m.querySelectorAll('.grdu a[data-id]').forEach(a => a.onclick = e => { e.preventDefault(); pick(+a.dataset.id); });
+  m.querySelectorAll('.grdv a[data-id]').forEach(a => a.onclick = e => { e.preventDefault(); const tr = a.closest('tr'), nx = tr.nextElementSibling;   // 석차 명단: 이름 = 간단 요약 펼치기/접기
+    if (nx && nx.classList.contains('gsum')){ nx.remove(); tr.classList.remove('gopen'); return; }
+    tr.classList.add('gopen'); tr.insertAdjacentHTML('afterend', `<tr class="gsum"><td colspan="11">${gradeCard(+a.dataset.id, jm)}</td></tr>`);
+    tr.nextElementSibling.querySelector('.gfull').onclick = () => pick(+a.dataset.id); });
   foldNotes(m); window.scrollTo(0, 0);
+}
+function gradeCard(id, jm){   // 석차 명단에서 학생 한 명 간단 요약: 학기 흐름 · 요약(학생 화면 notes 그대로) · 모의 · 대학 가능권
+  const gd = GD(), s = gd.stu.find(x => x.id === id), keep = ME; let nt = '';
+  try { ME = s; nt = notes(); } finally { ME = keep; }
+  const sem = gd.sems.map((t, i) => s.sem[i] == null ? '' : `<span>${esc(t)} <b>${s.sem[i].toFixed(2)}</b>${s.srk && s.srk[i] != null ? `<small class="mu"> ${s.srk[i]}위</small>` : ''}</span>`).filter(Boolean).join('<i class="mu"> → </i>');
+  const m = s.mk[gd.last], SUB = [['kor','국어'],['mat','수학'],['eng','영어'],['soc', GR === 1 ? '통합사회' : '사탐'],['sci', GR === 1 ? '통합과학' : '과탐']];
+  const mk = m ? SUB.filter(([k]) => m[k]).map(([k, n]) => `${n} <b>${m[k][0]}</b>`).join(' · ') : '';
+  const J = jm.get(id) || [], uv = LABS.map(l => [l, J.filter(r => r.lab === l)]).filter(([, a]) => a.length);
+  return `<div class="gcard"><div class="gch"><b>${esc(s.nm)}</b> <span class="mu">${banOf(s.id)}반 ${s.id % 100}번 · 희망 ${esc(s.k || '미제출')}</span> <button class="gfull">전체 보기 →</button></div>
+   <div class="gcr"><span class="gk">학기 평균</span><span>${sem || '–'}</span></div>
+   <ul class="notes">${nt}</ul>
+   ${mk ? `<div class="gcr"><span class="gk">${esc(gd.last)} 등급</span><span>${mk}</span></div>` : ''}
+   <div class="gcr"><span class="gk">대학 가능권</span><div>${uv.map(([l, a]) => `<div><b class="lab-${l}">${l} ${a.length}</b> ${a.slice(0, 6).map(r => esc(r.nm.replace('대학교', '대').replace(/학교$/, ''))).join(' · ')}${a.length > 6 ? ` <span class="mu">외 ${a.length - 6}곳</span>` : ''}</div>`).join('') || '<span class="mu">판정 근거가 없습니다</span>'}</div></div></div>`;
 }
 const gradeOff = () => { GRDV = null; $('grdBtn').classList.remove('on'); document.body.classList.remove('grd'); $('prn').textContent = '이 학생 인쇄'; };
 
