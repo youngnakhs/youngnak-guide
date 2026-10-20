@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610201037"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610201041"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <title>영락고 상담 도우미</title>
 <style>
@@ -210,7 +210,7 @@ body.pub .hero>.pubbar,body.pub main>.pubbar{background:#c46a00;border:0;color:#
 .clsv td.rkc{background:#e8eef8;font-size:20px;font-weight:800;color:var(--navy);white-space:nowrap;line-height:1.1}.clsv td.rkc small{display:block;font-size:12.5px;font-weight:600;color:var(--ink2)}.clsv th[data-k=rk]{background:#d7e2f3;color:var(--navy);font-weight:800}
 .grdu small.rkn{color:var(--navy);font-weight:800;margin:0 2px 0 3px}.gch .rkbig{font-size:19px;font-weight:800;color:var(--navy);background:#e8eef8;padding:2px 10px;border-radius:2px}.gch .rkbig small{font-size:14px;font-weight:600;margin-left:2px}
 @media print{.clsv td.rkc,.kpi-rk,.gch .rkbig{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
-.hgo{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.hgo button{padding:9px 16px;font-size:16px;border:1px solid #9fc0ea;background:transparent;color:#fff;cursor:pointer;border-radius:2px}.hgo button:hover{background:rgba(255,255,255,.12)}
+.hgo{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.hgo button{padding:9px 16px;font-size:16px;border:1px solid #9fc0ea;background:transparent;color:#fff;cursor:pointer;border-radius:2px}.hgo button:hover{background:rgba(255,255,255,.12)}.hgo{align-items:stretch}.hgo button.hgo1{background:#ffd166;border-color:#ffd166;color:#0d2a4f;padding:12px 22px;text-align:left;box-shadow:0 4px 14px rgba(0,0,0,.25)}.hgo button.hgo1 b{display:block;font-size:21px;font-weight:800}.hgo button.hgo1 small{display:block;font-size:14px;margin-top:3px;color:#3b4b63}.hgo button.hgo1:hover{background:#ffdd85}
 .clsv th{cursor:pointer;user-select:none}.clsv th.sorted::after{content:' ▾'}.clsv th.sorted.asc::after{content:' ▴'}
 .clsv td.l a{color:var(--ink);text-decoration:none;font-weight:600}.clsv td.l a:hover{color:var(--navy);text-decoration:underline}
 .flag{display:inline-block;font-size:13.5px;padding:0 5px;border-radius:2px;margin-right:3px;color:#fff}
@@ -1625,7 +1625,7 @@ function home(msg){
      <p class="eb">영락고 상담 도우미 · ${esc(D.asof.split(' · ')[0])}</p>
      <h1>${GR}학년${b ? ' ' + b + '반' : ''}<br>${!b ? '반을 고르세요' : '학생을 고르세요'}</h1>
      <p class="hsub">${GR === 1 ? '1학년' : '2학년'} ${GD().stu.length}명의 내신 흐름, 이번 기말 목표, 진학 가능권, 모의고사를 한 화면에서 봅니다. 위쪽 [반 선택]에서 시작하세요.</p>
-     <p class="hgo t-only"><button onclick="gradeView('rank')">학년 석차순 명단 →</button><button onclick="gradeView('univ')">대학별 가능 인원 →</button></p>
+     <p class="hgo t-only"><button class="hgo1" onclick="gradeView('rank')"><b>${GR}학년 석차순 명단 →</b><small>${GD().stu.length}명 교내 순위 · 누적 · 대학 가능권을 한 표로</small></button><button onclick="gradeView('univ')">대학별 가능 인원 →</button></p>
     </div>
     <div class="stage" aria-hidden="true"><div class="scene">${bars}<div class="floor"></div></div><p class="cap">5등급 상대평가 — 학년 안 위치로 등급이 정해집니다</p></div>
    </div>
