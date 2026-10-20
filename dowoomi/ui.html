@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610200901"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610200904"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <title>영락고 상담 도우미</title>
 <style>
@@ -123,6 +123,7 @@ tr.more{display:none}tbody.all tr.more,table.all tr.more{display:table-row}.cols
 /* ── 보기 모드·반 요약·목표 카드·메모(10-15) ── */
 body.pub .t-only,body.pub .pct{display:none!important}
 .modebtn.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+#newui{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:50;background:#0d2a4f;color:#fff;padding:10px 16px;border-radius:4px;font-size:15.5px;box-shadow:0 4px 16px rgba(0,0,0,.25)}#newui button{margin-left:10px;padding:3px 10px;border:1px solid #9fc0ea;background:none;color:#fff;cursor:pointer}
 .pubbar{display:none;background:#fff7e6;border:1px solid #f0d9a8;color:#7a5200;font-size:15.5px;padding:7px 12px;margin-bottom:12px}
 body.pub .pubbar{display:block}
 /* 배치 4차(10-16): 줄바꿈·여백 */
@@ -475,7 +476,13 @@ function start(){
   $('prev').onclick = () => move(-1); $('next').onclick = () => move(1);
   $('prn').onclick = askPrint;
   fillBan(); fillStu(); home();
+  if (!/[?&]dev/.test(location.search)){ newUi(); setInterval(newUi, 30 * 60 * 1000); }
 }
+/* 실행 중 새 화면 알림(EXE는 켤 때만 받음) — 배포 폴더 ver.txt(publish_ui.py가 씀)가 지금 화면보다 새것이면 띠. 옛 EXE도 화면만 바뀌면 됨 */
+async function newUi(){ try { const me = +(document.querySelector('meta[name=ui-ver]') || {}).content || 0;
+  const v = +(await (await fetch('https://youngnakhs.github.io/youngnak-guide/dowoomi/ver.txt?t=' + Date.now(), {cache: 'no-store'})).text()).trim();
+  if (v > me && !$('newui')) document.body.insertAdjacentHTML('afterbegin', `<div id="newui" class="noprint">새 화면이 나왔습니다 — 프로그램을 닫았다가 다시 켜면 바뀝니다(쓰던 상담 기록은 그대로). <button onclick="this.parentNode.remove()">닫기</button></div>`);
+} catch (e) {} }   // 인터넷이 안 되면 조용히
 const banOf = id => Math.floor(id / 100) % 100;
 function fillBan(){ const bs = [...new Set(GD().stu.map(s => banOf(s.id)))]; $('selB').innerHTML = '<option value="">반 선택</option>' + bs.map(b => `<option value="${b}">${b}반</option>`).join(''); $('selG').value = GR; }
 function fillStu(){   // 고른 반 학생만
