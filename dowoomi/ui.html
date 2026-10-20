@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610201310"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610201323"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <title>영락고 상담 도우미</title>
 <style>
@@ -822,7 +822,7 @@ function tgtUpdate(){
   if (!fu){ o.innerHTML = '남은 학기 자료가 없어 계산할 수 없습니다.'; return; }
   const need = (target * (pu + fu) - past) / fu;
   const recent = ME.sem.filter(v => v != null).at(-1), z = (need - recent) / GD().sd;
-  o.innerHTML = `합격 선배 중앙값 교내 상위 <b>${med.toFixed(1)}%</b> → 우리 학년 같은 위치 누적 <b>${target.toFixed(2)}</b> → 남은 학기 평균 <b class="${need < 1 ? 'bad' : ''}">${need < 1 ? '1.0 미만(불가)' : need > 5 ? '5.0 초과(이미 충분)' : need.toFixed(2)}</b> 필요` +
+  o.innerHTML = `합격 선배 중앙값 교내 상위 <b>${med.toFixed(1)}%</b> → 우리 학년 같은 위치 누적 <b>${target.toFixed(2)}</b> → 남은 학기 평균 <b class="${need < 1 ? 'bad' : ''}">${need < 1 ? '1.0 미만(남은 학기만으로는 불가)' : need > 5 ? '5.0 초과(이미 충분)' : need.toFixed(2)}</b> 필요` +
     (need >= 1 && need <= 5 ? ` · 최근 학기(${recent.toFixed(2)}) 수준이면 가능성 약 <b>${Math.round(ncdf(z) * 100)}%</b><span class="est">추정</span>` : '');
 }
 
@@ -861,7 +861,7 @@ function tgtBlock(mp){
   const X = v => (2 + (v - a0) / (a1 - a0) * 96).toFixed(2) + '%';   // 왼쪽일수록 좋은 등급
   const d = P.length >= 2 ? cur.v - P.at(-2).v : null;
   const dt = d == null || Math.abs(d) < .005 ? '–' : d < 0 ? `<span class="up">▲${(-d).toFixed(2)}</span>` : `<span class="dn">▼${d.toFixed(2)}</span>`;
-  const far = o => { const g = o.gap, n = o.need; return `${g == null || Math.abs(g) < .005 ? '합격선 –' : g > 0 ? `합격선 가운데까지 ${g.toFixed(2)}` : `합격선 가운데보다 ${(-g).toFixed(2)} 앞`}<small>남은 학기 평균 ${n == null || Math.abs(n) < .005 ? '–' : n < 1 ? '<b class="bad">1.0 미만(어려움)</b>' : n > 5 ? '5등급이어도 도달' : n.toFixed(2)}</small>`; };
+  const far = o => { const g = o.gap, n = o.need; return `${g == null || Math.abs(g) < .005 ? '합격선 –' : g > 0 ? `합격선 가운데까지 ${g.toFixed(2)}` : `합격선 가운데보다 ${(-g).toFixed(2)} 앞`}<small>남은 학기 평균 ${n == null || Math.abs(n) < .005 ? '–' : n < 1 ? '<b class="bad">1.0 미만(남은 학기만으로는 불가)</b>' : n > 5 ? '5등급이어도 도달' : n.toFixed(2)}</small>`; };
   const dot = (p, r, st) => `<circle cx="${X(p.v)}" cy="13" r="${r}" style="${st}"><title>${esc(p.lab)} ${p.v.toFixed(2)}${p.est ? ' (중간 추정)' : ''}</title></circle>`;
   const rows = B.map(({g, b}) => {
     const lab = (b.src === '선배' ? (PUB ? '우리 선배' : `선배 ${b.n}명`) : b.src === '다온' ? '다온 28컷' + (GR === 1 ? ' · 2028 자료 참고' : '') : '합격선 근거 없음') + (b.few ? ' · 근거 적음' : '') + (b.wide ? ' · 학과 전체 범위(넓음)' : '');
@@ -1278,7 +1278,7 @@ function judgeHtml(L, my, tr){
   const tb = L.map(r => { const rf = r.yg && r.yg.rec ? recFit(r.yg, my) : null;
     const rec = rf ? `${rf.n}명 · 내 ${rf.r}위 <b class="${rf.ok ? '' : 'dn'}">${rf.ok ? '추천권' : '경쟁'}</b>` : r.yg && r.yg.rec ? esc(r.yg.rec_raw) : dash;
     const plc = GR === 2 ? `<td class="small">${r.pl ? (r.pl.join('·') || '변경 문장만') : dash}</td>` : '';
-    return `<tr class="${L.indexOf(r) >= 15 ? 'more' : ''} jl-${r.lab}" data-k="${esc(r.k)}"><td class="l"><label class="favl t-only noprint" title="관심 대학에 담기(상담 파일에 인쇄)"><input type="checkbox" class="fav" data-k="${esc(r.k)}" ${FAV.some(f => f.k === r.k) ? 'checked' : ''}>★</label><b>${esc(r.nm.replace('학교', ''))}</b><button class="tgtb t-only noprint${TGT.some(x => x.k === r.k) ? ' on' : ''}" data-k="${esc(r.k)}" title="목표 대학으로 정하기(1~3곳)">목표</button></td><td><b class="lab-${r.lab}">${r.lab}</b></td><td>${r.su && r.su[1] ? (PUB ? (r.su[0] ? r.su[0] + '명' : dash) : r.su[0] + ' / ' + r.su[1] + '명') : dash}</td>`
+    return `<tr class="${L.indexOf(r) >= 15 ? 'more' : ''} jl-${r.lab}" data-k="${esc(r.k)}"><td class="l"><label class="favl t-only noprint" title="관심 대학에 담기(상담 파일에 인쇄)"><input type="checkbox" class="fav" data-k="${esc(r.k)}" ${FAV.some(f => f.k === r.k) ? 'checked' : ''}>★</label><b>${esc(r.nm.replace('학교', ''))}</b><button class="tgtb t-only noprint${TGT.some(x => x.k === r.k) ? ' on' : ''}" data-k="${esc(r.k)}" title="목표 대학으로 정하기(1~3곳)">목표</button></td><td><b class="lab-${r.lab}">${r.lab}</b></td><td>${r.su && r.su[1] ? (PUB ? (r.su[0] ? (r.su[0] <= 2 ? '있음(근거 적음)' : r.su[0] + '명') : dash) : r.su[0] + ' / ' + r.su[1] + '명') : dash}</td>`
       + `<td>${r.band == null ? dash : VL(VB[r.band])}</td><td>${r.js == null ? dash : VL(VJ[r.js])}</td>`
       + `<td class="v-${r.choe || 'x'}">${CHL(r.choe) || dash}${(() => { const gp = r.choeK && (ME.choe_gap || {})[r.choeK]; return gp && /미충족|일부/.test(r.choe || '') ? `<br><span class="small">${esc(gp)}</span>` : ''; })()}</td><td class="small t-only">${rec}</td>${plc}</tr>`; }).join('');
   const g1note = GR === 1 ? ' 2028 변경은 2학년(2028 대입) 대상이라 1학년 화면에서는 뺐습니다.' : '';
@@ -1922,7 +1922,7 @@ function sumHtml(){
     gt = pickI.map(i => rows[i] ? `<tr>${[...rows[i].children].slice(0, 3).map(c => c.outerHTML).join('')}</tr>` : '').join('');
   } finally { PUB = keep; renderGoal(); foldNotes($('goal')); addTips(); alignHeads($('goal')); }
   const bt = s.cum != null ? busanTop(s.cum, GR === 1 ? 'B' : 'C') : null, pav = mockPa(s.mk[gd.last]), dash = '–';
-  const jt = JUDGE.slice(0, 10).map(r => `<tr><td class="l"><b>${esc(r.nm.replace('학교', ''))}</b></td><td><b class="lab-${r.lab}">${r.lab}</b></td><td>${r.su && r.su[0] ? r.su[0] + '명' : dash}</td><td>${r.band == null ? dash : VL(VB[r.band])}</td><td>${r.js == null ? dash : VL(VJ[r.js])}</td><td class="v-${r.choe || 'x'}">${CHL(r.choe) || dash}</td></tr>`).join('');
+  const jt = JUDGE.slice(0, 10).map(r => `<tr><td class="l"><b>${esc(r.nm.replace('학교', ''))}</b></td><td><b class="lab-${r.lab}">${r.lab}</b></td><td>${r.su && r.su[0] ? (r.su[0] <= 2 ? '있음(근거 적음)' : r.su[0] + '명') : dash}</td><td>${r.band == null ? dash : VL(VB[r.band])}</td><td>${r.js == null ? dash : VL(VJ[r.js])}</td><td class="v-${r.choe || 'x'}">${CHL(r.choe) || dash}</td></tr>`).join('');
   return `<div class="hd"><h1>${esc(s.nm)}</h1><span class="meta">${GR}학년 ${banOf(s.id)}반 ${s.id % 100}번 · 희망 ${esc(s.k || '미제출')} · ${esc(D.asof.split(' · ')[0])} 기준</span></div>
    <div class="kpis"><div class="kpi"><b>${f2(s.cum)}</b><span class="kl">누적 등급</span></div><div class="kpi"><b>${bt == null ? dash : '상위 ' + bt.toFixed(1) + '%'}</b><span class="kl">다른 학교와 견준 위치(참고)</span></div><div class="kpi"><b>${bt == null ? dash : g9of(bt).toFixed(2)}</b><span class="kl">9등급으로 치면(참고)</span></div><div class="kpi"><b>${pav == null ? dash : pav.toFixed(1)}</b><span class="kl">국·수·탐 백분위(${esc(gd.last)})</span></div></div>
    <h2>요약</h2><ul class="notes">${nt}</ul>
