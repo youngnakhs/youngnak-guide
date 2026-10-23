@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610210716"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610232313"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <script>/* 화면 내용 긁어가기 방지(입력칸 제외). 뷰소스는 원리상 못 막음 */['contextmenu','copy','cut','dragstart'].forEach(e=>document.addEventListener(e,v=>{if(!(v.target.closest&&v.target.closest('input,textarea,[contenteditable]')))v.preventDefault()}));</script>
 <title>영락고 상담 도우미</title>
@@ -591,6 +591,7 @@ details.guide>summary::before{content:'▸ '}details.guide[open]>summary::before
     <input id="npw" type="password" placeholder="새 열람 비밀번호"> <button id="chg">바꾸기</button>
     <p class="small" style="margin-top:14px"><b>원자료로 다시 계산</b> — 이 PC의 원자료(다운로드·구글 드라이브)로 prep.py를 실행해 data.dat을 새로 만듭니다. 파이썬과 원자료가 있는 관리자 PC에서만 됩니다.</p>
     <input id="vpw2" type="password" placeholder="열람 비밀번호(새 파일에 사용)"> <button id="rec">다시 계산</button>
+    <p class="small" style="margin-top:14px"><label><input type="checkbox" id="g2c"> <b>이 PC에서 2학년도 보기</b></label> — 다른 선생님 PC에는 2학년이 보이지 않습니다.</p>
     <pre id="log" hidden></pre>
     <button class="cls">닫기</button>
   </div>
@@ -663,7 +664,7 @@ function start(){
     else { const d = document.createElement('div'); d.id = 'qpick'; d.className = 'noprint';
       d.innerHTML = L.length ? `'${esc(v)}' ${L.length}명 — 고르세요: ` + L.slice(0, 12).map(x => `<button data-id="${x.id}">${x.id} ${esc(x.nm)}</button>`).join('') + (L.length > 12 ? ` <span class="mu small">외 ${L.length - 12}명 — 더 길게 치세요</span>` : '') + ' <button class="x">닫기</button>' : `'${esc(v)}'와 맞는 학생이 없습니다. <button class="x">닫기</button>`;
       document.body.appendChild(d); d.onclick = e => { const b = e.target.closest('button'); if (!b) return; closeQpick(); if (b.dataset.id) pick(+b.dataset.id); }; } };
-  $('names').innerHTML = [...D.grades[1].stu, ...D.grades[2].stu].map(s => `<option value="${s.id} ${esc(s.nm)}">`).join('');
+  g2Set(/[?&]dev/.test(location.search));
   $('prev').onclick = () => move(-1); $('next').onclick = () => move(1);
   $('prn').onclick = askPrint;
   fillBan(); fillStu(); home(); loadPref();
@@ -2439,18 +2440,24 @@ document.addEventListener('keydown', e => {
   if (e.key === '/'){ e.preventDefault(); $('q').focus(); return; }
   if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && ME && !CLS && !GRDV){ e.preventDefault(); move(e.key === 'ArrowLeft' ? -1 : 1); }
 });
+/* 2학년은 관리자만(10-23): 관리자 비밀번호 확인 뒤 이 PC에서만 보임(설정 g2) · dev는 늘 보임 · 다른 PC는 학년 칸·검색에서 2학년이 빠짐 */
+let G2D = null, G2ON = false;
+function g2Set(on){ if (!G2D) G2D = D.grades[2]; G2ON = on; D.grades[2] = on ? G2D : {...G2D, stu: []};
+  $('selG').querySelector('option[value="2"]').hidden = !on;
+  $('names').innerHTML = [...D.grades[1].stu, ...D.grades[2].stu].map(s => `<option value="${s.id} ${esc(s.nm)}">`).join('');
+  if (!on && GR === 2){ GR = 1; $('selG').value = 1; $('selG').onchange(); } }
 /* 32. 설정 기억: 선배 범위·희망 계열만·지역·학년 정렬·'다시 묻지 않기' — memo_set('pref:ui', [{d, t: JSON}]) (EXE는 이 PC 암호화 파일, dev는 localStorage) · 실패해도 조용히 */
 let PREF_OK = false, ALONEPREF = false;
 async function loadPref(){
   try { const L = api() ? ((await api().memo_load('pref:ui')) || {}).list || [] : JSON.parse(localStorage.getItem('pref:ui') || '[]');
     const p = JSON.parse((L.slice().sort((a, b) => a.d < b.d ? -1 : a.d > b.d ? 1 : 0).at(-1) || {}).t || '{}');
     if ([1, 2, 3, 4, 5].includes(p.win)) WIN = p.win; if (typeof p.hope === 'boolean') HOPEONLY = p.hope; if (typeof p.region === 'string') REGION = p.region;
-    if (Array.isArray(p.gsort) && p.gsort.length === 2) GSORT = p.gsort; ALONEPREF = !!p.alone;
+    if (Array.isArray(p.gsort) && p.gsort.length === 2) GSORT = p.gsort; ALONEPREF = !!p.alone; if (p.g2 && !G2ON) g2Set(true);
   } catch (e) {}
   PREF_OK = true;
 }
 function savePref(){ if (!PREF_OK) return; clearTimeout(savePref.t); savePref.t = setTimeout(async () => {
-  const L = [{d: nowLocal().slice(0, 16), t: JSON.stringify({win: WIN, hope: HOPEONLY, region: REGION, gsort: GSORT, alone: ALONEPREF})}];
+  const L = [{d: nowLocal().slice(0, 16), t: JSON.stringify({win: WIN, hope: HOPEONLY, region: REGION, gsort: GSORT, alone: ALONEPREF, g2: G2ON})}];
   try { if (api()) await api().memo_set('pref:ui', L); else localStorage.setItem('pref:ui', JSON.stringify(L)); } catch (e) {} }, 400); }
 
 /* 표 정렬(10-20 T6, 표현만): 열마다 값을 보고 숫자 = 오른쪽(.nc), 짧은 판정·라벨(6자 이하, 이름·링크 아님) = 가운데(.cc), 나머지 글자 = 왼쪽(.tc) — 머리 칸·'–' 칸도 같은 열을 따름 */
@@ -2475,7 +2482,8 @@ function tAlign(root){
 /* ── 관리자 ── */
 $('adm').onclick = () => { $('modal').style.display = 'flex'; $('admLogin').hidden = false; $('admBody').hidden = true; $('apw').value = ''; $('aerr').textContent = ''; };
 document.querySelectorAll('.cls').forEach(b => b.onclick = () => $('modal').style.display = 'none');
-$('admGo').onclick = async () => { const r = await api().admin_check($('apw').value); if (r.ok){ $('admLogin').hidden = true; $('admBody').hidden = false; } else $('aerr').textContent = r.msg; };
+$('admGo').onclick = async () => { const r = await api().admin_check($('apw').value); if (r.ok){ $('admLogin').hidden = true; $('admBody').hidden = false; if (!G2ON){ g2Set(true); savePref(); } $('g2c').checked = G2ON; } else $('aerr').textContent = r.msg; };
+$('g2c').onchange = () => { g2Set($('g2c').checked); savePref(); };
 $('chg').onclick = async () => { const r = await api().change_pw($('apw').value, $('npw').value); alertLog(r.msg); };
 $('rec').onclick = async () => { alertLog('다시 계산 중… (수 분 걸립니다)'); const r = await api().recompute($('vpw2').value, $('apw').value); alertLog(r.msg); };
 function alertLog(t){ const l = $('log'); l.hidden = false; l.textContent = t; }
