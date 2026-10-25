@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610250602"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610251032"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <script>/* 화면 내용 긁어가기 방지(입력칸 제외). 뷰소스는 원리상 못 막음 */['contextmenu','copy','cut','dragstart'].forEach(e=>document.addEventListener(e,v=>{if(!(v.target.closest&&v.target.closest('input,textarea,[contenteditable]')))v.preventDefault()}));</script>
 <title>영락고 상담 도우미</title>
@@ -166,13 +166,14 @@ body.wide .hhero{box-shadow:none;clip-path:none;padding:34px 34px 30px;border-ra
 .b3 .f,.b3 .k{width:44px;height:100%;bottom:0}.b3 .f{transform:translateZ(22px)}.b3 .k{transform:rotateY(180deg) translateZ(22px);filter:brightness(.55)}
 .b3 .l,.b3 .r{width:44px;height:100%;bottom:0}.b3 .l{transform:rotateY(-90deg) translateZ(22px);filter:brightness(.7)}.b3 .r{transform:rotateY(90deg) translateZ(22px);filter:brightness(.82)}
 .b3 .t{width:44px;height:44px;top:0;transform:translateY(-22px) rotateX(90deg);filter:brightness(1.15)}
-.b3 em{position:absolute;left:50%;bottom:calc(100% + 30px);transform:translateX(-50%) translateZ(22px);font-style:normal;font-size:13px;line-height:1.3;color:#e8f0fb;text-align:center;white-space:nowrap}
+.b3 em{position:absolute;left:50%;bottom:calc(100% + 30px);transform:translateX(-50%) translateZ(22px);font-style:normal;font-size:13px;line-height:1.5;animation:lbl .4s calc(var(--d) + 1.3s) both;color:#e8f0fb;text-align:center;white-space:nowrap}
 .b3 em b{font-size:17px;color:#fff}
+@keyframes lbl{from{opacity:0}to{opacity:1}}   /* 라벨은 막대가 다 자란 뒤 — 자라는 중 겹침 방지 */
 .floor{position:absolute;left:-190px;bottom:-1px;width:380px;height:380px;transform:translateY(190px) rotateX(90deg);transform-origin:center;
   background:radial-gradient(circle,rgba(127,178,255,.28) 0%,rgba(127,178,255,.06) 55%,transparent 70%),repeating-linear-gradient(0deg,rgba(255,255,255,.07) 0 1px,transparent 1px 32px),repeating-linear-gradient(90deg,rgba(255,255,255,.07) 0 1px,transparent 1px 32px)}
 .stage .cap{position:relative;z-index:2;margin:44px 0 0;font-size:14px;color:#9fc0ea}
 .homev .steps li span{font-size:19px}
-@media (prefers-reduced-motion:reduce){.scene,.b3{animation:none}}
+@media (prefers-reduced-motion:reduce){.scene,.b3,.b3 em{animation:none}}
 @media (max-width:1100px){.hhero{grid-template-columns:1fr}.stage{height:300px}}
 @media print{.hhero{display:none}}
 /* 초임 교사용(10-16) */
@@ -1399,7 +1400,7 @@ function judgeChart(L, my, tr){
   const C = L.slice(0, 15).map(r => { const b = by[r.k]; if (!b) return null; return {r, lo: Math.min(...b.map(x => x.lo)), hi: Math.max(...b.map(x => x.hi)), n: b.length}; }).filter(Boolean);
   if (C.length < 2) return '';
   const top = Math.max(1, Math.floor(Math.min(my, ...C.map(c => c.lo)) * 2) / 2), bot = Math.min(5, Math.ceil(Math.max(my, ...C.map(c => c.hi)) * 2) / 2 + .5);
-  const W = 900, H = 170 + (C.length > 8 ? 40 : 22), x0 = 40, y0 = 10, h = 160, sw = (W - x0 - 10) / C.length, y = g => y0 + (g - top) / (bot - top) * h;
+  const W = 900, H = 176 + (C.length > 8 ? 40 : 22), x0 = 40, y0 = 10, h = 160, sw = (W - x0 - 10) / C.length, y = g => y0 + (g - top) / (bot - top) * h;
   const col = {'안정권': '#14325c', '적정권': '#0f7a6c', '상향': '#b8541a'};
   const ticks = []; for (let g = Math.ceil(top * 2) / 2; g <= bot + 1e-9; g += .5) ticks.push(g);
   const svg = `<svg viewBox="0 0 ${W} ${H}" class="jchart" role="img" aria-label="대학별 입결 밴드와 내 누적">
@@ -1407,7 +1408,7 @@ function judgeChart(L, my, tr){
     ${C.map((c, i) => { const cx = x0 + sw * (i + .5), c1 = col[c.r.lab] || '#555';
       return `<rect x="${cx - 7}" y="${y(c.lo)}" width="14" height="${Math.max(2, y(c.hi) - y(c.lo))}" fill="${c1}" opacity=".22"/><line x1="${cx}" x2="${cx}" y1="${y(c.lo)}" y2="${y(c.hi)}" stroke="${c1}" stroke-width="2"/>
         <line x1="${cx - 7}" x2="${cx + 7}" y1="${y(c.lo)}" y2="${y(c.lo)}" stroke="${c1}" stroke-width="2"/><line x1="${cx - 7}" x2="${cx + 7}" y1="${y(c.hi)}" y2="${y(c.hi)}" stroke="${c1}" stroke-width="2"/>
-        <text x="${cx}" y="${y0 + h + (C.length > 8 && i % 2 ? 34 : 16)}" font-size="12" text-anchor="middle" fill="${c1}" font-weight="700">${esc((c.r.k.includes('|') ? c.r.nm : c.r.nm.replace(/\(.*?\)/g, '')).replace('대학교', '대').replace('학교', '').slice(0, 9))}</text><title>${esc(c.r.nm)} · 학과 ${c.n}개 · ${c.lo.toFixed(2)}~${c.hi.toFixed(2)} · ${c.r.lab}</title>`; }).join('')}
+        <text x="${cx}" y="${y0 + h + (C.length > 8 && i % 2 ? 40 : 22)}" font-size="12" text-anchor="middle" fill="${c1}" font-weight="700">${esc((c.r.k.includes('|') ? c.r.nm : c.r.nm.replace(/\(.*?\)/g, '')).replace('대학교', '대').replace('학교', '').slice(0, 9))}</text><title>${esc(c.r.nm)} · 학과 ${c.n}개 · ${c.lo.toFixed(2)}~${c.hi.toFixed(2)} · ${c.r.lab}</title>`; }).join('')}
     <line x1="${x0}" x2="${W - 10}" y1="${y(my)}" y2="${y(my)}" stroke="#14325c" stroke-width="2" stroke-dasharray="6 4"/><text x="${x0 + 4}" y="${y(my) - 5}" text-anchor="start" font-size="12" fill="#14325c" font-weight="700" stroke="#fff" stroke-width="3" paint-order="stroke">내 누적 ${my.toFixed(2)}</text>
   </svg>`;
   return `<h3>합격선 한눈에 <small>판정표 위 ${C.length}곳 · 막대 = 희망 계열 학과들의 입결 밴드(가장 쉬운 학과~가장 어려운 학과, 5등급으로 옮긴 값) · 위가 좋은 등급</small></h3>${svg}
@@ -1837,7 +1838,7 @@ function gradeView(tab, back){
       <td class="l small">${[r.edge ? `<span class="flag f-edge">한 발 ${r.edge}</span>` : '', ...r.down.map(g => `<span class="flag f-dn">${g}↓</span>`)].filter(Boolean).join(', ')}</td>
       <td class="l small">${r.all.length ? `<details class="gall"><summary><b class="lab-안정권">${r.st}</b> · <b class="lab-적정권">${r.jt}</b> · <b class="lab-상향">${r.sh}</b> <span class="mu">|</span> ${r.top.map(x => `<span class="lab-${x.lab}">${short(x.nm)}</span>`).join(' · ')} <span class="mu nw">… 전체 ${r.all.length}곳</span></summary>${LABS.filter(l => r.all.some(x => x.lab === l)).map(l => `<div><b class="lab-${l}">${l}</b> ${r.all.filter(x => x.lab === l).map(x => esc(x.nm.replace('대학교', '대').replace(/학교$/, ''))).join(' · ')}</div>`).join('')}</details>` : '<span class="mu">–</span>'}</td></tr>`).join('');
     body = `<div class="noprint" style="margin:4px 0"><button id="cmpGo" class="cpy" style="margin-left:0">고른 학생 비교 (<span id="cmpN">${CMPSEL.size}</span>명)</button><button class="cpy" data-t=".grdv">표 복사</button> <span class="small mu" id="cpyMsg"></span></div>
-     <table class="tb clsv grdv"><thead><tr><th class="ck noprint" title="비교할 학생">비교</th>${th('rk', '교내 순위')}${th('bn', '반-번호')}${th('nm', '이름')}${th('k', '희망')}${th('cum', '누적')}${th('mv', '학기 순위 변화')}${th('now', curSem() + ' 중간')}${th('ms', gd.last + ' 국수영 합')}${th('pa', '국수탐 백분위')}${th('edge', '눈여겨볼 것')}${th('sum', '대학 가능권 <small>안정·적정·상향 | 위 3곳 · 누르면 전체</small>')}</tr></thead><tbody>${tb || '<tr><td colspan="12" class="mu">조건에 맞는 학생이 없습니다.</td></tr>'}</tbody></table>
+     <table class="tb clsv grdv"><thead><tr><th class="ck noprint" title="비교할 학생">비교</th>${th('rk', '교내 순위')}${th('bn', '반-번호')}${th('nm', '이름')}${th('k', '희망')}${th('cum', '누적')}${th('mv', '학기 순위 변화')}${th('now', curSem() + ' 중간')}${th('ms', `<span class="nw">${gd.last}</span> <span class="nw">국수영 합</span>`)}${th('pa', '국수탐 백분위')}${th('edge', '눈여겨볼 것')}${th('sum', '대학 가능권 <small>안정·적정·상향 | 위 3곳 · 누르면 전체</small>')}</tr></thead><tbody>${tb || '<tr><td colspan="12" class="mu">조건에 맞는 학생이 없습니다.</td></tr>'}</tbody></table>
      <div class="note">교내 순위·누적은 학생 화면 맨 위 숫자와 같습니다(2학기 중간 추정 포함). 한 발 n = 1등급까지 한 발 남은 과목 수(중간 추정 2등급·학년 상위 13% 안), 교과↓ = 가장 좋았던 학기보다 학년 석차 15%p 넘게 내려온 교과. 대학 가능권 = 학생 화면 판정표와 같은 계산(${HOPEONLY ? '희망 계열 학과만' : '전체 학과'} · 선배 범위 ±${WIN}%p · 전국 — 위 범위·희망 계열은 학생 화면 대학 칸 설정과 같이 바뀜)으로 안정권·적정권 대학 수와 위에서 3곳. 대학으로 거르기 = 고른 대학 중 하나라도 그 범위(적정권 이상 = 안정권·적정권)로 받은 학생만 남김. 묶음 버튼은 흔히 쓰는 말일 뿐 학교 공식 기준이 아니며 분교·제2캠퍼스는 넣지 않았습니다.</div>`;
   } else {
     const U = {};
