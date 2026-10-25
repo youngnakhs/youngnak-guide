@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610251032"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610251700"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <script>/* 화면 내용 긁어가기 방지(입력칸 제외). 뷰소스는 원리상 못 막음 */['contextmenu','copy','cut','dragstart'].forEach(e=>document.addEventListener(e,v=>{if(!(v.target.closest&&v.target.closest('input,textarea,[contenteditable]')))v.preventDefault()}));</script>
 <title>영락고 상담 도우미</title>
@@ -988,7 +988,8 @@ function needRank(n, goal){   // 목표 등급이 나오는 가장 낮은 기말
 }
 const CHL = v => v === '일부충족' ? '전형마다 다름' : v;   // 같은 유형 안에 충족·미충족·최저 없는 전형이 섞임
 const easy = q => q.k >= q.len * 0.95;   // 하위 5%만 피하면 되는 목표는 위치 대신 '충분'
-const posWord = p => p > 50 ? `하위 ${100 - p}%만 피하면 됨` : `상위 ${p}% 안`;   // 학년 위치 50% 넘으면 '하위 n%만 피하면', 아니면 '상위 n% 안'
+const pctBand = p => p < 10 ? '상위 10% 안' : `상위 ${Math.min(90, Math.floor(p / 10) * 10)}%대`;   // 석차 역산 방지 — 10% 단위
+const posWord = p => p > 50 ? `하위 ${Math.min(50, Math.ceil((100 - p) / 10) * 10)}%만 피하면` : pctBand(p);   // 10-25: 화면·요약·상담지 같은 10% 단위 표현
 const posTxt = q => PUB ? posWord(q.p) : `${posWord(q.p)} <small class="mu">(${q.len}명 중 ${q.k}등)</small>`;
 const OKTXT = '지금 흐름이면 닿을 가능성이 큼';
 function simUpdate(inp){
@@ -2232,7 +2233,6 @@ async function printSum(){
   window.addEventListener('afterprint', done); window.print();
 }
 /* 학부모 상담지(10-20): 학생 s를 판정 고정 설정(지역 전체·희망 계열·선배 범위 기본·실제 성적·학생 보기)으로 잠깐 띄워 읽고, 화면 전역은 그대로 되돌림 */
-const pctBand = p => p < 10 ? '상위 10% 안' : `상위 ${Math.min(90, Math.floor(p / 10) * 10)}%대`;   // 석차 역산 방지 — 10% 단위
 let CTX = {}, SHFULL = false;   // SHFULL = 상담지 뒤에 근거 표 쪽(교사 보관용)을 붙임
 function withSheetState(s, fn, ex){   // ex = sheetLoad가 읽은 그 학생의 {tgt, fav} — 없으면 빈 목록(다른 학생 목표가 새지 않게)
   const keep = {ME, GR, G, FUT, PUB, REGION, HOPEONLY, WIN, JUDGE, LASTAGG, CTX, TGT, FAV};
@@ -2462,8 +2462,8 @@ function sheetPlanB(s, ctx, ups){
     let pos = '', sc = '';
     if (!(x.s === 1 && s.ms[x.n] != null && GD().mids[x.n])) pos = '<span class="na">중간 지필 없음 — 수행·기말 준비</span>';
     else if (!gi) pos = na;
-    else if (r && r[1] === 0) pos = simGrade(x.n, 0).g <= goal ? '기말 없음 — 수행을 지키면 됨' : '기말 없음 — 수행에서 만회';
-    else { const q = needRank(x.n, goal); if (!q || !q.k) pos = '<b>기말 1등이어도 부족</b> — 수행에서'; else if (q.k === q.len || easy(q)) pos = '지금 흐름이면 충분'; else { pos = `<b>${q.p > 50 ? `하위 ${Math.min(50, Math.ceil((100 - q.p) / 10) * 10)}%만 피하면` : pctBand(q.p)}</b>`; sc = `약 ${+q.sc.toFixed(1)}점`; } }
+    else if (r && r[1] === 0) pos = simGrade(x.n, 0).g <= goal ? '기말 없음 — 수행 ' + PERF + '%를 지키면 닿을 가능성이 큼' : '기말 없음 — 수행에서 만회';
+    else { const q = needRank(x.n, goal); if (!q || !q.k) pos = '<b>기말 1등이어도 부족</b> — 수행에서'; else if (q.k === q.len || easy(q)) pos = OKTXT; else { pos = `<b>${posWord(q.p)}</b>`; sc = `약 ${+q.sc.toFixed(1)}점`; } }
     return `<tr data-id="${id}" data-g="${goal}"><th>${esc(x.n)} <small class="sh-sm">${x.c}학점</small></th><td>${gt(x.v)}</td><td>${gt(us)}</td><td><b class="sh-gv">${gt(goal)}</b></td><td>${df}</td><td class="l">${pos}</td><td>${sc || na}</td><td>${r ? r.join('·') : '–'}</td></tr>`; }).join('');
   const why = saved ? '선생님이 내신 예측에서 정해 둔 등급이에요.' : need != null && u0 ? `${u0.alt ? '다음 계단' : '1단계'} ${unm(u0)}까지 필요한 남은 학기 평균(${need < 1 ? '1.0 미만' : need > 5 ? '5.0 초과' : need.toFixed(2)})에 맞을 때까지 기말에서 조금만 올라가면 되는 과목부터 한 칸씩 올려 잡았어요(과목 수의 절반까지, 학년 위치를 30%p 넘게 올려야 하는 과목은 뺌).` : '기말에서 조금만 올라가면 되는 과목부터 한 칸씩 올려 잡았어요(과목 수의 절반까지, 학년 위치를 30%p 넘게 올려야 하는 과목은 뺌).';
   const PL = R.filter(({x}) => left(x.n).length);
