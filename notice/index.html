@@ -20,6 +20,14 @@ html,body{width:100%;height:100%;background:#15171a;overflow:hidden}
 .bd{border-top:1px solid rgba(255,255,255,.08);padding-top:18px;overflow:hidden}
 .bd h3{font-size:44px;font-weight:700;margin-bottom:10px}.bd:first-child h3{background:linear-gradient(90deg,#a7f3d0,#c4b5fd);-webkit-background-clip:text;background-clip:text;color:transparent}
 .bd div{display:flex;justify-content:space-between;font-size:30px;line-height:37px;color:#c9ced3;white-space:nowrap}.bd div span{color:#8f969e;font-size:27px}
+.uc{display:grid;grid-template-rows:auto auto 1fr auto;padding:28px 44px;gap:4px;overflow:hidden}
+.uc .ch{display:flex;gap:12px;font-size:24px}.uc .ch span{padding:2px 14px;border-radius:20px;background:rgba(255,255,255,.07);color:#9aa1a9}
+.uc .ch .c1{color:#a7f3d0}.uc .ch .c2{color:#fcd34d}
+.uc .nm{font-size:44px;font-weight:700;line-height:54px;white-space:nowrap}.uc .sb2{font-size:28px;color:#9aa1a9;line-height:34px}
+.uc .fx{margin-top:6px}.uc .fx div{display:grid;grid-template-columns:100px minmax(0,1fr);gap:14px;font-size:26px;line-height:35px;color:#c9ced3}.uc .fx div span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.uc .fx div span{color:#8f969e}.uc .fx b{color:#e8eaed;font-weight:600}
+.uc .pt{font-size:25px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#9aa1a9;border-top:1px solid rgba(255,255,255,.08);padding-top:12px}.uc .pt i{font-style:normal;color:#a7f3d0;margin-right:12px;font-weight:600}
+.ug{grid-template-rows:1fr 1fr 1fr!important}
 #pdots{display:flex;gap:12px;justify-content:center}#pdots i{width:44px;height:6px;border-radius:3px;background:#333}#pdots i.on{background:#a7f3d0}
 .p{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:44px;padding:56px 60px}
 .lab{font-size:32px;color:#8f969e;font-weight:500;line-height:40px;white-space:nowrap}
@@ -92,6 +100,9 @@ p{font-size:38px;line-height:62px;color:#9aa1a9;font-weight:300}
     <div id="ubands"></div>
     <div style="font-size:28px;color:#8f969e;line-height:40px">대학 발표 입결 3개년을 우리 학교 1학년 성적 분포로 환산한 학과별 합격선의 대학 중앙값 · 근거가 얇은 학과 제외 · 종합전형은 서류 평가라 다를 수 있음 · 학과·연도에 따라 차이가 큽니다</div>
   </div></div>
+  <div class="pg off ug" id="pg3"></div>
+  <div class="pg off ug" id="pg4"></div>
+  <div class="pg off ug" id="pg5"></div>
   </div>
 
   <div class="right">
@@ -99,7 +110,7 @@ p{font-size:38px;line-height:62px;color:#9aa1a9;font-weight:300}
       <div style="align-self:center"><div id="noteT"></div><p id="noteS"></p></div>
       <div class="segs" id="segs"></div></div>
     <div class="p" style="display:grid;grid-template-rows:40px 1fr"><div class="lab">오늘 급식</div>
-      <p id="meal" style="color:#d0d4d8;align-self:end;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></p></div>
+      <div id="meal" style="align-self:center;display:grid;grid-template-columns:1fr 1fr;gap:6px 30px;font-size:31px;line-height:40px;color:#d0d4d8;font-weight:300"></div></div>
   </div>
 
   <div class="p ft">
@@ -134,7 +145,7 @@ var CONFIG = {
   ],
   // 대학별 교과전형 예상 합격선(1학년 자) — 다온_28컷_보완도구/_v2/recalc_v2.json b1.rep, 근거 A·B, 학과 5곳↑ 대학 중앙값
   UNIV: [{"b": "1.2 이내", "u": [["서울대", 1.0], ["한양대", 1.05], ["연세대", 1.06], ["고려대", 1.08], ["서강대", 1.1], ["성균관대", 1.15], ["이화여대", 1.15], ["중앙대", 1.15], ["경희대", 1.15], ["서울시립대", 1.18], ["건국대", 1.18]]}, {"b": "1.2 – 1.5", "u": [["홍익대", 1.21], ["숙명여대", 1.23], ["서울과기대", 1.25], ["국민대", 1.28], ["세종대", 1.3], ["아주대", 1.32], ["성신여대", 1.34], ["숭실대", 1.35], ["한국외대", 1.37], ["동국대", 1.42], ["인하대", 1.42], ["명지대", 1.43], ["한국항공대", 1.43], ["용인대", 1.44]]}, {"b": "1.5 – 1.75", "u": [["한양대 ERICA", 1.57], ["가톨릭대", 1.58], ["성공회대", 1.65], ["경북대", 1.69], ["가천대", 1.69], ["충남대", 1.69], ["을지대", 1.69], ["상명대", 1.72], ["한성대", 1.72], ["부산대", 1.72], ["단국대", 1.73], ["서울여대", 1.74], ["인천대", 1.75]]}, {"b": "1.75 – 2.0", "u": [["신한대", 1.76], ["덕성여대", 1.79], ["동덕여대", 1.85], ["서경대", 1.86], ["충북대", 1.89], ["한국공학대", 1.89], ["한국외대 글로벌", 1.96], ["삼육대", 1.99]]}, {"b": "2.0 – 2.5", "u": [["강원대", 2.0], ["전남대", 2.0], ["평택대", 2.0], ["안양대", 2.04], ["차의과대", 2.06], ["한신대", 2.1], ["전북대", 2.18], ["대진대", 2.19], ["수원대", 2.21]]}, {"b": "2.5 이상", "u": [["협성대", 2.52], ["공주대", 2.54], ["강서대", 2.58], ["한세대", 2.58], ["한경국립대", 2.77], ["성결대", 3.0]]}],
-  PAGE_SEC: [40, 25],
+  PAGE_SEC: [25, 20, 15, 15, 15],
   // 1학년 2학기 평가계획 (학교알리미 공시 → 상담도우미 docs\수행평가_영역시기_2026-2.json, 반영비율 RATIO)
   // r = [중간, 기말, 수행] %, left = 수행평가(11월·수시 우선) [시기, 영역]
   PLAN: [
@@ -231,8 +242,84 @@ $('ubands').innerHTML = CONFIG.UNIV.map(function(b){
   return '<div class="bd"><h3>' + b.b + '</h3>' + b.u.map(function(x){ return '<div>' + esc(x[0]) + '<span>' + x[1].toFixed(2) + '</span></div>'; }).join('') + '</div>';
 }).join('');
 
+/* 대학별 2028 전형 카드 (세로 공지 화면 데이터 그대로, 6월 정리) */
+var DATA = [
+ {name:'서울대학교', sub:'지역균형(학생부종합)', cat:'인서울 주요대', type:'none', conf:'보도',
+  facts:[['전형','교과전형 <b>미운영</b> · 지역균형은 학생부종합(정성)'],['정시','교과역량평가 <b>20%→40%</b> 확대'],['최저','전 모집단위 미적용']]},
+ {name:'연세대학교', sub:'추천형', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','1단계 교과 100% → 2단계 <b>서류(정성) 20%</b> 신설'],['포인트','세특·발전 과정도 평가에 반영']]},
+ {name:'고려대학교', sub:'학교추천', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','교과 <b>80%</b> + 서류 <b>20%</b>'],['서류','교과 이수 충실도 · 공동체역량']]},
+ {name:'서강대학교', sub:'학생부교과(지역균형)', cat:'인서울 주요대', type:'early', conf:'보도',
+  facts:[['전형','교과 <b>90%</b> + 출결 10% (정성 없음)'],['성격','사실상 순수 등급 정량']]},
+ {name:'성균관대학교', sub:'학생부교과(추천)', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','정량 <b>70%</b> + 교과종합평가(정성) <b>30%</b>'],['정성','원점수·성취도 분포까지 활용'],['최저','3개 영역 합 7']]},
+ {name:'한양대학교', sub:'추천형', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','교과 <b>60%</b> + 학생부종합평가(정성) <b>40%</b>'],['특징','정성 비중 최상위 · 수능최저 미적용']]},
+ {name:'중앙대학교', sub:'지역균형', cat:'인서울 주요대', type:'early', conf:'보도',
+  facts:[['전형','등급 중심 <b>정량</b> (2028 정성 변경 미명시)'],['포인트','등급 한 칸이 곧 합불']]},
+ {name:'경희대학교', sub:'지역균형', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','교과 <b>70%</b> + 교과종합평가(정성) <b>30%</b>'],['진로선택','<b>석차3+성취A → A를 1등급</b> 처리'],['융합','사회·과학 9과목 미반영']]},
+ {name:'한국외국어대', sub:'학교장추천', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','교과 <b>70%</b> + 서류(정성) <b>30%</b>'],['변경','기존 교과 100% → 서류 신설']]},
+ {name:'서울시립대학교', sub:'지역균형선발', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','교과 <b>60%</b> + 서류(정성) <b>40%</b>'],['주의','단독 보도 기준 — 확정 시 재확인']]},
+ {name:'이화여자대학교', sub:'고교추천', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','교과 <b>80%</b> + 출결 5% + 서류(정성) <b>15%</b>'],['변경','기존 교과 100% → 서류 신설']]},
+ {name:'건국대학교', sub:'KU지역균형', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','교과 <b>70%</b> + 학생부(정성) <b>30%</b>']]},
+ {name:'홍익대학교', sub:'학교장추천', cat:'인서울 주요대', type:'early', conf:'확정',
+  facts:[['전형','교과 <b>100%</b> (정량)'],['진로·융합','성취도 환산 <b>A=10·B=9·C=7</b>·D=4·E=0'],['성격','전 과목 누적형']]},
+ {name:'성신여자대학교', sub:'지역균형 I·II', cat:'인서울 주요대', type:'early', conf:'확정',
+  facts:[['전형','교과 <b>90%</b> + 출결 10%'],['진로선택','환산 반영(상위 10/4과목)'],['융합','사회·과학 <b>반영 제외</b>']]},
+ {name:'상명대학교', sub:'고교추천', cat:'인서울 주요대', type:'early', conf:'확정',
+  facts:[['전형','교과 <b>95%</b> + 출결 5%'],['진로·융합','성취도 과목 <b>미반영</b> · 석차등급만'],['등급환산','1~5등급 = 100/95/93/70/0']]},
+ {name:'서울과기대', sub:'고교추천', cat:'인서울 주요대', type:'early', conf:'확정',
+  facts:[['전형','교과 <b>100%</b> · 석차등급만'],['등급환산','1등급 1000 / 2등급 990 / 3등급 977'],['변경','모집 521→393 축소 · 최저 2개합 6']]},
+ {name:'덕성여자대학교', sub:'학생부교과', cat:'인서울 주요대', type:'rise', conf:'확정',
+  facts:[['전형','교과 정량 + <b>진로선택 이수학점 가산</b>'],['성취도','A=99.5(≈1등급) · 융합선택 제외'],['포인트','심화·진로 과목 많이 들수록 유리']]},
+ {name:'동국대학교', sub:'학교장추천인재', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','교과 <b>70%</b> + 서류(정성) <b>30%</b>'],['산출','석차+성취도 Zone 매트릭스 <b>2등급+A=만점</b>']]},
+ {name:'숙명여자대학교', sub:'지역균형', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','교과 <b>70%</b> + 서류(정성) <b>30%</b>'],['변경','수능최저 폐지']]},
+ {name:'숭실대학교', sub:'학생부교과', cat:'인서울 주요대', type:'rise', conf:'보도',
+  facts:[['전형','교과전형에 <b>정성평가 도입</b> (비율 미공개)'],['진로선택','성취도/석차 중 상위 반영']]},
+ {name:'국민대학교', sub:'학교장추천', cat:'인서울 주요대', type:'early', conf:'보도',
+  facts:[['전형','등급 중심 정량 (정성 미도입)'],['변경','현역 Ⅰ형 / N수 Ⅱ형 분리 신설']]},
+ {name:'전남대학교', sub:'학생부교과', cat:'지방거점국립', type:'early', conf:'확정',
+  facts:[['전형','학생부 <b>100%</b> (정성 없음)'],['진로·융합','성취도 상위 3과목 반영'],['학년','차등 없음(1-1~3-1)']]},
+ {name:'부산대학교', sub:'학생부교과', cat:'지방거점국립', type:'rise', conf:'보도',
+  facts:[['전형','교과 <b>80%</b> + 학업역량평가(정성) <b>20%</b>'],['변경','논술 폐지 · 교과(탐구형) 신설']]},
+ {name:'전북대학교', sub:'학생부교과', cat:'지방거점국립', type:'early', conf:'보도',
+  facts:[['전형','교과 <b>100%</b> (서류·면접 없음)'],['지역인재','정시 지역인재 운영(도내 유일)']]},
+ {name:'한양대 ERICA', sub:'학생부교과(지역균형)', cat:'지방캠퍼스', type:'early', conf:'확정',
+  facts:[['전형','교과 <b>100%</b> (순수 정량)'],['진로·융합','융합선택(사·과) 성취도 환산'],['변경','모집 531→380 · 최저 2개합 6']]},
+ {name:'한국항공대학교', sub:'교과성적우수자', cat:'수도권 주요대', type:'early', conf:'보도',
+  facts:[['전형','교과 <b>100%</b> (정량)'],['진로·융합','진로(사·과) 석차/성취도 상위 · 융합 최대 3과목 가산'],['변경','재학 Ⅰ형 / 졸업 Ⅱ형 분리']]},
+ {name:'인하대학교', sub:'지역균형', cat:'수도권 주요대', type:'early', conf:'보도',
+  facts:[['전형','교과 중심 정량 · <b>학년 차등 없음</b>'],['종합','미래인재 서류형은 정성 별도']]},
+];
+var POINT = {
+  early: ['정량형', '석차등급이 합격선 · 공통·일반 등급 사수'],
+  rise:  ['정성형', '등급 + 세특·전공 연계 생기부 함께 평가'],
+  none:  ['교과 미운영', '생기부 전체의 깊이가 관건'],
+  tba:   ['발표 예정', '산출식은 2027년 모집요강에서 확정']
+};
+['pg3', 'pg4', 'pg5'].forEach(function(id, k){
+  var part = DATA.slice(k * 9, k * 9 + 9);
+  $(id).innerHTML =
+    part.map(function(d){
+      var pt = POINT[d.type] || POINT.tba;
+      return '<div class="p uc"><div class="ch"><span class="c1">' + d.cat + '</span><span class="' + (d.conf === '확정' ? 'c1' : 'c2') + '">' +
+        ({확정: '확정', 보도: '미확정', 미공개: '미공개'}[d.conf] || d.conf) + '</span><span>2028 · ' + (d.sub || '') + '</span></div>' +
+        '<div class="nm">' + d.name + '</div>' +
+        '<div class="fx">' + d.facts.map(function(f){ return '<div><span>' + f[0] + '</span><span style="color:inherit">' + f[1] + '</span></div>'; }).join('') + '</div>' +
+        '<div class="pt"><i>' + pt[0] + '</i>' + pt[1] + '</div></div>';
+    }).join('');
+});
+
 /* 쪽 넘김 */
-var pgi = location.hash === '#p2' ? 1 : 0, PG = ['pg1', 'pg2'];
+var PG = ['pg1', 'pg2', 'pg3', 'pg4', 'pg5'], pgi = Math.max(0, PG.indexOf(location.hash.replace('#p', 'pg')));
 function showPage(){
   PG.forEach(function(id, k){ $(id).classList.toggle('off', k !== pgi); });
   $('pdots').innerHTML = PG.map(function(_, k){ return '<i' + (k === pgi ? ' class="on"' : '') + '></i>'; }).join('');
@@ -274,8 +361,8 @@ function loadMeal(a){
     var m = rows.filter(function(r){ return r.MMEAL_SC_NM === '중식'; })[0] || rows[0];
     var items = m.DDISH_NM.split(/<br\s*\/?>/i).map(function(s){
       return s.replace(/\([^)]*\)/g,'').replace(/\/.*$/,'').replace(/[*♥]/g,'').replace(/\[[^\]]*\]/g,'').trim();
-    }).filter(Boolean).slice(0, 4);
-    $('meal').innerHTML = items.slice(0,2).map(esc).join(' · ') + '<br>' + items.slice(2).map(esc).join(' · ');
+    }).filter(Boolean).slice(0, 10);
+    $('meal').innerHTML = items.map(function(x){ return '<span>' + esc(x) + '</span>'; }).join('');
   }).catch(function(){ retry(loadMeal, a); });
 }
 
