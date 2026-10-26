@@ -7,7 +7,7 @@
 <style>
 *{margin:0;box-sizing:border-box}
 html,body{width:100%;height:100%;background:#15171a;overflow:hidden}
-:root{--cols:repeat(4,minmax(0,1fr));--gap:36px}
+:root{--mint:#6ee7b7;--sky:#93c5fd;--vio:#c4b5fd;--amb:#fcd34d;--cor:#fca5a5;--cols:repeat(4,minmax(0,1fr));--gap:36px}
 #app{position:absolute;left:50%;top:50%;width:3440px;height:1440px;transform-origin:center;
   font-family:"Noto Sans KR","Malgun Gothic",sans-serif;color:#e8eaed;padding:70px;
   background:radial-gradient(1400px 900px at 8% 0%,#1f3a34 0%,transparent 60%),radial-gradient(1600px 1000px at 100% 100%,#2a2440 0%,transparent 60%),#15171a;
@@ -28,6 +28,13 @@ html,body{width:100%;height:100%;background:#15171a;overflow:hidden}
 .uc .fx div span{color:#8f969e}.uc .fx b{color:#e8eaed;font-weight:600}
 .uc .pt{font-size:25px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#9aa1a9;border-top:1px solid rgba(255,255,255,.08);padding-top:12px}.uc .pt i{font-style:normal;color:#a7f3d0;margin-right:12px;font-weight:600}
 .ug{grid-template-rows:1fr 1fr 1fr!important}
+.mint{color:var(--mint)!important}.sky{color:var(--sky)!important}.vio{color:var(--vio)!important}.amb{color:var(--amb)!important}.cor{color:var(--cor)!important}
+.g5 div:nth-child(2) i{background:rgba(147,197,253,.45)}.g5 div:nth-child(3) i{background:rgba(196,181,253,.4)}.g5 div:nth-child(4) i{background:rgba(252,211,77,.35)}.g5 div:nth-child(5) i{background:rgba(252,165,165,.35)}
+.hb.cr i u{background:var(--cor)}
+#sched b{color:var(--amb)}
+.bd:nth-child(2) h3{color:var(--sky)}.bd:nth-child(3) h3{color:var(--vio)}.bd:nth-child(4) h3{color:var(--amb)}.bd:nth-child(5) h3{color:var(--cor)}.bd:nth-child(6) h3{color:#9aa1a9}
+.uc.early .nm{color:var(--mint)}.uc.rise .nm{color:var(--vio)}.uc.none .nm{color:var(--amb)}
+.uc.early .pt i{color:var(--mint)}.uc.rise .pt i{color:var(--vio)}.uc.none .pt i{color:var(--amb)}
 #pdots{display:flex;gap:12px;justify-content:center}#pdots i{width:44px;height:6px;border-radius:3px;background:#333}#pdots i.on{background:#a7f3d0}
 .p{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:44px;padding:56px 60px}
 .lab{font-size:32px;color:#8f969e;font-weight:500;line-height:40px;white-space:nowrap}
@@ -81,15 +88,15 @@ p{font-size:38px;line-height:62px;color:#9aa1a9;font-weight:300}
       <div style="flex:10"><i></i><b>1</b> 10%</div><div style="flex:24"><i></i><b>2</b> 24%</div>
       <div style="flex:32"><i></i><b>3</b> 32%</div><div style="flex:24"><i></i><b>4</b> 24%</div><div style="flex:10"><i></i><b>5</b> 10%</div></div></div>
   <div class="p stat"><div class="lab">9월 학력평가 · 원점수 평균, 우리 학교 − 전국</div>
-    <div class="big">6<small>/6</small><em>전 영역 전국 평균 이상</em></div>
+    <div class="big">6<small>/6</small><em>전 영역 <span class="mint">전국 평균 이상</span></em></div>
     <div class="det dl">
-      <div><span>국어</span><b>+5.2</b></div><div><span>수학</span><b>+7.8</b></div><div><span>영어</span><b>+7.5</b></div>
-      <div><span>한국사</span><b>+1.5</b></div><div><span>통합사회</span><b>+2.0</b></div><div><span>통합과학</span><b>+3.5</b></div></div></div>
+      <div><span>국어</span><b class="mint">+5.2</b></div><div><span>수학</span><b class="mint">+7.8</b></div><div><span>영어</span><b class="mint">+7.5</b></div>
+      <div><span>한국사</span><b class="sky">+1.5</b></div><div><span>통합사회</span><b class="sky">+2.0</b></div><div><span>통합과학</span><b class="sky">+3.5</b></div></div></div>
   <div class="p stat"><div class="lab">선배 290명 · 중간 상위 30% · 서울 소재 합격</div>
-    <div class="big">32<small>%</small><em>기말에서 밀리면</em></div>
+    <div class="big"><span class="cor">32</span><small>%</small><em>기말에서 <span class="cor">밀리면</span></em></div>
     <div class="det">
-      <div class="hb on"><span>버틴 선배</span><i><u style="width:48%"></u></i><b>48%</b></div>
-      <div class="hb"><span>밀린 선배</span><i><u style="width:32%"></u></i><b>32%</b></div></div></div>
+      <div class="hb on"><span>버틴 선배</span><i><u style="width:48%"></u></i><b class="mint">48%</b></div>
+      <div class="hb cr"><span>밀린 선배</span><i><u style="width:32%"></u></i><b class="cor">32%</b></div></div></div>
 
   <div class="p plan"><div class="lab">1학년 2학기 평가계획 · 학교알리미 공시 &nbsp;|&nbsp; 막대 = 중간 · 기말 · <span class="gr">수행</span> 반영비율 &nbsp;|&nbsp; 아래 = 수행평가 영역·시기</div>
     <div id="plan"></div></div>
@@ -206,7 +213,7 @@ function tick(){
   else if (cur < toMin(P[0].s)) txt = '등교 · ' + P[1].name + ' ' + P[1].s;
   else if (cur >= toMin(P[P.length-1].e)) txt = '일과 종료';
   else for (var i = 0; i < P.length; i++) {
-    if (cur >= toMin(P[i].s) && cur < toMin(P[i].e)) { txt = '<b style="color:#e8eaed;font-size:52px">' + P[i].name + '</b> · ~' + P[i].e; break; }
+    if (cur >= toMin(P[i].s) && cur < toMin(P[i].e)) { txt = '<b style="color:var(--mint);font-size:52px">' + P[i].name + '</b> · ~' + P[i].e; break; }
     if (P[i+1] && cur >= toMin(P[i].e) && cur < toMin(P[i+1].s)) { txt = '<b style="color:#e8eaed;font-size:52px">쉬는 시간</b> · ' + P[i+1].name + ' ' + P[i+1].s; break; }
   }
   $('period').innerHTML = txt;
@@ -234,7 +241,7 @@ $('plan').innerHTML = CONFIG.PLAN.map(function(x){
   var lab = ['중간','기말','수행'].map(function(k, i){ return x.r[i] ? k + ' ' + x.r[i] : ''; }).filter(Boolean).join(' · ');
   return '<div class="sb"><div class="nm">' + esc(x.n) + '<span>' + lab + '</span></div>' +
     '<div class="rb"><i style="width:' + x.r[0] + '%"></i><s style="width:' + x.r[1] + '%"></s><u style="width:' + x.r[2] + '%"></u></div>' +
-    x.left.map(function(l){ return '<div class="it"><span>' + esc(l[0]) + '</span>' + esc(l[1]) + '</div>'; }).join('') + '</div>';
+    x.left.map(function(l){ var c = /11/.test(l[0]) ? 'amb' : /수시|상시|이후/.test(l[0]) ? 'sky' : ''; return '<div class="it"><span' + (c ? ' class="' + c + '"' : ' style="color:#8f969e"') + '>' + esc(l[0]) + '</span>' + esc(l[1]) + '</div>'; }).join('') + '</div>';
 }).join('');
 
 /* 대학 합격선 */
@@ -310,7 +317,7 @@ var POINT = {
   $(id).innerHTML =
     part.map(function(d){
       var pt = POINT[d.type] || POINT.tba;
-      return '<div class="p uc"><div class="ch"><span class="c1">' + d.cat + '</span><span class="' + (d.conf === '확정' ? 'c1' : 'c2') + '">' +
+      return '<div class="p uc ' + (d.type || 'tba') + '"><div class="ch"><span class="c1">' + d.cat + '</span><span class="' + (d.conf === '확정' ? 'c1' : 'c2') + '">' +
         ({확정: '확정', 보도: '미확정', 미공개: '미공개'}[d.conf] || d.conf) + '</span><span>2028 · ' + (d.sub || '') + '</span></div>' +
         '<div class="nm">' + d.name + '</div>' +
         '<div class="fx">' + d.facts.map(function(f){ return '<div><span>' + f[0] + '</span><span style="color:inherit">' + f[1] + '</span></div>'; }).join('') + '</div>' +
