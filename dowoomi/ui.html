@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610261024"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610261123"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <script>/* 화면 내용 긁어가기 방지(입력칸 제외). 뷰소스는 원리상 못 막음 */['contextmenu','copy','cut','dragstart'].forEach(e=>document.addEventListener(e,v=>{if(!(v.target.closest&&v.target.closest('input,textarea,[contenteditable]')))v.preventDefault()}));</script>
 <title>영락고 상담 도우미</title>
@@ -1650,12 +1650,14 @@ function jeongsiAgg(pa, tr, region){
   return Object.entries(hit).map(([u, c]) => { c.sort((a, b) => b - a); const rep = c.length >= 3 ? c[1] : c[0]; return {u, rep, b: jband(rep, pa), n: c.length}; });
 }
 const MKEY = l => { const m = String(l).match(/(\d)\D*?(\d{1,2})월/); return m ? +m[1] * 100 + +m[2] : 0; }, MORD = (a, b) => MKEY(a) - MKEY(b) || a.localeCompare(b, 'ko');   // '고1 10월'이 '고1 3월'보다 앞에 오지 않게
-function latestPa(){ const labs = Object.keys(ME.mk).sort(MORD); const h = labs.map(l => mockPa(ME.mk[l])).filter(v => v != null); return h.length ? h.at(-1) : null; }
+const PROV = l => /가채점/.test(l);   // 10-26: 가채점 회차는 흐름에만 — 정시선·판정은 마지막 실채점
+function latestPa(){ const labs = Object.keys(ME.mk).filter(l => !PROV(l)).sort(MORD); const h = labs.map(l => mockPa(ME.mk[l])).filter(v => v != null); return h.length ? h.at(-1) : null; }
 function jeongsiBlock(){
   const labs = Object.keys(ME.mk).sort(MORD);
   const hist = labs.map(l => [l, mockPa(ME.mk[l])]).filter(x => x[1] != null);
   if (!hist.length) return '<p class="mu">국·수·탐 백분위가 모두 있는 모의 회차가 없습니다.</p>';
-  const [lab, pa] = hist.at(-1), tr = SIDE(ME.k);
+  const real = hist.filter(x => !PROV(x[0])); if (!real.length) return '<p class="mu">국·수·탐 백분위가 모두 있는 실채점 모의 회차가 없습니다.</p>';
+  const [lab, pa] = real.at(-1), tr = SIDE(ME.k);
   const agg = jeongsiAgg(pa, tr, REGION);
   const col = (k, nm) => { const it = agg.filter(o => o.b === k).sort((a, b) => b.rep - a.rep);
     return `<div><h4>${nm} <small class="mu">${it.length}곳</small></h4>${it.slice(0, 12).map((o, i) => `<div class="r${i >= SHOW ? ' more' : ''}"><span>${esc(o.u)} <small class="mu">${o.n}개 학과</small></span><b>${o.rep.toFixed(1)}</b></div>`).join('') || '<div class="mu small">없음</div>'}</div>`; };
