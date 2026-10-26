@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610270820"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610270850"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <script>/* 화면 내용 긁어가기 방지(입력칸 제외). 뷰소스는 원리상 못 막음 */['contextmenu','copy','cut','dragstart'].forEach(e=>document.addEventListener(e,v=>{if(!(v.target.closest&&v.target.closest('input,textarea,[contenteditable]')))v.preventDefault()}));</script>
 <title>영락고 상담 도우미</title>
@@ -638,7 +638,7 @@ async function unlock(){
     if (location.search.includes('dev')) r = {ok: true, data: await (await fetch('data.json')).text()};
     else r = await api().unlock(pw);
     if (!r.ok){ $('err').textContent = r.msg; return; }
-    if (!D){ D = JSON.parse(r.data); scrubNong(D); start(); }
+    if (!D){ D = JSON.parse(r.data); scrubNong(D); womenGate(D); start(); }
     $('lock').style.display = 'none'; $('pw').value = ''; poke();
   } catch (e){ $('err').textContent = '열기 실패: ' + e; }
 }
@@ -1160,6 +1160,16 @@ const topUnivs = (n) => [...new Set([...FAV.map(f => f.k), ...JUDGE.slice(0, n).
    noNong(행 배열) = 농어촌이 없으면 true · noNong(글자) = 농어촌 조각을 뗀 글자(떼고도 남으면 그대로 남음) */
 const NONG_FRAG = /\s*[·,]\s*농어촌[가-힣]*(\([^)]*\))?(\s*(특별)?전형)?(?=[\s·,:]|$)/g;
 const noNong = x => typeof x === 'string' ? x.replace(NONG_FRAG, '') : !JSON.stringify(x).includes('농어촌');
+/* 10-27 남학생(1·2학년 모두 1~3반 = 남자반)엔 여대를 빼고 보여 줌 — 표마다 거르지 않고 D의 대학 표를 '지금 학생(ME)' 기준 getter로(반·학년 보기도 ME를 바꿔 가며 계산하므로 따라감) */
+const WOMU = /여자?대/, isMale = s => !!s && Math.floor(s.id / 100) % 100 <= 3;
+function womenGate(d){
+  const gate = (o, k, f) => { const all = o[k], m = f(all); Object.defineProperty(o, k, {get: () => isMale(ME) ? m : all, configurable: true}); };
+  const arr = i => a => a.filter(r => !WOMU.test(i == null ? r.u : r[i])), obj = o => Object.fromEntries(Object.entries(o).filter(([k]) => !WOMU.test(k)));
+  gate(d.band, 'rows', arr()); ['gyo', 'jong', 'js', 'subj'].forEach(k => gate(d.daon, k, arr(0))); gate(d, 'jeongsi', arr(0));
+  Object.values(d.daon.t28).forEach(t => gate(t, 'rows', arr(1))); gate(d, 'yogang', obj); gate(d, 'plan28', obj);
+  Object.values(d.grades).forEach(g => { gate(g, 'seniors', S => S.map(([p, ids, ...x]) => [p, ids.filter(i => !WOMU.test(d.apps[i].u)), ...x]));
+    g.stu.forEach(s => { if (isMale(s)) ['choe', 'choe_gap'].forEach(k => { if (s[k]) s[k] = obj(s[k]); }); }); });
+}
 function scrubNong(d){
   d.jeongsi = d.jeongsi.filter(noNong);
   if (d.daon){ ['gyo', 'jong', 'js'].forEach(k => { if (d.daon[k]) d.daon[k] = d.daon[k].filter(noNong); });
@@ -1400,7 +1410,7 @@ function hGain(m){
 /* H. 대학 방식으로 본 내 등급: UMETH 40행 — 목표·★ 대학 먼저, 그다음 유리한 순(d 오름차순), 미확정은 맨 아래. 접기·인쇄는 foldParts('H.')가 만든 details.fold가 맡음 */
 function hBlock(){
   const mine = new Set([...TGT, ...FAV].map(x => x.k)), FL = {'참고': '등급만 반영한 참고', '미확정': '방식 미확정', '유불리 없음': '방식 유불리 없음'};
-  const R = UMETH.map(m => ({m, o: umethGrade(m), f: mine.has(K(m.u))})), sd = SIDE(ME.k) === '자연' ? '자연' : '인문';
+  const R = UMETH.filter(m => !(isMale(ME) && WOMU.test(m.u))).map(m => ({m, o: umethGrade(m), f: mine.has(K(m.u))})), sd = SIDE(ME.k) === '자연' ? '자연' : '인문';
   const cnt = {}; R.forEach(r => r.o.loss.forEach(x => { const k = `${x.n}(${x.t}) ${+x.v.toFixed(2)}${x.t === curSem() ? ' (중간 추정)' : ''}`; cnt[k] = (cnt[k] || 0) + 1; }));
   const top = Object.keys(cnt).filter(k => cnt[k] >= 2).sort((a, b) => cnt[b] - cnt[a]).slice(0, 2), lossLine = top.length ? `<p class="hloss">지난 성적 중 여러 대학에서 손해: ${top.map(esc).join(' · ')}</p>` : '';
   const GN = new Map(R.map(r => [r.m, hGain(r.m)])), wg = [...GN.values()].filter(g => g.length), top2 = i => { const c = {}; wg.forEach(g => g[i] && (c[g[i].u] = (c[g[i].u] || 0) + 1)); const e = Object.entries(c).sort((a, b) => b[1] - a[1])[0]; return e && e[1] >= .6 * wg.length ? e[0] : null; };
@@ -1613,11 +1623,11 @@ function pctOf(g, arr){ const n = arr.length; if (g < arr[0] || g > arr[n-1]) re
 function gradeAt(p, arr){ const n = arr.length, x = p / 100 * n - .5; if (x <= 0) return arr[0]; if (x >= n-1) return arr[n-1]; const lo = Math.floor(x), t = x - lo; return arr[lo] + t * (arr[lo+1] - arr[lo]); }
 let _band = null;
 function bandRows(){
-  if (_band && _band.g === GR) return _band.r;
+  if (_band && _band.g === GR && _band.m === isMale(ME)) return _band.r;
   const S = D.band.sample, a5 = GR === 1 ? S.g5_1 : S.g5;
   const r = D.band.rows.map(o => { const vals = ['2024','2025','2026'].filter(y => o.y[y]).map(y => { const p = pctOf(o.y[y][0], S.g9[y]); return p == null ? null : gradeAt(p, a5); }).filter(v => v != null);
     if (!vals.length) return null; return {u: o.u, d: o.d, t: o.t, g: o.g, j: o.j, lo: Math.min(...vals), hi: Math.max(...vals), n: vals.length}; }).filter(Boolean);
-  _band = {g: GR, r}; return r;
+  _band = {g: GR, m: isMale(ME), r}; return r;
 }
 /* A·B·C는 앞 SHOW줄만 — 나머지는 '더 보기'(인쇄도 화면에 펼친 것만) */
 const SHOW = 6;
@@ -1663,7 +1673,7 @@ function jeongsiBlock(){
     return `<div><h4>${nm} <small class="mu">${it.length}곳</small></h4>${it.slice(0, 12).map((o, i) => `<div class="r${i >= SHOW ? ' more' : ''}"><span>${esc(o.u)} <small class="mu">${o.n}개 학과</small></span><b>${o.rep.toFixed(1)}</b></div>`).join('') || '<div class="mu small">없음</div>'}</div>`; };
   return `<div class="ctrl">${lab} 지수 <b>${pa.toFixed(1)}</b> · 회차별 ${hist.map(([l, v]) => `${l.replace('고', '')} ${v.toFixed(1)}`).join(' → ')} · 계열 ${ME.k && !JOB() ? tr : '전체'}${REGION !== '전체' ? ' · 지역 ' + esc(REGION) : ''}</div>
    <div class="cols3" style="grid-template-columns:repeat(4,1fr)">${col(0, '도전(−7~−4)')}${col(1, '상향(−4~0)')}${col(2, '적정(0~+4)')}${col(3, '안정(+4↑)')}</div>${moreBtn([0, 1, 2, 3].reduce((a, k) => a + Math.max(0, Math.min(12, agg.filter(o => o.b === k).length) - SHOW), 0))}
-   <div class="note">대학 대표 컷 = 닿는 학과 컷 중 두 번째로 높은 값(배치표 오류값 방지, 학과 3개 이상일 때). 고1·고2 학평 백분위를 수능 배치표에 대 본 값이라 <b>지금 실력의 위치</b>로만 보세요. 여대 포함.</div>`;
+   <div class="note">대학 대표 컷 = 닿는 학과 컷 중 두 번째로 높은 값(배치표 오류값 방지, 학과 3개 이상일 때). 고1·고2 학평 백분위를 수능 배치표에 대 본 값이라 <b>지금 실력의 위치</b>로만 보세요.${isMale(ME) ? '' : ' 여대 포함.'}</div>`;
 }
 
 /* ── ⑤ 모의 ── */
