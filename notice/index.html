@@ -53,7 +53,7 @@ p{font-size:38px;line-height:62px;color:#9aa1a9;font-weight:300}
     <span id="date" style="font-size:42px;color:#9aa1a9;text-align:right"></span>
     <span style="display:flex;align-items:center;justify-content:space-between;padding:0 60px">
       <span id="clock" style="font-size:96px;font-weight:700;letter-spacing:-3px"></span>
-      <span id="weather" style="font-size:40px;color:#9aa1a9"></span></span>
+      <span id="weather" style="font-size:40px;color:#9aa1a9;white-space:nowrap"></span></span>
   </div>
 
   <div class="p stat"><div class="lab">우리 1학년의 대입 · 2029학년도</div>
@@ -243,7 +243,7 @@ function loadMeal(a){
   }).catch(function(){ retry(loadMeal, a); });
 }
 
-var WMO = {0:'☀ 맑음',1:'🌤 대체로 맑음',2:'⛅ 구름 조금',3:'☁ 흐림',45:'안개',48:'안개',51:'이슬비',53:'이슬비',55:'이슬비',
+var WMO = {0:'☀ 맑음',1:"🌤 맑음",2:"⛅ 구름 조금",3:'☁ 흐림',45:'안개',48:'안개',51:'이슬비',53:'이슬비',55:'이슬비',
   61:'비',63:'비',65:'강한 비',71:'눈',73:'눈',75:'강한 눈',80:'소나기',81:'소나기',82:'강한 소나기',95:'뇌우',96:'뇌우',99:'뇌우'};
 function pmGrade(p10, p25){
   function g10(v){ return v<=30?0:v<=80?1:v<=150?2:3; } function g25(v){ return v<=15?0:v<=35?1:v<=75?2:3; }
