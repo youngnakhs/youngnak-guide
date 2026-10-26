@@ -11,7 +11,16 @@ html,body{width:100%;height:100%;background:#15171a;overflow:hidden}
 #app{position:absolute;left:50%;top:50%;width:3440px;height:1440px;transform-origin:center;
   font-family:"Noto Sans KR","Malgun Gothic",sans-serif;color:#e8eaed;padding:70px;
   background:radial-gradient(1400px 900px at 8% 0%,#1f3a34 0%,transparent 60%),radial-gradient(1600px 1000px at 100% 100%,#2a2440 0%,transparent 60%),#15171a;
-  display:grid;grid-template-columns:var(--cols);grid-template-rows:110px 400px 1fr 200px;gap:var(--gap)}
+  display:grid;grid-template-columns:var(--cols);grid-template-rows:110px 1fr 200px;gap:var(--gap)}
+.pages{grid-column:1/4;grid-row:2;position:relative}
+.pg{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:400px 1fr;gap:var(--gap);transition:opacity 1s}
+.pg.off{opacity:0;pointer-events:none}
+.ub{grid-column:1/4;grid-row:1/3;display:grid;grid-template-rows:40px 70px 1fr 40px;padding:44px 60px;gap:10px}
+#ubands{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0 var(--gap);min-height:0;overflow:hidden}
+.bd{border-top:1px solid rgba(255,255,255,.08);padding-top:18px;overflow:hidden}
+.bd h3{font-size:44px;font-weight:700;margin-bottom:10px}.bd:first-child h3{background:linear-gradient(90deg,#a7f3d0,#c4b5fd);-webkit-background-clip:text;background-clip:text;color:transparent}
+.bd div{display:flex;justify-content:space-between;font-size:30px;line-height:37px;color:#c9ced3;white-space:nowrap}.bd div span{color:#8f969e;font-size:27px}
+#pdots{display:flex;gap:12px;justify-content:center}#pdots i{width:44px;height:6px;border-radius:3px;background:#333}#pdots i.on{background:#a7f3d0}
 .p{background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);border-radius:44px;padding:56px 60px}
 .lab{font-size:32px;color:#8f969e;font-weight:500;line-height:40px;white-space:nowrap}
 .gr{background:linear-gradient(90deg,#a7f3d0,#c4b5fd);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -34,7 +43,7 @@ html,body{width:100%;height:100%;background:#15171a;overflow:hidden}
 .sb .it{font-size:29px;line-height:40px;color:#c9ced3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sb .it span{color:#a7f3d0;margin-right:14px}
 p{font-size:38px;line-height:62px;color:#9aa1a9;font-weight:300}
 .hd{grid-column:1/5;display:grid;grid-template-columns:var(--cols);gap:var(--gap);align-items:center}
-.right{grid-column:4;grid-row:2/4;display:grid;grid-template-rows:1fr 1fr;gap:var(--gap)}
+.right{grid-column:4;grid-row:2;display:grid;grid-template-rows:1fr 1fr;gap:var(--gap)}
 .note{display:grid;grid-template-rows:40px 1fr auto}
 #noteT{font-size:60px;font-weight:700;line-height:80px;transition:opacity .6s}
 #noteS{transition:opacity .6s}
@@ -49,13 +58,15 @@ p{font-size:38px;line-height:62px;color:#9aa1a9;font-weight:300}
 <body>
 <div id="app">
   <div class="hd">
-    <span style="font-size:44px;font-weight:700;padding-left:60px">영락고 <span class="gr">1학년부</span></span><span></span>
+    <span style="font-size:44px;font-weight:700;padding-left:60px">영락고 <span class="gr">1학년부</span></span><span id="pdots"></span>
     <span id="date" style="font-size:42px;color:#9aa1a9;text-align:right"></span>
-    <span style="display:flex;align-items:center;justify-content:space-between;padding:0 60px">
+    <span style="display:flex;align-items:center;justify-content:space-between;gap:30px;padding:0 60px">
       <span id="clock" style="font-size:96px;font-weight:700;letter-spacing:-3px"></span>
-      <span id="weather" style="font-size:40px;color:#9aa1a9;white-space:nowrap"></span></span>
+      <span id="weather" style="font-size:34px;color:#9aa1a9;white-space:nowrap"></span></span>
   </div>
 
+  <div class="pages">
+  <div class="pg" id="pg1">
   <div class="p stat"><div class="lab">우리 1학년의 대입 · 2029학년도</div>
     <div class="big"><span class="gr">5등급</span><em>내신 등급제</em></div>
     <div class="det g5">
@@ -74,6 +85,14 @@ p{font-size:38px;line-height:62px;color:#9aa1a9;font-weight:300}
 
   <div class="p plan"><div class="lab">1학년 2학기 평가계획 · 학교알리미 공시 &nbsp;|&nbsp; 막대 = 중간 · 기말 · <span class="gr">수행</span> 반영비율 &nbsp;|&nbsp; 아래 = 수행평가 영역·시기</div>
     <div id="plan"></div></div>
+  </div>
+  <div class="pg off" id="pg2"><div class="p ub">
+    <div class="lab">대학별 교과전형 예상 합격선 · 우리 학교 1학년 5등급 기준 환산(추정)</div>
+    <div style="font-size:56px;font-weight:700;line-height:70px">내신 5등급 평균, <span class="gr">어디까지</span> 닿을까요</div>
+    <div id="ubands"></div>
+    <div style="font-size:28px;color:#8f969e;line-height:40px">대학 발표 입결 3개년을 우리 학교 1학년 성적 분포로 환산한 학과별 합격선의 대학 중앙값 · 근거가 얇은 학과 제외 · 종합전형은 서류 평가라 다를 수 있음 · 학과·연도에 따라 차이가 큽니다</div>
+  </div></div>
+  </div>
 
   <div class="right">
     <div class="p note" id="note"><div class="lab" id="noteL">안내</div>
@@ -113,6 +132,9 @@ var CONFIG = {
     { d: '12.16',    t: '서술형 확인',      end: '2026-12-16' },
     { d: '12.31',    t: '방학식',           end: '2026-12-31' }
   ],
+  // 대학별 교과전형 예상 합격선(1학년 자) — 다온_28컷_보완도구/_v2/recalc_v2.json b1.rep, 근거 A·B, 학과 5곳↑ 대학 중앙값
+  UNIV: [{"b": "1.2 이내", "u": [["서울대", 1.0], ["한양대", 1.05], ["연세대", 1.06], ["고려대", 1.08], ["서강대", 1.1], ["성균관대", 1.15], ["이화여대", 1.15], ["중앙대", 1.15], ["경희대", 1.15], ["서울시립대", 1.18], ["건국대", 1.18]]}, {"b": "1.2 – 1.5", "u": [["홍익대", 1.21], ["숙명여대", 1.23], ["서울과기대", 1.25], ["국민대", 1.28], ["세종대", 1.3], ["아주대", 1.32], ["성신여대", 1.34], ["숭실대", 1.35], ["한국외대", 1.37], ["동국대", 1.42], ["인하대", 1.42], ["명지대", 1.43], ["한국항공대", 1.43], ["용인대", 1.44]]}, {"b": "1.5 – 1.75", "u": [["한양대 ERICA", 1.57], ["가톨릭대", 1.58], ["성공회대", 1.65], ["경북대", 1.69], ["가천대", 1.69], ["충남대", 1.69], ["을지대", 1.69], ["상명대", 1.72], ["한성대", 1.72], ["부산대", 1.72], ["단국대", 1.73], ["서울여대", 1.74], ["인천대", 1.75]]}, {"b": "1.75 – 2.0", "u": [["신한대", 1.76], ["덕성여대", 1.79], ["동덕여대", 1.85], ["서경대", 1.86], ["충북대", 1.89], ["한국공학대", 1.89], ["한국외대 글로벌", 1.96], ["삼육대", 1.99]]}, {"b": "2.0 – 2.5", "u": [["강원대", 2.0], ["전남대", 2.0], ["평택대", 2.0], ["안양대", 2.04], ["차의과대", 2.06], ["한신대", 2.1], ["전북대", 2.18], ["대진대", 2.19], ["수원대", 2.21]]}, {"b": "2.5 이상", "u": [["협성대", 2.52], ["공주대", 2.54], ["강서대", 2.58], ["한세대", 2.58], ["한경국립대", 2.77], ["성결대", 3.0]]}],
+  PAGE_SEC: [40, 25],
   // 1학년 2학기 평가계획 (학교알리미 공시 → 상담도우미 docs\수행평가_영역시기_2026-2.json, 반영비율 RATIO)
   // r = [중간, 기말, 수행] %, left = 수행평가(11월·수시 우선) [시기, 영역]
   PLAN: [
@@ -203,6 +225,20 @@ $('plan').innerHTML = CONFIG.PLAN.map(function(x){
     '<div class="rb"><i style="width:' + x.r[0] + '%"></i><s style="width:' + x.r[1] + '%"></s><u style="width:' + x.r[2] + '%"></u></div>' +
     x.left.map(function(l){ return '<div class="it"><span>' + esc(l[0]) + '</span>' + esc(l[1]) + '</div>'; }).join('') + '</div>';
 }).join('');
+
+/* 대학 합격선 */
+$('ubands').innerHTML = CONFIG.UNIV.map(function(b){
+  return '<div class="bd"><h3>' + b.b + '</h3>' + b.u.map(function(x){ return '<div>' + esc(x[0]) + '<span>' + x[1].toFixed(2) + '</span></div>'; }).join('') + '</div>';
+}).join('');
+
+/* 쪽 넘김 */
+var pgi = location.hash === '#p2' ? 1 : 0, PG = ['pg1', 'pg2'];
+function showPage(){
+  PG.forEach(function(id, k){ $(id).classList.toggle('off', k !== pgi); });
+  $('pdots').innerHTML = PG.map(function(_, k){ return '<i' + (k === pgi ? ' class="on"' : '') + '></i>'; }).join('');
+  setTimeout(function(){ pgi = (pgi + 1) % PG.length; showPage(); }, CONFIG.PAGE_SEC[pgi] * 1000);
+}
+showPage();
 
 /* 안내 회전 */
 var ni = 0;
