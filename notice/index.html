@@ -67,6 +67,10 @@ p{font-size:38px;line-height:62px;color:#9aa1a9;font-weight:300}
 .ft{grid-column:1/5;display:grid;grid-template-columns:var(--cols);gap:var(--gap);align-items:center;padding:0}
 #sched{grid-column:2/4;display:flex;justify-content:space-between;gap:40px;font-size:38px;padding:0 60px}
 #sched>span{white-space:nowrap}#sched span span{color:#9aa1a9}
+#app.w16{width:2560px}.w16 .pages{grid-column:1/5}
+.w16 .hd{grid-template-columns:1fr .7fr 1fr 2fr}.w16 .ft{grid-template-columns:440px minmax(0,1fr) 480px}.w16 .ft>div:last-child{padding:0 40px!important;white-space:nowrap}.w16 #sched{grid-column:2;font-size:34px;padding:0 20px;gap:30px}
+.w16 #meal{font-size:46px!important;line-height:66px!important;grid-template-columns:1fr!important}
+.w16 .pg.today{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:1fr}
 #dim{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity 2s}
 </style>
 </head>
@@ -191,9 +195,17 @@ function ymd(d){ return '' + d.getFullYear() + pad(d.getMonth()+1) + pad(d.getDa
 function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 /* 화면 맞춤 + 잔상 방지(3분마다 몇 픽셀 이동) */
+var W16 = innerWidth / innerHeight < 2 || /w16/.test(location.search);
+if (W16) {
+  $('app').classList.add('w16');
+  var r = document.querySelector('.right'), t = document.createElement('div');
+  t.className = 'pg off today'; t.id = 'pg6';
+  while (r.firstChild) t.appendChild(r.firstChild);
+  r.remove(); document.querySelector('.pages').appendChild(t);
+}
 var shift = [0,0];
 function fit(){
-  var s = Math.min(innerWidth / 3440, innerHeight / 1440);
+  var s = Math.min(innerWidth / (W16 ? 2560 : 3440), innerHeight / 1440);
   $('app').style.transform = 'translate(calc(-50% + ' + shift[0] + 'px), calc(-50% + ' + shift[1] + 'px)) scale(' + s + ')';
 }
 addEventListener('resize', fit);
@@ -326,11 +338,12 @@ var POINT = {
 });
 
 /* 쪽 넘김 */
-var PG = ['pg1', 'pg2', 'pg3', 'pg4', 'pg5'], pgi = Math.max(0, PG.indexOf(location.hash.replace('#p', 'pg')));
+var PG = W16 ? ['pg1', 'pg6', 'pg2', 'pg3', 'pg4', 'pg5'] : ['pg1', 'pg2', 'pg3', 'pg4', 'pg5'];
+var SEC = W16 ? [25, 20, 20, 15, 15, 15] : CONFIG.PAGE_SEC, pgi = Math.max(0, PG.indexOf(location.hash.replace('#p', 'pg')));
 function showPage(){
   PG.forEach(function(id, k){ $(id).classList.toggle('off', k !== pgi); });
   $('pdots').innerHTML = PG.map(function(_, k){ return '<i' + (k === pgi ? ' class="on"' : '') + '></i>'; }).join('');
-  setTimeout(function(){ pgi = (pgi + 1) % PG.length; showPage(); }, CONFIG.PAGE_SEC[pgi] * 1000);
+  setTimeout(function(){ pgi = (pgi + 1) % PG.length; showPage(); }, SEC[pgi] * 1000);
 }
 showPage();
 
