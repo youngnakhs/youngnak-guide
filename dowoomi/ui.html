@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610270818"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610270820"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <script>/* 화면 내용 긁어가기 방지(입력칸 제외). 뷰소스는 원리상 못 막음 */['contextmenu','copy','cut','dragstart'].forEach(e=>document.addEventListener(e,v=>{if(!(v.target.closest&&v.target.closest('input,textarea,[contenteditable]')))v.preventDefault()}));</script>
 <title>영락고 상담 도우미</title>
@@ -676,7 +676,7 @@ function start(){
     else { const d = document.createElement('div'); d.id = 'qpick'; d.className = 'noprint';
       d.innerHTML = L.length ? `'${esc(v)}' ${L.length}명 — 고르세요: ` + L.slice(0, 12).map(x => `<button data-id="${x.id}">${x.id} ${esc(x.nm)}</button>`).join('') + (L.length > 12 ? ` <span class="mu small">외 ${L.length - 12}명 — 더 길게 치세요</span>` : '') + ' <button class="x">닫기</button>' : `'${esc(v)}'와 맞는 학생이 없습니다. <button class="x">닫기</button>`;
       document.body.appendChild(d); d.onclick = e => { const b = e.target.closest('button'); if (!b) return; closeQpick(); if (b.dataset.id) pick(+b.dataset.id); }; } };
-  g2Set(true);   // 10-27 2학년 공개: 자료(data.dat)에 2학년이 있으면 누구나 보임 — 예전 PC에 저장된 g2:false는 무시
+  g2Set(/[?&]dev/.test(location.search));
   $('prev').onclick = () => move(-1); $('next').onclick = () => move(1);
   $('prn').onclick = askPrint;
   fillBan(); fillStu(); home(); loadPref();
@@ -2637,10 +2637,10 @@ document.addEventListener('keydown', e => {
   if (e.key === '/'){ e.preventDefault(); $('q').focus(); return; }
   if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && ME && !CLS && !GRDV){ e.preventDefault(); move(e.key === 'ArrowLeft' ? -1 : 1); }
 });
-/* 2학년 보기(10-23 관리자만 → 10-27 기본 공개): 관리자 창 체크는 이번 실행에서만 가림 */
+/* 2학년은 관리자만(10-23): 관리자 비밀번호 확인 뒤 이 PC에서만 보임(설정 g2) · dev는 늘 보임 · 다른 PC는 학년 칸·검색에서 2학년이 빠짐 */
 let G2D = null, G2ON = false;
 function g2Set(on){ if (!G2D) G2D = D.grades[2]; G2ON = on; D.grades[2] = on ? G2D : {...G2D, stu: []};
-  $('selG').querySelector('option[value="2"]').hidden = !on || !G2D.stu.length;
+  $('selG').querySelector('option[value="2"]').hidden = !on;
   $('names').innerHTML = [...D.grades[1].stu, ...D.grades[2].stu].map(s => `<option value="${s.id} ${esc(s.nm)}">`).join('');
   if (!on && GR === 2){ GR = 1; $('selG').value = 1; $('selG').onchange(); } }
 /* 32. 설정 기억: 선배 범위·희망 계열만·지역·학년 정렬·'다시 묻지 않기' — memo_set('pref:ui', [{d, t: JSON}]) (EXE는 이 PC 암호화 파일, dev는 localStorage) · 실패해도 조용히 */
