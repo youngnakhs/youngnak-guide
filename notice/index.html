@@ -27,7 +27,9 @@ html,body{width:100%;height:100%;background:#15171a;overflow:hidden}
 .uc .fx{margin-top:6px}.uc .fx div{display:grid;grid-template-columns:100px minmax(0,1fr);gap:14px;font-size:26px;line-height:35px;color:#c9ced3}.uc .fx div span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .uc .fx div span{color:#8f969e}.uc .fx b{color:#e8eaed;font-weight:600}
 .uc .pt{font-size:25px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#9aa1a9;border-top:1px solid rgba(255,255,255,.08);padding-top:12px}.uc .pt i{font-style:normal;color:#a7f3d0;margin-right:12px;font-weight:600}
-.ug{grid-template-rows:1fr 1fr 1fr!important}
+.ug{grid-template-rows:44px 1fr 1fr 1fr!important;row-gap:24px!important}
+.ug .uc{padding:18px 44px 14px;align-content:start}
+.ucap{grid-column:1/4;display:flex;gap:44px;align-items:center;padding:0 60px;font-size:30px;color:#9aa1a9;white-space:nowrap}.ucap b{color:#e8eaed;font-weight:600}.ucap i{font-style:normal;font-weight:600}
 .mint{color:var(--mint)!important}.sky{color:var(--sky)!important}.vio{color:var(--vio)!important}.amb{color:var(--amb)!important}.cor{color:var(--cor)!important}
 .g5 div:nth-child(2) i{background:rgba(147,197,253,.45)}.g5 div:nth-child(3) i{background:rgba(196,181,253,.4)}.g5 div:nth-child(4) i{background:rgba(252,211,77,.35)}.g5 div:nth-child(5) i{background:rgba(252,165,165,.35)}
 .hb.cr i u{background:var(--cor)}
@@ -149,7 +151,7 @@ var CONFIG = {
   // 아래 띠 일정 (학사일정 시트 기준, 끝난 일정은 자동으로 빠지고 앞의 4개만 표시)
   SCHED: [
     { d: '11.5',     t: '기말 시간표 발표', end: '2026-11-05' },
-    { d: '11.19–20', t: '재량휴업', end: '2026-11-20' },
+    { d: '11.19', t: '수능(휴업)', end: '2026-11-20' },
     { d: '12.9–15',  t: '기말고사',         end: '2026-12-15' },
     { d: '12.16',    t: '서술형 확인',      end: '2026-12-16' },
     { d: '12.31',    t: '방학식',           end: '2026-12-31' }
@@ -318,22 +320,16 @@ var DATA = [
  {name:'인하대학교', sub:'지역균형', cat:'수도권 주요대', type:'early', conf:'보도',
   facts:[['전형','교과 중심 정량 · <b>학년 차등 없음</b>'],['종합','미래인재 서류형은 정성 별도']]},
 ];
-var POINT = {
-  early: ['정량형', '석차등급이 합격선 · 공통·일반 등급 사수'],
-  rise:  ['정성형', '등급 + 세특·전공 연계 생기부 함께 평가'],
-  none:  ['교과 미운영', '생기부 전체의 깊이가 관건'],
-  tba:   ['발표 예정', '산출식은 2027년 모집요강에서 확정']
-};
 ['pg3', 'pg4', 'pg5'].forEach(function(id, k){
   var part = DATA.slice(k * 9, k * 9 + 9);
-  $(id).innerHTML =
+  $(id).innerHTML = '<div class="ucap"><span><b>2028학년도 시행계획 기준</b> · 우리 1학년(2029학년도) 계획은 2027년 4월 발표 — 달라질 수 있어요</span>' +
+    '<span style="margin-left:auto"><i class="mint">정량형</i> 석차등급 중심 &nbsp; <i class="vio">정성형</i> 등급+생기부 &nbsp; <i class="amb">교과 미운영</i></span></div>' +
     part.map(function(d){
-      var pt = POINT[d.type] || POINT.tba;
       return '<div class="p uc ' + (d.type || 'tba') + '"><div class="ch"><span class="c1">' + d.cat + '</span><span class="' + (d.conf === '확정' ? 'c1' : 'c2') + '">' +
-        ({확정: '확정', 보도: '미확정', 미공개: '미공개'}[d.conf] || d.conf) + '</span><span>2028 · ' + (d.sub || '') + '</span></div>' +
+        ({확정: '확정', 보도: '미확정', 미공개: '미공개'}[d.conf] || d.conf) + '</span><span>' + (d.sub || '') + '</span></div>' +
         '<div class="nm">' + d.name + '</div>' +
         '<div class="fx">' + d.facts.map(function(f){ return '<div><span>' + f[0] + '</span><span style="color:inherit">' + f[1] + '</span></div>'; }).join('') + '</div>' +
-        '<div class="pt"><i>' + pt[0] + '</i>' + pt[1] + '</div></div>';
+        '</div>';
     }).join('');
 });
 
