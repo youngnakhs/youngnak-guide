@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610252313"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610261024"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <script>/* 화면 내용 긁어가기 방지(입력칸 제외). 뷰소스는 원리상 못 막음 */['contextmenu','copy','cut','dragstart'].forEach(e=>document.addEventListener(e,v=>{if(!(v.target.closest&&v.target.closest('input,textarea,[contenteditable]')))v.preventDefault()}));</script>
 <title>영락고 상담 도우미</title>
@@ -235,7 +235,7 @@ body.pub .hero>.pubbar,body.pub main>.pubbar{background:#c46a00;border:0;color:#
 .hsum{margin:4px 0 2px;padding:8px 12px;border-left:4px solid var(--navy);background:var(--soft);font-size:16px}.hloss{margin:2px 0 10px;font-size:14px;color:var(--mute)}.tb.hcol{table-layout:fixed}.htag{display:table;margin-top:3px;font-size:12.5px;font-weight:400;color:var(--mute);border:1px solid var(--rule);border-radius:2px;padding:0 5px;line-height:1.5}.hbad{margin:20px 0 6px;font-size:17px;font-weight:700;color:var(--ink)}
 .jline{margin:10px 0 0;padding:8px 12px;border-left:4px solid var(--navy);background:var(--soft);font-size:15.5px;line-height:1.7}.jline b.lab{display:inline-block;min-width:58px}
 .favl{margin-right:6px;cursor:pointer;color:#b7bcc6}.favl.on{color:#b07800}.tgta{margin-bottom:4px}.tgta b{white-space:nowrap}.jtgt>b:first-child{display:inline-block;min-width:58px}.favl input{vertical-align:-1px;margin:0 2px 0 0}
-.jchart{width:100%;height:auto;display:block;margin:2px 0 4px}
+.jchart{width:100%;height:auto;display:block;margin:2px 0 4px}.dchr>.more{display:none}.dchr.all>.more{display:block}
 #logp{display:none}
 @media print{body.logprint>*:not(#logp){display:none!important}body.logprint #logp{display:block}body.logprint #logp .hist .mu{display:block!important}}
 .mdist td.c0{color:#ccc}
@@ -1135,9 +1135,9 @@ function renderUniv(){
    ${D.daon && D.daon.js ? daonJsBlock() : ''}
    <h3>D. 교과 전형 · 추천 · 2028 변경 <small>위 종합표에 나온 대학 중 모집요강(2027 교과 시트)·2028 시행계획에 있는 대학</small></h3>
    ${detailBlock(mp)}
-   ${D.daon ? `<h3>E. 2028 입결 예측 <small>전국 입결 예측 자료 · 모집단위별 24~26 입결(9등급 70%컷)을 5등급으로 옮긴 28컷 vs 내 누적</small></h3>${daonBlock(mp.v)}
+   ${D.daon ? `<h3>E. 2028 입결 예측 <small>전국 입결 예측 자료 · 모집단위별 24~26 입결(9등급 70%컷)을 5등급으로 옮긴 28컷 vs 내 누적</small></h3>${daonBlock(mp.v)}${daonChart(mp.v)}
    <h3>F. 권장 과목 <small>전국 입결 예측 자료 · 판정표 위쪽 대학과 관심 대학의 모집단위별 핵심·권장 과목</small></h3>${subjBlock()}
-   ${GR === 2 ? `<h3>G. 2028 전형 상세 <small>전국 입결 예측 자료 · 판정표·관심 대학의 2028 교과·종합·논술·정시 전형</small></h3>${t28Block()}` : ''}
+   <h3>G. 2028 전형 상세 <small>전국 입결 예측 자료 · 판정표·관심 대학의 2028 교과·종합·논술·정시 전형</small></h3>${GR === 1 ? '<div class="hmsg">1학년은 2029학년도 대입입니다 — 아래는 2028학년도 기준 전형이라 참고 자료로만 보세요.</div>' : ''}${t28Block()}
    <h3>H. 대학 방식으로 본 내 등급 <small>대학별 반영 교과·학점·등급 점수표를 내 성적에 적용 · 목표·관심 대학 먼저</small></h3>${hBlock()}` : ''}`;
   clampAll(el);
   $('win').onchange = () => { WIN = +$('win').value; savePref(); renderUniv(); };
@@ -1186,6 +1186,36 @@ function daonBlock(my){
    <h4>교과 전형</h4><table class="tb"><thead><tr><th class="l">대학</th><th class="l">모집단위</th><th class="r">24 → 25 → 26 컷<small class="u">9등급 70%</small></th><th class="r">경쟁률 24·25·26</th><th class="r"><span class="tt" title="3개년 9등급 입결을 2028 5등급으로 옮긴 예측 컷">28컷</span><small class="u">5등급</small></th><th class="r"><span class="tt" title="내 누적 − 28컷 · 음수일수록 여유">내 차이</span></th><th class="c">예측</th></tr></thead><tbody>${tg || none(7)}</tbody></table>
    <h4>종합 전형</h4><table class="tb"><thead><tr><th class="l">대학</th><th class="l">전형</th><th class="l">모집단위</th><th class="r"><span class="tt" title="합격자 중 위에서 70% 자리 성적(5등급으로 옮긴 값)">70%컷</span><small class="u">5등급</small></th><th class="r">50%컷</th><th class="r"><span class="tt" title="내 누적 − 70%컷 · 음수일수록 여유">내 차이</span></th><th class="c">예측</th></tr></thead><tbody>${tj || none(7)}</tbody></table>
    <div class="note">28컷 = 전국 입결 예측 자료가 3개년 9등급 입결을 5등급으로 옮긴 예측값. 내 차이 = 내 누적 − 28컷(음수일수록 여유) · 안정 −0.1 이하 · 적정 ±0.1 · 상향 +0.1~+0.3. 종합은 정성평가라 컷은 참고만. 출처: 전국 입결 예측 자료.</div>`;
+}
+/* E 그림: 다온 '수시 합격선 차트' 꼴 — 대학마다 모집단위 범위(교과 28 범위·종합 70%컷 범위, 5등급)의 최고~최저 막대 + 내 누적 선.
+   내 누적이 범위(±0.05) 안이면 진하게. 대상 = 계열·지역 거름 뒤 범위가 내 누적 ±0.5에 걸치는 대학, 범위 가운데가 좋은 순으로 20곳씩 줄바꿈, 2줄 넘으면 '더 보기' */
+let DCT = '교과';
+function daonChart(my){
+  const tr = JOB() || !(ME.k || '').trim() ? null : SIDE(ME.k) === '자연' ? '자연' : SIDE(ME.k) === '인문' ? '인문' : null, gy = DCT === '교과';
+  const rg = (s, c) => { const m = String(s || '').replace(/,/g, '').match(/\d+(\.\d+)?/g); return m ? [Math.min(...m.map(Number)), Math.max(...m.map(Number))] : c != null ? [c, c] : null; };
+  const U = new Map();
+  (gy ? D.daon.gyo : D.daon.jong).forEach(r => { const t = gy ? r[2] : r[3], g = gy ? r[3] : r[4]; if ((tr && !String(t || '').includes(tr)) || (REGION !== '전체' && g !== REGION)) return;
+    const b = gy ? rg(r[11], r[10]) : rg(r[7], r[5]); if (!b) return; const u = U.get(r[0]) || {u: r[0], g, lo: 9, hi: 0, n: 0};
+    u.lo = Math.min(u.lo, b[0]); u.hi = Math.max(u.hi, b[1]); u.n++; U.set(r[0], u); });
+  const C = [...U.values()].filter(c => c.lo <= my + .5 && c.hi >= my - .5).sort((a, b) => a.lo + a.hi - b.lo - b.hi); C.forEach(c => c.hit = c.lo - .05 <= my && my <= c.hi + .05);
+  const nh = C.filter(c => c.hit).length, PER = 20;
+  const sw = `<div class="ufil noprint">${['교과', '종합'].map(t => `<button class="${t === DCT ? 'on' : ''}" onclick="DCT='${t}';$('dch').outerHTML=daonChart(${my})">${t}</button>`).join('')}<span class="small mu">${gy ? '교과 = 모집단위 28 범위' : '종합 = 모집단위 70%컷 범위'} · 계열 ${tr || '전체'} · 지역 ${esc(REGION)}</span></div>`;
+  if (!C.length) return `<div id="dch"><h4>대학별 합격선 한눈에 <small class="mu">${DCT}</small></h4>${sw}<p class="mu">내 누적 ±0.5에 걸치는 대학이 없습니다.</p></div>`;
+  const top = Math.max(1, Math.floor(Math.min(my, ...C.map(c => c.lo)) * 2) / 2), bot = Math.min(5, Math.ceil(Math.max(my, ...C.map(c => c.hi)) * 2) / 2);
+  const W = 900, x0 = 40, y0 = 10, h = 150, H = y0 + h + 44, cw = (W - x0 - 10) / PER, y = g => y0 + (g - top) / (bot - top || 1) * h;
+  const ticks = []; for (let g = Math.ceil(top * 2) / 2; g <= bot + 1e-9; g += .5) ticks.push(g);
+  const row = (A, k) => `<svg viewBox="0 0 ${W} ${H}" class="jchart${k >= 2 ? ' more' : ''}" role="img" aria-label="대학별 합격선 범위와 내 누적">
+    ${ticks.map(g => `<line x1="${x0}" x2="${W - 10}" y1="${y(g)}" y2="${y(g)}" stroke="#eeede8"/><text x="${x0 - 6}" y="${y(g) + 4}" text-anchor="end" font-size="11" fill="#7a7974">${g.toFixed(1)}</text>`).join('')}
+    ${A.map((c, i) => { const cx = x0 + cw * (i + .5), c1 = c.hit ? '#0f7a6c' : '#a9a7a0';
+      return `<rect x="${cx - 6}" y="${y(c.lo)}" width="12" height="${Math.max(2, y(c.hi) - y(c.lo))}" fill="${c1}" opacity="${c.hit ? .3 : .18}"/><line x1="${cx}" x2="${cx}" y1="${y(c.lo)}" y2="${y(c.hi)}" stroke="${c1}" stroke-width="2"/>
+        <line x1="${cx - 6}" x2="${cx + 6}" y1="${y(c.lo)}" y2="${y(c.lo)}" stroke="${c1}" stroke-width="2"/><line x1="${cx - 6}" x2="${cx + 6}" y1="${y(c.hi)}" y2="${y(c.hi)}" stroke="${c1}" stroke-width="2"/>
+        <text x="${cx}" y="${y0 + h + (i % 2 ? 38 : 20)}" font-size="12" text-anchor="middle" fill="${c.hit ? '#0f7a6c' : '#7a7974'}" font-weight="${c.hit ? 700 : 400}">${esc(c.u.replace('대학교', '대').replace(/^(.+?)\((.{1,2}).*\)$/, (m, a, b) => m.length > 7 ? a + '(' + b + ')' : m).slice(0, 8))}</text><title>${esc(c.u)} (${esc(c.g || '')}) · 모집단위 ${c.n}개 · ${c.lo.toFixed(2)}~${c.hi.toFixed(2)}${c.hit ? ' · 내 누적이 범위 안' : ''}</title>`; }).join('')}
+    <line x1="${x0}" x2="${W - 10}" y1="${y(my)}" y2="${y(my)}" stroke="#14325c" stroke-width="2" stroke-dasharray="6 4"/><text x="${x0 + 4}" y="${y(my) - 5}" text-anchor="start" font-size="12" fill="#14325c" font-weight="700" stroke="#fff" stroke-width="3" paint-order="stroke">내 누적 ${my.toFixed(2)}</text>
+  </svg>`;
+  const rows = []; for (let i = 0; i < C.length; i += PER) rows.push(C.slice(i, i + PER));
+  return `<div id="dch"><h4>대학별 합격선 한눈에 <small class="mu">${DCT} · ${C.length}곳 중 내 누적이 범위 안 ${nh}곳(초록)</small></h4>${sw}
+   <div class="dchr">${rows.map(row).join('')}</div>${moreBtn(C.length - 2 * PER)}
+   <div class="note">막대 = 그 대학 모집단위들의 ${gy ? '28 예측 범위' : '70%컷 범위'} 가운데 가장 좋은 등급~가장 낮은 등급(5등급, 위가 좋은 등급). 남색 점선 = 내 누적. 초록 = 내 누적이 막대 안(±0.05)에 드는 대학 — 그 대학 어딘가에 비슷한 성적 학과가 있다는 뜻일 뿐, 학과마다 다릅니다.${GR === 1 ? ' 1학년은 2029학년도 대입이라 2028 기준 참고 자료입니다.' : ''} 내 누적 ±0.5에 걸치는 대학만, 범위 가운데가 좋은 대학부터 왼쪽에. 출처: 전국 입결 예측 자료.</div></div>`;
 }
 /* 권장 과목 글자 → 과목명마다 이 학생이 들었거나(1·2학년) 신청한(3학년) 과목이면 ✓, 아니면 ✗ (문장형 안내는 그대로) */
 const SNRM = t => t.replace(/\s/g, '').replace(/II|Ⅱ/g, '2').replace(/I|Ⅰ/g, '1');
