@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610261123"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610261330"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <script>/* 화면 내용 긁어가기 방지(입력칸 제외). 뷰소스는 원리상 못 막음 */['contextmenu','copy','cut','dragstart'].forEach(e=>document.addEventListener(e,v=>{if(!(v.target.closest&&v.target.closest('input,textarea,[contenteditable]')))v.preventDefault()}));</script>
 <title>영락고 상담 도우미</title>
@@ -572,7 +572,7 @@ details.guide>summary::before{content:'▸ '}details.guide[open]>summary::before
     <dt>70%컷 · 28컷</dt><dd>70%컷 = 합격자 중 위에서 70% 자리의 성적. 28컷 = 전국 입결 예측 자료가 그 컷을 2028 5등급으로 옮긴 예측값.</dd>
     <dt>내 차이</dt><dd>내 성적 − 컷. 내신은 음수일수록, 모의 백분위는 양수일수록 여유가 있습니다.</dd>
     <dt>입결 밴드</dt><dd>대학·학과 합격선(70% 컷)을 우리 학년 5등급 분포로 옮긴 범위. 안정·적정·상향으로 나눕니다. 판정·입결·정시 모두 안정 → 적정 → 상향 → 도전 순으로 같은 뜻입니다(도전 = 정시에서 상향보다 더 높은 곳).</dd>
-    <dt>정시선</dt><dd>최근 모의 국·수·탐 백분위를 정시 배치표에 대 본 위치입니다. 지금 실력의 위치로만 보세요.</dd>
+    <dt>정시선</dt><dd>최근 실채점 모의 국·수·탐 백분위를 정시 배치표에 대 본 위치입니다. 지금 실력의 위치로만 보세요.</dd>
     <dt>수능최저</dt><dd>대학이 요구하는 모의(수능) 등급 조건. '무엇을 올리면 충족되나' 표에 부족한 영역이 나옵니다.</dd>
     <dt>남은 수행</dt><dd>학교알리미 평가계획에서 아직 시행 전이거나 진행 중인 수행평가 비중입니다.</dd>
   </dl>
@@ -1130,7 +1130,7 @@ function renderUniv(){
    <div class="note">최저: 2027 수능최저 DB 기준, 계열(${SIDE(ME.k)}) 기준 적용. 분교는 본교 최저를 물려받지 않아 '확인필요'로 둡니다.</div>
    <h3>B. 전국 입결 밴드 <small>대학·학과 70% 컷을 우리 학년 5등급 분포로 옮긴 범위와 내 누적 비교 · 내신밴드 시뮬레이터와 같은 계산</small></h3>
    ${bandBlock(mp.v)}
-   <h3>C. 정시 가능선 <small>최근 모의 국·수·탐(두 과목) 백분위 평균 vs 종로학원 배치표(2026학년도 3월) · 의약 계열 제외</small></h3>
+   <h3>C. 정시 가능선 <small>최근 실채점 모의 국·수·탐(두 과목) 백분위 평균 vs 종로학원 배치표(2026학년도 3월) · 의약 계열 제외</small></h3>
    ${jeongsiBlock()}
    ${D.daon && D.daon.js ? daonJsBlock() : ''}
    <h3>D. 교과 전형 · 추천 · 2028 변경 <small>위 종합표에 나온 대학 중 모집요강(2027 교과 시트)·2028 시행계획에 있는 대학</small></h3>
@@ -1266,7 +1266,7 @@ function daonJsBlock(){
     .map(r => `<tr><td class="l"><b>${esc(r.u)}</b>${top.has(K(r.u)) ? ' <small class="mu noprint">★</small>' : ''}</td><td class="l">${esc(r.g.replace('정시', ''))}</td><td class="l">${esc(r.d)}</td><td class="r">${r.q ?? '–'}</td><td class="r">${r.cp == null ? '–' : r.cp.toFixed(1)}</td><td class="r">${r.c50 ?? '–'}</td><td class="r"><b>${r.c70}</b></td><td class="r">${r.df > 0 ? '+' : ''}${r.df.toFixed(1)}</td><td class="c ${c}"><b>${l}</b></td></tr>`));
   return `<h4>모집단위별 2026 정시 입결 <small class="mu">전국 입결 예측 자료 · 내 백분위 평균 ${pa.toFixed(1)}</small></h4>
    <table class="tb"><thead><tr><th class="l">대학</th><th class="l">군</th><th class="l">모집단위</th><th class="r">모집</th><th class="r">경쟁률</th><th class="r">50%컷</th><th class="r"><span class="tt" title="정시 합격자 중 위에서 70% 자리의 국·수·탐 백분위 평균">70%컷</span></th><th class="r"><span class="tt" title="내 모의 백분위 평균 − 70%컷 · 양수일수록 여유">내 차이</span></th><th class="c">예측</th></tr></thead><tbody>${rows.join('') || '<tr><td colspan="9" class="mu">해당 모집단위가 없습니다.</td></tr>'}</tbody></table>
-   <div class="note">컷 = 2026학년도 정시 합격자 국·수·탐 백분위 평균(전국 입결 예측 자료). 내 차이 = 최근 모의 백분위 평균 − 70%컷 · 안정 +4 이상 · 적정 0~+4 · 상향 −4~0(위 C와 같은 구간). 모의는 N수생이 없어 실제 수능보다 보통 높게 나옵니다. 의약 계열 제외. 출처: 전국 입결 예측 자료.</div>`;
+   <div class="note">컷 = 2026학년도 정시 합격자 국·수·탐 백분위 평균(전국 입결 예측 자료). 내 차이 = 최근 실채점 모의 백분위 평균 − 70%컷 · 안정 +4 이상 · 적정 0~+4 · 상향 −4~0(위 C와 같은 구간). 모의는 N수생이 없어 실제 수능보다 보통 높게 나옵니다. 의약 계열 제외. 출처: 전국 입결 예측 자료.</div>`;
 }
 /* 모집단위 이름 → 희망 계열(선배 합격 계열과 같은 키워드, extra.KW) */
 const GYE_KW = [['간호,보건', '간호 보건 물리치료 작업치료 임상병리 방사선 치위생 응급구조 재활 언어치료 안경 의료 약학 약과 치료 의예 한의 수의 바이오의'],
@@ -2472,7 +2472,7 @@ function sheetPlanA(s, ctx, ups){
     band = blk('전국 입결 밴드 — 학과 단위', null, `대학·학과 합격선(70%컷)을 우리 학년 5등급 분포로 옮긴 범위와 내 누적 <b>${f2(my)}</b>를 견줬어요(계열 ${tr || '전체'}).`, `<div class="cols3 sh-cols">${col(0, '안정')}${col(1, '적정')}${col(2, '상향')}</div><p class="sh-note">안정 = 범위 아래 끝보다 0.1 이상 좋음 · 적정 = 범위 안 · 상향 = 위 끝 +0.4 이내 · 9등급 입결을 옮긴 참고값</p>`); }
   /* ⑦ E 2028 입결 예측 · ⑧ C 정시 위치 · ⑨ 수능최저 무엇을 올리면 */
   const e28 = D.daon && my != null ? `<div class="sh-x2"><h2>2028 입결 예측 — 내 누적 ±0.3 모집단위</h2>${shAdopt(daonBlock(my), GR === 1 ? 2 : 3)}<p class="sh-note">예측마다 앞 ${GR === 1 ? 2 : 3}곳만 실었어요(화면 E에 전체).</p></div>` : '';
-  const js = `<div class="sh-x2"><h2>정시 위치 <small>참고 · 최근 모의 백분위 vs 배치표</small></h2>${shAdopt(jeongsiBlock(), 5)}${D.daon && D.daon.js ? shAdopt(daonJsBlock(), 3) : ''}</div>`;
+  const js = `<div class="sh-x2"><h2>정시 위치 <small>참고 · 최근 실채점 모의 백분위 vs 배치표</small></h2>${shAdopt(jeongsiBlock(), 5)}${D.daon && D.daon.js ? shAdopt(daonJsBlock(), 3) : ''}</div>`;
   const gl = gapList(), gap = gl ? `<div class="sh-blk sh-x2">${shAdopt(gl).replace('<h3>', '<h2>').replace('</h3>', '</h2>')}</div>` : '';
   /* ⑩ 관심 대학(★) · ⑪ 남은 학기 과목(인원·자리 없이) */
   const fav = blk('관심 대학(★)', null, FAV.length ? '판정표에서 ★로 담아 둔 대학이에요. 판정은 오늘 자료로 다시 본 값입니다.' : '담아 둔 관심 대학이 없어요.',
