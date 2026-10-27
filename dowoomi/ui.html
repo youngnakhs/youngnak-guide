@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610271430"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610271545"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <script>/* 화면 내용 긁어가기 방지(입력칸 제외). 뷰소스는 원리상 못 막음 */['contextmenu','copy','cut','dragstart'].forEach(e=>document.addEventListener(e,v=>{if(!(v.target.closest&&v.target.closest('input,textarea,[contenteditable]')))v.preventDefault()}));</script>
 <title>영락고 상담 도우미</title>
@@ -1584,19 +1584,20 @@ function judgeRows(mp, sen, senU, all){   // all = 지역·30곳 제한 없이(�
   const bv = {}; bandRows().filter(r => (!tr || !r.t || r.t.includes(tr)) && artOK(r)).forEach(r => { const o = bv[K(r.u)] = bv[K(r.u)] || {u: r.u, v: [], lo: []}; o.v.push(vb(r)); o.lo.push(r.lo); });
   const fill = [];
   Object.entries(bv).forEach(([k, o]) => { const vs = o.v.sort((a, b) => a - b), med = vs[Math.floor((vs.length - 1) / 2)];   // 학과 중앙값(가장 쉬운 학과 하나로 '안정' 주지 않음)
-    if (med > 2) return; if (!rows[k] && med === 0){ const ls = o.lo.sort((a, b) => a - b); fill.push({k, u: o.u, lo: ls[Math.floor((ls.length - 1) / 2)]}); return; } if (!rows[k] && med !== 1) return; get(k, o.u).band = med; });
+    if (med > 2){ if (rows[k]) rows[k].far = true; return; } if (!rows[k] && med === 0){ const ls = o.lo.sort((a, b) => a - b); fill.push({k, u: o.u, lo: ls[Math.floor((ls.length - 1) / 2)]}); return; } if (!rows[k] && med !== 1) return; get(k, o.u).band = med; });
   fill.sort((a, b) => a.lo - b.lo).slice(0, mp.pct <= 5 ? TOPF : 0).forEach(f => get(f.k, f.u).band = 0);   // 상위 5% 안만: 선배 기록은 없지만 입결로 안정인 대학 중 가장 높은 TOPF곳 — 안정권 문턱(3점)은 그대로
   const pa = latestPa();
   if (pa != null) jeongsiAgg(pa, SIDE(ME.k), '전체').forEach(o => { const k = K(o.u); if (rows[k]) rows[k].js = Math.max(rows[k].js ?? -1, o.b); });
+  const jsU = pa == null ? new Set() : new Set(D.jeongsi.filter(r => SIDE(ME.k) === '예체능' || !ME.k || JOB() || r[3] === SIDE(ME.k) || r[3] === '무전공').map(r => K(r[0])));   // 10-27: 배치표에 있는데 정시선에 안 걸린 대학 = 정시로도 먼 곳
   const yg = D.yogang, pl = D.plan28;
   const L = Object.values(rows).map(r => {
     const u = senU[r.k], so = u ? u.ok.size : 0, sa = u ? u.ap.size : 0, rate = sa ? so / sa : 0; r.su = [so, sa];
     const ss = so >= 2 && rate >= .4 ? 2 : so >= 1 && rate >= .25 ? 1 : so >= 1 ? .5 : 0;   // 합격 선배 수와 합격률을 함께(10-16 점검)
     const score = ss + (r.band === 0 ? 2 : r.band === 1 ? 1 : 0) + (r.js === 3 ? 1 : r.js === 2 ? .5 : 0);
-    r.few = r.band == null && r.js == null && so >= 1 && rate >= .25 && ss < 2; r.lab = r.few ? '적정권' : score >= 3 && (r.band === 0 || (ss === 2 && so >= 3 && r.band !== 2)) ? '안정권' : (score >= 1.5 && !(r.band === 2 && !(r.js >= 2))) || r.band === 1 || r.js >= 2 ? '적정권' : '상향'; r.score = score;   // 안정권은 입결 안정 또는 선배 합격률 40%↑가 있어야
+    r.few = r.band == null && !r.far && r.js == null && !jsU.has(r.k) && so >= 1 && rate >= .25 && ss < 2; r.lab = r.few ? '적정권' : score >= 3 && (r.band === 0 || (ss === 2 && so >= 3 && r.band !== 2)) ? '안정권' : (score >= 1.5 && !(r.band === 2 && !(r.js >= 2))) || r.band === 1 || r.js >= 2 ? '적정권' : '상향'; r.score = score;   // 안정권은 입결 안정 또는 선배 합격률 40%↑가 있어야
     r.yg = (yg[r.k] || []).filter(y => !tr || !y.track || y.track === '전체' || y.track.includes(tr))[0] || (yg[r.k] || [])[0];
     r.pl = GR === 2 && pl[r.k] ? [...new Set(pl[r.k].changes.map(c => c.tag).filter(t => t !== '기타'))] : null;
-    return r; }).filter(r => (r.sen[0] > 0 || (r.band != null && r.band <= 1)) && (all || REGION === '전체' || uReg(r.k).has(REGION))).sort((a, b) => b.score - a.score || b.sen[0] - a.sen[0]);
+    return r; }).filter(r => (r.sen[0] > 0 || (r.band != null && r.band <= 1)) && (all || REGION === '전체' || uReg(r.k).has(REGION))).sort((a, b) => b.score - a.score || !!a.few - !!b.few || b.sen[0] - a.sen[0]);   // 같은 점수면 근거 적음은 뒤로
   return all ? L : L.slice(0, 30);
 }
 function judgeHtml(L, my, tr){
