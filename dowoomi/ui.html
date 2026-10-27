@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610270850"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610270935"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <script>/* 화면 내용 긁어가기 방지(입력칸 제외). 뷰소스는 원리상 못 막음 */['contextmenu','copy','cut','dragstart'].forEach(e=>document.addEventListener(e,v=>{if(!(v.target.closest&&v.target.closest('input,textarea,[contenteditable]')))v.preventDefault()}));</script>
 <title>영락고 상담 도우미</title>
@@ -1473,19 +1473,20 @@ let FAV = [];
 const nowLocal = () => { const t = new Date(); return new Date(t - t.getTimezoneOffset() * 60000).toISOString().replace('T', ' '); };   // toISOString은 UTC라 9시간 빠짐
 let FAVERR = '';
 async function favLoad(id){ FAVERR = ''; try { if (api()){ const r = await api().memo_load('fav:' + id); if (r.ok === false) FAVERR = r.msg || '관심 대학을 불러오지 못했습니다'; FAV = r.list || []; } else FAV = JSON.parse(localStorage.getItem('fav:' + id) || '[]'); } catch (e) { FAV = []; FAVERR = '관심 대학을 불러오지 못했습니다'; }
+  if (isMale(stuById(id))) FAV = FAV.filter(f => !WOMU.test(f.k + (f.nm || '')));   // 10-27 예전에 저장한 여대(남학생)는 안 보임
   FAV = FAV.map(f => { const b = f.k.split('|')[0]; return f.k !== b && solo().has(b) ? {...f, k: b} : f; }).filter((f, i, a) => a.findIndex(x => x.k === f.k) === i); }   // 10-19: 캠퍼스 하나뿐인 대학 키 합침
 /* 목표 대학(최대 3): memo 'tgt:<학번>' = [{d, t: JSON}] — 가져오기(memo_import)가 fav: 외 키를 {d,t} 목록으로 합치므로 이 모양을 지킴 */
 let TGT = [], TGTERR = '';
 async function tgtLoad(id){ TGTERR = ''; try { const L = api() ? ((await api().memo_load('tgt:' + id)) || {}).list || [] : JSON.parse(localStorage.getItem('tgt:' + id) || '[]');
     const last = L.slice().sort((a, b) => a.d < b.d ? -1 : a.d > b.d ? 1 : 0).at(-1);
-    TGT = tgtNorm(last ? JSON.parse(last.t) : []);
+    TGT = tgtNorm(last ? JSON.parse(last.t) : [], id);
   } catch (e) { TGT = []; TGTERR = '목표 대학을 불러오지 못했습니다'; } }
-function tgtNorm(a){ if (!Array.isArray(a)) throw 0; return a.filter(x => x && typeof x.k === 'string' && TGTY.includes(x.t)).map(x => ({...x, nm: String(x.nm || x.k)})).slice(0, 3); }
+function tgtNorm(a, id){ if (!Array.isArray(a)) throw 0; const m = isMale(stuById(id)); return a.filter(x => x && typeof x.k === 'string' && TGTY.includes(x.t) && !(m && WOMU.test(x.k + (x.nm || '')))).map(x => ({...x, nm: String(x.nm || x.k)})).slice(0, 3); }
 /* 반 보기: 학생마다 목표를 읽어 돌려줌(전역 TGT·ME는 안 건드림). 못 읽으면 빈 목록 → TGTC[id]에 캐시 */
 let TGTC = {}, TGTV = 0;   // TGTV: 목표가 바뀔 때마다 올림 — 반 보기 읽기가 낡은 결과를 덮어쓰지 않게
 async function tgtLoadMany(ids){ const out = {};
   for (const id of ids){ try { const L = api() ? ((await api().memo_load('tgt:' + id)) || {}).list || [] : JSON.parse(localStorage.getItem('tgt:' + id) || '[]');
-      const last = L.slice().sort((a, b) => a.d < b.d ? -1 : a.d > b.d ? 1 : 0).at(-1); out[id] = tgtNorm(last ? JSON.parse(last.t) : []); } catch (e) { out[id] = []; } }
+      const last = L.slice().sort((a, b) => a.d < b.d ? -1 : a.d > b.d ? 1 : 0).at(-1); out[id] = tgtNorm(last ? JSON.parse(last.t) : [], id); } catch (e) { out[id] = []; } }
   return out; }
 async function tgtSet(k, t, on){
   const old = TGT, rest = TGT.filter(x => x.k !== k); if (on && rest.length >= 3) return false;
