@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610271628"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610280927"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <script>/* 화면 내용 긁어가기 방지(입력칸 제외). 뷰소스는 원리상 못 막음 */['contextmenu','copy','cut','dragstart'].forEach(e=>document.addEventListener(e,v=>{if(!(v.target.closest&&v.target.closest('input,textarea,[contenteditable]')))v.preventDefault()}));</script>
 <title>영락고 상담 도우미</title>
@@ -998,7 +998,8 @@ const LOWG = '5등급 유지 — 수행·출석부터 꼭 챙기기';
 const reqOf = (s, k, t) => { const L = [], cz = Object.entries(s.choe || {}).filter(([kk]) => K(kk.split('|')[0]) === k && kk.split('|')[1] === t).map(([, v]) => v), ys = D.yogang[k] || [];   // 10-25: 목표 대학의 수능최저·학교장 추천(상담지에 '0.1만 올리면 된다'로 읽히지 않게)
   if (cz.length) L.push(cz.includes('충족') ? '수능최저 충족(지금 학평 기준)' : cz.includes('일부충족') ? '수능최저 전형마다 다름' : cz.includes('미충족') ? '수능최저 <b>미충족</b>(지금 학평 기준)' : '수능최저 확인 필요');
   else if (t === '교과' && ys.some(y => y.min && !/^(-|없음)$/.test(String(y.min).trim()))) L.push('수능최저 있는 전형 있음');
-  if (t === '교과' && ys.some(y => y.rec)) L.push('학교장 추천 필요(인원 제한)');
+  if (t === '교과' && ys.some(y => y.rec_n != null || y.rec_pct != null)) L.push('학교장 추천 필요(인원 제한)');
+  else if (t === '교과' && ys.some(y => y.rec)) L.push('학교장 추천 필요(인원 제한 없음)');   // 10-28: '제한없음' 전형에 '인원 제한'이 붙던 것
   return L.join(' · '); };
 const PLT = tags => { const t = [...new Set(tags.map(x => /^최저/.test(x) ? '최저 바뀜' : x))]; return t.length > 2 ? t.slice(0, 2).join('·') + ' 외' : t.join('·'); };   // 10-25: '최저신설·최저폐지…'처럼 섞인 꼬리표를 두 개까지   // 맨 아래 등급 목표는 '가능성 큼'이 뜻 없음
 function simUpdate(inp){
@@ -2422,8 +2423,8 @@ function sheetUps(s, ctx){
   const rm = ctx.judge.filter(r => r.lab !== '상향' && !r.few).map(r => { const t = tgtTypes(r.k).find(t => tgtBand(r.k, t).med != null); return t ? tgtBand(r.k, t).med : null; }).filter(v => v != null), hard = rm.length ? Math.min(...rm) : null;   // 10-25: 이미 안정·적정인 대학보다 쉬운 곳은 '올려서 갈 곳'이 아님
   const ours = new Set(D.apps.map(a => K(a.u)));   // 우리 선배가 원서를 낸 대학 = 우리 학교가 실제로 가는 곳
   const up = u => gp(u) != null && gp(u) > .005 && !RELX.test(u.nm) && (hard == null || u.band.med < hard - .005);   // 이미 가운데보다 앞(또는 같음)인 곳은 상향에 넣지 않음
-  const U = mk(ctx.judge.filter(r => r.lab === '상향' && !r.rel).map(r => ({k: r.k, nm: r.nm, t: tgtTypes(r.k).find(t => tgtBand(r.k, t).med != null)})).filter(g => g.t), true).filter(up).sort((a, b) => gp(a) - gp(b)).slice(0, 3);
-  if (U.length < 3){   // 다온: tgtBandFor의 다온 대체와 같은 계열 규칙·가운데 값, 교과 먼저 없으면 종합
+  const U = mk(ctx.judge.filter(r => r.lab === '상향' && !r.rel).map(r => ({k: r.k, nm: r.nm, t: tgtTypes(r.k).find(t => tgtBand(r.k, t).med != null)})).filter(g => g.t), true).filter(up).sort((a, b) => gp(a) - gp(b));
+  {   // 10-28: 다온 후보도 늘 함께 — 판정 상향만으로 0.08 → 0.55처럼 건너뛰지 않게, 가까운 순으로 한 칸씩   // 다온: tgtBandFor의 다온 대체와 같은 계열 규칙·가운데 값, 교과 먼저 없으면 종합
     const dn = D.daon || {}, hk = (s.k || '').trim(), tr = hk === '취업' || !hk ? null : SIDE(s.k) === '자연' ? '자연' : SIDE(s.k) === '인문' ? '인문' : null;
     const med = v => { v.sort((a, b) => a - b); const n = v.length; return n % 2 ? v[(n - 1) / 2] : (v[n / 2 - 1] + v[n / 2]) / 2; }, M = {};
     [['교과', dn.gyo, 2, 10], ['종합', dn.jong, 3, 5]].forEach(([t, T, tc, cc]) => { const by = {};
@@ -2431,8 +2432,9 @@ function sheetUps(s, ctx){
       Object.entries(by).forEach(([k, o]) => { if (!M[k] && (!tr || o.F.length)) M[k] = {k, nm: o.nm, t, med: med(tr ? o.F : o.R), dn: true}; }); });   // 10-25: 희망 계열 학과가 없는 대학(학과 전체 범위)은 자동 추천에서 뺌
     const have = new Set([...U.map(u => K(u.k)), ...ctx.judge.filter(r => r.lab !== '상향').map(r => K(r.k))]), C =   /* 판정표 안정·적정 대학은 상향으로 다시 넣지 않음(같은 종이에서 '갈 수 있는 곳'과 '상향'이 겹치지 않게) */ Object.values(M).filter(c => !have.has(c.k)), within = w => C.filter(c => s.cum - c.med > .1 && s.cum - c.med <= w + 1e-9);
     const P = (within(.6).length >= 2 ? within(.6) : within(.8)).filter(c => tgtBand(c.k, c.t).src && !tgtBand(c.k, c.t).wide).sort((a, b) => (ours.has(b.k) - ours.has(a.k)) || (s.cum - a.med) - (s.cum - b.med));
-    U.push(...mk(P, true).filter(up).sort((a, b) => (ours.has(b.k) - ours.has(a.k)) || gp(a) - gp(b)).slice(0, 3 - U.length)); }
-  const S = st(U.sort((a, b) => gp(a) - gp(b)));
+    U.push(...mk(P, true).filter(up).sort((a, b) => (ours.has(b.k) - ours.has(a.k)) || gp(a) - gp(b))); }
+  const pk = []; U.sort((a, b) => gp(a) - gp(b) || ours.has(b.k) - ours.has(a.k)).forEach(u => { if (pk.length < 3 && !pk.some(p => p.k === u.k) && pk.every(p => Math.abs(gp(p) - gp(u)) >= .03)) pk.push(u); });   // 10-28: 거리가 같은(28컷이 같은 값) 대학을 2·3단계로 겹쳐 싣지 않음
+  const S = st(pk);
   if (S.length && S.every(u => !u.need || farNeed(s, u.need.need))){   // 10-27: 1단계부터 '길게 보는 도전'뿐이면 손 닿는 첫 계단이 없음
     const A = mk(ctx.judge.filter(r => r.lab === '적정권' && !r.few).map(r => ({k: r.k, nm: r.nm, t: tgtTypes(r.k).find(t => tgtBand(r.k, t).med != null)})).filter(g => g.t), true)
       .filter(u => gp(u) != null && gp(u) > .005 && !RELX.test(u.nm) && !farNeed(s, u.need.need)).sort((a, b) => gp(b) - gp(a));
@@ -2580,10 +2582,11 @@ function sheetPlanB(s, ctx, ups){
   const box = `<div class="sh-blk sh-g"><div class="sh-gbox">${ch.length && !better ? `이번 기말에 ${subj} ${upAll ? '올려도' : '받아도'} 누적이 크게 바뀌지 않아요(누적 <b>${s.cum != null ? f2(s.cum) : '–'}</b>, 최종 예상 <b>${f2(fin)}</b>)` : `이번 기말에 ${what} ${s.why ? '받은 학기 평균(참고)' : '누적'} <b>${s.cum != null ? f2(s.cum) : f2(fin0)}</b> → <b>${f2(fin)}</b>${g1}`}</div><p class="sh-note">화살표 뒤 누적 = 남은 학기를 지금 수준으로 두고 낸 최종 누적 예상 · 남은 거리 = 그 누적에서 합격선 가운데 값까지 <i class="sh-est">추정</i></p></div>`;
   /* ③ 남은 학기 전략: H 요약 세 줄 + 1단계 대학 방식으로 효과 큰 교과 */
   const H = document.createElement('div'); H.innerHTML = hBlock();
-  const hs = H.querySelector('.hsum'), hl = H.querySelector('.hloss'), hb = [...new Set([...H.querySelectorAll('h4.hbad + table tbody tr')].map(r => r.cells[0].querySelector('b').textContent))];   // 10-25: 한 대학 전형 둘 → 이름 한 번
-  const M = u0 ? UMETH.filter(m => K(m.u) === u0.k) : [], gl = M.map(m => { const g = hGain(m); return g.length ? `${esc(m.j)} — ${g.map(x => `<b>${esc(x.u)}</b> <span class="up">▲${Math.abs(x.dv).toFixed(2)}</span>`).join(' · ')}` : ''; }).filter(Boolean);
+  const hs = H.querySelector('.hsum'), hl = H.querySelector('.hloss'), hb = [...new Set([...H.querySelectorAll('h4.hbad + table tbody tr')].map(r => r.cells[0].querySelector('b').textContent))]   // 10-25: 한 대학 전형 둘 → 이름 한 번
+    .filter(n => { const k = K(n); return ctx.judge.some(r => r.k === k) || ups.some(u => u.k === k || K(u.nm) === k) || TGT.some(g => K(g.k) === k) || FAV.some(f => K(f.k) === k); });   // 10-28: 판정표·단계·목표·관심 대학만(3.5 학생에 경희대 같은 무관한 곳 빼기)
+  const M = u0 ? UMETH.filter(m => K(m.u) === u0.k) : [], gl = M.map(m => { const g = hGain(m); return g.length ? `${g.map(x => `<b>${esc(x.u)}</b> <span class="up">▲${Math.abs(x.dv).toFixed(2)}</span>`).join(' · ')}${M.length > 1 ? ` <small>(${esc(m.j)})</small>` : ''}` : ''; }).filter(Boolean);
   const SP = [['효과 큰 교과', hs ? hs.innerHTML : '남은 학기엔 교과별 효과가 대학마다 달라요 — 아래 대학 기준을 함께 봐요.'],
-    u0 ? [u0.alt ? '다음 계단' : '1단계', gl.length ? `${unm(u0)} 방식으로는 남은 학기에 ${gl.join(' / ')}` : M.length ? `${unm(u0)} 방식으로는 교과 하나만 올려서는 차이가 작아요 — 고르게 올리는 쪽이 나아요.` : `${unm(u0)} — 이 대학은 반영 방식 계산 자료가 없어, 위 공통 교과를 봐요.`] : null,
+    u0 ? [u0.alt ? '다음 계단' : '1단계', gl.length ? `${unm(u0)} 방식으로 보면 남은 학기에 ${gl.join(' / ')} 순으로 올릴 때 효과가 커요(▲ = 1등급 올릴 때 이 대학 방식 등급이 좋아지는 폭)` : M.length ? `${unm(u0)} 방식으로는 교과 하나만 올려서는 차이가 작아요 — 고르게 올리는 쪽이 나아요.` : `${unm(u0)} — 이 대학은 반영 방식 계산 자료가 없어, 위 공통 교과를 봐요.`] : null,
     hl ? ['손해 본 성적', esc(hl.textContent.replace(/^지난 성적 중 여러 대학에서 손해:\s*/, '').replace(/(\)) (\d+(?:\.\d+)?)/g, '$1 $2등급')) + ' — 여러 대학에서 이 성적이 누적보다 낮게 계산돼요'] : null,
     hb.length ? ['불리한 곳', hb.map(esc).join(' · ') + ' — 대학 방식으로 보면 지금 누적보다 불리해요' + (u0 && hb.some(n => K(n) === u0.k || K(n) === K(u0.nm)) ? ` · ${unm(u0)}는 ${u0.alt ? '다음 계단으' : '1단계'}로 잡았지만 이 대학 방식으로는 불리하니, 남은 거리를 조금 넉넉히 잡아요` : '')] : null].filter(Boolean);
   const strat = blk('남은 학기 전략 — 어디를 올리면 효과가 큰가', null, '대학마다 보는 교과·학점이 달라, 같은 1등급을 올려도 효과가 달라요. <i class="sh-est">참고 · 공식 환산 아님</i>',
