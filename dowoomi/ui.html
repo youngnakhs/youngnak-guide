@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610281050"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610281154"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <script>/* 화면 내용 긁어가기 방지(입력칸 제외). 뷰소스는 원리상 못 막음 */['contextmenu','copy','cut','dragstart'].forEach(e=>document.addEventListener(e,v=>{if(!(v.target.closest&&v.target.closest('input,textarea,[contenteditable]')))v.preventDefault()}));</script>
 <title>영락고 상담 도우미</title>
@@ -638,7 +638,7 @@ async function unlock(){
     if (location.search.includes('dev')) r = {ok: true, data: await (await fetch('data.json')).text()};
     else r = await api().unlock(pw);
     if (!r.ok){ $('err').textContent = r.msg; return; }
-    if (!D){ D = JSON.parse(r.data); scrubNong(D); womenGate(D); start(); }
+    if (!D){ D = JSON.parse(r.data); scrubNong(D); fixJeongsi(D); womenGate(D); start(); }
     $('lock').style.display = 'none'; $('pw').value = ''; poke();
   } catch (e){ $('err').textContent = '열기 실패: ' + e; }
 }
@@ -1138,7 +1138,7 @@ function renderUniv(){
    <div class="note">최저: 2027 수능최저 DB 기준, 계열(${SIDE(ME.k)}) 기준 적용. 분교는 본교 최저를 물려받지 않아 '확인필요'로 둡니다.</div>
    <h3>B. 전국 입결 밴드 <small>대학·학과 70% 컷을 우리 학년 5등급 분포로 옮긴 범위와 내 누적 비교 · 내신밴드 시뮬레이터와 같은 계산</small></h3>
    ${bandBlock(mp.v)}
-   <h3>C. 정시 가능선 <small>최근 실채점 모의 국·수·탐(두 과목) 백분위 평균 vs 종로학원 배치표(2026학년도 3월) · 의약 계열 제외</small></h3>
+   <h3>C. 정시 가능선 <small>최근 실채점 모의 국·수·탐(두 과목) 백분위 평균 vs 2024 대학어디가 정시 70%컷(일부 대학은 2026 입결로 보정) · 의약 계열 제외</small></h3>
    ${jeongsiBlock()}
    ${D.daon && D.daon.js ? daonJsBlock() : ''}
    <h3>D. 교과 전형 · 추천 · 2028 변경 <small>위 종합표에 나온 대학 중 모집요강(2027 교과 시트)·2028 시행계획에 있는 대학</small></h3>
@@ -1177,6 +1177,19 @@ function womenGate(d){
   Object.values(d.daon.t28).forEach(t => gate(t, 'rows', arr(1))); gate(d, 'yogang', obj); gate(d, 'plan28', obj);
   Object.values(d.grades).forEach(g => { gate(g, 'seniors', S => S.map(([p, ids, ...x]) => [p, ids.filter(i => !WOMU.test(d.apps[i].u)), ...x]));
     g.stu.forEach(s => { if (isMale(s)) ['choe', 'choe_gap'].forEach(k => { if (s[k]) s[k] = obj(s[k]); }); }); });
+}
+/* 10-28 정시 자료 보정: D.jeongsi는 실은 2024 대학어디가 정시 70%컷(정시컷.xlsx 1행 '종로 배치표'는 틀린 표기). 대학 자체 반영영역(택3·영어 포함) 백분위라
+   부풀거나 깨진 대학이 있어, 다온 2026 입결·이투스 2025 배치표와 대조(scratchpad scen4/jeongsi_xcheck.csv)해 ① 어디가만 6점↑ 어긋난 대학 = 다온 2026 70%컷으로 교체
+   ② 세 자료가 서로 엇갈리거나 비교 자료 하나와 15점↑ 다른 대학 = 정시선에서 뺌 ③ 백분위 15 미만 행 뺌 ④ 같은 대학·학과 두 줄(수원대 일반1·2 척도 다름) = 낮은 값만 */
+const JFIX_REP = ['가톨릭관동대', '강남대', '국립군산대', '나사렛대', '덕성여대', '동국대(WISE)', '삼육대', '서울여대', '순천향대', '국립한국교통대', '한남대', '국립한밭대', '한서대', '한성대', '한신대', '호서대'];
+const JFIX_DROP = ['건양대', '국립금오공대', '우석대', '울산대', '유원대', '창신대', '한라대', '금강대', '김천대', '목포가톨릭대', '국립순천대', '차의과학대', '한국체육대', '동서대', '목원대'];
+function fixJeongsi(d){
+  if (!d.jeongsi) return; const rep = new Set(JFIX_REP), drop = new Set(JFIX_DROP), CAT = {'인문': '인문', '자연': '자연', '통합': '무전공'};
+  const L = d.jeongsi.filter(r => !rep.has(r[0]) && !drop.has(r[0]) && r[5] >= 15), best = {};
+  L.forEach((r, i) => { const k = r[0] + '|' + r[4]; if (best[k] == null || L[best[k]][5] > r[5]) best[k] = i; });
+  d.jeongsi = L.filter((r, i) => best[r[0] + '|' + r[4]] === i);
+  ((d.daon || {}).js || []).forEach(r => { const m = String(r[1]).match(/^정시\(([가나다])\)(?:일반(?:학생|전형)?(?:1|Ⅰ)?)?$/);
+    if (rep.has(r[0]) && m && CAT[r[2]] && r[7] != null) d.jeongsi.push([r[0], r[8], m[1], CAT[r[2]], r[3], +r[7]]); });
 }
 function scrubNong(d){
   d.jeongsi = d.jeongsi.filter(noNong);
@@ -1577,6 +1590,7 @@ function judgeBlock(mp, sen, senU){
   const tr = JOB() || !(ME.k || '').trim() ? null : SIDE(ME.k) === '자연' ? '자연' : SIDE(ME.k) === '인문' ? '인문' : null, my = mp.v;
   return judgeHtml(L, my, tr);
 }
+const RELX = /아신대|신학|루터|칼빈|한영|대신대|침례|성서|총신|장로회|아세아연합|한일장신|서울기독|그리스도|횃불|승가|감리교/;   // 10-25: 신학·종교 단일 대학은 자동 상향에서 뺌
 const RELM = /신학|선교|기독교|목회|성서|교회|불교|사회복지선교/;
 function judgeRows(mp, sen, senU, all){   // all = 지역·30곳 제한 없이(학년 전체 보기)
   const rows = {}, get = (k, nm) => rows[k] = rows[k] || {k, nm, sen: [0, 0], band: null, js: null, choe: null};
@@ -1602,7 +1616,11 @@ function judgeRows(mp, sen, senU, all){   // all = 지역·30곳 제한 없이(�
     r.yg = (yg[r.k] || []).filter(y => !tr || !y.track || y.track === '전체' || y.track.includes(tr))[0] || (yg[r.k] || [])[0];
     r.pl = GR === 2 && pl[r.k] ? [...new Set(pl[r.k].changes.map(c => c.tag).filter(t => t !== '기타'))] : null;
     return r; }).filter(r => (r.sen[0] > 0 || (r.band != null && r.band <= 1)) && (all || REGION === '전체' || uReg(r.k).has(REGION))).sort((a, b) => b.score - a.score || !!a.few - !!b.few || b.sen[0] - a.sen[0]);   // 같은 점수면 근거 적음은 뒤로
-  return all ? L : L.slice(0, 30);
+  const out = all ? L : L.slice(0, 30);
+  if (!all && !out.some(r => r.lab === '안정권')){   // 10-28: 안정권이 없으면 입결로 안정인 곳(선배 기록 없음) 2~3곳을 따로 — 판정 기준은 그대로
+    const ours = new Set(D.apps.map(a => K(a.u))), inL = new Set(out.map(r => r.k));
+    out.safe = fill.filter(f => !inL.has(f.k) && !RELX.test(f.u) && (REGION === '전체' || uReg(f.k).has(REGION))).sort((a, b) => ours.has(b.k) - ours.has(a.k) || a.lo - b.lo).slice(0, 3).map(f => ({k: f.k, nm: f.u})); }
+  return out;
 }
 function judgeHtml(L, my, tr){
   const dash = '<span class="dash">–</span>';
@@ -1615,7 +1633,7 @@ function judgeHtml(L, my, tr){
   const g1note = GR === 1 ? ' 2028 변경은 2학년(2028 대입) 대상이라 1학년 화면에서는 뺐습니다.' : '';
   return `${judgeChart(L, my, tr)}<h3>근거 종합 판정 <small>대학 단위 · 선배 합격 + 입결 밴드 + 정시선을 점수로 합친 추정 · 위에서부터 유력</small></h3>
    <div class="legend"><span><i style="background:#14325c"></i><b>안정권</b> 지금 성적으로 여유가 있는 곳</span><span><i style="background:#0f7a6c"></i><b>적정권</b> 지금 성적과 비슷한 곳</span><span><i style="background:#b8541a"></i><b>상향</b> 성적을 더 올려야 하는 곳</span><span class="mu">정시선은 안정·적정·상향 + <b class="vl-도전">도전</b>(상향보다 더 높은 곳)</span></div>
-   <table class="tb"><thead><tr><th>대학</th><th>판정<span class="est">추정</span></th><th>${PUB ? '선배 합격' : '<span class="tt" title="비슷한 위치 선배 중 이 대학에 합격한 사람 / 지원한 사람">선배 합격/지원</span>'}</th><th><span class="tt" title="대학·학과 합격선(70%컷)을 우리 학년 5등급 분포로 옮긴 범위와 내 누적 비교">입결 밴드</span></th><th><span class="tt" title="최근 모의 국·수·탐 백분위를 정시 배치표에 대 본 위치">정시선<small> 수능으로 갈 때</small></span></th><th><span class="tt" title="수능최저학력기준 — 예: '2합 7' = 두 영역 등급 합이 7 이내">최저</span> <small>지금 학평 기준</small></th><th class="t-only">교내 추천</th>${GR === 2 ? '<th>2028 변경</th>' : ''}</tr></thead><tbody id="jb">${tb || '<tr><td colspan="8" class="mu">근거가 겹치는 대학이 없습니다.</td></tr>'}</tbody></table>${L.length > 15 ? `<button class="morebtn" onclick="this.previousElementSibling.querySelector('tbody').classList.toggle('all'); this.textContent = this.textContent.startsWith('나머지') ? '15곳만 보기' : '나머지 ${L.length - 15}곳 더 보기'">나머지 ${L.length - 15}곳 더 보기</button>` : ''}
+   <table class="tb"><thead><tr><th>대학</th><th>판정<span class="est">추정</span></th><th>${PUB ? '선배 합격' : '<span class="tt" title="비슷한 위치 선배 중 이 대학에 합격한 사람 / 지원한 사람">선배 합격/지원</span>'}</th><th><span class="tt" title="대학·학과 합격선(70%컷)을 우리 학년 5등급 분포로 옮긴 범위와 내 누적 비교">입결 밴드</span></th><th><span class="tt" title="최근 모의 국·수·탐 백분위를 정시 배치표에 대 본 위치">정시선<small> 수능으로 갈 때</small></span></th><th><span class="tt" title="수능최저학력기준 — 예: '2합 7' = 두 영역 등급 합이 7 이내">최저</span> <small>지금 학평 기준</small></th><th class="t-only">교내 추천</th>${GR === 2 ? '<th>2028 변경</th>' : ''}</tr></thead><tbody id="jb">${tb || '<tr><td colspan="8" class="mu">근거가 겹치는 대학이 없습니다.</td></tr>'}</tbody></table>${L.safe && L.safe.length ? `<div class="hmsg">안전한 곳 <small>입결 기준 · 선배 기록 없음</small> — ${L.safe.map(r => esc(r.nm.replace('학교', ''))).join(' · ')} <span class="mu small">안정권 판정이 없어, 희망 계열 학과 입결로 여유 있는 대학을 따로 보였어요(우리 선배가 원서 낸 대학 먼저).</span></div>` : ''}${L.length > 15 ? `<button class="morebtn" onclick="this.previousElementSibling.querySelector('tbody').classList.toggle('all'); this.textContent = this.textContent.startsWith('나머지') ? '15곳만 보기' : '나머지 ${L.length - 15}곳 더 보기'">나머지 ${L.length - 15}곳 더 보기</button>` : ''}
    <div class="note">점수: 선배(사람 수 기준) 합격 2명↑이면서 합격률 40%↑ 2점 · 합격률 25%↑ 1점 · 그 밖의 합격 0.5점 + 입결 밴드(희망 계열 학과들의 중앙값) 안정 2·적정 1 + 정시 안정 1·적정 0.5 → 3점↑이면서 입결 안정이거나 합격 선배 3명↑·합격률 40%↑(입결 밴드가 상향이 아닐 때)일 때 안정권, 1.5점↑이거나 입결 밴드·정시선 중 하나라도 적정 이상이면 적정권. 교내 상위 5% 안 학생은 비슷한 선배가 적어, 선배 기록이 없어도 입결로 안정인 대학 중 가장 높은 5곳을 함께 판정합니다(안정권 문턱은 같음). 최저 = 지금 학평 등급을 그 대학 최저에 대 본 것 — 학평은 N수생이 없어 실제 수능보다 보통 잘 나오므로 '충족'이어도 여유가 없으면 위험합니다.${PUB ? '' : ' 교내 추천 = 모집요강 추천 인원(명 또는 3학년 재적 %) vs 내 교내 순위(기대 내신 기준) — 학교 추천 기준은 따로 정하므로 참고만.'}${DET() ? ' 정시선은 아래 C와 같이 희망 학과만으로 봅니다.' : ''} 선배 합격률 낮음 = 비슷한 위치 선배 5명 이상이 지원해 합격이 20% 미만인 곳 — 판정이 적정권이어도 조심.${g1note}</div>`;
 }
 function detailBlock(mp){
@@ -1699,7 +1717,7 @@ function jeongsiBlock(){
   const old = +((lab.match(/고(\d)/) || [])[1] || GR) < GR;   // 10-27: 2학년인데 마지막 실채점이 고1 회차 → 1년 넘은 성적
   return `${old ? `<div class="hmsg">마지막 실채점 회차가 <b>${esc(lab)}</b>예요 — ${GR}학년 학평 기록이 없어 1년 넘은 성적으로 낸 정시선이라, 판정표 정시 칸과 함께 참고만 하세요.</div>` : ''}<div class="ctrl">${lab} 지수 <b>${pa.toFixed(1)}</b> · 회차별 ${hist.map(([l, v]) => `${l} ${v.toFixed(1)}`).join(' → ')} · 계열 ${DET() ? `희망(${esc(ME.k)}) 학과만` : ME.k && !JOB() ? tr : '전체'}${REGION !== '전체' ? ' · 지역 ' + esc(REGION) : ''}</div>${ssJs(agg)}
    <div class="cols3" style="grid-template-columns:repeat(4,1fr)">${col(0, '도전(−7~−4)')}${col(1, '상향(−4~0)')}${col(2, '적정(0~+4)')}${col(3, '안정(+4↑)')}</div>${moreBtn([0, 1, 2, 3].reduce((a, k) => a + Math.max(0, Math.min(12, agg.filter(o => o.b === k).length) - SHOW), 0))}
-   <div class="note">대학 대표 컷 = 닿는 학과 컷 중 두 번째로 높은 값(배치표 오류값 방지, 학과 3개 이상일 때). 고1·고2 학평 백분위를 수능 배치표에 대 본 값이라 <b>지금 실력의 위치</b>로만 보세요.${isMale(ME) ? '' : ' 여대 포함.'}</div>`;
+   <div class="note">대학 대표 컷 = 닿는 학과 컷 중 두 번째로 높은 값(배치표 오류값 방지, 학과 3개 이상일 때). 대학이 자체 반영 영역으로 낸 백분위라 부풀거나 깨진 대학은 2026 입결로 바꾸거나(16곳) 뺐습니다(자료가 서로 엇갈리는 15곳). 고1·고2 학평 백분위를 수능 배치표에 대 본 값이라 <b>지금 실력의 위치</b>로만 보세요.${isMale(ME) ? '' : ' 여대 포함.'}</div>`;
 }
 
 /* ── ⑤ 모의 ── */
@@ -2420,7 +2438,7 @@ function sheetUps(s, ctx){
   const mk = (L, auto) => L.map(g => { const band = tgtBand(g.k, g.t); return {k: g.k, t: g.t, nm: g.nm, band, need: band.med == null ? null : tgtNeed(band.med), auto, dn: !!g.dn}; });
   if (TGT.length) return st(mk(TGT.slice(0, 3), false).sort((a, b) => (gp(a) ?? 1e9) - (gp(b) ?? 1e9)));   // 조금 위 → 한참 위(근거 없는 목표는 끝)
   if (s.cum == null || s.why || JOB()) return [];   // 전입 등 참고값 학생은 자동 상향 없음 · 10-27 취업 희망도(상담지에 대학 상향을 싣지 않으니 기말 목표도 대학 거리로 잡지 않음)
-  const RELX = /아신대|신학|루터|칼빈|한영|대신대|침례|성서|총신|장로회|아세아연합|한일장신|서울기독|그리스도|횃불|승가|감리교/;   // 10-25: 신학·종교 단일 대학은 자동 상향에서 뺌
+  // RELX = 전역(10-28 안전한 곳에서도 씀)   // 10-25: 신학·종교 단일 대학은 자동 상향에서 뺌
   const rm = ctx.judge.filter(r => r.lab !== '상향' && !r.few).map(r => { const t = tgtTypes(r.k).find(t => tgtBand(r.k, t).med != null); return t ? tgtBand(r.k, t).med : null; }).filter(v => v != null), hard = rm.length ? Math.min(...rm) : null;   // 10-25: 이미 안정·적정인 대학보다 쉬운 곳은 '올려서 갈 곳'이 아님
   const ours = new Set(D.apps.map(a => K(a.u)));   // 우리 선배가 원서를 낸 대학 = 우리 학교가 실제로 가는 곳
   const up = u => gp(u) != null && gp(u) > .005 && !RELX.test(u.nm) && (hard == null || u.band.med < hard - .005);   // 이미 가운데보다 앞(또는 같음)인 곳은 상향에 넣지 않음
@@ -2457,8 +2475,9 @@ function sheetPlanA(s, ctx, ups){
   const blk = (h, big, say, body, g) => `<div class="sh-blk${g ? ' sh-g' : ''}"><h2>${h}</h2>${big != null ? `<div class="sh-lead"><b>${big}</b><p>${say}</p></div>` : say ? `<p class="sh-say">${say}</p>` : ''}${body}</div>`;
   /* ① 지금 갈 수 있는 곳(안정·적정) */
   const by = l => L.filter(r => r.lab === l), A = by('안정권'), B = by('적정권');
-  const now = blk('지금 성적으로 갈 수 있는 곳', my == null ? null : f2(my), my == null ? '누적 등급을 내지 않아 대학 판정은 싣지 않았어요 — 받은 학기 성적으로 함께 봐요.' : A.length + B.length ? `지금 누적으로 안정·적정 판정이 나온 대학이에요. 여기가 출발점이고, 아래 상향 대학이 다음 계단입니다. <i class="sh-est">추정</i>` : `지금 판정표에서 안정·적정으로 나온 대학이 없어요 — ${ups.length && !JOB() ? '아래 상향 단계부터' : '상담하며'} 함께 봐요.`,
-    my != null && A.length + B.length ? `<ul class="sh-pts">${[['안정권', A, '여유'], ['적정권', B, '비슷']].filter(x => x[1].length).map(([l, R, w]) => `<li><span class="sh-tag">${l}</span><span>${R.slice(0, 10).map(r => nm(r) + (r.few || r.rel || r.lowr ? `<small>(${[r.few && '근거 적음', r.rel && '신학·선교 학과', r.lowr && '선배 합격률 낮음'].filter(Boolean).join(' · ')})</small>` : '')).join(' · ')}${R.length > 10 ? ' 외' : ''} <i class="sh-est">지금 성적과 ${w}</i></span></li>`).join('')}</ul>` : '');
+  const SF = my != null && L.safe && L.safe.length ? `<li><span class="sh-tag">안전한 곳</span><span>${L.safe.map(nm).join(' · ')} <i class="sh-est">입결 기준 · 선배 기록 없음</i></span></li>` : '';   // 10-28
+  const now = blk('지금 성적으로 갈 수 있는 곳', my == null ? null : f2(my), my == null ? '누적 등급을 내지 않아 대학 판정은 싣지 않았어요 — 받은 학기 성적으로 함께 봐요.' : A.length + B.length ? `지금 누적으로 안정·적정 판정이 나온 대학이에요. 여기가 출발점이고, 아래 상향 대학이 다음 계단입니다. <i class="sh-est">추정</i>` : (SF ? '지금 판정표에서 안정·적정으로 나온 대학은 없지만, 입결로 여유 있는 곳을 적었어요 — ' : '지금 판정표에서 안정·적정으로 나온 대학이 없어요 — ') + `${ups.length && !JOB() ? '아래 상향 단계부터' : '상담하며'} 함께 봐요.`,
+    my != null && A.length + B.length ? `<ul class="sh-pts">${[['안정권', A, '여유'], ['적정권', B, '비슷']].filter(x => x[1].length).map(([l, R, w]) => `<li><span class="sh-tag">${l}</span><span>${R.slice(0, 10).map(r => nm(r) + (r.few || r.rel || r.lowr ? `<small>(${[r.few && '근거 적음', r.rel && '신학·선교 학과', r.lowr && '선배 합격률 낮음'].filter(Boolean).join(' · ')})</small>` : '')).join(' · ')}${R.length > 10 ? ' 외' : ''} <i class="sh-est">지금 성적과 ${w}</i></span></li>`).join('')}${SF}</ul>` : SF ? `<ul class="sh-pts">${SF}</ul>` : '');
   /* ② 합격선 한눈에(판정표 위 15곳) — 상담지 폭에 맞춰 글자 키움 */
   const ch = my == null ? '' : judgeChart(L, my, tr).replace(/font-size="11"/g, 'font-size="15"').replace(/font-size="12"/g, 'font-size="16"').replace(/class="note"/g, 'class="sh-note"');
   const chart = ch ? `<div class="sh-blk sh-chart">${ch}</div>` : '';
