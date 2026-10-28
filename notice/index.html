@@ -349,6 +349,10 @@ var DATA = [
   facts:[['전형','교과 <b>100%</b> (의대만 면접 30%)'],['등급환산','1등급 100 / 2등급 96 / 3등급 90'],['최저','간호 2합8 · 보건 1개 4등급']]},
  {name:'한국공학대학교', sub:'교과우수자 · 194명', cat:'수도권 주요대', type:'early', conf:'시행',
   facts:[['전형','교과 <b>100%</b>'],['성적','교과별 상위 4과목 · 융합 제외'],['최저','2합 8 (7→8 완화)']]},
+ {name:'수원대학교', sub:'교과우수 · 205명', cat:'수도권 주요대', type:'early', conf:'시행',
+  facts:[['전형','교과 <b>100%</b>'],['성적','교과별 상위 5과목 · 진로선택 제외'],['최저','2합 7 (간호 2합6)']]},
+ {name:'한경국립대학교', sub:'일반전형 · 364명', cat:'수도권 주요대', type:'early', conf:'시행',
+  facts:[['전형','교과 90% + 출결 10%'],['성적','전 과목 · 공학 수·과 <b>1.2배</b>'],['최저','안성캠 2합 8 · 평택캠 없음']]},
  {name:'인천대학교', sub:'교과성적우수자 · 608명', cat:'수도권 주요대', type:'early', conf:'시행',
   facts:[['전형','교과 <b>100%</b> · 학교장 추천'],['변경','두 전형 통합 → <b>608명</b>'],['최저','2합 7']]},
  {name:'경북대학교', sub:'교과우수자 · 1,395명', cat:'지방거점국립', type:'rise', conf:'시행',
@@ -364,9 +368,9 @@ var DATA = [
  {name:'전북대학교', sub:'일반학생 · 1,433명', cat:'지방거점국립', type:'early', conf:'시행',
   facts:[['전형','교과 <b>100%</b>'],['성적','등급80 + 성취도20'],['최저','모집단위별']]},
 ];
-var UPG = ['pg3', 'pg4', 'pg5', 'pg7', 'pg8', 'pg9'], PER = Math.ceil(DATA.length / UPG.length); // 칸 9개, 쪽마다 고르게
+var UPG = ['pg3', 'pg4', 'pg5', 'pg7', 'pg8', 'pg9']; // 칸 9개, 쪽마다 고르게
 UPG.forEach(function(id, k){
-  var part = DATA.slice(k * PER, k * PER + PER);
+  var part = DATA.slice(Math.round(k * DATA.length / UPG.length), Math.round((k + 1) * DATA.length / UPG.length));
   $(id).innerHTML = '<div class="ucap"><span><b>2028학년도 대학 시행계획 기준</b> · 1학년(2029학년도) 계획은 2027년 4월 발표 — 달라질 수 있어요</span>' +
     '<span style="margin-left:auto"><i class="mint">정량형</i> 석차등급 중심 &nbsp; <i class="vio">정성형</i> 등급+생기부 &nbsp; <i class="amb">교과 미운영</i></span></div>' +
     part.map(function(d){
