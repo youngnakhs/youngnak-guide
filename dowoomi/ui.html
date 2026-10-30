@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610281154"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610301551"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <script>/* 화면 내용 긁어가기 방지(입력칸 제외). 뷰소스는 원리상 못 막음 */['contextmenu','copy','cut','dragstart'].forEach(e=>document.addEventListener(e,v=>{if(!(v.target.closest&&v.target.closest('input,textarea,[contenteditable]')))v.preventDefault()}));</script>
 <title>영락고 상담 도우미</title>
@@ -763,10 +763,10 @@ function render(){
     <div class="kpi"><b>${f2(s.cum)}</b><span class="kl">누적 등급</span><em class="ks">학점 가중 · ${curSem()} 중간 추정 포함</em></div>
     <div class="kpi kpi-rk ${PUB ? 't-only' : ''}"><b>${s.rk ? s.rk + '<small>/ ' + gd.n + '</small>' : '–'}</b><span class="kl">교내 누적 순위${s.rk ? ` <i class="rkp">상위 ${RKP(s.rk, gd.n)}%</i>` : ''}</span><em class="ks">${s.why ? esc(s.why) : '동점은 같은 순위' + (GD().stu.length > gd.n ? ` · 전입 ${GD().stu.length - gd.n}명 제외` : '')}</em></div>
     ${PUB ? `<div class="kpi"><b>${s.rk ? pctBand(100 * s.rk / gd.n) : '–'}</b><span class="kl">학년 안 위치</span><em class="ks">석차 대신 10% 단위</em></div>` : ''}<div class="kpi t-only"><b>${bt == null ? '–' : '<small class="pre">상위</small>' + bt.toFixed(1) + '%'}</b><span class="kl tt" title="부산교육청이 공개한 같은 학년 누적 등급 분포에서 이 학생 누적이 위에서 몇 %쯤인지. 다른 학교와 견줄 때 참고하는 값입니다.">${PUB ? '다른 학교와 견준 위치(참고)' : '부산 기준 위치'}</span><em class="ks">${GR === 1 ? '고1' : '고2 2-1'} 누적 분포 · 참고</em></div>
-    <div class="kpi t-only"><b>${bt == null ? '–' : g9of(bt).toFixed(2)}</b><span class="kl tt" title="5등급 누적을 예전 9등급 입결과 견주려고 같은 비율 위치로 옮긴 값. 공식 환산이 아닙니다.">9등급으로 치면</span><em class="ks">참고 · 공식 환산 아님</em></div>
+    <div class="kpi"><b>${bt == null ? '–' : g9of(bt).toFixed(PUB ? 1 : 2)}</b><span class="kl tt" title="5등급 누적을 예전 9등급 입결과 견주려고 같은 비율 위치로 옮긴 값. 공식 환산이 아닙니다.">9등급으로 치면</span><em class="ks">${bt == null ? '누적이 없어 계산 안 됨(전입 등)' : '참고 · 공식 환산 아님'}</em></div>
     <div class="kpi"><b>${pav == null ? '–' : pav.toFixed(1)}</b><span class="kl">국·수·탐 백분위</span><em class="ks">${gd.last} 평균</em></div>
   </div>
-  <div class="kfoot">자료 기준 ${esc(D.asof)}. ${PUB ? '이번 학기 등급은 중간고사 점수로 낸 추정이 들어 있습니다.' : '누적·순위는 2학기 중간 지필로 낸 추정 등급을 포함합니다.'} ${PUB ? (bt == null ? '' : `참고: 다른 학교와 견준 위치(부산교육청이 공개한 학년 분포 — 공개된 비교 자료라 씀) ${pctBand(bt)} · 9등급으로 치면 ${g9of(bt).toFixed(1)} — 공식 환산이 아닙니다.`) : '부산 기준 위치·9등급으로 치면 값은 참고용이며 공식 환산이 아닙니다.'}</div><div class="lastc t-only" id="lastc"></div>
+  <div class="kfoot">자료 기준 ${esc(D.asof)}. ${PUB ? '이번 학기 등급은 중간고사 점수로 낸 추정이 들어 있습니다.' : '누적·순위는 2학기 중간 지필로 낸 추정 등급을 포함합니다.'} ${PUB ? (bt == null ? '' : `참고: 다른 학교와 견준 위치(부산교육청이 공개한 학년 분포 — 공개된 비교 자료라 씀) ${pctBand(bt)} · '9등급으로 치면'은 참고값이며 공식 환산이 아닙니다.`) : '부산 기준 위치·9등급으로 치면 값은 참고용이며 공식 환산이 아닙니다.'}</div><div class="lastc t-only" id="lastc"></div>
   <section id="s1"><h2>요약 <small>성적 자료에서 바로 읽은 사실 · 판단은 '추정' 표시</small></h2><div class="what">${PUB ? '지금까지 성적에서 눈에 띄는 점을 한 줄씩 정리했습니다. 맨 왼쪽 큰 글씨가 가장 잘하고 있는 점입니다.' : '이 학생 성적에서 눈에 띄는 점을 한 줄씩 뽑았습니다. 상담을 여기서 시작하면 됩니다.'}</div><ul class="notes">${notes()}</ul><div id="jline"></div></section>
   <section id="s2"><h2>내신 흐름 <small>막대 = 학기 평균 등급(위가 좋음)${PUB ? '' : ' · 선 = 학기 교내 순위'}</small></h2>
     <div class="what">학기마다 평균 등급이 어떻게 움직였는지 봅니다. 막대가 높을수록 좋은 등급(1등급이 가장 위)입니다. 오른쪽 표는 교과별 평균 등급이고, 색이 진할수록 좋습니다.</div>
