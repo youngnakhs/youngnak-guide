@@ -5,11 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>교무실 와이드 공지</title>
 <style>
+@font-face{font-family:"Pretendard";src:url("PretendardVariable.woff2") format("woff2-variations"),url("PretendardVariable.woff2") format("woff2");font-weight:45 920;font-display:swap}
 *{margin:0;box-sizing:border-box}
 html,body{width:100%;height:100%;background:#15171a;overflow:hidden}
 :root{--mint:#6ee7b7;--sky:#93c5fd;--vio:#c4b5fd;--amb:#fcd34d;--cor:#fca5a5;--cols:repeat(4,minmax(0,1fr));--gap:36px}
 #app{position:absolute;left:50%;top:50%;width:3440px;height:1440px;transform-origin:center;
-  font-family:"Noto Sans KR","Malgun Gothic",sans-serif;color:#e8eaed;padding:70px;
+  font-family:"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;letter-spacing:.02em;color:#e8eaed;padding:70px;
   background:radial-gradient(1400px 900px at 8% 0%,#1f3a34 0%,transparent 60%),radial-gradient(1600px 1000px at 100% 100%,#2a2440 0%,transparent 60%),#15171a;
   display:grid;grid-template-columns:var(--cols);grid-template-rows:110px 1fr 200px;gap:var(--gap)}
 .pages{grid-column:1/4;grid-row:2;position:relative}
@@ -42,8 +43,8 @@ html,body{width:100%;height:100%;background:#15171a;overflow:hidden}
 .lab{font-size:32px;color:#8f969e;font-weight:500;line-height:40px;white-space:nowrap}
 .gr{background:linear-gradient(90deg,#a7f3d0,#c4b5fd);-webkit-background-clip:text;background-clip:text;color:transparent}
 .stat{display:grid;grid-template-rows:40px 160px 1fr;padding:40px 60px}
-.big{font-size:150px;font-weight:700;line-height:160px;letter-spacing:-6px;white-space:nowrap;display:flex;align-items:baseline;gap:28px}
-.big small{font-size:64px;color:#8f969e;letter-spacing:-2px}
+.big{font-size:150px;font-weight:700;line-height:160px;letter-spacing:-3px;white-space:nowrap;display:flex;align-items:baseline;gap:28px}
+.big small{font-size:64px;color:#8f969e;letter-spacing:-1px}
 .big em{font-style:normal;font-size:46px;font-weight:600;color:#e8eaed;letter-spacing:0}
 .det{align-self:end}
 .g5{display:flex;gap:6px}.g5 div{text-align:center;font-size:30px;color:#9aa1a9;white-space:nowrap}.g5 i{display:block;height:44px;border-radius:10px;margin-bottom:12px;background:rgba(167,243,208,.18)}
