@@ -111,6 +111,17 @@ p{font-size:38px;line-height:62px;color:#9aa1a9;font-weight:300}
 .uc .ch em{font-style:normal;font-weight:600;color:var(--mint)}.uc .ch em.dn{color:var(--cor)}
 #pname{display:block;font-size:28px;line-height:34px;color:#8f969e;font-weight:500}
 #dim{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity 2s}
+/* 11-04 3차: 미니 모니터 가독성 — 합격선 흐린 이름·눈금, 카드 표시 정리, 평가계획·하단 일정·오늘 쪽 키움, 진행 표시 굵게 */
+.w16 #ubands{grid-template-rows:78px minmax(0,1fr)}.w16 #ubands .seg{height:78px}
+.w16 #ubands .seg b{font-size:32px;color:#8f969e}.w16 #ubands .seg:before{top:54px}.w16 #ubands .seg i{top:53px}.w16 #ubands .seg i.k{top:47px}
+.w16 #ubands .bd .oth{font-size:34px;line-height:44px;color:#8f969e}.w16 #ubands .bd div.k{line-height:39px}
+.w16 .ug .uc{padding:18px 64px}.w16 .ug .uc .ch{font-size:38px}.w16 .ug .uc .ch span{padding:4px 20px}.w16 .ug .uc .fx div{font-size:46px;line-height:60px}
+.w16 .sb .nm{font-size:42px}.w16 .sb .nm span{font-size:30px}.w16 .sb .it{font-size:31px;line-height:44px}
+.w16 #sched{font-size:40px}.w16.ontoday #sched{justify-content:flex-start;gap:80px}#sched i{font-style:normal;font-size:.8em;font-weight:700;color:#15171a;background:var(--amb);border-radius:10px;padding:2px 12px;margin-right:12px;vertical-align:.1em}
+.w16.ontoday .ft>div:last-child{display:none}.w16.ontoday #sched{grid-column:2/-1}
+.w16 .pg.today{grid-template-columns:1.15fr .85fr}.w16 #noteT{font-size:120px;line-height:140px}
+.w16 #meal{font-size:76px!important;line-height:88px!important}
+#pdots i{width:56px;height:14px;border-radius:7px}
 </style>
 </head>
 <body>
@@ -141,7 +152,7 @@ p{font-size:38px;line-height:62px;color:#9aa1a9;font-weight:300}
       <div class="hb on"><span>버틴 선배</span><i><u style="width:48%"></u></i><b class="mint" data-count="48" data-suf="%">48%</b></div>
       <div class="hb cr"><span>밀린 선배</span><i><u style="width:32%"></u></i><b class="cor" data-count="32" data-suf="%">32%</b></div></div></div>
 
-  <div class="p plan"><div class="lab">1학년 2학기 평가계획 · 학교알리미 공시 &nbsp;|&nbsp; 막대 = 중간 · 기말 · <span class="gr">수행</span> 반영비율 &nbsp;|&nbsp; 아래 = 수행평가 영역·시기</div>
+  <div class="p plan"><div class="lab">1학년 2학기 평가계획 · 학교알리미 공시 &nbsp;|&nbsp; 막대 = 중간 · 기말 · <span class="gr">수행</span> 반영비율</div>
     <div id="plan"></div></div>
   </div>
   <div class="pg off" id="pg2"><div class="p ub">
@@ -296,8 +307,9 @@ function renderDates(){
     $('ddL').textContent = dd.name + (diff > 0 ? '까지 · ' + (f.getMonth()+1) + '.' + f.getDate() : '');
     $('ddV').textContent = diff > 0 ? 'D-' + diff : (diff === 0 && dd.from === dd.to ? 'D-DAY' : dd.name + ' 중');
   } else { $('ddL').textContent = ''; $('ddV').textContent = ''; }
-  var list = CONFIG.SCHED.filter(function(s){ return day0(s.end) >= t; }).slice(0, 4);
-  $('sched').innerHTML = list.map(function(s){ return '<span><b>' + s.d + '</b> <span>' + esc(s.t) + '</span></span>'; }).join('');
+  var list = CONFIG.SCHED.filter(function(s){ return day0(s.end) >= t; }).slice(0, W16 ? 3 : 4);
+  $('sched').innerHTML = list.map(function(s){ var n = /–/.test(s.d) ? -1 : Math.round((day0(s.end) - t) / 864e5), tag = n === 0 ? '<i>오늘</i>' : n === 1 ? '<i>내일</i>' : '';
+    return '<span>' + tag + '<b>' + s.d + '</b> <span>' + esc(s.t) + '</span></span>'; }).join('');
 }
 renderDates();
 setInterval(renderDates, 60000);
@@ -317,7 +329,7 @@ var UEDGE = [1.0, 1.2, 1.5, 1.75, 2.0, 2.5, 3.0], UCOL = ['#a7f3d0', '#93c5fd', 
 $('ubands').innerHTML = CONFIG.UNIV.map(function(b, k){
   var lo = UEDGE[k], hi = UEDGE[k+1];
   return '<div class="seg" style="--sc:' + UCOL[k] + '">' + (k ? '<b style="left:0">' + lo + '</b>' : '<b style="left:0;transform:none">' + lo.toFixed(1) + '</b>') +
-    b.u.map(function(x){ var k2 = UKEY.indexOf(x[0]) >= 0; return '<i' + (k2 ? ' class="k"' : '') + ' style="left:' + Math.max(1, Math.min(99, (x[1] - lo) / (hi - lo) * 100)).toFixed(1) + '%"></i>'; }).join('') + '</div>';
+    b.u.map(function(x){ var k2 = UKEY.indexOf(x[0]) >= 0; return '<i' + (k2 ? ' class="k"' : '') + ' style="left:' + Math.max(1, Math.min(98, (x[1] - lo) / (hi - lo) * 100)).toFixed(1) + '%"></i>'; }).join('') + '</div>';
 }).join('') + CONFIG.UNIV.map(function(b){
   var K = b.u.filter(function(x){ return UKEY.indexOf(x[0]) >= 0; }), O = b.u.filter(function(x){ return UKEY.indexOf(x[0]) < 0; });
   return '<div class="bd"><h3>' + b.b + '</h3>' + K.map(function(x){ return '<div class="k">' + esc(x[0]) + '<span>' + x[1].toFixed(2) + '</span></div>'; }).join('') +
@@ -488,8 +500,7 @@ UPG.forEach(function(id, k){
   $(id).innerHTML = '<div class="ucap"><span class="ucn">' + GRP[k] + ' <b>' + gi + '</b>/' + gn + '</span><span><b>2028학년도 시행계획 기준</b> · 1학년(2029) 계획은 2027년 4월 발표 — 달라질 수 있어요</span>' +
     '<span style="margin-left:auto"><i class="mint">정량형</i> 석차등급 중심 &nbsp; <i class="vio">정성형</i> 등급+생기부 &nbsp; <i class="amb">교과 미운영</i></span></div>' +
     part.map(function(d){
-      return '<div class="p uc ' + (d.type || 'tba') + '"><div class="ch"><span class="c1">' + d.cat + '</span><span class="' + (d.conf === '확정' || d.conf === '시행' ? 'c1' : 'c2') + '">' +
-        ({시행: '시행계획', 확정: '확정', 보도: '미확정', 미공개: '미공개'}[d.conf] || d.conf) + '</span><span>' + (d.sub || '').replace(/▲\s?[\d,]+/g, function(m){ return '<em>' + m + '</em>'; }).replace(/▼\s?[\d,]+/g, function(m){ return '<em class="dn">' + m + '</em>'; }) + '</span></div>' +
+      return '<div class="p uc ' + (d.type || 'tba') + '"><div class="ch">' + (d.conf === '시행' ? '' : '<span class="c2">' + ({확정: '확정', 보도: '미확정', 미공개: '미공개'}[d.conf] || d.conf) + '</span>') + '<span>' + (d.sub || '').replace(/▲\s?[\d,]+/g, function(m){ return '<em>' + m + '</em>'; }).replace(/▼\s?[\d,]+/g, function(m){ return '<em class="dn">' + m + '</em>'; }) + '</span></div>' +
         '<div class="nm">' + d.name + '</div>' +
         '<div class="fx">' + d.facts.map(function(f){ return '<div><span>' + f[0] + '</span><span style="color:inherit">' + f[1] + '</span></div>'; }).join('') + '</div>' +
         '</div>';
@@ -505,6 +516,7 @@ function countUp(el){
 }
 function showPage(){
   PG.forEach(function(id, k){ var e = $(id); e.classList.toggle('off', k !== pgi); e.classList.remove('enter'); });
+  $('app').classList.toggle('ontoday', PG[pgi] === 'pg6');
   var cur = $(PG[pgi]); void cur.offsetWidth; cur.classList.add('enter');
   cur.querySelectorAll('[data-count]').forEach(countUp);
   var ci = UPG.indexOf(PG[pgi]);
