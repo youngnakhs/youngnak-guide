@@ -29,7 +29,7 @@ html,body{width:100%;height:100%;background:#15171a;overflow:hidden}
 .uc .fx div span{color:#8f969e}.uc .fx b{color:#e8eaed;font-weight:600}
 .uc .pt{font-size:25px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#9aa1a9;border-top:1px solid rgba(255,255,255,.08);padding-top:12px}.uc .pt i{font-style:normal;color:#a7f3d0;margin-right:12px;font-weight:600}
 .ug{grid-template-columns:repeat(2,minmax(0,1fr))!important;grid-template-rows:56px 1fr 1fr!important}.ug .ucap{grid-column:1/-1;font-size:34px}
-.ug .uc{padding:30px 64px;gap:10px;align-content:center}.ug .uc .ch{font-size:32px}.ug .uc .nm{font-size:72px;line-height:86px}.ug .uc .fx div{grid-template-columns:200px minmax(0,1fr);font-size:42px;line-height:62px}
+.ug .uc{padding:24px 64px;gap:8px;align-content:center}.ug .uc .ch{font-size:32px}.ug .uc .nm{font-size:72px;line-height:86px}.ug .uc .fx div{grid-template-columns:200px minmax(0,1fr);font-size:42px;line-height:62px}
 .ucap{grid-column:1/4;display:flex;gap:44px;align-items:center;padding:0 60px;font-size:30px;color:#9aa1a9;white-space:nowrap}.ucap b{color:#e8eaed;font-weight:600}.ucap i{font-style:normal;font-weight:600}
 .mint{color:var(--mint)!important}.sky{color:var(--sky)!important}.vio{color:var(--vio)!important}.amb{color:var(--amb)!important}.cor{color:var(--cor)!important}
 .g5 div:nth-child(2) i{background:rgba(147,197,253,.45)}.g5 div:nth-child(3) i{background:rgba(196,181,253,.4)}.g5 div:nth-child(4) i{background:rgba(252,211,77,.35)}.g5 div:nth-child(5) i{background:rgba(252,165,165,.35)}
@@ -88,13 +88,35 @@ p{font-size:38px;line-height:62px;color:#9aa1a9;font-weight:300}
 .pg.enter .hb u,.pg.enter .g5 i,.pg.enter .sb .rb{transform-origin:left;animation:grow 1s .35s cubic-bezier(.2,.7,.2,1) both}
 @keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 .ucn{color:#a7f3d0;font-weight:600}.ucn b{font-weight:700}
+/* 11-04 2차: 합격선 눈금·오늘 시간표·콜론·증감색·쪽 이름 */
+#ubands{grid-template-rows:64px minmax(0,1fr);align-content:start}
+#ubands .seg{position:relative;height:64px;border-top:0}
+#ubands .seg:before{content:'';position:absolute;left:0;right:0;top:31px;height:10px;border-radius:5px;background:var(--sc);opacity:.35}
+#ubands .seg i{position:absolute;top:30px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:#8f969e}
+#ubands .seg i.k{top:24px;width:24px;height:24px;margin-left:-12px;background:var(--sc);box-shadow:0 0 0 4px #15171a}
+#ubands .seg b{position:absolute;top:0;font-size:24px;font-weight:500;color:#6b7178;transform:translateX(-50%)}
+#ubands .bd{border-top:0;padding-top:0}#ubands .bd h3{margin-bottom:4px}
+#ubands .bd div.k{font-size:34px;line-height:41px;color:#e8eaed;font-weight:500}#ubands .bd div.k span{font-size:30px;color:#9aa1a9}
+#ubands .bd .oth{display:block;word-break:keep-all;font-size:25px;line-height:36px;color:#6b7178;white-space:normal;margin-top:10px}
+.w16 #noteT{font-size:112px;line-height:132px;word-break:keep-all}.w16 #noteS{font-size:62px;line-height:84px;margin-top:10px}.w16 .today .lab{font-size:38px}
+.w16 #meal{font-size:68px!important;line-height:80px!important;margin-top:16px;font-weight:400!important}.w16 #meal:has(>:nth-child(7)){grid-template-columns:1fr 1fr!important;font-size:58px!important}
+.w16 .pg.today{grid-template-rows:minmax(0,1fr) 180px!important}
+.tl{grid-column:1/-1;display:grid;grid-template-rows:40px 1fr;padding:24px 60px 28px}
+#tlbar{position:relative;display:flex;gap:6px;align-items:stretch;margin-top:16px}
+#tlbar i{position:relative;border-radius:10px;background:rgba(255,255,255,.07);font-style:normal;font-size:42px;color:#9aa1a9;display:flex;align-items:center;justify-content:center;white-space:nowrap;overflow:hidden}
+#tlbar i.past{background:rgba(167,243,208,.14);color:#6b7178}#tlbar i.now{background:linear-gradient(90deg,rgba(167,243,208,.55),rgba(196,181,253,.55));color:#fff;font-weight:700}
+#tlbar i.ls{background:rgba(252,211,77,.12)}#tlbar i.ls.now{background:rgba(252,211,77,.5)}
+#tlnow{position:absolute;top:-12px;bottom:-12px;width:4px;margin-left:-2px;border-radius:2px;background:#fff;box-shadow:0 0 14px rgba(255,255,255,.7)}
+#clock .col{animation:blink 2s ease-in-out infinite}@keyframes blink{50%{opacity:.25}}
+.uc .ch em{font-style:normal;font-weight:600;color:var(--mint)}.uc .ch em.dn{color:var(--cor)}
+#pname{display:block;font-size:28px;line-height:34px;color:#8f969e;font-weight:500}
 #dim{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity 2s}
 </style>
 </head>
 <body>
 <div id="app">
   <div class="hd">
-    <span style="font-size:44px;font-weight:700;padding-left:60px">영락고 <span class="gr">1학년부</span></span><span id="pdots"></span>
+    <span style="font-size:44px;font-weight:700;padding-left:60px">영락고 <span class="gr">1학년부</span><span id="pname"></span></span><span id="pdots"></span>
     <span id="date" style="font-size:42px;color:#9aa1a9;text-align:right"></span>
     <span style="display:flex;align-items:center;justify-content:space-between;gap:30px;padding:0 60px">
       <span id="clock" style="font-size:96px;font-weight:700;letter-spacing:-3px"></span>
@@ -223,6 +245,16 @@ if (W16) {
   t.className = 'pg off today'; t.id = 'pg6';
   while (r.firstChild) t.appendChild(r.firstChild);
   r.remove(); document.querySelector('.pages').appendChild(t);
+  var tl = document.createElement('div'); tl.className = 'p tl';
+  tl.innerHTML = '<div class="lab">오늘 시간표</div><div id="tlbar"></div>'; t.appendChild(tl);
+}
+function drawTL(n){
+  var P = CONFIG.PERIODS.filter(function(x){ return toMin(x.e) <= toMin('16:30') && x.name !== '학급시간'; }), a = toMin(P[0].s), z = toMin(P[P.length-1].e), cur = n.getHours()*60 + n.getMinutes();
+  var wk = n.getDay() === 0 || n.getDay() === 6;
+  $('tlbar').innerHTML = P.map(function(x){
+    var s0 = toMin(x.s), e0 = toMin(x.e), st = wk ? '' : cur >= e0 ? ' past' : cur >= s0 ? ' now' : '';
+    return '<i class="' + (/점심/.test(x.name) ? 'ls' : '') + st + '" style="flex:' + (e0 - s0) + '">' + x.name.replace('교시', '').replace('시간', '').replace('·청소', '') + '</i>';
+  }).join('') + (!wk && cur >= a && cur < z ? '<b id="tlnow" style="left:' + ((cur - a) / (z - a) * 100).toFixed(2) + '%"></b>' : '');
 }
 var shift = [0,0];
 function fit(){
@@ -237,7 +269,8 @@ fit();
 function toMin(hm){ var p = hm.split(':'); return +p[0]*60 + +p[1]; }
 function tick(){
   var n = new Date();
-  $('clock').textContent = pad(n.getHours()) + ':' + pad(n.getMinutes());
+  var ck = pad(n.getHours()) + '<span class="col">:</span>' + pad(n.getMinutes()); if ($('clock').innerHTML !== ck) $('clock').innerHTML = ck;
+  if ($('tlbar')) drawTL(n);
   $('date').textContent = (n.getMonth()+1) + '월 ' + n.getDate() + '일 ' + DAYS[n.getDay()] + '요일';
   var wk = n.getDay() === 0 || n.getDay() === 6, h = n.getHours();
   $('dim').style.opacity = (wk || h < CONFIG.DIM_BEFORE || h >= CONFIG.DIM_AFTER) ? .6 : 0;
@@ -278,8 +311,17 @@ $('plan').innerHTML = CONFIG.PLAN.map(function(x){
 }).join('');
 
 /* 대학 합격선 */
-$('ubands').innerHTML = CONFIG.UNIV.map(function(b){
-  return '<div class="bd"><h3>' + b.b + '</h3>' + b.u.map(function(x){ return '<div>' + esc(x[0]) + '<span>' + x[1].toFixed(2) + '</span></div>'; }).join('') + '</div>';
+// 11-04: 구간마다 같은 폭의 눈금(1.0~1.2에 11곳이 몰려 실제 비율 눈금으론 이름이 겹침), 카드에 나오는 대학은 크게
+var UKEY = '서울대 연세대 고려대 서강대 성균관대 한양대 이화여대 중앙대 경희대 한국외대 서울시립대 건국대 동국대 홍익대 숙명여대 국민대 숭실대 세종대 광운대 서울과기대 가천대 인하대 아주대 인천대'.split(' ');
+var UEDGE = [1.0, 1.2, 1.5, 1.75, 2.0, 2.5, 3.0], UCOL = ['#a7f3d0', '#93c5fd', '#c4b5fd', '#fcd34d', '#fca5a5', '#9aa1a9'];
+$('ubands').innerHTML = CONFIG.UNIV.map(function(b, k){
+  var lo = UEDGE[k], hi = UEDGE[k+1];
+  return '<div class="seg" style="--sc:' + UCOL[k] + '">' + (k ? '<b style="left:0">' + lo + '</b>' : '<b style="left:0;transform:none">' + lo.toFixed(1) + '</b>') +
+    b.u.map(function(x){ var k2 = UKEY.indexOf(x[0]) >= 0; return '<i' + (k2 ? ' class="k"' : '') + ' style="left:' + Math.max(1, Math.min(99, (x[1] - lo) / (hi - lo) * 100)).toFixed(1) + '%"></i>'; }).join('') + '</div>';
+}).join('') + CONFIG.UNIV.map(function(b){
+  var K = b.u.filter(function(x){ return UKEY.indexOf(x[0]) >= 0; }), O = b.u.filter(function(x){ return UKEY.indexOf(x[0]) < 0; });
+  return '<div class="bd"><h3>' + b.b + '</h3>' + K.map(function(x){ return '<div class="k">' + esc(x[0]) + '<span>' + x[1].toFixed(2) + '</span></div>'; }).join('') +
+    (O.length ? '<div class="oth">' + O.map(function(x){ return esc(x[0]); }).join(' · ') + '</div>' : '') + '</div>';
 }).join('');
 
 /* 대학별 2028 전형 카드 (10-27 대학 시행계획 정리본으로 갱신 · 상명·ERICA·항공대는 6월 자료) */
@@ -447,7 +489,7 @@ UPG.forEach(function(id, k){
     '<span style="margin-left:auto"><i class="mint">정량형</i> 석차등급 중심 &nbsp; <i class="vio">정성형</i> 등급+생기부 &nbsp; <i class="amb">교과 미운영</i></span></div>' +
     part.map(function(d){
       return '<div class="p uc ' + (d.type || 'tba') + '"><div class="ch"><span class="c1">' + d.cat + '</span><span class="' + (d.conf === '확정' || d.conf === '시행' ? 'c1' : 'c2') + '">' +
-        ({시행: '시행계획', 확정: '확정', 보도: '미확정', 미공개: '미공개'}[d.conf] || d.conf) + '</span><span>' + (d.sub || '') + '</span></div>' +
+        ({시행: '시행계획', 확정: '확정', 보도: '미확정', 미공개: '미공개'}[d.conf] || d.conf) + '</span><span>' + (d.sub || '').replace(/▲\s?[\d,]+/g, function(m){ return '<em>' + m + '</em>'; }).replace(/▼\s?[\d,]+/g, function(m){ return '<em class="dn">' + m + '</em>'; }) + '</span></div>' +
         '<div class="nm">' + d.name + '</div>' +
         '<div class="fx">' + d.facts.map(function(f){ return '<div><span>' + f[0] + '</span><span style="color:inherit">' + f[1] + '</span></div>'; }).join('') + '</div>' +
         '</div>';
@@ -465,6 +507,8 @@ function showPage(){
   PG.forEach(function(id, k){ var e = $(id); e.classList.toggle('off', k !== pgi); e.classList.remove('enter'); });
   var cur = $(PG[pgi]); void cur.offsetWidth; cur.classList.add('enter');
   cur.querySelectorAll('[data-count]').forEach(countUp);
+  var ci = UPG.indexOf(PG[pgi]);
+  $('pname').textContent = (ci >= 0 ? '대학 카드 ' + (ci + 1) + '/' + UPG.length : {pg1: '한눈에 보기', pg2: '예상 합격선', pg6: '오늘'}[PG[pgi]]);
   $('pdots').innerHTML = PG.map(function(_, k){ return '<i' + (k === pgi ? ' class="on" style="--d:' + SEC[pgi] + 's"' : k < pgi ? ' class="done"' : '') + '></i>'; }).join('');
   setTimeout(function(){ pgi = (pgi + 1) % PG.length; showPage(); }, SEC[pgi] * 1000);
 }
