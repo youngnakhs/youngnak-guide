@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202610301829"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202611060952"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <script>/* 화면 내용 긁어가기 방지(입력칸 제외). 뷰소스는 원리상 못 막음 */['contextmenu','copy','cut','dragstart'].forEach(e=>document.addEventListener(e,v=>{if(!(v.target.closest&&v.target.closest('input,textarea,[contenteditable]')))v.preventDefault()}));</script>
 <title>영락고 상담 도우미</title>
@@ -539,7 +539,7 @@ details.guide>summary::before{content:'▸ '}details.guide[open]>summary::before
   <input id="q" class="t-only" list="names" placeholder="이름·학번 검색"><datalist id="names"></datalist>
   <button id="prev" class="t-only">◀ 이전</button><button id="next" class="t-only">다음 ▶</button><button id="clsBtn" class="t-only" title="반 학생 전체를 한 표로 봅니다">반 전체 보기</button><button id="grdBtn" class="t-only" title="학년 전체 석차순 명단과 대학별 가능 인원">학년 전체</button>
   <nav class="nav"><a href="#s1">요약</a><a href="#s2">흐름</a><a href="#exp">내신 예측</a><a href="#goal">기말 목표</a><a href="#univ">대학</a><a href="#s5">모의</a><a href="#memo" class="t-only">메모</a></nav>
-  <span class="sp"></span><span class="asof" id="asof"></span>
+  <span class="sp"></span><span class="asof" id="updMsg"></span><button id="updB" class="t-only" hidden title="메신저로 받은 '상담도우미_새성적_….dat' 파일을 고르면 이 PC에 저장되고 다음부터 새 성적으로 열립니다">새 성적 넣기</button><span class="asof" id="asof"></span>
   <button id="helpBtn" title="사용 순서와 용어 풀이">도움말</button><button id="modeBtn" class="modebtn" title="학생·학부모에게 보여 줄 때 — 석차·다른 학생 정보를 숨깁니다">학생·학부모 보기</button><button id="prn" title="학생 화면: 학생·학부모용(판정표·A까지) / 요약 2쪽 / 교사 보관용(대학 B~G 포함, 직접 접은 것은 뺌) 중 고릅니다. 반 표·학년 화면은 바로 인쇄">이 학생 인쇄</button><button id="adm" class="t-only">관리자</button>
 </div>
 <aside id="rail" class="noprint"><div class="rl">이 학생 화면</div></aside>
@@ -638,10 +638,24 @@ async function unlock(){
     if (location.search.includes('dev')) r = {ok: true, data: await (await fetch('data.json')).text()};
     else r = await api().unlock(pw);
     if (!r.ok){ $('err').textContent = r.msg; return; }
-    if (!D){ D = JSON.parse(r.data); scrubNong(D); fixJeongsi(D); womenGate(D); start(); }
+    if (!D){ D = JSON.parse(r.data); const u = api() && await updLoad(); if (u && u.built > (D.built || '')) D = u; scrubNong(D); fixJeongsi(D); womenGate(D); start(); }
     $('lock').style.display = 'none'; $('pw').value = ''; poke();
   } catch (e){ $('err').textContent = '열기 실패: ' + e; }
 }
+/* 새 성적(pack_upd.py 파일): 옛 EXE의 memo_import로 받아 상담 기록 저장소 'upd:data'에 둠 → 열 때 data.dat보다 새것이면 그걸로 */
+async function updLoad(){ try { let L = ((await api().memo_load('upd:data')) || {}).list || []; if (!L.length) return null;
+  if (L.length > 1){ L = L.slice(-1); await api().memo_set('upd:data', L); }   // memo_import가 d순 정렬 → 마지막만 남겨 기록 파일이 커지지 않게
+  const b = Uint8Array.from(atob(L[0].t), c => c.charCodeAt(0));
+  return JSON.parse(await new Response(new Blob([b]).stream().pipeThrough(new DecompressionStream('gzip'))).text());
+} catch (e) { return null; } }
+async function updAfterImport(r){   // 가져오기 뒤: 지금보다 새 성적이 들어왔으면 다시 열기(캐시가 많아 새로 여는 게 안전) → true
+  if (!r.ok) return false; const u = await updLoad();
+  if (!u || u.built <= (D.built || '')) return false;
+  location.hash = 'upd'; location.reload(); return true; }
+async function updBtn(){ const show = m => { $('updMsg').textContent = m; setTimeout(() => $('updMsg').textContent = '', 10000); };
+  const r = await api().memo_import(); if (!r.ok){ show(r.msg); return; }
+  if (!await updAfterImport(r)) show('새 성적이 없습니다 — 이미 넣은 파일이거나 더 예전 성적입니다.'); }
+if (location.hash === '#upd'){ $('err').textContent = '새 성적을 넣었습니다. 비밀번호를 다시 넣으면 새 성적으로 열립니다.'; history.replaceState(null, '', location.pathname + location.search); }
 $('go').onclick = unlock; $('pw').addEventListener('keydown', e => { if (e.key === 'Enter') unlock(); });
 let idle = null;
 function poke(){ clearTimeout(idle); idle = setTimeout(() => { $('lock').style.display = 'flex'; ALONE = false; WHO = null; $('err').textContent = '10분 동안 조작이 없어 잠갔습니다.'; $('pw').focus(); }, 10 * 60 * 1000); }
@@ -679,6 +693,7 @@ function start(){
   g2Set(/[?&]dev/.test(location.search));
   $('prev').onclick = () => move(-1); $('next').onclick = () => move(1);
   $('prn').onclick = askPrint;
+  if (api()){ $('updB').hidden = false; $('updB').onclick = updBtn; }
   fillBan(); fillStu(); home(); loadPref();
   if (!/[?&]dev/.test(location.search)){ newUi(); setInterval(newUi, 30 * 60 * 1000); }
 }
@@ -2115,7 +2130,7 @@ async function renderMemo(){
   $('memoS').onclick = async () => { if (await memoSave('m')) renderMemo(); };
   $('logP').onclick = printLog;
   if (api()){ $('mExp').onclick = async () => { $('mMsg').textContent = (await api().memo_export()).msg; };
-    $('mImp').onclick = async () => { const r = await api().memo_import(); $('mMsg').textContent = r.msg; if (r.ok){ MEMOC = {}; TGTC = {}; TGTV++; await favLoad(ME.id); await tgtLoad(ME.id); render(); } }; }
+    $('mImp').onclick = async () => { const r = await api().memo_import(); $('mMsg').textContent = r.msg; if (await updAfterImport(r)) return; if (r.ok){ MEMOC = {}; TGTC = {}; TGTV++; await favLoad(ME.id); await tgtLoad(ME.id); render(); } }; }
   lastLine(L);
 }
 /* 25. 맨 위 숫자 아래: 지난 상담(스냅샷) 대비 누적·순위 변화 + 최근 기록 날짜·목표 한 줄(교사만) */
