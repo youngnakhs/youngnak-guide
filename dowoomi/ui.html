@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202611110924"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202611111031"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <script>/* 화면 내용 긁어가기 방지(입력칸 제외). 뷰소스는 원리상 못 막음 */['contextmenu','copy','cut','dragstart'].forEach(e=>document.addEventListener(e,v=>{if(!(v.target.closest&&v.target.closest('input,textarea,[contenteditable]')))v.preventDefault()}));</script>
 <title>영락고 상담 도우미</title>
@@ -209,7 +209,7 @@ body.pub .bar{border-bottom:4px solid #c46a00}
 body.pub #rail{border-right:4px solid #c46a00}
 body.pub .hero>.pubbar,body.pub main>.pubbar{background:#c46a00;border:0;color:#fff;font-size:17px;font-weight:700;padding:10px 16px}
 .goal td,.goal th{font-size:16.5px}.goal .need{font-size:19px;font-weight:800;color:var(--navy)}
-.gseg{display:flex;gap:0;margin:12px 0 4px;border-bottom:1px solid var(--rule)}.gseg button{border:0;border-bottom:3px solid transparent;background:none;padding:8px 18px;font-size:17px;cursor:pointer;color:var(--ink2)}.gseg button.on{border-bottom-color:var(--navy);color:var(--navy);font-weight:700}
+.gseg{display:flex;gap:0;margin:12px 0 4px;border-bottom:1px solid var(--rule)}.gseg button{border:0;border-bottom:3px solid transparent;background:none;padding:8px 18px;font-size:17px;cursor:pointer;color:var(--ink2)}.grk tr.ntop td{font-weight:600}.gdi{margin:6px 0;padding:8px 12px;border-left:4px solid #9aa5b4;background:#f7f8fa}.gdi ul{margin:4px 0 0 18px;padding:0}.gdi-good{border-color:#c0392b}.gdi-warn{border-color:#1f618d}.gdi-tip{border-color:#c77700;background:#fffaf0}#gdx details{margin:8px 0}#gdx summary{cursor:pointer;font-size:17px;padding:4px 0}.gseg button.on{border-bottom-color:var(--navy);color:var(--navy);font-weight:700}
 .grdu details.gwho summary{cursor:pointer;color:var(--navy)}.grdu details.gwho div{margin:4px 0;line-height:1.7}.grdu details.gwho a{color:var(--ink);text-decoration:none;font-weight:600;margin-left:6px}.grdu details.gwho a:hover{text-decoration:underline}.grdu td,.grdu th{text-align:center}.grdu td.l{text-align:left}
 .grdv details.gall summary{cursor:pointer;list-style-position:outside}.grdv details.gall[open] summary{margin-bottom:4px}.grdv details.gall div{margin:2px 0 2px 14px;line-height:1.6}.gtog button{font-size:13px;padding:3px 8px;border:1px solid var(--rule);background:#fff;cursor:pointer}
 @media print{.grdv details>summary,.grdu details>summary{list-style:none}.grdv details>summary::-webkit-details-marker,.grdu details>summary::-webkit-details-marker{display:none}body.grd #prev,body.grd #next{display:none}}body.grd #prev,body.grd #next{display:none}.grdv th{white-space:nowrap}.gopt select{padding:2px 4px}.grdv td:nth-child(2){white-space:nowrap}
@@ -602,7 +602,7 @@ details.guide>summary::before{content:'▸ '}details.guide[open]>summary::before
     <input id="npw" type="password" placeholder="새 열람 비밀번호"> <button id="chg">바꾸기</button>
     <p class="small" style="margin-top:14px"><b>원자료로 다시 계산</b> — 이 PC의 원자료(다운로드·구글 드라이브)로 prep.py를 실행해 data.dat을 새로 만듭니다. 파이썬과 원자료가 있는 관리자 PC에서만 됩니다.</p>
     <input id="vpw2" type="password" placeholder="열람 비밀번호(새 파일에 사용)"> <button id="rec">다시 계산</button>
-    <p class="small" style="margin-top:14px"><label><input type="checkbox" id="g2c"> <b>이 PC에서 2학년도 보기</b></label> — 다른 선생님 PC에는 2학년이 보이지 않습니다.</p>
+    <p class="small" style="margin-top:14px"><label><input type="checkbox" id="g2c"> <b>2학년도 보기</b></label> — 모든 선생님 PC에 기본으로 보입니다(끄면 이번 실행에서만 숨김). 2학년 성적이 없는 자료면 0명입니다.</p>
     <pre id="log" hidden></pre>
     <button class="cls">닫기</button>
   </div>
@@ -690,7 +690,7 @@ function start(){
     else { const d = document.createElement('div'); d.id = 'qpick'; d.className = 'noprint';
       d.innerHTML = L.length ? `'${esc(v)}' ${L.length}명 — 고르세요: ` + L.slice(0, 12).map(x => `<button data-id="${x.id}">${x.id} ${esc(x.nm)}</button>`).join('') + (L.length > 12 ? ` <span class="mu small">외 ${L.length - 12}명 — 더 길게 치세요</span>` : '') + ' <button class="x">닫기</button>' : `'${esc(v)}'와 맞는 학생이 없습니다. <button class="x">닫기</button>`;
       document.body.appendChild(d); d.onclick = e => { const b = e.target.closest('button'); if (!b) return; closeQpick(); if (b.dataset.id) pick(+b.dataset.id); }; } };
-  g2Set(/[?&]dev/.test(location.search));
+  g2Set(true);   // 11-11 사용자: 2학년도 모든 PC에 보이게(2학년 성적이 든 자료일 때만 실제로 보임)
   $('prev').onclick = () => move(-1); $('next').onclick = () => move(1);
   $('prn').onclick = askPrint;
   if (api()){ $('updB').hidden = false; $('updB').onclick = updBtn; }
@@ -791,6 +791,7 @@ function render(){
   <section id="goal"></section>
   <section id="univ"></section>
   <section id="s5"><h2>모의고사 <small>큰 숫자 = 등급, 아래 작은 숫자 = 백분위 %(영어·한국사는 절대평가)</small></h2><div class="what">전국연합학력평가(모의고사) 회차별 등급입니다. 칸 안의 큰 숫자가 등급, 아래 작은 숫자가 백분위(전국에서 나보다 점수가 낮은 학생 비율 %, 클수록 좋음)입니다.${GR === 1 ? ' 아래에 영역별 강점·약점도 나옵니다.' : ''}</div>${mockTable()}${detailMock()}</section>
+  ${guideSec()}
   <section id="memo" class="t-only"></section>
   <section id="qmemo" class="pubonly noprint"><h2>빠른 메모 <small>저장하면 선생님 상담 기록에 붙습니다 · 지난 기록은 여기 나오지 않습니다</small></h2>
    <div class="memo"><textarea id="qm" placeholder="오늘 약속한 것 · 다음에 확인할 것"></textarea>${chkHtml('q')}<button id="qmS" class="msave">메모 저장</button> <span id="qmMsg" class="small mu"></span></div></section>`;
@@ -2021,6 +2022,8 @@ function gradeView(tab, back){
   m.querySelectorAll('.gseg button').forEach(b => b.onclick = () => gradeView(b.dataset.t));
   $('gfB').onchange = () => { GF.ban = $('gfB').value; gradeView(); }; $('gfK').onchange = () => { GF.k = $('gfK').value; gradeView(); };
   $('gfW').onchange = () => { WIN = +$('gfW').value; savePref(); gradeView(); }; $('gfH').onchange = () => { HOPEONLY = $('gfH').checked; savePref(); gradeView(); };
+  if ($('gfRn')) $('gfRn').onchange = () => { GF.rn = +$('gfRn').value; gradeView(); };
+  m.querySelectorAll('.grk th[data-rk]').forEach(h => h.onclick = () => { const k = h.dataset.rk; GF.rk = [k, (GF.rk || ['s3'])[0] === k ? -(GF.rk || ['s3', 1])[1] : 1]; gradeView(); });
   if ($('gfRd')) $('gfRd').onchange = () => { GF.rd = $('gfRd').value; gradeView(); };
   m.querySelectorAll('.gan button[data-cs]').forEach(b => b.onclick = () => { GF.cs = b.dataset.cs; gradeView(); });
   m.querySelectorAll('.gan a[data-id]').forEach(a => a.onclick = e => { e.preventDefault(); pick(+a.dataset.id); });
@@ -2110,6 +2113,13 @@ function gradeAnal(S){
   // 5. 수능 최저 충족 모의 계산
   const SIM = [['3개 합 6 이하', 3, 6], ['3개 합 7 이하', 3, 7], ['2개 합 4 이하', 2, 4], ['2개 합 5 이하', 2, 5], ['2개 합 6 이하', 2, 6]];
   const mkT = mk.filter(s => anBest(s, rd, 2) != null), nTk = mkT.filter(s => nTop.has(s.id)), sc = (arr, n, v) => arr.filter(s => { const x = anBest(s, rd, n); return x != null && x <= v; }).length;
+  // 7. 성적 우수자(솔루션 '성적 우수자 보기'): 회차 성적순 · 열 제목 정렬 · 상위 N명
+  const RK = GF.rk || ['s3', 1], RN = GF.rn ?? 30, pv = (s, k) => { const m = s.mk[rd] && s.mk[rd][k]; return m ? (m[1] != null ? -m[1] : m[0] * 1000) : null; };
+  const kv = (s, k) => k === 's3' ? anS3(s, rd) : k === 'cum' ? s.cum : k === 'b2' ? anBest(s, rd, 2) : pv(s, k);
+  const R7 = S.filter(s => anS3(s, rd) != null).sort((a, b) => { const x = kv(a, RK[0]), y = kv(b, RK[0]); return (x == null) - (y == null) || (x - y) * RK[1] || (anS3(a, rd) - anS3(b, rd)) || ((mockPa(b.mk[rd]) || 0) - (mockPa(a.mk[rd]) || 0)); });
+  const R7s = RN ? R7.slice(0, RN) : R7, th7 = (k, l) => `<th data-rk="${k}" class="${RK[0] === k ? 'sorted' + (RK[1] > 0 ? ' asc' : '') : ''}" style="cursor:pointer">${l}</th>`;
+  const c7 = (s, k) => { const m = s.mk[rd] && s.mk[rd][k]; return m && m[0] != null ? `<b>${m[0]}</b>${m[1] != null ? ` <small class="mu">${Math.round(m[1])}</small>` : ''}` : '<span class="mu">–</span>'; };
+  const t7 = R7s.map((s, i) => `<tr class="${nTop.has(s.id) ? 'ntop' : ''}"><td>${i + 1}</td><td>${banOf(s.id)}-${s.id % 100}</td><td class="l">${lk(s)}</td><td>${f2(s.cum)}${s.rk ? ` <small class="mu">${s.rk}위</small>` : ''}</td><td><b>${anS3(s, rd)}</b></td><td>${anBest(s, rd, 2) ?? '–'}</td>${SUB.map(([k]) => `<td>${c7(s, k)}</td>`).join('')}</tr>`).join('');
   // 6. 상담이 필요한 학생
   const C = anCases(S, rd, rds), csF = GF.cs || 'risk';
   const csShow = csF === 'all' ? C.list : csF === 'risk' ? C.list.filter(x => x.rs.some(r => AN_CS[r.k].w >= 2)) : C.list.filter(x => x.rs.some(r => r.k === csF));
@@ -2133,11 +2143,103 @@ function gradeAnal(S){
   <h3>5. 수능 최저 충족 모의 계산 — ${esc(rd)} <small>국어·수학·영어·탐구(좋은 1과목) 중 좋은 과목들의 합 · 한국사 등 대학별 조건 미반영</small></h3>
   <table class="tb"><thead><tr><th>최저 기준(국수영탐 중)</th><th>내신 상위 20%</th><th>전체</th></tr></thead><tbody>${SIM.map(([l, n, v]) => { const a = sc(nTk, n, v), b = sc(mkT, n, v); return `<tr><td class="l"><b>${l}</b></td><td>${a}명 <small class="mu">${pc(a, nTk.length)}</small></td><td>${b}명 <small class="mu">${pc(b, mkT.length)}</small></td></tr>`; }).join('')}
    <tr><td class="l mu">응시</td><td class="mu">${nTk.length}</td><td class="mu">${mkT.length}</td></tr></tbody></table>
-  <h3>6. 상담이 필요한 학생 (${C.list.length}명) <small>${esc(rd)}${C.prev ? ` · 직전 ${esc(C.prev)}` : ''} 기준</small></h3>
+  <h3>6. 모의 성적 우수자 — ${esc(rd)} <small>국수영 3합 순(같으면 국수탐 백분위) · 열 제목을 누르면 정렬 · 과목 칸 = 등급 + 백분위</small></h3>
+  <div class="ctrl noprint">보기 <select id="gfRn">${[[10, '상위 10명'], [20, '상위 20명'], [30, '상위 30명'], [50, '상위 50명'], [100, '상위 100명'], [0, '응시자 전체']].map(([v, l]) => `<option value="${v}" ${v === RN ? 'selected' : ''}>${l}</option>`).join('')}</select> <button class="cpy" data-t=".grk">표 복사</button> <small class="mu">${R7.length}명 응시 · 굵은 줄 = 내신도 상위 20%</small></div>
+  <table class="tb grk"><thead><tr><th>순</th><th>반-번호</th><th>이름</th>${th7('cum', '내신 누적')}${th7('s3', '국수영 3합')}${th7('b2', '2합')}${SUB.map(([k, n]) => th7(k, n)).join('')}</tr></thead><tbody>${t7}</tbody></table>
+  <h3>7. 상담이 필요한 학생 (${C.list.length}명) <small>${esc(rd)}${C.prev ? ` · 직전 ${esc(C.prev)}` : ''} 기준</small></h3>
   <div class="gtog noprint" style="margin:4px 0">${chips.map(([k, l]) => `<button data-cs="${k}" class="${k === csF ? 'on' : ''}">${esc(l)}</button>`).join(' ')} <button class="cpy" data-t=".gcs">표 복사</button></div>
   <table class="tb gcs"><thead><tr><th>반-번호</th><th>이름</th><th>누적</th><th>3합</th><th>사유 · 근거</th><th>지도 방향</th></tr></thead><tbody>${t6 || '<tr><td colspan="6" class="mu">해당 학생이 없습니다.</td></tr>'}</tbody></table>
   <div class="note">고른 기준(솔루션 대시보드와 같음) — 모의 급락·급등: 직전 회차 대비 국수영 3합 3 이상 또는 한 과목 3등급 이상 변화 · 모의 연속 하락: 최근 3회 연속 3합 악화 · 내신 하락·상승: 첫 학기 → 마지막 학기(지금 학기는 중간 추정) 0.3 이상 · 내신 기복: 학기 간 최고·최저 차 0.5 이상 · 내신&gt;모의 / 모의&gt;내신: 거른 학생 안 상위 비율 차 30%p 이상 · 과목 불균형: 이번 회차 과목 간 등급 차 4 이상(한국사 제외). 순서 = 관리가 급한 사유일수록 앞(급락·연속 하락·내신 하락 먼저).</div>
   </div>`;
+}
+/* ── 34. 상담 가이드(11-11, 솔루션 v113 '진학 상담 가이드' ①~③을 이 자료로): 교사만·인쇄 안 함 · 내신은 9등급으로 치면 값으로 비교 ── */
+const G9 = v => g9of(busanTop(v, GR === 1 ? 'B' : 'C'));   // 맨 위 '9등급으로 치면'과 같은 환산
+const GBand = g => g <= 1.5 ? '최상위권' : g <= 2.5 ? '상위권' : g <= 3.5 ? '중상위권' : g <= 4.5 ? '중위권' : g <= 6 ? '중하위권' : '하위권';
+const gli = a => '<ul>' + a.map(x => '<li>' + x + '</li>').join('') + '</ul>';
+const gIt = (c, h) => `<div class="gdi gdi-${c}">${h}</div>`;
+function guideNs(){
+  const gd = GD(), sem = gd.sems.map((k, i) => ({k: k + (i === gd.sems.length - 1 ? '(중간 추정)' : ''), r: ME.sem[i]})).filter(x => x.r != null).map(x => ({...x, v: G9(x.r)}));
+  if (ME.cum == null || !sem.length) return gIt('warn', '내신 성적이 없어 가이드를 만들 수 없습니다(전입 등).');
+  const t9 = G9(ME.cum), F = v => v.toFixed(2), dT = (dr, dv) => `<b>${F(Math.abs(dr))}</b>(9등급으로 치면 ${F(Math.abs(dv))})`;
+  let h = gIt('info', `전체 내신 누적 <b>${F(ME.cum)}</b>(5등급제) · 9등급으로 치면 약 <b>${F(t9)}</b> — <b>${GBand(t9)}</b>. 아래 변화 판단은 9등급으로 치면 값 기준입니다.`)
+    + gIt('tip', '<b>9등급으로 치면 값, 상담에서 이렇게 쓰세요</b>' + gli([
+      `5등급 숫자(${F(ME.cum)})를 예전 9등급처럼 읽으면 실제보다 잘하는 것처럼 보입니다. "예전 9등급으로 치면 약 ${F(t9)}등급(${GBand(t9)})"이라고 함께 말해 주세요.`,
+      '바꾼 값은 작년까지의 합격 성적(9등급)과 견주려는 참고 숫자입니다. 대학이 실제로 9등급으로 바꿔 뽑는 것은 아닙니다.',
+      ...(t9 <= 3 ? ['5등급제 1등급(상위 10%)에는 예전 1·2등급 학생이 섞여 있습니다. 상위권은 등급만 말고 과목별 석차·성취도도 함께 봅니다.'] : [])]));
+  if (sem.length < 2) return h + gIt('info', '아직 한 학기 성적만 있어 오르내림은 볼 수 없습니다. 현재 위치 확인과 다음 학기 과목별 목표 등급 정하기에 집중합니다.');
+  const L = sem.at(-1), P = sem.at(-2), d = L.v - P.v, dr = L.r - P.r;
+  if (d <= -0.3) h += gIt('good', `<b>${P.k} → ${L.k}</b>: ${dT(dr, d)} <b>상승</b>${d <= -0.7 ? '(큰 폭)' : ''}` + gli([
+    '"무엇이 도움이 됐니?"라고 물어 학생이 직접 말하게 합니다(수행평가 관리, 공부 방법, 수업 태도 등). 효과 있던 방법은 다음 학기에도 이어 가게 합니다.',
+    '성적을 올린 과정은 학생부종합 면접의 좋은 이야깃거리(성장 과정)이니 구체적인 일화를 메모해 두게 합니다.',
+    '많이 오른 과목이 이번만 잘 나온 것인지 함께 살펴보고 다음 학기 목표 등급을 정합니다.']));
+  else if (d >= 0.3) h += gIt('warn', `<b>${P.k} → ${L.k}</b>: ${dT(dr, d)} <b>하락</b>${d >= 0.7 ? '(큰 폭)' : ''}` + gli([
+    '어떤 과목이 떨어졌는지 먼저 찾습니다. 모든 과목이면 공부 시간·생활 습관·마음 상태를, 몇 과목만이면 시험 난이도나 수행평가 누락을 묻습니다.',
+    '지필과 수행 중 어디서 빠졌는지 나눠 봅니다. 수행이면 일정표로 챙기게, 지필이면 틀린 이유(몰라서/실수/시간 부족)를 함께 정리합니다.',
+    '가장 많이 떨어진 과목 1~2개만 골라 되살리는 계획을 세우고 4주마다 짧게 다시 만나 확인합니다.',
+    '자신감이 떨어졌거나 목표가 흐려졌을 수 있으니 진로 목표도 다시 이야기합니다.']));
+  else h += gIt('info', `<b>${P.k} → ${L.k}: 큰 변동 없이 유지</b>(${dr > 0 ? '+' : ''}${F(dr)}, 9등급으로 치면 ${d > 0 ? '+' : ''}${F(d)}). 조금만 더 하면 오를 과목 한두 개를 골라 집중하게 합니다.`);
+  if (sem.length >= 3){ const dA = L.v - sem[0].v, dAr = L.r - sem[0].r, sp = Math.max(...sem.map(x => x.v)) - Math.min(...sem.map(x => x.v)), spr = Math.max(...sem.map(x => x.r)) - Math.min(...sem.map(x => x.r));
+    if (dA <= -0.5) h += gIt('good', `<b>${sem[0].k}부터 ${L.k}까지 상향 곡선</b>(${dT(dAr, dA)} 좋아짐). 꾸준히 오른 성적은 학생부종합에서 좋게 봅니다. "어떻게 성장했는지"를 세특·활동과 함께 정리해 둡니다.`);
+    else if (dA >= 0.5) h += gIt('warn', `<b>${sem[0].k}부터 ${L.k}까지 하향 추세</b>(${dT(dAr, dA)} 떨어짐). 한 번이 아니라 계속 떨어지고 있어 공부 방법·생활 습관을 전체적으로 살피고, 내신 위주 지원 계획을 다시 생각해 봅니다.`);
+    else if (sp >= 1.0) h += gIt('tip', `학기 간 차이가 ${dT(spr, sp)}로 오르내림이 큽니다. 시험 직전에 몰아서 공부하는지 묻고, 시험 4주 전부터 미리 하는 계획을 함께 세웁니다.`); }
+  h += t9 <= 2.0 ? gIt('tip', `<b>내신 ${GBand(t9)}</b>: 내신으로 뽑는 학생부교과전형이 가장 유리합니다. 수능 최저가 걸린 경우가 많아 모의고사 관리도 함께 합니다.`)
+    : t9 <= 3.0 ? gIt('tip', `<b>내신 ${GBand(t9)}</b>: 교과전형과 종합전형을 모두 생각해 볼 수 있습니다. 희망 학과 관련 세특·탐구가 탄탄하면 한 단계 높은 대학도 노려 봅니다.`)
+    : t9 <= 4.5 ? gIt('tip', `<b>내신 ${GBand(t9)}</b>: 교과전형만으로는 갈 수 있는 대학이 좁을 수 있습니다. 종합(희망 학과 활동 강조)·논술·정시도 함께 보고, 남은 학기에 올릴 과목을 찾아 줍니다.`)
+    : gIt('tip', `<b>내신 ${GBand(t9)}</b>: 내신 위주 전형은 어렵습니다. 정시, 내신 비중이 낮은 전형, 전문대 전형도 함께 알아보고, 남은 학기 수행평가는 꼭 챙겨 더 떨어지지 않게 합니다.`);
+  return h;
+}
+function guideMk(){
+  const rds = anRds([ME]).filter(l => !PROV(l)), SB = [['kor','국어'],['mat','수학'],['eng','영어'],['soc', GR === 1 ? '통합사회' : '사회탐구'],['sci', GR === 1 ? '통합과학' : '과학탐구']];
+  if (!rds.length) return gIt('warn', '모의고사 성적이 없어 가이드를 만들 수 없습니다.');
+  const tg = GR === 1 ? '통합사회·통합과학은 고2부터 선택 탐구로 바뀌니, 희망 계열에 맞는 탐구 과목을 미리 생각해 봅니다.' : '지금 고른 탐구 과목을 계속할지, 가고 싶은 대학이 요구하는 과목과 맞는지 함께 확인합니다.';
+  const TP = {kor: ['지금 국어 공부 방법이 효과를 보고 있습니다. 그대로 이어 가되 선택과목(화법과 작문/언어와 매체) 문제도 잘 맞히는지 확인합니다.', '화법·작문, 문법, 독서, 문학 중 어디서 많이 틀렸는지 먼저 봅니다. 매일 비문학 지문 1~2개, 시간 재고 풀기, 기출 풀기를 권합니다.', '등급이 꾸준합니다. 한 등급 더 올리려면 어려운 독서·문학 문제를 왜 틀렸는지 하나하나 따져 보는 공부가 필요합니다.'],
+    mat: ['정확하게, 시간 안에 푸는 힘이 좋아지고 있습니다. 어디서 올랐는지 확인해 이어 가게 합니다.', '실수인지 몰라서인지 나눠 봅니다. 쉬운 문제부터 확실히 맞히는 순서와 오답노트 습관을 함께 점검합니다.', '등급이 꾸준합니다. 한 단계 더 올리려면 어려운 문제 연습과 시간 재고 실전처럼 푸는 연습을 함께 합니다.'],
+    eng: ['영어는 점수만 넘으면 등급이 정해지는 시험(90점 이상 1등급)이라, 지금 점수가 기준보다 넉넉한지 확인합니다.', '듣기·빈칸·순서 등 어떤 유형에서 틀렸는지 보고 단어·문장 기초를 다시 다집니다. "다음 등급 기준 점수"를 목표로 잡게 합니다.', '등급을 잘 지키고 있습니다. 다음 등급 기준 점수(10점 단위)까지를 목표로 삼게 합니다.'],
+    soc: ['탐구 공부가 효과를 보고 있습니다. 등급과 함께 백분위도 같이 올랐는지 봅니다.', '어느 단원에서 틀렸는지 보고 개념 정리와 기출 반복을 늘립니다.', '등급이 꾸준합니다. ' + tg]};
+  TP.sci = TP.soc;
+  const g = (r, k) => ME.mk[r] && ME.mk[r][k] ? ME.mk[r][k] : null;
+  let h = '';
+  SB.forEach(([k, nm]) => { const pts = rds.map(r => ({r, g: g(r, k) ? g(r, k)[0] : null, p: g(r, k) ? g(r, k)[1] : null})).filter(x => x.g != null);
+    if (!pts.length) return; if (pts.length < 2){ h += gIt('info', `<b>${nm}</b>: 비교할 회차가 하나뿐입니다(${pts[0].r} ${pts[0].g}등급).`); return; }
+    const L = pts.at(-1), P = pts.at(-2), d = L.g - P.g, dA = L.g - pts[0].g, ty = d <= -1 ? 0 : d >= 1 ? 1 : 2;
+    let t = `<b>${nm}</b>: ${P.r} → ${L.r} ` + (ty === 0 ? `<b>${-d}등급 상승</b>(${P.g}→${L.g})` : ty === 1 ? `<b>${d}등급 하락</b>(${P.g}→${L.g})` : `등급 유지(${L.g}등급)`) + (L.p != null && P.p != null ? ` <small class="mu">백분위 ${Math.round(P.p)}→${Math.round(L.p)}</small>` : '') + '.';
+    if (d === 0 && L.p != null && P.p != null && Math.abs(L.p - P.p) >= 5) t += ` 등급은 같지만 백분위가 ${Math.round(Math.abs(L.p - P.p))} ${L.p > P.p ? '올라 다음 시험에서 등급이 오를 가능성이 보입니다' : '내려 등급 경계에 가까워지고 있으니 주의가 필요합니다'}.`;
+    if (pts.length >= 3 && Math.abs(dA) >= 2) t += ` 첫 회차 대비 ${Math.abs(dA)}등급 ${dA < 0 ? '상승한 흐름입니다.' : '하락한 흐름이라 장기 대책이 필요합니다.'}`;
+    h += gIt(['good', 'warn', 'info'][ty], t + '<br>' + TP[k][ty]); });
+  const lr = rds.at(-1), sj = SB.filter(([k]) => g(lr, k)).map(([k, n]) => ({n, g: g(lr, k)[0]})).sort((a, b) => a.g - b.g);
+  if (sj.length >= 2 && sj.at(-1).g > sj[0].g) h += gIt('tip', `<b>${lr} 기준 강점 과목은 ${sj[0].n}(${sj[0].g}등급), 보완할 과목은 ${sj.at(-1).n}(${sj.at(-1).g}등급)</b>. 잘하는 과목은 지키고 약한 과목에 시간을 더 쓰게 합니다.`);
+  if (g(lr, 'his')) h += gIt('info', `<b>한국사</b> ${g(lr, 'his')[0]}등급: 꼭 봐야 하는 과목입니다. 몇 등급이면 되는지는 대학마다 다르니 희망 대학 기준을 확인합니다.`);
+  const sums = rds.map(r => ({r, v: anS3(ME, r)})).filter(x => x.v != null);
+  if (sums.length){ const L = sums.at(-1), B = sums.reduce((a, b) => b.v < a.v ? b : a);
+    if (sums.length >= 2){ const dS = L.v - sums.at(-2).v;
+      h += dS <= -1 ? gIt('good', `<b>국수영 3합 ${sums.at(-2).v} → ${L.v}(${-dS} 좋아짐)</b>. 수능 최저를 맞출 가능성이 커지고 있습니다.`) : dS >= 1 ? gIt('warn', `<b>국수영 3합 ${sums.at(-2).v} → ${L.v}(${dS} 나빠짐)</b>. 수능 최저를 못 맞출 수 있으니 떨어진 과목부터 보완합니다.`) : gIt('info', `<b>국수영 3합 ${L.v}로 유지</b>되고 있습니다.`); }
+    const st = v => x => v <= x ? '<b class="up">맞춤</b>' : v <= x + 1 ? '<b style="color:#c77700">1 차이로 못 맞춤</b>' : '<span class="mu">못 맞춤</span>';
+    h += `<table class="tb" style="max-width:560px"><thead><tr><th class="l">수능 최저 예시(국수영 3합)</th><th>최근 ${esc(L.r)} (${L.v})</th><th>최고 ${esc(B.r)} (${B.v})</th></tr></thead><tbody>${[5, 6, 7, 8].map(x => `<tr><td class="l">3합 ${x} 이내</td><td>${st(L.v)(x)}</td><td>${st(B.v)(x)}</td></tr>`).join('')}</tbody></table>
+     <p class="small mu">"3합 6" = 국어·수학·영어 등급을 더해 6 이하(예: 2·2·2). 실제 조건은 대학마다 다르니 모집요강을 확인합니다.${GR === 1 ? ' 1학년 모의는 참고용입니다.' : ''}</p>`; }
+  return h;
+}
+function guideDir(){
+  const rds = anRds([ME]).filter(l => !PROV(l)).filter(r => anS3(ME, r) != null), lr = rds.at(-1);
+  const n9 = ME.cum != null ? G9(ME.cum) : null, m = lr ? anS3(ME, lr) / 3 : null, F = v => v == null ? '–' : v.toFixed(2);
+  if (n9 == null && m == null) return gIt('warn', '내신과 모의고사 자료가 모두 없어 지원 성향을 볼 수 없습니다.');
+  const gap = n9 != null && m != null ? n9 - m : null;
+  let h = `<table class="tb" style="max-width:720px"><thead><tr><th>내신 누적(9등급으로 치면)</th><th>모의 국수영 평균${lr ? ` (${esc(lr)})` : ''}</th><th>차이(내신−모의)</th><th>국수영 3합</th></tr></thead><tbody><tr><td>${F(ME.cum)} <small class="mu">(${F(n9)})</small></td><td>${F(m)}</td><td>${gap == null ? '–' : (gap >= 0 ? '+' : '') + F(gap)}</td><td>${lr ? anS3(ME, lr) : '–'}</td></tr></tbody></table>`;
+  if (n9 != null && m != null) h += gIt('tip', `모의고사는 9등급이라 내신도 9등급으로 치면 값(${F(n9)})으로 맞춰 비교했습니다. 5등급 숫자(${F(ME.cum)})를 그대로 견주면 "내신이 더 유리하다"고 잘못 볼 수 있습니다.`);
+  if (gap == null) h += gIt('warn', `${n9 != null ? '모의고사' : '내신'} 자료가 없어 내신과 수능을 견줄 수 없습니다.`);
+  else if (gap >= 0.7) h += gIt('good', `<b>수능이 더 유리한 학생</b>: 모의가 내신보다 ${F(gap)}등급(9등급 기준) 좋습니다.`) + gIt('tip', '<b>정시 중심 준비</b>' + gli(['수능 공부에 집중 — 과목별 약한 단원을 채우고 시간을 재며 실전처럼 푸는 연습', '정시는 가·나·다군 한 곳씩 — 도전·적정·안전을 나누고 대학별 반영 비율 비교', '수시도 함께 — 수능 최저가 없거나 낮은 전형, 도전해 볼 만한 종합·논술로 기회 넓히기', '남은 학기 내신은 더 떨어지지 않을 만큼 챙기고 수능 공부 시간을 먼저 확보']));
+  else if (gap <= -0.7) h += gIt('good', `<b>내신이 더 유리한 학생</b>: 내신이 모의보다 ${F(-gap)}등급(9등급 기준) 좋습니다. 학생부로 뽑는 수시가 더 유리합니다.`) + gIt('tip', '<b>수시 중심 준비</b>' + gli(['학생부교과 — 대학이 보는 과목을 확인하고, 수능 최저용 수능 공부도 꼭 함께', '학생부종합 — 희망 학과 관련 세특·탐구·독서를 정리하고 학생부 기반 면접 준비', '논술 — 내신이 부족해도 뒤집을 기회지만 수능 최저가 걸린 곳이 많음', `정시 대비 — 수시 불합격에 대비해 약한 영역(3합 ${lr ? anS3(ME, lr) : '–'}) 수능 공부는 멈추지 않기`]));
+  else h += gIt('info', `<b>내신과 수능이 비슷한 학생</b>(${gap >= 0 ? '+' : ''}${F(gap)}): 수시·정시를 함께 준비하며, 수능 최저를 맞출 수 있는지를 기준으로 지원할 곳을 고릅니다.`) + gIt('tip', '<b>병행 준비</b>' + gli(['수시 — 도전·적정·안전을 섞어 교과·종합·논술 6곳, 각 수능 최저를 지금 모의로 맞추는지 미리 확인', '정시 — 수시 결과와 상관없이 수능 공부를 이어 가고 정시 후보를 미리 적어 두기', '수시 합격은 수능 최저에서 갈리는 경우가 많아 국수영 3합 낮추기가 첫 목표', '희망 학과가 뚜렷하면 종합, 아직이면 교과·정시 위주']));
+  h += GR === 2 ? gIt('info', '<b>2학년 지금 할 일</b>: 2028학년도부터 입시 제도가 바뀌어 대학이 성적을 보는 방법도 달라집니다. 숫자(9등급으로 치면 값 포함)는 참고만 하고 대학 발표를 계속 확인합니다. 학생부 기록(세특·활동·독서)과 수능 기초를 함께 챙깁니다.')
+    : gIt('info', '<b>1학년 지금 할 일</b>: 2029학년도 입시이고 바뀔 것이 많은 때라 "어느 대학"을 정하기보다 공부 습관, 진로 찾기, 학생부 활동 계획, 2학년 선택과목에 집중합니다.');
+  return h + gIt('tip', '<b>상담 체크리스트</b>' + gli(['가고 싶은 학과와 지금 성적의 차이', '가고 싶은 대학의 수능 최저와 내신 반영 방법', '안전하게 갈지 도전할지(학생·학부모 생각)', '다음 상담까지 과목별 목표 등급과 공부 계획']));
+}
+function guideSec(){
+  if (PUB) return '';
+  return `<section id="gdx" class="t-only noprint"><h2>상담 가이드 <small>성적 변화에 맞춘 지도 문장 · 교사만 · 인쇄 안 됨</small></h2>
+   <div class="what">숫자를 어떻게 말로 풀지 막힐 때 씁니다. 판단 기준은 솔루션 대시보드의 진학 상담 가이드와 같고, 내신은 9등급으로 치면 값으로 비교합니다.</div>
+   <details><summary><b>① 내신 변화에 따른 지도</b></summary>${guideNs()}</details>
+   <details><summary><b>② 모의고사 변화에 따른 지도</b></summary>${guideMk()}</details>
+   <details><summary><b>③ 수시·정시 지원 성향과 준비</b></summary>${guideDir()}</details></section>`;
 }
 /* 31. 학생 비교(교사만·인쇄 안 됨): 누적·순위·학기 흐름·모의·판정 위 5곳 */
 function openCmp(jm){
@@ -2852,10 +2954,10 @@ document.addEventListener('keydown', e => {
   if (e.key === '/'){ e.preventDefault(); $('q').focus(); return; }
   if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && ME && !CLS && !GRDV){ e.preventDefault(); move(e.key === 'ArrowLeft' ? -1 : 1); }
 });
-/* 2학년은 관리자만(10-23): 관리자 비밀번호 확인 뒤 이 PC에서만 보임(설정 g2) · dev는 늘 보임 · 다른 PC는 학년 칸·검색에서 2학년이 빠짐 */
+/* 2학년: 10-23~11-10 관리자만 → 11-11부터 모든 PC 기본 보임(g2Set(true)) · 관리자 창 체크로 이번 실행만 숨김 */
 let G2D = null, G2ON = false;
 function g2Set(on){ if (!G2D) G2D = D.grades[2]; G2ON = on; D.grades[2] = on ? G2D : {...G2D, stu: []};
-  $('selG').querySelector('option[value="2"]').hidden = !on;
+  $('selG').querySelector('option[value="2"]').hidden = !on || !G2D.stu.length;   // 1학년 전용 자료면 2학년 칸 숨김
   $('names').innerHTML = [...D.grades[1].stu, ...D.grades[2].stu].map(s => `<option value="${s.id} ${esc(s.nm)}">`).join('');
   if (!on && GR === 2){ GR = 1; $('selG').value = 1; $('selG').onchange(); } }
 /* 32. 설정 기억: 선배 범위·희망 계열만·지역·학년 정렬·'다시 묻지 않기' — memo_set('pref:ui', [{d, t: JSON}]) (EXE는 이 PC 암호화 파일, dev는 localStorage) · 실패해도 조용히 */
@@ -2864,7 +2966,7 @@ async function loadPref(){
   try { const L = api() ? ((await api().memo_load('pref:ui')) || {}).list || [] : JSON.parse(localStorage.getItem('pref:ui') || '[]');
     const p = JSON.parse((L.slice().sort((a, b) => a.d < b.d ? -1 : a.d > b.d ? 1 : 0).at(-1) || {}).t || '{}');
     if ([1, 2, 3, 4, 5].includes(p.win)) WIN = p.win; if (typeof p.hope === 'boolean') HOPEONLY = p.hope; if (typeof p.region === 'string') REGION = p.region;
-    if (Array.isArray(p.gsort) && p.gsort.length === 2) GSORT = p.gsort; ALONEPREF = !!p.alone; if (p.g2 && !G2ON) g2Set(true);
+    if (Array.isArray(p.gsort) && p.gsort.length === 2) GSORT = p.gsort; ALONEPREF = !!p.alone; 
   } catch (e) {}
   PREF_OK = true;
 }
