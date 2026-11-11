@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202611091415"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202611110924"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <script>/* 화면 내용 긁어가기 방지(입력칸 제외). 뷰소스는 원리상 못 막음 */['contextmenu','copy','cut','dragstart'].forEach(e=>document.addEventListener(e,v=>{if(!(v.target.closest&&v.target.closest('input,textarea,[contenteditable]')))v.preventDefault()}));</script>
 <title>영락고 상담 도우미</title>
@@ -1977,8 +1977,8 @@ function gradeView(tab, back){
   const pass = s => (!GF.ban || banOf(s.id) === +GF.ban) && (!GF.k || (s.k || '미제출') === GF.k) && (GRDV !== 'rank' || uok(s));
   const bans = [...new Set(gd.stu.map(s => banOf(s.id)))], ks = [...new Set(gd.stu.map(s => s.k || '미제출'))].sort();
   const sel = (id, v, opts) => `<select id="${id}">${opts.map(([val, lab]) => `<option value="${esc(val)}" ${String(val) === String(v) ? 'selected' : ''}>${esc(lab)}</option>`).join('')}</select>`;
-  const filt = `<div class="ctrl noprint">반 ${sel('gfB', GF.ban, [['', '전체'], ...bans.map(b => [b, b + '반'])])} 희망 계열 ${sel('gfK', GF.k, [['', '전체'], ...ks.map(k => [k, k])])} <span class="gopt">선배 범위 ±<select id="gfW">${[1,2,3,4,5].map(w => `<option ${w === WIN ? 'selected' : ''}>${w}</option>`).join('')}</select>%p <label><input type="checkbox" id="gfH" ${HOPEONLY ? 'checked' : ''}> 희망 계열 학과만</label></span>${GRDV === 'rank' ? ' <span class="gtog"><button id="gAll">대학 모두 펼치기</button></span>' : ''}${GRDV === 'univ' ? ` 대학 지역 ${sel('gfR', GF.reg, [...regSel().matchAll(/<option[^>]*>([^<]*)<\/option>/g)].map(m => [m[1], m[1]]))}` : ''}</div>`;
-  const seg = `<div class="gseg noprint"><button data-t="rank" class="${GRDV === 'rank' ? 'on' : ''}">석차순 명단</button><button data-t="univ" class="${GRDV === 'univ' ? 'on' : ''}">대학별 가능 인원</button></div>`;
+  const filt = `<div class="ctrl noprint">반 ${sel('gfB', GF.ban, [['', '전체'], ...bans.map(b => [b, b + '반'])])} 희망 계열 ${sel('gfK', GF.k, [['', '전체'], ...ks.map(k => [k, k])])} <span class="gopt"${GRDV === 'anal' ? ' style="display:none"' : ''}>선배 범위 ±<select id="gfW">${[1,2,3,4,5].map(w => `<option ${w === WIN ? 'selected' : ''}>${w}</option>`).join('')}</select>%p <label><input type="checkbox" id="gfH" ${HOPEONLY ? 'checked' : ''}> 희망 계열 학과만</label></span>${GRDV === 'rank' ? ' <span class="gtog"><button id="gAll">대학 모두 펼치기</button></span>' : ''}${GRDV === 'univ' ? ` 대학 지역 ${sel('gfR', GF.reg, [...regSel().matchAll(/<option[^>]*>([^<]*)<\/option>/g)].map(m => [m[1], m[1]]))}` : ''}</div>`;
+  const seg = `<div class="gseg noprint"><button data-t="rank" class="${GRDV === 'rank' ? 'on' : ''}">석차순 명단</button><button data-t="univ" class="${GRDV === 'univ' ? 'on' : ''}">대학별 가능 인원</button><button data-t="anal" class="${GRDV === 'anal' ? 'on' : ''}">성적 분석</button></div>`;
   const S = gd.stu.filter(pass);
   let body, ufil = '';
   if (GRDV === 'rank'){
@@ -2002,6 +2002,8 @@ function gradeView(tab, back){
     body = `<div class="noprint" style="margin:4px 0"><button id="cmpGo" class="cpy" style="margin-left:0">고른 학생 비교 (<span id="cmpN">${CMPSEL.size}</span>명)</button><button class="cpy" data-t=".grdv">표 복사</button> <span class="small mu" id="cpyMsg"></span></div>
      <table class="tb clsv grdv"><thead><tr><th class="ck noprint" title="비교할 학생">비교</th>${th('rk', '교내 순위')}${th('bn', '반-번호')}${th('nm', '이름')}${th('k', '희망')}${th('cum', '누적')}${th('mv', '학기 순위 변화')}${th('now', curSem() + ' 중간')}${th('ms', `<span class="nw">${gd.last}</span> <span class="nw">국수영 합</span>`)}${th('pa', '국수탐 백분위')}${th('edge', '눈여겨볼 것')}${th('sum', '대학 가능권 <small>안정·적정·상향 | 위 3곳 · 누르면 전체</small>')}</tr></thead><tbody>${tb || '<tr><td colspan="12" class="mu">조건에 맞는 학생이 없습니다.</td></tr>'}</tbody></table>
      <div class="note">교내 순위·누적은 학생 화면 맨 위 숫자와 같습니다(2학기 중간 추정 포함). 한 발 n = 1등급까지 한 발 남은 과목 수(중간 추정 2등급·학년 상위 13% 안), 교과↓ = 가장 좋았던 학기보다 학년 석차 15%p 넘게 내려온 교과. 대학 가능권 = 학생 화면 판정표와 같은 계산(${HOPEONLY ? '희망 계열 학과만' : '전체 학과'} · 선배 범위 ±${WIN}%p · 전국 — 위 범위·희망 계열은 학생 화면 대학 칸 설정과 같이 바뀜)으로 안정권·적정권 대학 수와 위에서 3곳. 대학으로 거르기 = 고른 대학 중 하나라도 그 범위(적정권 이상 = 안정권·적정권)로 받은 학생만 남김. 묶음 버튼은 흔히 쓰는 말일 뿐 학교 공식 기준이 아니며 분교·제2캠퍼스는 넣지 않았습니다.</div>`;
+  } else if (GRDV === 'anal'){
+    body = gradeAnal(S);
   } else {
     const U = {};
     S.forEach(s => (jm.get(s.id) || []).forEach(r => { if (GF.reg !== '전체' && !uReg(r.k).has(GF.reg)) return;
@@ -2019,6 +2021,9 @@ function gradeView(tab, back){
   m.querySelectorAll('.gseg button').forEach(b => b.onclick = () => gradeView(b.dataset.t));
   $('gfB').onchange = () => { GF.ban = $('gfB').value; gradeView(); }; $('gfK').onchange = () => { GF.k = $('gfK').value; gradeView(); };
   $('gfW').onchange = () => { WIN = +$('gfW').value; savePref(); gradeView(); }; $('gfH').onchange = () => { HOPEONLY = $('gfH').checked; savePref(); gradeView(); };
+  if ($('gfRd')) $('gfRd').onchange = () => { GF.rd = $('gfRd').value; gradeView(); };
+  m.querySelectorAll('.gan button[data-cs]').forEach(b => b.onclick = () => { GF.cs = b.dataset.cs; gradeView(); });
+  m.querySelectorAll('.gan a[data-id]').forEach(a => a.onclick = e => { e.preventDefault(); pick(+a.dataset.id); });
   if ($('gfR')) $('gfR').onchange = () => { GF.reg = $('gfR').value; gradeView(); };
   if ($('gfL')) $('gfL').onchange = () => { GF.lv = $('gfL').value; gradeView(); };
   if ($('gfU')) $('gfU').onchange = () => { const v = $('gfU').value.trim(); const k = [...new Map(J.flatMap(o => o.rows.map(r => [short(r.nm).replace(/&amp;/g, '&'), r.k])))].find(([n]) => n === v);
@@ -2037,6 +2042,102 @@ function gradeView(tab, back){
     tr.classList.add('gopen'); tr.insertAdjacentHTML('afterend', `<tr class="gsum"><td colspan="12">${gradeCard(+a.dataset.id, jm)}</td></tr>`);
     tr.nextElementSibling.querySelector('.gfull').onclick = () => pick(+a.dataset.id); });
   foldNotes(m); window.scrollTo(0, back && back.gr === GR ? back.y : 0);
+}
+/* ── 33. 학년 성적 분석(11-11, 솔루션 대시보드 v113 '성적 분석 보고서·등급 분포·등급합 반별·상담이 필요한 학생'을 이 자료로): 거른 학생(S) 기준 ── */
+const ANSUB = () => [['kor','국어'],['mat','수학'],['eng','영어'],['his','한국사'],['soc', GR === 1 ? '통합사회' : '사탐'],['sci', GR === 1 ? '통합과학' : '과탐']];
+const anRds = S => [...new Set(S.flatMap(s => Object.keys(s.mk)))].sort((a, b) => { const p = l => { const m = l.match(/고(\d)\s*(\d+)월/); return m ? +m[1] * 100 + +m[2] + (PROV(l) ? 0.5 : 0) : 0; }; return p(a) - p(b); });
+const anG = (s, r, k) => { const m = s.mk[r]; return m && m[k] && m[k][0] != null ? m[k][0] : null; };
+const anS3 = (s, r) => { const v = ['kor','mat','eng'].map(k => anG(s, r, k)); return v.every(x => x != null) ? v[0] + v[1] + v[2] : null; };
+const anBest = (s, r, n) => { const t = [anG(s, r, 'soc'), anG(s, r, 'sci')].filter(x => x != null), v = ['kor','mat','eng'].map(k => anG(s, r, k)).filter(x => x != null);
+  if (t.length) v.push(Math.min(...t)); if (v.length < n) return null; return v.sort((a, b) => a - b).slice(0, n).reduce((a, b) => a + b, 0); };
+const AN_CS = {   // 솔루션 v113 RP_CS와 같은 기준 · 무게 = 상담 우선순
+  mdn: {l: '모의 급락', w: 5}, mseq: {l: '모의 연속 하락', w: 4}, ndn: {l: '내신 하락', w: 4}, gapN: {l: '내신>모의', w: 4},
+  gapM: {l: '모의>내신', w: 3}, nzig: {l: '내신 기복', w: 3}, unb: {l: '과목 불균형', w: 2}, mup: {l: '모의 급등', w: 1}, nup: {l: '내신 상승', w: 1}};
+function anCases(S, rd, rds){
+  const prev = rds[rds.indexOf(rd) - 1] || null, upto = rds.slice(0, rds.indexOf(rd) + 1).filter(l => !PROV(l) || l === rd), SB = [['kor','국어'],['mat','수학'],['eng','영어']];
+  const nsA = S.filter(s => s.cum != null), mkA = S.filter(s => anS3(s, rd) != null);
+  const pin = (arr, v, f) => Math.max(1, Math.round(arr.filter(x => f(x) < v - 1e-9).length / arr.length * 100) + 1);   // 상위 몇 %
+  const out = [];
+  S.forEach(s => { const rs = [], v = anS3(s, rd), pv = prev ? anS3(s, prev) : null;
+    if (v != null && pv != null){ const ch = SB.map(([k, n]) => ({n, a: anG(s, rd, k), p: anG(s, prev, k)})).filter(x => x.a != null && x.p != null);
+      const dn = ch.filter(x => x.a - x.p >= 2), up = ch.filter(x => x.p - x.a >= 2), lst = a => a.map(x => `${x.n} ${x.p}→${x.a}`).join(', ');
+      if (v - pv >= 3 || (ch.some(x => x.a - x.p >= 3) && v >= pv)) rs.push({k: 'mdn', why: `${prev}→${rd} 3합 ${pv}→${v}${dn.length ? ` (${lst(dn)})` : ''}`, tip: `${dn.length ? dn.map(x => x.n).join('·') : '떨어진 과목'} 학습 시간·방법 점검, 시험 당일 시간 배분·컨디션 문제였는지 확인 → 다음 모의 목표 등급을 함께 정함`});
+      else if (pv - v >= 3 || (ch.some(x => x.p - x.a >= 3) && v <= pv)) rs.push({k: 'mup', why: `${prev}→${rd} 3합 ${pv}→${v}${up.length ? ` (${lst(up)})` : ''}`, tip: '오른 이유(학습 방법·시간)를 확인해 유지 전략, 목표 대학을 한 단계 올려 볼지 점검'}); }
+    const fl = upto.map(r => anS3(s, r)).filter(x => x != null);
+    if (fl.length >= 3){ const l3 = fl.slice(-3); if (l3[0] < l3[1] && l3[1] < l3[2]) rs.push({k: 'mseq', why: `최근 3회 3합 ${l3.join('→')}`, tip: '연속 하락 — 학습 계획 전반과 생활 습관(수면·휴대폰), 학업 스트레스를 함께 상담'}); }
+    const sv = (s.sem || []).filter(x => x != null);
+    if (sv.length >= 2){ const d0 = sv.at(-1) - sv[0], zz = Math.max(...sv) - Math.min(...sv), flow = GD().sems.map((t, i) => s.sem[i] == null ? null : `${t} ${s.sem[i].toFixed(2)}`).filter(Boolean).join(' → ');
+      if (d0 >= 0.3 - 1e-9) rs.push({k: 'ndn', why: flow, tip: '떨어진 학기의 과목별 지필·수행 결과를 함께 보고 학습 관리 상담, 교과 전형 가능선 다시 확인'});
+      else if (d0 <= -0.3 + 1e-9) rs.push({k: 'nup', why: flow, tip: '오름세 유지 격려, 상승 흐름을 학생부 종합 전형 강점으로 살리는 방법 안내'});
+      else if (zz >= 0.5 - 1e-9) rs.push({k: 'nzig', why: flow, tip: '학기마다 기복 — 낮았던 학기의 원인(과목·시험 준비·생활) 확인'}); }
+    if (s.cum != null && v != null && nsA.length >= 10 && mkA.length >= 10){ const pN = pin(nsA, s.cum, x => x.cum), pM = pin(mkA, v, x => anS3(x, rd)), b2 = anBest(s, rd, 2);
+      if (pM - pN >= 30 && pN <= 40) rs.push({k: 'gapN', why: `내신 상위 ${pN}% · 모의(국수영) 상위 ${pM}%`, tip: `내신에 비해 모의가 약함 — 지원 대학 수능 최저(지금 국수영탐 중 2합 ${b2 ?? '–'}) 가능 여부, 최저용 집중 과목 정하기`});
+      else if (pN - pM >= 30 && pM <= 40) rs.push({k: 'gapM', why: `모의(국수영) 상위 ${pM}% · 내신 상위 ${pN}%`, tip: '모의에 비해 내신이 약함 — 정시·논술 전략 함께 검토, 남은 학기 수행·지필 관리'}); }
+    const gs = ANSUB().filter(([k]) => k !== 'his').map(([k, n]) => ({n, g: anG(s, rd, k)})).filter(x => x.g != null);
+    if (gs.length >= 4){ const mx = Math.max(...gs.map(x => x.g)), mn = Math.min(...gs.map(x => x.g));
+      if (mx - mn >= 4){ const w = gs.filter(x => x.g === mx).map(x => x.n).join('·'); rs.push({k: 'unb', why: `${w} ${mx}등급 · 가장 좋은 과목 ${mn}등급`, tip: `${w} 과목이 크게 낮음 — 기초 개념·학습량 확보(방과후·멘토링 연계) 검토`}); } }
+    if (rs.length) out.push({s, rs, w: rs.reduce((a, r) => a + AN_CS[r.k].w, 0)}); });
+  return {prev, list: out.sort((a, b) => b.w - a.w || a.s.id - b.s.id)};
+}
+function gradeAnal(S){
+  const gd = GD(), rds = anRds(gd.stu), real = rds.filter(l => !PROV(l));
+  if (!GF.rd || !rds.includes(GF.rd)) GF.rd = real.at(-1) || rds.at(-1);
+  const rd = GF.rd, SUB = ANSUB(), lk = s => `<a href="#" data-id="${s.id}">${esc(s.nm)}</a>`, pc = (a, n) => n ? Math.round(a / n * 100) + '%' : '–';
+  const mk = S.filter(s => SUB.some(([k]) => anG(s, rd, k) != null));
+  // 1. 과목별 등급 분포(인원 + 누적 %)
+  const t1 = SUB.map(([k, n]) => { const v = mk.map(s => anG(s, rd, k)).filter(x => x != null); if (!v.length) return '';
+    let c = 0; const cells = [1,2,3,4,5,6,7,8,9].map(g => { const x = v.filter(y => y === g).length; c += x; return `<td class="${x ? '' : 'c0'}">${x || '·'}<br><small class="mu">${Math.round(c / v.length * 100)}%</small></td>`; }).join('');
+    return `<tr><td class="l"><b>${n}</b></td>${cells}<td><b>${(v.reduce((a, b) => a + b, 0) / v.length).toFixed(2)}</b></td><td class="mu">${v.length}</td></tr>`; }).join('');
+  // 2. 회차별 상위권(1~3등급) 비율
+  const t2 = SUB.map(([k, n]) => `<tr><td class="l"><b>${n}</b></td>${rds.map(r => { const v = S.map(s => anG(s, r, k)).filter(x => x != null); return `<td>${v.length ? pc(v.filter(x => x <= 3).length, v.length) : '<span class="mu">–</span>'}</td>`; }).join('')}</tr>`).join('');
+  // 3. 국수영 3합 · 2합(국수영탐 중 좋은 2개) 반별 분포
+  const B3 = [[3,5],[6,8],[9,11],[12,14],[15,17],[18,20],[21,27]], B2 = [[2,3],[4,5],[6,7],[8,9],[10,12],[13,18]];
+  const bans = [...new Set(S.map(s => banOf(s.id)))].sort((a, b) => a - b);
+  const bt = (B, f, lab) => { const cnt = (arr, [lo, hi]) => arr.filter(s => { const v = f(s); return v != null && v >= lo && v <= hi; }).length;
+    const tot = b => S.filter(s => (b == null || banOf(s.id) === b) && f(s) != null).length;
+    return `<table class="tb"><thead><tr><th>${lab}</th>${bans.map(b => `<th>${b}반</th>`).join('')}<th>계</th></tr></thead><tbody>${B.map(r => `<tr><td class="l"><b>${r[0]}~${r[1]}</b></td>${bans.map(b => { const x = cnt(S.filter(s => banOf(s.id) === b), r); return `<td class="${x ? '' : 'c0'}">${x || '·'}</td>`; }).join('')}<td><b>${cnt(S, r)}</b> <small class="mu">${pc(cnt(S, r), tot(null))}</small></td></tr>`).join('')}
+      <tr><td class="l mu">응시</td>${bans.map(b => `<td class="mu">${tot(b)}</td>`).join('')}<td class="mu">${tot(null)}</td></tr></tbody></table>`; };
+  // 4. 내신 구간 × 국수영 3합 교차표 + 유형(내신·모의 상위 20%)
+  const NB = [[0, 1.5, '~1.5'], [1.5, 2, '~2.0'], [2, 2.5, '~2.5'], [2.5, 3, '~3.0'], [3, 3.5, '~3.5'], [3.5, 4, '~4.0'], [4, 9, '4.0~']];
+  const ns = S.filter(s => s.cum != null).sort((a, b) => a.cum - b.cum), m3 = S.filter(s => anS3(s, rd) != null).sort((a, b) => anS3(a, rd) - anS3(b, rd));
+  const cutOf = (arr, f) => arr.length ? f(arr[Math.max(0, Math.ceil(arr.length * 0.2) - 1)]) : null, nC = cutOf(ns, s => s.cum), mC = cutOf(m3, s => anS3(s, rd));
+  const nTop = new Set(ns.filter(s => s.cum <= nC + 1e-9).map(s => s.id)), mTop = new Set(m3.filter(s => anS3(s, rd) <= mC).map(s => s.id));
+  const col = s => nTop.has(s.id) && mTop.has(s.id) ? '#7d3c98' : nTop.has(s.id) ? '#1f618d' : mTop.has(s.id) ? '#c0392b' : '';
+  const xt = NB.map(([lo, hi]) => B3.map(([a, b]) => ns.filter(s => s.cum > lo && s.cum <= hi + 1e-9 && anS3(s, rd) != null && anS3(s, rd) >= a && anS3(s, rd) <= b)));
+  const xMax = Math.max(1, ...xt.flat().map(a => a.length));
+  const t4 = NB.map((b, i) => `<tr><td class="l"><b>${b[2]}</b></td>${xt[i].map(a => `<td class="l small" style="background:rgba(125,60,152,${(a.length / xMax * 0.22).toFixed(2)})">${a.length ? `<b>${a.length}명</b><br>` + a.map(s => `<span style="color:${col(s)}">${lk(s)}</span>`).join(' ') : '<span class="mu">·</span>'}</td>`).join('')}<td><b>${xt[i].reduce((p, a) => p + a.length, 0)}</b></td></tr>`).join('');
+  const both = ns.filter(s => nTop.has(s.id) && mTop.has(s.id)), nOnly = ns.filter(s => nTop.has(s.id) && !mTop.has(s.id)), mOnly = m3.filter(s => mTop.has(s.id) && !nTop.has(s.id));
+  // 5. 수능 최저 충족 모의 계산
+  const SIM = [['3개 합 6 이하', 3, 6], ['3개 합 7 이하', 3, 7], ['2개 합 4 이하', 2, 4], ['2개 합 5 이하', 2, 5], ['2개 합 6 이하', 2, 6]];
+  const mkT = mk.filter(s => anBest(s, rd, 2) != null), nTk = mkT.filter(s => nTop.has(s.id)), sc = (arr, n, v) => arr.filter(s => { const x = anBest(s, rd, n); return x != null && x <= v; }).length;
+  // 6. 상담이 필요한 학생
+  const C = anCases(S, rd, rds), csF = GF.cs || 'risk';
+  const csShow = csF === 'all' ? C.list : csF === 'risk' ? C.list.filter(x => x.rs.some(r => AN_CS[r.k].w >= 2)) : C.list.filter(x => x.rs.some(r => r.k === csF));
+  const chips = [['risk', `관리 필요(오름세 제외) ${C.list.filter(x => x.rs.some(r => AN_CS[r.k].w >= 2)).length}`], ['all', `전체 ${C.list.length}`], ...Object.keys(AN_CS).map(k => [k, `${AN_CS[k].l} ${C.list.filter(x => x.rs.some(r => r.k === k)).length}`])];
+  const t6 = csShow.map(x => `<tr><td>${banOf(x.s.id)}-${x.s.id % 100}</td><td class="l">${lk(x.s)}</td><td class="nw">${f2(x.s.cum)}</td><td class="nw">${anS3(x.s, rd) ?? '–'}</td><td class="l small">${x.rs.map(r => `<div><b class="${AN_CS[r.k].w >= 2 ? 'dn' : 'up'}">${AN_CS[r.k].l}</b> ${esc(r.why)}</div>`).join('')}</td><td class="l small">${x.rs.map(r => `<div>${esc(r.tip)}</div>`).join('')}</td></tr>`).join('');
+  return `<div class="ctrl noprint">모의고사 회차 <select id="gfRd">${rds.map(r => `<option ${r === rd ? 'selected' : ''}>${esc(r)}</option>`).join('')}</select> <small class="mu">위 반·희망 계열 거르기가 함께 적용됩니다</small></div>
+  <div class="gan">
+  <h3>1. 과목별 등급 분포 — ${esc(rd)} <small>칸 = 그 등급 인원 · 아래 작은 숫자 = 그 등급까지 누적 비율</small></h3>
+  <table class="tb mdist"><thead><tr><th>과목</th>${[1,2,3,4,5,6,7,8,9].map(x => `<th>${x}</th>`).join('')}<th>평균</th><th>응시</th></tr></thead><tbody>${t1 || '<tr><td colspan="12" class="mu">이 회차 성적이 없습니다.</td></tr>'}</tbody></table>
+  <h3>2. 회차별 상위권(1~3등급) 비율 <small>응시자 중 1~3등급 비율${rds.some(PROV) ? ' · 가채점 회차는 참고' : ''}</small></h3>
+  <table class="tb"><thead><tr><th>과목</th>${rds.map(r => `<th class="nw">${esc(r)}</th>`).join('')}</tr></thead><tbody>${t2}</tbody></table>
+  <h3>3. 등급합 반별 분포 — ${esc(rd)} <small>국수영 3합 · 국수영탐(탐구는 좋은 1과목) 중 좋은 2개 합 · 등급 합이 작을수록 좋음</small></h3>
+  <div style="display:flex;gap:24px;flex-wrap:wrap"><div>${bt(B3, s => anS3(s, rd), '국수영 3합')}</div><div>${bt(B2, s => anBest(s, rd, 2), '2합')}</div></div>
+  <h3>4. 내신 누적 × 국수영 3합 교차표 — ${esc(rd)} <small>이름 색: <b style="color:#7d3c98">균형</b>(내신·모의 모두 상위 20%) · <b style="color:#1f618d">교과형</b>(내신만) · <b style="color:#c0392b">정시형</b>(모의만) · 내신 좋은 순</small></h3>
+  <table class="tb gxt"><thead><tr><th>내신 \\ 3합</th>${B3.map(b => `<th>${b[0]}~${b[1]}</th>`).join('')}<th>계</th></tr></thead><tbody>${t4}</tbody></table>
+  <table class="tb"><tbody>
+   <tr><td class="l nw"><b style="color:#7d3c98">균형형 ${both.length}명</b></td><td class="l small">교과·종합·정시 모두 노려 볼 학생 — ${both.map(lk).join(', ') || '–'}</td></tr>
+   <tr><td class="l nw"><b style="color:#1f618d">교과형 ${nOnly.length}명</b></td><td class="l small">수시 교과·종합 중심, 수능 최저 대비 필요 — ${nOnly.map(s => `${lk(s)}<small class="mu">(2합 ${anBest(s, rd, 2) ?? '미응시'})</small>`).join(', ') || '–'}</td></tr>
+   <tr><td class="l nw"><b style="color:#c0392b">정시형 ${mOnly.length}명</b></td><td class="l small">모의 강점을 살린 정시·논술 함께 상담 — ${mOnly.map(s => `${lk(s)}<small class="mu">(내신 ${f2(s.cum)})</small>`).join(', ') || '–'}</td></tr></tbody></table>
+  <p class="small mu">상위 20% 기준: 내신 누적 ${f2(nC)} 이내 · ${esc(rd)} 국수영 3합 ${mC ?? '–'} 이내(거른 학생 안에서).</p>
+  <h3>5. 수능 최저 충족 모의 계산 — ${esc(rd)} <small>국어·수학·영어·탐구(좋은 1과목) 중 좋은 과목들의 합 · 한국사 등 대학별 조건 미반영</small></h3>
+  <table class="tb"><thead><tr><th>최저 기준(국수영탐 중)</th><th>내신 상위 20%</th><th>전체</th></tr></thead><tbody>${SIM.map(([l, n, v]) => { const a = sc(nTk, n, v), b = sc(mkT, n, v); return `<tr><td class="l"><b>${l}</b></td><td>${a}명 <small class="mu">${pc(a, nTk.length)}</small></td><td>${b}명 <small class="mu">${pc(b, mkT.length)}</small></td></tr>`; }).join('')}
+   <tr><td class="l mu">응시</td><td class="mu">${nTk.length}</td><td class="mu">${mkT.length}</td></tr></tbody></table>
+  <h3>6. 상담이 필요한 학생 (${C.list.length}명) <small>${esc(rd)}${C.prev ? ` · 직전 ${esc(C.prev)}` : ''} 기준</small></h3>
+  <div class="gtog noprint" style="margin:4px 0">${chips.map(([k, l]) => `<button data-cs="${k}" class="${k === csF ? 'on' : ''}">${esc(l)}</button>`).join(' ')} <button class="cpy" data-t=".gcs">표 복사</button></div>
+  <table class="tb gcs"><thead><tr><th>반-번호</th><th>이름</th><th>누적</th><th>3합</th><th>사유 · 근거</th><th>지도 방향</th></tr></thead><tbody>${t6 || '<tr><td colspan="6" class="mu">해당 학생이 없습니다.</td></tr>'}</tbody></table>
+  <div class="note">고른 기준(솔루션 대시보드와 같음) — 모의 급락·급등: 직전 회차 대비 국수영 3합 3 이상 또는 한 과목 3등급 이상 변화 · 모의 연속 하락: 최근 3회 연속 3합 악화 · 내신 하락·상승: 첫 학기 → 마지막 학기(지금 학기는 중간 추정) 0.3 이상 · 내신 기복: 학기 간 최고·최저 차 0.5 이상 · 내신&gt;모의 / 모의&gt;내신: 거른 학생 안 상위 비율 차 30%p 이상 · 과목 불균형: 이번 회차 과목 간 등급 차 4 이상(한국사 제외). 순서 = 관리가 급한 사유일수록 앞(급락·연속 하락·내신 하락 먼저).</div>
+  </div>`;
 }
 /* 31. 학생 비교(교사만·인쇄 안 됨): 누적·순위·학기 흐름·모의·판정 위 5곳 */
 function openCmp(jm){
@@ -2280,7 +2381,7 @@ function home(msg){
      <p class="eb">영락고 상담 도우미 · ${esc(D.asof.split(' · ')[0])}</p>
      <h1>${GR}학년${b ? ' ' + b + '반' : ''}<br>${!b ? '반을 고르세요' : '학생을 고르세요'}</h1>
      <p class="hsub">${GR === 1 ? '1학년' : '2학년'} ${GD().stu.length}명의 내신 흐름, 이번 기말 목표, 진학 가능권, 모의고사를 한 화면에서 봅니다. 위쪽 [반 선택]에서 시작하세요.</p>
-     <p class="hgo t-only"><button class="hgo1" onclick="gradeView('rank')"><b>${GR}학년 석차순 명단 →</b><small>${GD().stu.length}명 교내 순위 · 누적 · 대학 가능권을 한 표로</small></button><button onclick="gradeView('univ')">대학별 가능 인원 →</button></p>
+     <p class="hgo t-only"><button class="hgo1" onclick="gradeView('rank')"><b>${GR}학년 석차순 명단 →</b><small>${GD().stu.length}명 교내 순위 · 누적 · 대학 가능권을 한 표로</small></button><button onclick="gradeView('univ')">대학별 가능 인원 →</button><button onclick="gradeView('anal')">학년 성적 분석 →</button></p>
     </div>
     <div class="stage" aria-hidden="true"><div class="scene">${bars}<div class="floor"></div></div><p class="cap">5등급 상대평가 — 학년 안 위치로 등급이 정해집니다</p></div>
    </div>
