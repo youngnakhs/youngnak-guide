@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202611111031"><link rel="icon" href="data:,">
+<html lang="ko"><head><meta charset="utf-8"><meta name="ui-ver" content="202611121005"><link rel="icon" href="data:,">
 <script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML="";throw 0}</script>
 <script>/* 화면 내용 긁어가기 방지(입력칸 제외). 뷰소스는 원리상 못 막음 */['contextmenu','copy','cut','dragstart'].forEach(e=>document.addEventListener(e,v=>{if(!(v.target.closest&&v.target.closest('input,textarea,[contenteditable]')))v.preventDefault()}));</script>
 <title>영락고 상담 도우미</title>
@@ -524,6 +524,21 @@ details.guide>summary::before{content:'▸ '}details.guide[open]>summary::before
   /* 첫 화면 */
   .steps li span{font-size:var(--fs-h2);font-weight:800}.steps li small{font-size:var(--fs-note)}.tb.flow tbody th{font-size:var(--fs-body)}
 }
+/* 11-12 시작 화면(하루 첫 열기, 약 2초, 클릭·키로 건너뜀) */
+#intro{position:fixed;inset:0;z-index:9999;background:#1e3a2f;color:#eef3ea;display:flex;align-items:center;justify-content:center;font-family:'Pretendard','Malgun Gothic',sans-serif;cursor:pointer;transition:opacity .4s}
+#intro.out{opacity:0}
+#intro .t2{width:min(72vw,760px)}
+#intro .ln{height:1px;background:#7f9a88;transform-origin:left;transform:scaleX(0);animation:ixDraw .6s ease-out forwards}
+#intro .row{display:flex;justify-content:space-between;align-items:baseline;padding:1.2vh 0}
+#intro .num{font-size:clamp(36px,6vw,72px);font-weight:800;font-variant-numeric:tabular-nums}
+#intro .num small{font-size:.38em;font-weight:600;margin-left:4px;color:#9fb5a6}
+#intro .lab{font-size:clamp(14px,1.6vw,20px);color:#9fb5a6}
+#intro .ttl{font-size:clamp(22px,2.8vw,34px);font-weight:700;opacity:0;margin-top:3vh;animation:ixFade .5s 1.6s forwards}
+#intro .ttl b{color:#f2d16b}
+#intro .skip{position:absolute;right:20px;bottom:14px;font-size:13px;opacity:.5}
+@keyframes ixDraw{to{transform:scaleX(1)}}
+@keyframes ixFade{to{opacity:1}}
+@media print{#intro{display:none}}
 </style></head><body>
 <div class="lock" id="lock"><div class="box">
   <h1>영락고 상담 도우미</h1><p>교사 상담용 · 학생·학부모 비공개<br>비밀번호는 학년부에서 따로 받은 것을 넣으세요. 10분 동안 쓰지 않으면 다시 잠깁니다.</p>
@@ -638,9 +653,29 @@ async function unlock(){
     if (location.search.includes('dev')) r = {ok: true, data: await (await fetch('data.json')).text()};
     else r = await api().unlock(pw);
     if (!r.ok){ $('err').textContent = r.msg; return; }
-    if (!D){ D = JSON.parse(r.data); const u = api() && await updLoad(); if (u && u.built > (D.built || '')) D = u; scrubNong(D); fixJeongsi(D); womenGate(D); start(); }
+    if (!D){ D = JSON.parse(r.data); const u = api() && await updLoad(); if (u && u.built > (D.built || '')) D = u; scrubNong(D); fixJeongsi(D); womenGate(D); start(); intro(); }
     $('lock').style.display = 'none'; $('pw').value = ''; poke();
   } catch (e){ $('err').textContent = '열기 실패: ' + e; }
+}
+/* 11-12 시작 화면: 그 PC 자료의 규모를 세어 0부터 올림. 하루 첫 열기만(localStorage 안 되면 매번), ?dev는 ?dev&intro일 때만 */
+function intro(){
+  const q = location.search, today = new Date().toLocaleDateString('sv');
+  if (/[?&]dev/.test(q) && !/[?&]intro/.test(q)) return;
+  try { if (localStorage.getItem('yrgo:intro') === today) return; localStorage.setItem('yrgo:intro', today); } catch (e) {}
+  const n = x => { try { return x() || 0; } catch (e) { return 0; } };
+  const R = [[n(() => D.grades[1].stu.length + ((D.grades[2] || {}).stu || []).length), '명', '우리 학생'],
+             [n(() => D.apps.length), '건', '선배 수시 원서'],
+             [n(() => D.daon.gyo.length + D.daon.jong.length), '건', '전국 대학 입결']].filter(r => r[0] > 0);
+  const el = document.createElement('div'); el.id = 'intro'; el.className = 'noprint';
+  el.innerHTML = '<div class="t2">' + R.map((r, i) => `<div class="row"><span class="num">0<small>${r[1]}</small></span><span class="lab">${r[2]}</span></div><div class="ln" style="animation-delay:${i * .15}s"></div>`).join('')
+    + '<div class="ttl"><b>영락고</b> 상담도우미</div></div><span class="skip">클릭하면 건너뜁니다</span>';
+  document.body.appendChild(el);
+  const end = () => { if (!el.isConnected || el.classList.contains('out')) return; el.classList.add('out'); setTimeout(() => el.remove(), 400); document.removeEventListener('keydown', end, true); };
+  el.onclick = end; document.addEventListener('keydown', end, true);
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches){ end(); return; }
+  el.querySelectorAll('.num').forEach((s, i) => { const to = R[i][0], u = s.querySelector('small').outerHTML, t0 = performance.now() + i * 120;
+    (function f(t){ if (!el.isConnected) return; const p = Math.max(0, Math.min(1, (t - t0) / 1300)), e = 1 - Math.pow(1 - p, 3); s.innerHTML = Math.round(to * e).toLocaleString() + u; if (p < 1) requestAnimationFrame(f); })(performance.now()); });
+  setTimeout(end, 2600);
 }
 /* 새 성적(pack_upd.py 파일): 옛 EXE의 memo_import로 받아 상담 기록 저장소 'upd:data'에 둠 → 열 때 data.dat보다 새것이면 그걸로 */
 async function updLoad(){ try { let L = ((await api().memo_load('upd:data')) || {}).list || []; if (!L.length) return null;
