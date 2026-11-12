@@ -131,6 +131,26 @@ p{font-size:38px;line-height:62px;color:#9aa1a9;font-weight:300}
 #bintro .cap{font-size:4.4vh;color:#9aa1a9;margin-top:3vh;opacity:0;transform:translateY(1.5vh);transition:opacity .5s,transform .5s}
 #bintro .cap.on{opacity:1;transform:none}
 #bintro .cap b{color:#fcd34d;font-weight:700}
+/* 룰렛 버튼(눈에 띄게: 노랑 바탕·숨쉬듯 커졌다 작아짐·빛 번짐) */
+#spinB{position:relative;width:100%;height:100%;z-index:40;border:0;border-radius:999px;padding:0 30px;justify-content:center;background:linear-gradient(135deg,#fde68a,#fcd34d 45%,#f59e0b);color:#1a1405;
+  font:800 58px/1.1 "Pretendard","Malgun Gothic",sans-serif;display:flex;align-items:center;gap:20px;cursor:pointer;animation:spPulse 1.6s ease-in-out infinite;box-shadow:0 0 0 0 rgba(252,211,77,.6)}
+#spinB span{font-size:70px;display:inline-block;animation:spWob 1.6s ease-in-out infinite}
+#spinB small{display:none}#spinB{white-space:nowrap}.w16 #spinB{font-size:46px;padding:0 18px;gap:12px}.w16 #spinB span{font-size:56px}
+#spinB:active{transform:scale(.95)}
+@keyframes spPulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(252,211,77,.55)}50%{transform:scale(1.07);box-shadow:0 0 0 26px rgba(252,211,77,0)}}
+@keyframes spWob{0%,100%{transform:rotate(0)}25%{transform:rotate(-14deg)}75%{transform:rotate(14deg)}}
+#spin{position:fixed;inset:0;z-index:45;background:rgba(10,11,13,.96);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s;font-family:"Pretendard","Malgun Gothic",sans-serif;color:#e8eaed}
+#spin.on{opacity:1;pointer-events:auto}
+#spin .box{width:min(84vw,150vh);text-align:center}
+#spin .lab{font-size:3.2vh;color:#9aa1a9;margin-top:3vh}
+#spin .slot{height:13vh;overflow:hidden}
+#spin .reel{transition:transform 1.9s cubic-bezier(.12,.75,.15,1)}
+#spin .reel div{height:13vh;line-height:13vh;font-size:8.5vh;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.02em}
+#spin .su .reel div{font-size:10vh}
+#spin .su .reel .win{background:linear-gradient(90deg,#a7f3d0,#c4b5fd);-webkit-background-clip:text;background-clip:text;color:transparent}
+#spin .sm .reel .win{color:#fcd34d}
+#spin .info{font-size:3vh;color:#c9ced3;opacity:0;transition:opacity .5s;min-height:4vh}
+#spin .info.on{opacity:1}
 </style>
 </head>
 <body>
@@ -625,6 +645,48 @@ if (BOARD && !/nointro/.test(location.search)) (function(){
   setTimeout(function(){ o.querySelector('.cap').className = 'cap on'; }, 2000);
   setTimeout(function(){ o.className = 'out'; }, 3400);
   setTimeout(function(){ o.remove(); }, 4100);
+})();
+
+/* 11-12 ?board 룰렛: [눌러서 돌리기] → 대학 릴 + 오늘의 미션 릴, 8초 뒤 닫힘. 미션은 여기서 고치면 됨(s=과목, 기말 2주 전~기말 끝까지 기말 비중 큰 과목 미션이 3배 자주) */
+var MISSIONS = [
+  ['공통국어2', '오늘 배운 문학 작품 제목·작가 3개 떠올리기'], ['공통국어2', '국어 교과서 한 단락 요약 한 문장으로'], ['공통국어2', '헷갈리는 맞춤법 하나 찾아 친구에게 퀴즈'],
+  ['공통수학2', '수학 오답 한 문제 다시 풀기'], ['공통수학2', '오늘 배운 공식 하나 빈 종이에 써 보기'], ['공통수학2', '수학 개념 하나 친구에게 30초 설명'],
+  ['공통영어2', '영단어 15개 외우기'], ['공통영어2', '본문 한 문장 통째로 외우기'], ['공통영어2', '영어 숙어 5개 친구랑 서로 문제 내기'],
+  ['통합사회2', '통합사회 개념 하나 친구에게 설명하기'], ['통합사회2', '오늘 뉴스 하나를 통합사회 개념과 연결해 보기'], ['통합사회2', '통합사회 지난 시간 핵심어 5개 쓰기'],
+  ['통합과학2', '통합과학 그림·그래프 하나 다시 그려 보기'], ['통합과학2', '과학 용어 5개 뜻 말해 보기'], ['통합과학2', '과학 오답 한 문제 이유까지 적기'],
+  ['한국사2', '한국사 사건 3개 순서대로 말하기'], ['한국사2', '한국사 인물 한 명과 한 일 한 줄로'],
+  ['정보', '정보 시간 배운 개념 하나 한 줄 정리'], ['언어생활과 한자', '한자 성어 2개 뜻까지 외우기'],
+  ['', '다음 시간 교과서 미리 펴 두기'], ['', '오늘 할 공부 3가지 포스트잇에 쓰기'], ['', '물 한 컵 마시고 자세 바로 하기'],
+  ['', '틀린 문제 하나 오답노트에 옮기기'], ['', '수행평가 마감일 확인하기'], ['', '친구에게 모르는 것 하나 물어보기'],
+  ['', '눈 감고 지난 시간 내용 30초 떠올리기'], ['', '플래너에 오늘 기말 공부 한 칸 채우기'], ['', '목표 대학 이름 노트 첫 장에 쓰기']
+];
+if (BOARD) (function(){
+  var tag = function(s){ return String(s).replace(/<[^>]*>/g, '').replace(/\s*[▲▼]\s?[\d,]+/g, ''); };
+  var UN = DATA.filter(function(d){ return !/여자대/.test(d.name); });
+  var ex = CONFIG.DDAYS[0], t = today0(), hot = day0(ex.from) - t <= 14 * 864e5 && day0(ex.to) >= t;
+  var top4 = CONFIG.PLAN.slice().sort(function(x, y){ return y.r[1] - x.r[1]; }).slice(0, 4).map(function(x){ return x.n; });
+  var MW = []; MISSIONS.forEach(function(m){ for (var k = hot && top4.indexOf(m[0]) >= 0 ? 3 : 1; k > 0; k--) MW.push(m); });
+  var pick = function(a){ return a[Math.floor(Math.random() * a.length)]; };
+  var b = document.createElement('button'); b.id = 'spinB'; b.innerHTML = '<span>🎯</span> 눌러서 돌리기<small>대학 + 오늘의 미션</small>';
+  var cell = $('ddL').parentNode; $('ddL').style.display = $('ddV').style.display = 'none'; cell.style.padding = '0 0 0 24px'; cell.appendChild(b);   // 아래 띠 왼쪽 D-day 칸(1쪽 카드와 중복) 자리에 버튼
+  var o = document.createElement('div'); o.id = 'spin'; document.body.appendChild(o);
+  var busy = false, hide = null;
+  function reel(items, last, c){ return '<div class="slot ' + c + '"><div class="reel">' + items.concat([last]).map(function(x, i){ return '<div' + (i === items.length ? ' class="win"' : '') + '>' + esc(x) + '</div>'; }).join('') + '</div></div>'; }
+  function spin(){
+    if (busy) return; busy = true; clearTimeout(hide);
+    var u = pick(UN), m = pick(MW), N = 22, A = [], B = [];
+    for (var i = 0; i < N; i++){ A.push(pick(UN).name); B.push(pick(MISSIONS)[1]); }
+    o.innerHTML = '<div class="box"><div class="lab">대학</div>' + reel(A, u.name, 'su') +'<div class="info">' + esc(tag(u.sub)) + ' · ' + esc(tag(u.facts[0][1])) + '</div>' +
+      '<div class="lab">🎯 오늘의 미션</div>' + reel(B, m[1], 'sm') +'<div class="info">' + (m[0] ? esc(m[0]) : '쉬는 시간 10분 미션') + '</div></div>';
+    o.className = 'on';
+    var R = o.querySelectorAll('.reel');
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){
+      R[0].style.transform = 'translateY(-' + (N * 100 / (N + 1)) + '%)';
+      setTimeout(function(){ R[1].style.transform = 'translateY(-' + (N * 100 / (N + 1)) + '%)'; }, 600);
+    }); });
+    setTimeout(function(){ o.querySelectorAll('.info').forEach(function(e){ e.className = 'info on'; }); busy = false; hide = setTimeout(function(){ o.className = ''; }, 8000); }, 2700);
+  }
+  b.onclick = spin; o.onclick = function(){ if (!busy){ clearTimeout(hide); o.className = ''; } };
 })();
 </script>
   <!-- ===== 화면 꺼짐 방지 (Wake Lock + 무음영상 재생) =====
