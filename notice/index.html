@@ -288,7 +288,10 @@ function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').rep
 /* ?board = 전자칠판 쉬는 시간용(학생): 합격선 쪽 빼고, 선배 통계 칸 → 기말 D-day, '지금' 칸에 남은 시간 */
 var BOARD = /board/.test(location.search);
 // 칠판(16:9)은 항상 16:9 배치. 칠판 앱 화면은 열리는 순간 크기가 0일 수 있어(→ 와이드로 잘못 판단) 화면 크기로 대신 판단
-var W16 = BOARD || (innerHeight ? innerWidth / innerHeight : screen.width / screen.height) < 2 || /w16/.test(location.search);
+// 칠판 앱 화면은 innerWidth가 실제보다 1.42배 크게 나옴(11-12 1-2 실측: inner 1363x767, 실제 doc 960x540) → 실제 보이는 크기는 문서 폭으로
+function VW(){ return document.documentElement.clientWidth || innerWidth; }
+function VH(){ return document.documentElement.clientHeight || innerHeight; }
+var W16 = BOARD || (VH() ? VW() / VH() : screen.width / screen.height) < 2 || /w16/.test(location.search);
 if (W16) {
   $('app').classList.add('w16');
   var r = document.querySelector('.right'), t = document.createElement('div');
@@ -308,11 +311,11 @@ function drawTL(n){
 }
 var shift = [0,0];
 function fit(){
-  if (!innerWidth || !innerHeight) { setTimeout(fit, 200); return; } // 칠판 앱 화면은 열리는 순간 크기 0 → 계산 실패해 확대된 채 굳음(11-12 1-2 실측) → 크기 생길 때까지 다시
+  if (!VW() || !VH()) { setTimeout(fit, 200); return; } // 칠판 앱 화면은 열리는 순간 크기 0 → 계산 실패해 확대된 채 굳음(11-12 1-2 실측) → 크기 생길 때까지 다시
   // 11-12 칠판 비율 맞춤: 기준 캔버스(16:9 2560×1440 / 울트라 3440×1440)를 화면 비율로 늘려 빈 띠 없이 꽉 채움(열·행은 fr이라 늘어남)
-  var bw = W16 ? 2560 : 3440, a = innerWidth / innerHeight, W = a >= bw / 1440 ? Math.round(1440 * a) : bw, H = a >= bw / 1440 ? 1440 : Math.round(bw / a);
+  var bw = W16 ? 2560 : 3440, a = VW() / VH(), W = a >= bw / 1440 ? Math.round(1440 * a) : bw, H = a >= bw / 1440 ? 1440 : Math.round(bw / a);
   $('app').style.width = W + 'px'; $('app').style.height = H + 'px';
-  var s = Math.min(innerWidth / W, innerHeight / H);
+  var s = Math.min(VW() / W, VH() / H);
   $('app').style.transform = 'translate(calc(-50% + ' + shift[0] + 'px), calc(-50% + ' + shift[1] + 'px)) scale(' + s + ')';
 }
 addEventListener('resize', fit); addEventListener('load', fit);
