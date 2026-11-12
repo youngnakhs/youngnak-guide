@@ -250,6 +250,8 @@ function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').rep
 
 /* 화면 맞춤 + 잔상 방지(3분마다 몇 픽셀 이동) */
 var W16 = innerWidth / innerHeight < 2 || /w16/.test(location.search);
+/* ?board = 전자칠판 쉬는 시간용(학생): 합격선 쪽 빼고, 선배 통계 칸 → 기말 D-day, '지금' 칸에 남은 시간 */
+var BOARD = /board/.test(location.search);
 if (W16) {
   $('app').classList.add('w16');
   var r = document.querySelector('.right'), t = document.createElement('div');
@@ -291,7 +293,10 @@ function tick(){
   else if (cur >= toMin(P[P.length-1].e)) txt = '일과 종료';
   else for (var i = 0; i < P.length; i++) {
     if (cur >= toMin(P[i].s) && cur < toMin(P[i].e)) { txt = '<b style="color:var(--mint);font-size:52px">' + P[i].name + '</b> · ~' + P[i].e; break; }
-    if (P[i+1] && cur >= toMin(P[i].e) && cur < toMin(P[i+1].s)) { txt = '<b style="color:#e8eaed;font-size:52px">쉬는 시간</b> · ' + P[i+1].name + ' ' + P[i+1].s; break; }
+    if (P[i+1] && cur >= toMin(P[i].e) && cur < toMin(P[i+1].s)) {
+      var left = toMin(P[i+1].s) * 60 - (cur * 60 + n.getSeconds());
+      txt = BOARD ? P[i+1].name + '까지 <b style="color:var(--amb);font-size:72px">' + Math.floor(left / 60) + ':' + pad(left % 60) + '</b>'
+                  : '<b style="color:#e8eaed;font-size:52px">쉬는 시간</b> · ' + P[i+1].name + ' ' + P[i+1].s; break; }
   }
   $('period').innerHTML = txt;
   if (h === 4 && n.getMinutes() === 0 && n.getSeconds() < 2) location.reload();
@@ -313,6 +318,13 @@ function renderDates(){
 }
 renderDates();
 setInterval(renderDates, 60000);
+if (BOARD) { // 선배 통계(학부모용) 칸 → 기말 D-day + 기말 비중 큰 과목
+  var ex = CONFIG.DDAYS[0], dn = Math.round((day0(ex.from) - today0()) / 864e5), f0 = day0(ex.from), f1 = day0(ex.to);
+  var topX = CONFIG.PLAN.slice().sort(function(x, y){ return y.r[1] - x.r[1]; }).slice(0, 4);
+  document.querySelectorAll('#pg1 .stat')[2].innerHTML = '<div class="lab">1학년 ' + ex.name + ' · ' + (f0.getMonth()+1) + '.' + f0.getDate() + ' – ' + (f1.getMonth()+1) + '.' + f1.getDate() + '</div>' +
+    '<div class="big">' + (dn > 0 ? '<span class="gr">D-<span data-count="' + dn + '">' + dn + '</span></span><em>기말 비중</em>' : '<span class="gr">' + ex.name + '</span><em>' + (dn === 0 ? '오늘 시작' : '기간') + '</em>') + '</div>' +
+    '<div class="det dl" style="grid-template-columns:repeat(2,minmax(0,1fr))">' + topX.map(function(x){ return '<div><span>' + esc(x.n) + '</span><b class="mint">' + x.r[1] + '%</b></div>'; }).join('') + '</div>';
+}
 
 /* 평가계획 */
 $('plan').innerHTML = CONFIG.PLAN.map(function(x){
@@ -509,14 +521,16 @@ UPG.forEach(function(id, k){
 
 /* 쪽 넘김 */
 var PG = W16 ? ['pg1', 'pg6', 'pg2', 'pg3', 'pg4', 'pg5', 'pg7', 'pg8', 'pg9'] : ['pg1', 'pg2', 'pg3', 'pg4', 'pg5', 'pg7', 'pg8', 'pg9'];
-var SEC = W16 ? [25, 15, 15, 10, 10, 10, 10, 10, 10] : CONFIG.PAGE_SEC, pgi = Math.max(0, PG.indexOf(location.hash.replace('#p', 'pg')));
+var SEC = W16 ? [25, 15, 15, 10, 10, 10, 10, 10, 10] : CONFIG.PAGE_SEC;
+if (BOARD) { var k2 = PG.indexOf('pg2'); PG.splice(k2, 1); SEC = SEC.slice(); SEC.splice(k2, 1); $('pg2').remove(); }
+var pgi = Math.max(0, PG.indexOf(location.hash.replace('#p', 'pg')));
 function countUp(el){
   var n = +el.dataset.count, suf = el.dataset.suf || '', t0 = performance.now();
   (function f(t){ var x = Math.min(1, (t - t0) / 1100); el.textContent = Math.round(n * (1 - Math.pow(1 - x, 3))) + suf; if (x < 1) requestAnimationFrame(f); })(t0);
 }
 function showPage(){
   PG.forEach(function(id, k){ var e = $(id); e.classList.toggle('off', k !== pgi); e.classList.remove('enter'); });
-  $('app').classList.toggle('ontoday', PG[pgi] === 'pg6');
+  $('app').classList.toggle('ontoday', !BOARD && PG[pgi] === 'pg6');
   var cur = $(PG[pgi]); void cur.offsetWidth; cur.classList.add('enter');
   cur.querySelectorAll('[data-count]').forEach(countUp);
   var ci = UPG.indexOf(PG[pgi]);
