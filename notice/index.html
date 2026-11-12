@@ -131,6 +131,11 @@ p{font-size:38px;line-height:62px;color:#9aa1a9;font-weight:300}
 #bintro .cap{font-size:4.4vh;color:#9aa1a9;margin-top:3vh;opacity:0;transform:translateY(1.5vh);transition:opacity .5s,transform .5s}
 #bintro .cap.on{opacity:1;transform:none}
 #bintro .cap b{color:#fcd34d;font-weight:700}
+#lions{position:absolute;top:10px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:14px;font-size:32px;line-height:50px;white-space:nowrap;z-index:2}
+#lions svg{width:64px;height:44px;overflow:visible}
+#lions .fl{transform-origin:5px 50%;animation:flWave 2.4s ease-in-out infinite}
+#lions b{color:#e8eaed;font-weight:700}#lions span{color:#6ea8ff;font-weight:700}
+@keyframes flWave{0%,100%{transform:skewY(0) scaleX(1)}50%{transform:skewY(-4deg) scaleX(.96)}}
 /* 룰렛 버튼(눈에 띄게: 노랑 바탕·숨쉬듯 커졌다 작아짐·빛 번짐) */
 #spinB{position:relative;width:100%;height:100%;z-index:40;border:0;border-radius:999px;padding:0 30px;justify-content:center;background:linear-gradient(135deg,#fde68a,#fcd34d 45%,#f59e0b);color:#1a1405;
   font:800 58px/1.1 "Pretendard","Malgun Gothic",sans-serif;display:flex;align-items:center;gap:20px;cursor:pointer;animation:spPulse 1.6s ease-in-out infinite;box-shadow:0 0 0 0 rgba(252,211,77,.6)}
@@ -155,6 +160,8 @@ p{font-size:38px;line-height:62px;color:#9aa1a9;font-weight:300}
 </head>
 <body>
 <div id="app">
+  <!-- 11-12 2026 한국시리즈 우승 띠(맨 위 여백, 모든 쪽) -->
+  <div id="lions"><svg viewBox="0 0 64 44" aria-hidden="true"><rect x="2" y="2" width="3" height="40" rx="1.5" fill="#c9ced3"/><path class="fl" d="M5 4 Q22 0 36 5 T62 6 L62 26 Q48 22 36 26 T5 24 Z" fill="#0b5bd3"/><path class="fl" d="M5 15 Q22 11 36 16 T62 17 L62 19 Q48 15 36 19 T5 18 Z" fill="#fff" opacity=".9"/></svg><b>2026 한국시리즈 우승</b><span>삼성 라이온즈</span></div>
   <div class="hd">
     <span style="font-size:44px;font-weight:700;padding-left:60px">영락고 <span class="gr">1학년부</span><span id="pname"></span></span><span id="pdots"></span>
     <span id="date" style="font-size:42px;color:#9aa1a9;text-align:right"></span>
