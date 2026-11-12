@@ -308,13 +308,15 @@ function drawTL(n){
 }
 var shift = [0,0];
 function fit(){
+  if (!innerWidth || !innerHeight) { setTimeout(fit, 200); return; } // 칠판 앱 화면은 열리는 순간 크기 0 → 계산 실패해 확대된 채 굳음(11-12 1-2 실측) → 크기 생길 때까지 다시
   // 11-12 칠판 비율 맞춤: 기준 캔버스(16:9 2560×1440 / 울트라 3440×1440)를 화면 비율로 늘려 빈 띠 없이 꽉 채움(열·행은 fr이라 늘어남)
   var bw = W16 ? 2560 : 3440, a = innerWidth / innerHeight, W = a >= bw / 1440 ? Math.round(1440 * a) : bw, H = a >= bw / 1440 ? 1440 : Math.round(bw / a);
   $('app').style.width = W + 'px'; $('app').style.height = H + 'px';
   var s = Math.min(innerWidth / W, innerHeight / H);
   $('app').style.transform = 'translate(calc(-50% + ' + shift[0] + 'px), calc(-50% + ' + shift[1] + 'px)) scale(' + s + ')';
 }
-addEventListener('resize', fit);
+addEventListener('resize', fit); addEventListener('load', fit);
+for (var fk = 1; fk <= 10; fk++) setTimeout(fit, fk * 1000); // 처음 10초는 1초마다 다시 맞춤(크기가 늦게 정해지는 화면 대비)
 setInterval(function(){ shift = [Math.round(Math.random()*12-6), Math.round(Math.random()*12-6)]; fit(); }, 180000);
 fit();
 
