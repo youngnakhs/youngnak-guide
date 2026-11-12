@@ -25,7 +25,7 @@ html,body{margin:0;height:100%;background:var(--bg);overflow:hidden}
 /* 장면 공통 틀: 위 머리줄(150px)·아래 띠 사이 가운데 */
 .sc{position:absolute;left:120px;right:120px;top:150px;bottom:60px;visibility:hidden}
 .sc.on{visibility:visible}
-.two{display:grid;grid-template-columns:760px 1fr;column-gap:120px;align-items:center}
+.two{display:grid;grid-template-columns:760px 1fr;column-gap:120px;align-items:center;align-content:center}
 .art{display:flex;justify-content:center;align-items:center;height:620px}
 .txt{display:flex;flex-direction:column;align-items:flex-start}
 .lab{font-size:52px;font-weight:700;color:var(--gold);letter-spacing:.14em;margin-bottom:24px}
@@ -77,17 +77,20 @@ html,body{margin:0;height:100%;background:var(--bg);overflow:hidden}
 .on .no path{animation:draw .5s ease-out 1.8s forwards}
 
 /* 4 성경책 */
-.book{position:relative;width:620px;height:430px;perspective:1600px;margin-top:80px}
-.pg{position:absolute;top:0;width:300px;height:420px;background:var(--ink);box-shadow:inset 0 0 0 12px #e2dccb}
-.pg.l{left:10px;transform-origin:right center;border-radius:20px 4px 4px 20px;transform:rotateY(-90deg)}
-.pg.r{left:310px;transform-origin:left center;border-radius:4px 20px 20px 4px;transform:rotateY(90deg)}
-.on .pg.l,.on .pg.r{animation:open 1.2s var(--e) .2s forwards}
-@keyframes open{to{transform:rotateY(0)}}
-.pg b{display:block;height:12px;margin:0 40px 26px;background:#cfc7b2;border-radius:6px}
-.pg b:first-child{margin-top:70px}
-.cross{position:absolute;left:290px;top:-130px;width:40px;height:150px;background:var(--gold);opacity:0}
-.cross::after{content:"";position:absolute;left:-40px;top:36px;width:120px;height:36px;background:var(--gold)}
-.on .cross{animation:fade .8s var(--e) 1.2s forwards}
+.book{width:680px;height:560px;overflow:visible}
+.book .pl,.book .pr{transform-box:fill-box;transform:scaleX(0)}
+.book .pl{transform-origin:right center}.book .pr{transform-origin:left center}
+.on .book .pl,.on .book .pr{animation:unf 1s var(--e) .25s forwards}
+@keyframes unf{to{transform:scaleX(1)}}
+.book .cv{opacity:0}.on .book .cv{animation:fade .6s var(--e) 0s forwards}
+.book .tx{stroke-dasharray:260;stroke-dashoffset:260}
+.on .book .tx{animation:draw .5s ease-out var(--d) forwards}
+.book .rb{transform-box:fill-box;transform-origin:top;transform:scaleY(0)}
+.on .book .rb{animation:rb .7s var(--e) 1.3s forwards}
+@keyframes rb{to{transform:scaleY(1)}}
+.book .cr{opacity:0;transform-box:fill-box;transform-origin:center}
+.on .book .cr{animation:crs 1s var(--e) 1s forwards}
+@keyframes crs{from{opacity:0;transform:translateY(40px) scale(.6)}to{opacity:1;transform:none}}
 .hl{background:linear-gradient(rgba(242,193,78,.5),rgba(242,193,78,.5)) no-repeat 0 82%/0% 32%;padding:0 .06em}
 .on .hl{animation:hlb .7s var(--e) 1.3s forwards}
 @keyframes hlb{to{background-size:100% 32%}}
@@ -95,12 +98,22 @@ html,body{margin:0;height:100%;background:var(--bg);overflow:hidden}
 
 /* 6 학교 */
 .school{display:flex;flex-direction:column;align-items:center;justify-content:center}
-.school .cap{font-size:44px;font-weight:700;color:var(--gold);letter-spacing:.5em;margin-bottom:30px}
-.school .nm{font-size:230px;font-weight:900;letter-spacing:.4em;margin-right:-.4em;opacity:0}
-.on.school .nm{animation:track 2.2s var(--e) .3s forwards}
+.emb{width:330px;height:330px;position:relative;margin-bottom:26px;opacity:0}
+.emb img{width:100%;height:100%;display:block}
+.on .emb{animation:emb 1.6s var(--e) .1s forwards}
+@keyframes emb{0%{opacity:0;transform:scale(.3) rotate(-200deg);clip-path:circle(0% at 50% 50%)}60%{opacity:1;clip-path:circle(60% at 50% 50%)}100%{opacity:1;transform:none;clip-path:circle(60% at 50% 50%)}}
+.emb::after{content:"";position:absolute;inset:0;border-radius:50%;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.75) 50%,transparent 65%) no-repeat;background-size:300% 100%;background-position:150% 0}
+.on .emb::after{animation:shine 1.2s ease-in-out 1.7s forwards}
+@keyframes shine{to{background-position:-50% 0}}
+.emb .ring{position:absolute;inset:-14px;border-radius:50%;border:6px solid var(--gold);opacity:0}
+.on .emb .ring{animation:ring 1.6s ease-out 1.4s 2}
+@keyframes ring{0%{opacity:.9;transform:scale(.95)}100%{opacity:0;transform:scale(1.35)}}
+.school .cap{font-size:36px;font-weight:700;color:var(--gold);letter-spacing:.5em;margin-bottom:10px}
+.school .nm{font-size:170px;font-weight:900;letter-spacing:.4em;margin-right:-.4em;opacity:0}
+.on.school .nm{animation:track 2s var(--e) 1.5s forwards}
 @keyframes track{0%{opacity:0;letter-spacing:.4em;filter:blur(20px)}60%{opacity:1;filter:none}100%{opacity:1;letter-spacing:-.03em;margin-right:0}}
-.school .ln{width:1100px;height:6px;background:var(--gold);margin:40px 0 34px;transform:scaleX(0)}
-.on.school .ln{animation:hl 1.2s var(--e) 1.2s forwards}
+.school .ln{width:900px;height:5px;background:var(--gold);margin:26px 0 24px;transform:scaleX(0)}
+.on.school .ln{animation:hl 1.2s var(--e) 2.4s forwards}
 .school .en{font-size:46px;font-weight:600;color:var(--dim);letter-spacing:.42em}
 /* 5 요약 */
 .sum{display:flex;flex-direction:column;justify-content:center}
@@ -155,10 +168,16 @@ html,body{margin:0;height:100%;background:var(--bg);overflow:hidden}
   </div>
 
   <div class="sc two">
-    <div class="art"><div class="book"><div class="cross"></div>
-      <div class="pg l"><b></b><b></b><b></b><b></b><b></b><b></b></div>
-      <div class="pg r"><b></b><b></b><b></b><b></b><b></b><b></b></div>
-    </div></div>
+    <div class="art"><svg class="book" viewBox="0 0 680 560">
+      <path class="cv" d="M30 150 Q190 120 340 160 Q490 120 650 150 L650 520 Q490 490 340 530 Q190 490 30 520 Z" fill="#5a3b24"/>
+      <path class="pl" d="M340 150 Q200 105 50 135 L50 495 Q200 465 340 510 Z" fill="#f3efe4"/>
+      <path class="pr" d="M340 150 Q480 105 630 135 L630 495 Q480 465 340 510 Z" fill="#f3efe4"/>
+      <path class="pl" d="M340 150 L340 510 Q300 490 270 480 L270 140 Q305 140 340 150Z" fill="#d9d1bd" opacity=".55"/>
+      <path class="pr" d="M340 150 L340 510 Q380 490 410 480 L410 140 Q375 140 340 150Z" fill="#d9d1bd" opacity=".55"/>
+      <g stroke="#c9c0a8" stroke-width="10" stroke-linecap="round"><line class="tx" x1="90" y1="200" x2="300" y2="200" style="--d:1.10s"/><line class="tx" x1="90" y1="236" x2="300" y2="236" style="--d:1.18s"/><line class="tx" x1="90" y1="272" x2="300" y2="272" style="--d:1.26s"/><line class="tx" x1="90" y1="308" x2="300" y2="308" style="--d:1.34s"/><line class="tx" x1="90" y1="344" x2="300" y2="344" style="--d:1.42s"/><line class="tx" x1="90" y1="380" x2="300" y2="380" style="--d:1.50s"/><line class="tx" x1="90" y1="416" x2="300" y2="416" style="--d:1.58s"/><line class="tx" x1="380" y1="200" x2="590" y2="200" style="--d:1.10s"/><line class="tx" x1="380" y1="236" x2="590" y2="236" style="--d:1.18s"/><line class="tx" x1="380" y1="272" x2="590" y2="272" style="--d:1.26s"/><line class="tx" x1="380" y1="308" x2="590" y2="308" style="--d:1.34s"/><line class="tx" x1="380" y1="344" x2="590" y2="344" style="--d:1.42s"/><line class="tx" x1="380" y1="380" x2="590" y2="380" style="--d:1.50s"/><line class="tx" x1="380" y1="416" x2="590" y2="416" style="--d:1.58s"/></g>
+      <path class="rb" d="M356 505 L356 560 L370 548 L384 560 L384 500 Z" fill="#c0392b"/>
+      <g class="cr" fill="#f2c14e"><rect x="320" y="0" width="40" height="120" rx="6"/><rect x="290" y="28" width="100" height="34" rx="6"/></g>
+    </svg></div>
     <div class="txt">
       <div class="lab fade" style="--d:.5s">꼭 챙기기</div>
       <div class="h"><span class="m"><span style="--d:.7s"><span class="hl">성경책</span></span></span></div>
@@ -176,10 +195,11 @@ html,body{margin:0;height:100%;background:var(--bg);overflow:hidden}
   </div>
 
   <div class="sc school">
-    <div class="cap fade" style="--d:.1s">FRIDAY CHAPEL</div>
+    <div class="emb"><img src="emblem.png" alt="영락고등학교 교표"><div class="ring"></div></div>
+    <div class="cap fade" style="--d:1.2s">FRIDAY CHAPEL</div>
     <div class="nm"><span class="gold">영락</span>고등학교</div>
     <div class="ln"></div>
-    <div class="en fade" style="--d:1.6s">YOUNGNAK HIGH SCHOOL</div>
+    <div class="en fade" style="--d:2.8s">YOUNGNAK HIGH SCHOOL</div>
   </div>
 
   <div id="wipe"></div>
@@ -201,7 +221,7 @@ function fit(){var e=document.documentElement,W=e.clientWidth,H=e.clientHeight;i
   var k=Math.min(W/1920,H/1080),s=document.getElementById('s');
   s.style.transform='translate('+(W-1920*k)/2+'px,'+(H-1080*k)/2+'px) scale('+k+')';}
 fit();addEventListener('resize',fit);var n=0,t=setInterval(function(){fit();if(++n>9)clearInterval(t)},1000);
-var sc=document.querySelectorAll('.sc'),dur=[4.5,4,4.5,4.5,7,5],i=-1,bar=document.getElementById('bar'),wipe=document.getElementById('wipe');
+var sc=document.querySelectorAll('.sc'),dur=[4.5,4,4.5,4.5,7,6.5],i=-1,bar=document.getElementById('bar'),wipe=document.getElementById('wipe');
 function show(){if(i>=0)sc[i].classList.remove('on');i=(i+1)%sc.length;void sc[i].offsetWidth;sc[i].classList.add('on');
   bar.style.transition='none';bar.style.width='0';void bar.offsetWidth;bar.style.transition='width '+dur[i]+'s linear';bar.style.width='100%';
   setTimeout(next,dur[i]*1000);}
