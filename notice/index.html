@@ -307,7 +307,10 @@ function drawTL(n){
 }
 var shift = [0,0];
 function fit(){
-  var s = Math.min(innerWidth / (W16 ? 2560 : 3440), innerHeight / 1440);
+  // 11-12 칠판 비율 맞춤: 기준 캔버스(16:9 2560×1440 / 울트라 3440×1440)를 화면 비율로 늘려 빈 띠 없이 꽉 채움(열·행은 fr이라 늘어남)
+  var bw = W16 ? 2560 : 3440, a = innerWidth / innerHeight, W = a >= bw / 1440 ? Math.round(1440 * a) : bw, H = a >= bw / 1440 ? 1440 : Math.round(bw / a);
+  $('app').style.width = W + 'px'; $('app').style.height = H + 'px';
+  var s = Math.min(innerWidth / W, innerHeight / H);
   $('app').style.transform = 'translate(calc(-50% + ' + shift[0] + 'px), calc(-50% + ' + shift[1] + 'px)) scale(' + s + ')';
 }
 addEventListener('resize', fit);
