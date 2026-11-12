@@ -122,6 +122,15 @@ p{font-size:38px;line-height:62px;color:#9aa1a9;font-weight:300}
 .w16 .pg.today{grid-template-columns:1.15fr .85fr}.w16 #noteT{font-size:120px;line-height:140px}
 .w16 #meal{font-size:76px!important;line-height:88px!important}
 #pdots i{width:56px;height:14px;border-radius:7px}
+#bintro{position:fixed;inset:0;z-index:50;background:#15171a;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:"Pretendard","Noto Sans KR","Malgun Gothic",sans-serif;color:#e8eaed;transition:opacity .7s}
+#bintro.out{opacity:0}
+#bintro .slot{height:16vh;overflow:hidden}
+#bintro .reel{transition:transform 1.9s cubic-bezier(.12,.75,.15,1)}
+#bintro .reel div{height:16vh;line-height:16vh;font-size:11vh;font-weight:800;text-align:center;white-space:nowrap;letter-spacing:-.02em}
+#bintro .reel .gr{background:linear-gradient(90deg,#a7f3d0,#c4b5fd);-webkit-background-clip:text;background-clip:text;color:transparent}
+#bintro .cap{font-size:4.4vh;color:#9aa1a9;margin-top:3vh;opacity:0;transform:translateY(1.5vh);transition:opacity .5s,transform .5s}
+#bintro .cap.on{opacity:1;transform:none}
+#bintro .cap b{color:#fcd34d;font-weight:700}
 </style>
 </head>
 <body>
@@ -600,6 +609,23 @@ function loadWeather(a){
 loadMeal(); loadWeather();
 setInterval(loadWeather, 30*60*1000);
 setInterval(loadMeal, 3*60*60*1000);
+
+/* 11-12 ?board 시작 화면: 대학 이름 슬롯 → 멈춘 대학 + '가는 길의 첫 계단 — 기말 D-n' → 공지 화면(약 3.4초, 열 때마다) */
+if (BOARD && !/nointro/.test(location.search)) (function(){
+  var U = UKEY.filter(function(u){ return !/여대/.test(u); }), N = 26, L = [];
+  for (var i = 0; i <= N; i++) L.push(U[Math.floor(Math.random() * U.length)]);
+  var ex = CONFIG.DDAYS[0], t = today0(), f0 = day0(ex.from), dn = Math.round((f0 - t) / 864e5);
+  var cap = dn > 0 ? '가는 길의 첫 계단 — <b>' + ex.name.replace('고사', '') + ' D-' + dn + '</b>'
+          : day0(ex.to) >= t ? '<b>' + ex.name + ' 기간</b> — 오늘 한 과목씩' : '3년 뒤, 너의 캠퍼스는?';
+  var o = document.createElement('div'); o.id = 'bintro';
+  o.innerHTML = '<div class="slot"><div class="reel">' + L.map(function(u, i){ return '<div' + (i === N ? ' class="gr"' : '') + '>' + esc(u) + '</div>'; }).join('') + '</div></div><div class="cap">' + cap + '</div>';
+  document.body.appendChild(o);
+  var reel = o.querySelector('.reel');
+  requestAnimationFrame(function(){ requestAnimationFrame(function(){ reel.style.transform = 'translateY(-' + (N * 100 / (N + 1)) + '%)'; }); });
+  setTimeout(function(){ o.querySelector('.cap').className = 'cap on'; }, 2000);
+  setTimeout(function(){ o.className = 'out'; }, 3400);
+  setTimeout(function(){ o.remove(); }, 4100);
+})();
 </script>
   <!-- ===== 화면 꺼짐 방지 (Wake Lock + 무음영상 재생) =====
        스틱/모니터 절전 설정을 다 꺼도 화면이 꺼질 때를 위한 이중 안전장치 -->
