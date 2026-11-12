@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML='';throw new Error("expired");}</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>금요 예배 안내</title>
+<style>
+@font-face{font-family:P;src:url(PretendardVariable.woff2) format("woff2");font-weight:100 900}
+:root{--bg:#0e1311;--ink:#f3efe4;--dim:#6f7872;--gold:#f2c14e;--line:#26302b;--e:cubic-bezier(.16,1,.3,1)}
+html,body{margin:0;height:100%;background:var(--bg);overflow:hidden}
+#s{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;
+  font-family:P,"Pretendard","Malgun Gothic",sans-serif;color:var(--ink);
+  background:radial-gradient(1200px 700px at 70% 30%,#17201b,transparent),var(--bg)}
+/* 배경 흐르는 외곽선 글자 */
+.mq{position:absolute;white-space:nowrap;font-size:260px;font-weight:900;letter-spacing:-.03em;color:transparent;-webkit-text-stroke:2px #1f2a24;animation:mq 60s linear infinite}
+.mq.a{top:-40px}.mq.b{bottom:-60px;animation-direction:reverse;animation-duration:70s}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+#top{position:absolute;left:120px;right:120px;top:60px;display:flex;justify-content:space-between;font-size:38px;font-weight:700;color:var(--dim);z-index:5}
+#top b{color:var(--gold)}
+#bar{position:absolute;left:0;bottom:0;height:12px;background:var(--gold);width:0;z-index:5}
+#wipe{position:absolute;inset:0;background:var(--gold);z-index:9;transform:translateX(-101%)}
+#wipe.go{animation:wipe .9s cubic-bezier(.7,0,.3,1)}
+@keyframes wipe{0%{transform:translateX(-101%)}45%,55%{transform:translateX(0)}100%{transform:translateX(101%)}}
+.sc{position:absolute;inset:0;visibility:hidden}
+.sc.on{visibility:visible}
+/* 마스크 올라오기: <span class=m><span style=--d:.2s>글</span></span> */
+.m{display:inline-block;overflow:hidden;vertical-align:bottom;padding:0 .02em .06em}
+.m>span{display:inline-block;transform:translateY(110%)}
+.on .m>span{animation:rise 1s var(--e) var(--d,0s) forwards}
+@keyframes rise{to{transform:none}}
+.fade{opacity:0}.on .fade{animation:fade .8s var(--e) var(--d,0s) forwards}
+@keyframes fade{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+/* 1 시계 */
+.clock{position:absolute;left:250px;top:190px;width:700px;height:700px}
+.on .clock{animation:pop 1s var(--e) both}
+@keyframes pop{from{transform:scale(.6) rotate(-20deg);opacity:0}}
+.clock .ring{stroke-dasharray:1900;stroke-dashoffset:1900}
+.on .clock .ring{animation:draw 1.4s var(--e) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.hh,.mh{transform-origin:350px 350px}
+.on .hh{animation:hh 2s var(--e) .3s both}
+.on .mh{animation:mh 2s var(--e) .3s both}
+@keyframes hh{from{transform:rotate(-300deg)}to{transform:rotate(30deg)}}
+@keyframes mh{from{transform:rotate(-1080deg)}to{transform:rotate(0)}}
+.t1{position:absolute;left:1030px;top:250px;line-height:.95}
+.t1 .n{font-size:420px;font-weight:900;letter-spacing:-.06em;color:var(--gold)}
+.t1 .n small{font-size:170px;letter-spacing:-.02em}
+.t1 .k{font-size:170px;font-weight:800;letter-spacing:-.04em}
+/* 2 강당으로 */
+.t2{position:absolute;left:0;right:0;top:250px;text-align:center;font-size:330px;font-weight:900;letter-spacing:-.05em;line-height:1}
+.steps{position:absolute;left:0;right:0;top:720px;height:120px}
+.steps i{position:absolute;top:0;width:60px;height:96px;border-radius:50% 50% 45% 45%;background:var(--gold);opacity:0}
+.steps i:nth-child(even){top:40px}
+.on .steps i{animation:step 2.6s var(--d) infinite}
+@keyframes step{0%{opacity:0;transform:scale(.4)}10%{opacity:1;transform:none}60%{opacity:.9}100%{opacity:0}}
+.t2s{position:absolute;left:0;right:0;top:880px;text-align:center;font-size:56px;font-weight:600;color:var(--dim)}
+/* 3 기기 */
+.devs{position:absolute;left:300px;top:260px;width:760px;height:560px}
+.ph,.tb{position:absolute;bottom:40px;border:16px solid var(--ink);border-radius:46px;background:#141b17;opacity:0}
+.ph{left:40px;width:200px;height:400px}
+.tb{left:300px;width:400px;height:300px;border-radius:36px}
+.ph::after{content:"";position:absolute;left:50%;top:14px;width:60px;height:10px;margin-left:-30px;border-radius:5px;background:var(--ink)}
+.on .ph{animation:drop .9s var(--e) .1s forwards}
+.on .tb{animation:drop .9s var(--e) .3s forwards}
+@keyframes drop{from{opacity:0;transform:translateY(-260px) rotate(-12deg)}to{opacity:1;transform:none}}
+.no{position:absolute;left:0;top:0;width:760px;height:560px}
+.no path,.no circle{stroke-dasharray:2000;stroke-dashoffset:2000}
+.on .no circle{animation:draw .8s ease-out 1.2s forwards}
+.on .no path{animation:draw .5s ease-out 1.8s forwards}
+.t3{position:absolute;left:1120px;top:280px;line-height:1.05}
+.t3 .lab{font-size:54px;font-weight:700;color:var(--gold);letter-spacing:.14em;margin-bottom:30px}
+.t3 .big{font-size:150px;font-weight:900;letter-spacing:-.04em}
+/* 4 성경책 */
+.book{position:absolute;left:300px;top:300px;width:640px;height:440px;perspective:1600px}
+.pg{position:absolute;top:0;width:300px;height:420px;background:var(--ink);box-shadow:inset 0 0 0 12px #e2dccb}
+.pg.l{left:20px;transform-origin:right center;border-radius:20px 4px 4px 20px}
+.pg.r{left:320px;transform-origin:left center;border-radius:4px 20px 20px 4px}
+.pg.l{transform:rotateY(-90deg)}.pg.r{transform:rotateY(90deg)}
+.on .pg.l{animation:openL 1.2s var(--e) .2s forwards}
+.on .pg.r{animation:openR 1.2s var(--e) .2s forwards}
+@keyframes openL{to{transform:rotateY(0)}}
+@keyframes openR{to{transform:rotateY(0)}}
+.pg b{display:block;height:12px;margin:0 40px 26px;background:#cfc7b2;border-radius:6px}
+.pg b:first-child{margin-top:70px}
+.cross{position:absolute;left:300px;top:-110px;width:40px;height:150px;margin-left:0;background:var(--gold);opacity:0}
+.cross::after{content:"";position:absolute;left:-40px;top:36px;width:120px;height:36px;background:var(--gold)}
+.on .cross{animation:fade .8s var(--e) 1.2s forwards}
+.t4{position:absolute;left:1100px;top:300px}
+.t4 .lab{font-size:54px;font-weight:700;color:var(--gold);letter-spacing:.14em;margin-bottom:30px}
+.t4 .big{font-size:190px;font-weight:900;letter-spacing:-.04em;line-height:1.05;position:relative}
+.hl{position:relative;display:inline-block;isolation:isolate}
+.hl::before{content:"";position:absolute;left:-10px;right:-10px;bottom:16px;height:56px;background:var(--gold);opacity:.45;transform:scaleX(0);transform-origin:left;z-index:-1}
+.on .hl::before{animation:hl .7s var(--e) 1.3s forwards}
+@keyframes hl{to{transform:scaleX(1)}}
+/* 5 요약 */
+.sum{padding:0 120px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center}
+.sum .row{display:flex;align-items:flex-end;gap:56px}
+.sum .bigN{font-size:430px;font-weight:900;line-height:.82;letter-spacing:-.05em;color:var(--gold)}
+.sum .bigN small{font-size:150px}
+.sum .to{font-size:150px;font-weight:800;line-height:1.02;letter-spacing:-.04em}
+.sum .to .s{display:block;font-size:64px;font-weight:500;color:var(--dim)}
+.sum .rules{display:grid;grid-template-columns:1fr 1fr;margin-top:90px;width:100%;position:relative}
+.sum .rules::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:var(--line);transform:scaleX(0);transform-origin:left}
+.on.sum .rules::before{animation:hl 1s var(--e) .4s forwards}
+.sum .r{padding-top:36px;font-size:84px;font-weight:800;letter-spacing:-.035em}
+.sum .r+.r{padding-left:64px;border-left:3px solid var(--line)}
+.sum .r i{display:block;font-style:normal;font-size:36px;font-weight:700;color:var(--gold);letter-spacing:.12em;margin-bottom:14px}
+.sum s{text-decoration-thickness:10px;text-decoration-color:var(--gold)}
+.on.sum .bigN{animation:pulse 2.4s ease-in-out 1.5s infinite}
+@keyframes pulse{50%{transform:scale(1.035)}}
+</style>
+</head>
+<body>
+<div id="s">
+  <div class="mq a">FRIDAY CHAPEL · 금요 예배 · FRIDAY CHAPEL · 금요 예배 · FRIDAY CHAPEL · 금요 예배 · FRIDAY CHAPEL · 금요 예배 · </div>
+  <div class="mq b">강당 13:00 · 성경책 · 강당 13:00 · 성경책 · 강당 13:00 · 성경책 · 강당 13:00 · 성경책 · 강당 13:00 · 성경책 · </div>
+  <div id="top"><span><b>금요 예배</b> &nbsp;11.13 FRI</span><span id="left"></span></div>
+
+  <div class="sc">
+    <svg class="clock" viewBox="0 0 700 700">
+      <circle class="ring" cx="350" cy="350" r="300" fill="none" stroke="#f3efe4" stroke-width="18"/>
+      <g stroke="#6f7872" stroke-width="10" stroke-linecap="round" id="ticks"></g>
+      <line class="mh" x1="350" y1="350" x2="350" y2="110" stroke="#f3efe4" stroke-width="18" stroke-linecap="round"/>
+      <line class="hh" x1="350" y1="350" x2="350" y2="180" stroke="#f2c14e" stroke-width="30" stroke-linecap="round"/>
+      <circle cx="350" cy="350" r="26" fill="#f2c14e"/>
+    </svg>
+    <div class="t1">
+      <div class="n"><span class="m"><span style="--d:.9s">1</span></span><span class="m"><span style="--d:1.05s"><small>시</small></span></span></div>
+      <div class="k"><span class="m"><span style="--d:1.3s">까지</span></span></div>
+    </div>
+  </div>
+
+  <div class="sc">
+    <div class="t2"><span class="m"><span style="--d:0s">강</span></span><span class="m"><span style="--d:.08s">당</span></span><span class="m"><span style="--d:.16s">으</span></span><span class="m"><span style="--d:.24s">로</span></span></div>
+    <div class="steps" id="steps"></div>
+    <div class="t2s fade" style="--d:.6s">1시까지 모두 이동합니다</div>
+  </div>
+
+  <div class="sc">
+    <div class="devs">
+      <div class="ph"></div><div class="tb"></div>
+      <svg class="no" viewBox="0 0 760 560"><circle cx="380" cy="300" r="250" fill="none" stroke="#f2c14e" stroke-width="34"/><path d="M203 123 L557 477" stroke="#f2c14e" stroke-width="34" stroke-linecap="round"/></svg>
+    </div>
+    <div class="t3">
+      <div class="lab fade" style="--d:.4s">교실에 두고 오세요</div>
+      <div class="big"><span class="m"><span style="--d:.6s">휴대폰</span></span></div>
+      <div class="big"><span class="m"><span style="--d:.8s">태블릿PC</span></span></div>
+    </div>
+  </div>
+
+  <div class="sc">
+    <div class="book"><div class="cross"></div>
+      <div class="pg l"><b></b><b></b><b></b><b></b><b></b><b></b></div>
+      <div class="pg r"><b></b><b></b><b></b><b></b><b></b><b></b></div>
+    </div>
+    <div class="t4">
+      <div class="lab fade" style="--d:.5s">꼭 챙기기</div>
+      <div class="big"><span class="m"><span style="--d:.7s"><span class="hl">성경책</span></span></span></div>
+      <div class="big"><span class="m"><span style="--d:.9s">챙기기</span></span></div>
+    </div>
+  </div>
+
+  <div class="sc sum">
+    <div class="row">
+      <div class="bigN"><span class="m"><span style="--d:.1s">1<small>시</small></span></span></div>
+      <div class="to"><span class="s fade" style="--d:.3s">까지</span><span class="m"><span style="--d:.35s">강당으로</span></span><br><span class="m"><span style="--d:.5s">이동합니다</span></span></div>
+    </div>
+    <div class="rules">
+      <div class="r fade" style="--d:.8s"><i>교실에 두고</i><s>휴대폰</s> · <s>태블릿PC</s></div>
+      <div class="r fade" style="--d:1s"><i>꼭 챙기기</i>성경책</div>
+    </div>
+  </div>
+
+  <div id="wipe"></div>
+  <div id="bar"></div>
+</div>
+<script>
+// 시계 눈금·발자국
+var g=document.getElementById('ticks');
+for(var a=0;a<12;a++){var r=a*Math.PI/6,l=document.createElementNS('http://www.w3.org/2000/svg','line');
+  l.setAttribute('x1',350+250*Math.sin(r));l.setAttribute('y1',350-250*Math.cos(r));l.setAttribute('x2',350+275*Math.sin(r));l.setAttribute('y2',350-275*Math.cos(r));g.appendChild(l);}
+var st=document.getElementById('steps');
+for(var k=0;k<14;k++){var f=document.createElement('i');f.style.left=(200+k*110)+'px';f.style.setProperty('--d',(k*.12)+'s');st.appendChild(f);}
+// 칠판 WebView는 innerWidth가 실제보다 커서 clientWidth로 맞춤
+function fit(){var e=document.documentElement,w=e.clientWidth,h=e.clientHeight;if(!w||!h)return setTimeout(fit,200);
+  var k=Math.min(w/1920,h/1080),s=document.getElementById('s');
+  s.style.transform='translate('+(w-1920*k)/2+'px,'+(h-1080*k)/2+'px) scale('+k+')';}
+fit();addEventListener('resize',fit);var n=0,t=setInterval(function(){fit();if(++n>9)clearInterval(t)},1000);
+// 장면 순서·초 (넘김 0.9초 포함)
+var sc=document.querySelectorAll('.sc'),dur=[4.5,3.5,4.5,4.5,7],i=-1,bar=document.getElementById('bar'),wipe=document.getElementById('wipe');
+function show(){if(i>=0)sc[i].classList.remove('on');i=(i+1)%sc.length;void sc[i].offsetWidth;sc[i].classList.add('on');
+  bar.style.transition='none';bar.style.width='0';void bar.offsetWidth;bar.style.transition='width '+dur[i]+'s linear';bar.style.width='100%';
+  setTimeout(next,dur[i]*1000);}
+function next(){wipe.classList.remove('go');void wipe.offsetWidth;wipe.classList.add('go');setTimeout(show,420);}
+show();
+function tick(){var d=new Date(),m=13*60-(d.getHours()*60+d.getMinutes());
+  document.getElementById('left').textContent=m>0?'1시까지 '+(m>=60?Math.floor(m/60)+'시간 ':'')+(m%60)+'분':'지금 강당으로';}
+tick();setInterval(tick,15000);
+</script>
+</body>
+</html>
