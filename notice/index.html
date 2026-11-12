@@ -319,6 +319,11 @@ addEventListener('resize', fit); addEventListener('load', fit);
 for (var fk = 1; fk <= 10; fk++) setTimeout(fit, fk * 1000); // 처음 10초는 1초마다 다시 맞춤(크기가 늦게 정해지는 화면 대비)
 setInterval(function(){ shift = [Math.round(Math.random()*12-6), Math.round(Math.random()*12-6)]; fit(); }, 180000);
 fit();
+if (/dbg/.test(location.search)) { // 진단: 칠판이 보는 화면 크기 표시
+  var dg = document.createElement('div'); dg.style.cssText = 'position:fixed;left:0;top:0;z-index:99999;background:#ff0;color:#000;font:bold 28px monospace;padding:8px 14px';
+  document.body.appendChild(dg);
+  setInterval(function(){ var v = window.visualViewport; dg.textContent = 'inner ' + innerWidth + 'x' + innerHeight + ' | doc ' + document.documentElement.clientWidth + 'x' + document.documentElement.clientHeight + ' | dpr ' + devicePixelRatio + ' | screen ' + screen.width + 'x' + screen.height + ' | vv ' + (v ? Math.round(v.width) + 'x' + Math.round(v.height) + ' s' + v.scale.toFixed(2) : '-') + ' | ' + $('app').style.transform; }, 1000);
+}
 
 /* 시계·교시·야간 어둡게 */
 function toMin(hm){ var p = hm.split(':'); return +p[0]*60 + +p[1]; }
