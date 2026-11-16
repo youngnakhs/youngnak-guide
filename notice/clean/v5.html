@@ -792,7 +792,7 @@ async function playIntro(){
     await new Promise(r=>gateOpen=r);
     if(id!==run)return;
   }
-  for(const s of scenes().slice(FROM)){
+  for(const s of [...scenes().slice(FROM),...scenes().slice(FROM)]){ /* 영상 2번 연속 재생 후 체크리스트 */
     const el=document.createElement('div');
     el.className='scene'; el.style.background=s.bg; el.innerHTML=s.html;
     intro.appendChild(el);
