@@ -391,13 +391,18 @@ footer{display:flex;align-items:center;gap:22px}
 <script>
 /* ---- 어떤 해상도(FHD·4K)에서도 16:9로 꽉 채우기 ---- */
 const stage=document.getElementById('stage');
+/* 칠판 앱 WebView는 innerWidth가 실제의 1.42배로 나오고(1363 vs 960), 열릴 때 크기 0일 수 있음 → 문서 크기로 맞추고 처음 10초 다시 맞춤 */
+function VW(){return document.documentElement.clientWidth||innerWidth}
+function VH(){return document.documentElement.clientHeight||innerHeight}
 function fit(){
-  const s=Math.min(innerWidth/1920,innerHeight/1080);
+  const w=VW(),h=VH(); if(!w||!h) return;
+  const s=Math.min(w/1920,h/1080);
   stage.style.transform=`scale(${s})`;
-  stage.style.left=((innerWidth-1920*s)/2)+'px';
-  stage.style.top=((innerHeight-1080*s)/2)+'px';
+  stage.style.left=((w-1920*s)/2)+'px';
+  stage.style.top=((h-1080*s)/2)+'px';
 }
-addEventListener('resize',fit);fit();
+addEventListener('resize',fit);addEventListener('load',fit);fit();
+{let n=0;const t=setInterval(()=>{fit();if(++n>=20)clearInterval(t)},500);}
 
 const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},
              set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
