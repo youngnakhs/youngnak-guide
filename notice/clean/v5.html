@@ -834,6 +834,12 @@ render();show();paintLoop();
 if(matchMedia('(prefers-reduced-motion: reduce)').matches||Q.has('nointro')){
   stage.classList.add('enter');idle();
 }else playIntro();
+/* 11-17 ?auto(칠판 송출): 재생·시작·반복 버튼 숨김, 체크리스트가 처음 뜨면 타이머 바로 시작 */
+if(AUTO){
+  ['replay','loop','go'].forEach(i=>{const b=document.getElementById(i);if(b)b.style.display='none'});
+  const _endA=endIntro;
+  endIntro=function(id){const r0=run;_endA(id);if(run!==r0&&!tick&&left===base)go.onclick()};
+}
 /* 11-17 ?mv=유튜브ID : 체크리스트가 뜨고 mvwait초(기본 90) 뒤 그 영상 → 끝나면 청소 영상 다시 */
 const MV=Q.get('mv'), MVWAIT=+(Q.get('mvwait')||90)*1000, MVMAX=+(Q.get('mvsec')||360)*1000;
 let mvT=null;
