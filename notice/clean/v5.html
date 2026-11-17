@@ -834,6 +834,31 @@ render();show();paintLoop();
 if(matchMedia('(prefers-reduced-motion: reduce)').matches||Q.has('nointro')){
   stage.classList.add('enter');idle();
 }else playIntro();
+/* 11-17 ?mv=유튜브ID : 체크리스트가 뜨고 mvwait초(기본 90) 뒤 그 영상 → 끝나면 청소 영상 다시 */
+const MV=Q.get('mv'), MVWAIT=+(Q.get('mvwait')||90)*1000, MVMAX=+(Q.get('mvsec')||260)*1000;
+let mvT=null;
+if(MV){
+  const box=document.createElement('div');
+  box.style.cssText='position:fixed;inset:0;background:#000;z-index:99999;display:none';
+  document.body.appendChild(box);
+  const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';document.head.appendChild(s);
+  let yt=null, guard=null;
+  const close=()=>{if(box.style.display==='none')return;clearTimeout(guard);try{yt&&yt.destroy()}catch(e){}yt=null;box.innerHTML='';box.style.display='none';playIntro()};
+  const showMV=()=>{
+    clearTimeout(mvT);
+    if(!(window.YT&&YT.Player)){mvT=setTimeout(showMV,5000);return}
+    box.innerHTML='<div id="mvp" style="width:100%;height:100%"></div>';box.style.display='block';
+    yt=new YT.Player('mvp',{width:'100%',height:'100%',videoId:MV,
+      playerVars:{autoplay:1,controls:0,rel:0,playsinline:1,modestbranding:1,iv_load_policy:3},
+      events:{onReady:e=>{try{e.target.unMute();e.target.setVolume(100)}catch(x){}e.target.playVideo();
+                setTimeout(()=>{try{if(yt&&yt.getPlayerState()!==1){yt.mute();yt.playVideo()}}catch(x){}},4000)},
+              onStateChange:e=>{if(e.data===0)close()}, onError:close}});
+    guard=setTimeout(close,MVMAX);
+  };
+  const _end=endIntro, _play=playIntro;
+  endIntro=function(id){const r0=run;_end(id);if(run!==r0){clearTimeout(mvT);mvT=setTimeout(showMV,MVWAIT)}};
+  playIntro=function(){clearTimeout(mvT);return _play.apply(this,arguments)};
+}
 
 </script>
 </body>
