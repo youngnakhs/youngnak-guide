@@ -797,7 +797,7 @@ async function playIntro(){
     el.className='scene'; el.style.background=s.bg; el.innerHTML=s.html;
     intro.appendChild(el);
     const v=el.querySelector('video');CUES=[];
-    if(v){v.muted=!unlocked;try{await v.play()}catch(e){v.muted=true;try{await v.play()}catch(e2){}}
+    if(v){v.muted=!(unlocked||AUTO);try{await v.play()}catch(e){v.muted=true;try{await v.play()}catch(e2){}}
       if(id!==run){v.pause();return}}
     if(s.tr){A(el,s.tr,{duration:600,easing:EZ.inout});sfx('swish')}
     const cam=el.querySelector('.cam'); if(cam)A(cam,[{transform:'scale(1)'},{transform:'scale(1.05)'}],{duration:s.ms+600,easing:'linear'});
@@ -830,6 +830,7 @@ loopBtn.onclick=()=>{unlock();loopOn=!loopOn;store.set('sn-loop',loopOn?'1':'0')
 function idle(){clearTimeout(idleT);if(loopOn)idleT=setTimeout(playIntro,60000)}
 document.addEventListener('pointerdown',e=>{if(intro.classList.contains('hide'))idle()});
 
+if(AUTO)unlock();  /* 칠판 송출: 소리 켠 채로 먼저 시도, 막히면 무음 재생 */
 render();show();paintLoop();
 if(matchMedia('(prefers-reduced-motion: reduce)').matches||Q.has('nointro')){
   stage.classList.add('enter');idle();
@@ -880,6 +881,8 @@ if(MV){
     setTimeout(()=>{try{if(shown&&yt.getPlayerState()!==1){yt.mute();yt.playVideo()}}catch(x){}},4000);
     guard=setTimeout(close,MVMAX);
   }
+  /* 화면을 한 번이라도 누르면 소리 켬(PC 브라우저처럼 자동 소리가 막힌 곳) */
+  addEventListener('pointerdown',()=>{unlock();document.querySelectorAll('#intro video').forEach(v=>v.muted=false);try{if(shown){yt.unMute();yt.setVolume(100)}}catch(x){}},true);
   const _end=endIntro, _play=playIntro;
   endIntro=function(id){const r0=run;if(mvPhase===0&&id===run)mvPhase=1;_end(id);if(run!==r0&&mvPhase===1){clearTimeout(mvT);showMV()}};
   playIntro=function(){clearTimeout(mvT);return _play.apply(this,arguments)};
