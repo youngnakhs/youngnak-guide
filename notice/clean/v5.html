@@ -835,7 +835,7 @@ if(matchMedia('(prefers-reduced-motion: reduce)').matches||Q.has('nointro')){
   stage.classList.add('enter');idle();
 }else playIntro();
 /* 11-17 ?mv=유튜브ID : 체크리스트가 뜨고 mvwait초(기본 90) 뒤 그 영상 → 끝나면 청소 영상 다시 */
-const MV=Q.get('mv'), MVWAIT=+(Q.get('mvwait')||90)*1000, MVMAX=+(Q.get('mvsec')||260)*1000;
+const MV=Q.get('mv'), MVWAIT=+(Q.get('mvwait')||90)*1000, MVMAX=+(Q.get('mvsec')||360)*1000;
 let mvT=null;
 if(MV){
   const box=document.createElement('div');
