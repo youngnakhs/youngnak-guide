@@ -861,11 +861,12 @@ if(MV){
   };
   window.onYouTubeIframeAPIReady=()=>{
     yt=new YT.Player('mvp',{width:'100%',height:'100%',videoId:MV,
-      playerVars:{autoplay:1,mute:1,controls:0,rel:0,playsinline:1,modestbranding:1,iv_load_policy:3},
+      playerVars:{autoplay:1,mute:1,cc_load_policy:0,controls:0,rel:0,playsinline:1,modestbranding:1,iv_load_policy:3},
       events:{onReady:e=>{e.target.mute();e.target.playVideo();arm()},
-              onStateChange:e=>{if(e.data===0&&shown)close()}, onError:()=>{armed=true;if(shown)close()}}});
+              onStateChange:e=>{if(e.data===1)noCC();if(e.data===0&&shown)close()}, onError:()=>{armed=true;if(shown)close()}}});
   };
   const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';document.head.appendChild(s);
+  function noCC(){try{yt.unloadModule('captions');yt.unloadModule('cc');yt.setOption('captions','track',{})}catch(x){}}  /* 자막 끔 */
   function close(){
     if(!shown)return; shown=false; clearTimeout(guard);
     box.style.opacity=0;box.style.pointerEvents='none';
@@ -877,7 +878,7 @@ if(MV){
     if(!yt||(!armed&&waited<120000)){waited+=3000;mvT=setTimeout(showMV,3000);return}  /* 광고가 아직이면 체크리스트 더 보여 줌(최대 2분) */
     waited=0; shown=true;
     box.style.opacity=1;box.style.pointerEvents='auto';
-    try{yt.seekTo(0,true);yt.unMute();yt.setVolume(100);yt.playVideo()}catch(x){}
+    try{noCC();yt.seekTo(0,true);yt.unMute();yt.setVolume(100);yt.playVideo()}catch(x){}
     setTimeout(()=>{try{if(shown&&yt.getPlayerState()!==1){yt.mute();yt.playVideo()}}catch(x){}},4000);
     guard=setTimeout(close,MVMAX);
   }
