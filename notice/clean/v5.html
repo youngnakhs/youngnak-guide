@@ -792,7 +792,7 @@ async function playIntro(){
     await new Promise(r=>gateOpen=r);
     if(id!==run)return;
   }
-  for(const s of [...scenes().slice(FROM),...scenes().slice(FROM)]){ /* 영상 2번 연속 재생 후 체크리스트 */
+  for(const s of [...scenes().slice(FROM),...(Q.get('mv')?[]:scenes().slice(FROM))]){ /* 영상 2번 연속 재생 후 체크리스트(?mv면 1번씩: 청소→유튜브→청소→체크리스트) */
     const el=document.createElement('div');
     el.className='scene'; el.style.background=s.bg; el.innerHTML=s.html;
     intro.appendChild(el);
@@ -838,13 +838,13 @@ if(matchMedia('(prefers-reduced-motion: reduce)').matches||Q.has('nointro')){
 if(AUTO){
   ['replay','loop','go'].forEach(i=>{const b=document.getElementById(i);if(b)b.style.display='none'});
   const _endA=endIntro;
-  endIntro=function(id){const r0=run;_endA(id);if(run!==r0&&!tick&&left===base)go.onclick()};
+  endIntro=function(id){const r0=run;_endA(id);if(run!==r0&&!tick&&left===base&&!(MV&&mvPhase<2))go.onclick()};
 }
 /* 11-17 ?mv=유튜브ID : 체크리스트가 뜨고 mvwait초(기본 90) 뒤 그 영상 → 끝나면 청소 영상 다시.
    광고는 교실에 안 보이게: 페이지가 열리면 유튜브를 숨긴 채 소리 없이 미리 틀어 광고를 흘려보내고,
    본 영상이 시작되면 0초로 되감아 멈춰 둠 → 차례가 오면 보이게 하고 소리 켜서 재생. 플레이어는 계속 재사용(반복 때 광고 다시 안 붙게). */
 const MV=Q.get('mv'), MVWAIT=+(Q.get('mvwait')||90)*1000, MVMAX=+(Q.get('mvsec')||300)*1000;
-let mvT=null;
+let mvT=null, mvPhase=0;  /* 0=첫 청소 영상, 1=유튜브, 2=두 번째 청소 영상→체크리스트(끝) */
 if(MV){
   const box=document.createElement('div');
   box.style.cssText='position:fixed;inset:0;background:#000;z-index:99999;opacity:0;pointer-events:none';
@@ -869,7 +869,7 @@ if(MV){
     if(!shown)return; shown=false; clearTimeout(guard);
     box.style.opacity=0;box.style.pointerEvents='none';
     try{yt.pauseVideo();yt.seekTo(0,true);yt.mute()}catch(x){}
-    playIntro();
+    mvPhase=2; playIntro();
   }
   function showMV(){
     clearTimeout(mvT);
@@ -881,7 +881,7 @@ if(MV){
     guard=setTimeout(close,MVMAX);
   }
   const _end=endIntro, _play=playIntro;
-  endIntro=function(id){const r0=run;_end(id);if(run!==r0){clearTimeout(mvT);mvT=setTimeout(showMV,MVWAIT)}};
+  endIntro=function(id){const r0=run;if(mvPhase===0&&id===run)mvPhase=1;_end(id);if(run!==r0&&mvPhase===1){clearTimeout(mvT);showMV()}};
   playIntro=function(){clearTimeout(mvT);return _play.apply(this,arguments)};
 }
 
