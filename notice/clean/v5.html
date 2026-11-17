@@ -840,27 +840,46 @@ if(AUTO){
   const _endA=endIntro;
   endIntro=function(id){const r0=run;_endA(id);if(run!==r0&&!tick&&left===base)go.onclick()};
 }
-/* 11-17 ?mv=유튜브ID : 체크리스트가 뜨고 mvwait초(기본 90) 뒤 그 영상 → 끝나면 청소 영상 다시 */
-const MV=Q.get('mv'), MVWAIT=+(Q.get('mvwait')||90)*1000, MVMAX=+(Q.get('mvsec')||360)*1000;
+/* 11-17 ?mv=유튜브ID : 체크리스트가 뜨고 mvwait초(기본 90) 뒤 그 영상 → 끝나면 청소 영상 다시.
+   광고는 교실에 안 보이게: 페이지가 열리면 유튜브를 숨긴 채 소리 없이 미리 틀어 광고를 흘려보내고,
+   본 영상이 시작되면 0초로 되감아 멈춰 둠 → 차례가 오면 보이게 하고 소리 켜서 재생. 플레이어는 계속 재사용(반복 때 광고 다시 안 붙게). */
+const MV=Q.get('mv'), MVWAIT=+(Q.get('mvwait')||90)*1000, MVMAX=+(Q.get('mvsec')||300)*1000;
 let mvT=null;
 if(MV){
   const box=document.createElement('div');
-  box.style.cssText='position:fixed;inset:0;background:#000;z-index:99999;display:none';
+  box.style.cssText='position:fixed;inset:0;background:#000;z-index:99999;opacity:0;pointer-events:none';
+  box.innerHTML='<div id="mvp" style="width:100%;height:100%"></div>';
   document.body.appendChild(box);
-  const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';document.head.appendChild(s);
-  let yt=null, guard=null;
-  const close=()=>{if(box.style.display==='none')return;clearTimeout(guard);try{yt&&yt.destroy()}catch(e){}yt=null;box.innerHTML='';box.style.display='none';playIntro()};
-  const showMV=()=>{
-    clearTimeout(mvT);
-    if(!(window.YT&&YT.Player)){mvT=setTimeout(showMV,5000);return}
-    box.innerHTML='<div id="mvp" style="width:100%;height:100%"></div>';box.style.display='block';
-    yt=new YT.Player('mvp',{width:'100%',height:'100%',videoId:MV,
-      playerVars:{autoplay:1,controls:0,rel:0,playsinline:1,modestbranding:1,iv_load_policy:3},
-      events:{onReady:e=>{try{e.target.unMute();e.target.setVolume(100)}catch(x){}e.target.playVideo();
-                setTimeout(()=>{try{if(yt&&yt.getPlayerState()!==1){yt.mute();yt.playVideo()}}catch(x){}},4000)},
-              onStateChange:e=>{if(e.data===0)close()}, onError:close}});
-    guard=setTimeout(close,MVMAX);
+  let yt=null, armed=false, shown=false, guard=null, waited=0;
+  window.MVSTATE=()=>({armed,shown,t:yt&&yt.getCurrentTime?yt.getCurrentTime():null,st:yt&&yt.getPlayerState?yt.getPlayerState():null});
+  const arm=()=>{                      /* 본 영상이 실제로 돌기 시작하면(광고 끝) 0초로 되감아 멈춤 */
+    const k=setInterval(()=>{try{
+      if(!armed&&yt.getPlayerState()===1&&yt.getCurrentTime()>0.5&&yt.getDuration()>120){
+        armed=true;clearInterval(k);if(!shown){yt.pauseVideo();yt.seekTo(0,true)}}
+    }catch(x){}},400);
   };
+  window.onYouTubeIframeAPIReady=()=>{
+    yt=new YT.Player('mvp',{width:'100%',height:'100%',videoId:MV,
+      playerVars:{autoplay:1,mute:1,controls:0,rel:0,playsinline:1,modestbranding:1,iv_load_policy:3},
+      events:{onReady:e=>{e.target.mute();e.target.playVideo();arm()},
+              onStateChange:e=>{if(e.data===0&&shown)close()}, onError:()=>{armed=true;if(shown)close()}}});
+  };
+  const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';document.head.appendChild(s);
+  function close(){
+    if(!shown)return; shown=false; clearTimeout(guard);
+    box.style.opacity=0;box.style.pointerEvents='none';
+    try{yt.pauseVideo();yt.seekTo(0,true);yt.mute()}catch(x){}
+    playIntro();
+  }
+  function showMV(){
+    clearTimeout(mvT);
+    if(!yt||(!armed&&waited<120000)){waited+=3000;mvT=setTimeout(showMV,3000);return}  /* 광고가 아직이면 체크리스트 더 보여 줌(최대 2분) */
+    waited=0; shown=true;
+    box.style.opacity=1;box.style.pointerEvents='auto';
+    try{yt.seekTo(0,true);yt.unMute();yt.setVolume(100);yt.playVideo()}catch(x){}
+    setTimeout(()=>{try{if(shown&&yt.getPlayerState()!==1){yt.mute();yt.playVideo()}}catch(x){}},4000);
+    guard=setTimeout(close,MVMAX);
+  }
   const _end=endIntro, _play=playIntro;
   endIntro=function(id){const r0=run;_end(id);if(run!==r0){clearTimeout(mvT);mvT=setTimeout(showMV,MVWAIT)}};
   playIntro=function(){clearTimeout(mvT);return _play.apply(this,arguments)};
