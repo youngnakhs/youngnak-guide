@@ -18,5 +18,30 @@
   ],
   "from_hour": 17,
   "at": "2026-11-19T06:40+09:00"
+ },
+ "4": {
+  "actions": [
+   {
+    "do": "key",
+    "text": "사방",
+    "via": "type"
+   },
+   {
+    "types": [
+     "FLYING"
+    ],
+    "do": "desktop"
+   },
+   {
+    "item": "ARCHESTAR",
+    "pokemon": 0,
+    "do": "use_item"
+   },
+   {
+    "do": "check"
+   }
+  ],
+  "from_hour": 0,
+  "at": "2026-11-24T07:46+09:00"
  }
 }
