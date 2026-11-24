@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="ko">
+<head><script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML='<p style="font:16px sans-serif;padding:2em">이 자료의 열람 기간이 종료되었습니다(2027-02-05).</p>';throw new Error("expired")}</script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>THE MOMENT WILL COME</title>
+<style>
+html,body{margin:0;height:100%;background:#000;overflow:hidden}
+video{position:fixed;inset:0;width:100%;height:100%;object-fit:contain;background:#000}
+</style>
+</head>
+<body>
+<video id="v" src="moment.mp4" playsinline preload="auto"></video>
+<script>
+/* 칠판 송출: 소리 켠 채 먼저 시도, 막히면 무음 재생 → 화면 누르면 소리 켜짐 */
+const v=document.getElementById('v');
+v.play().catch(()=>{v.muted=true;v.play().catch(()=>{})});
+addEventListener('pointerdown',()=>{v.muted=false;if(v.paused)v.play()},true);
+</script>
+</body>
+</html>
