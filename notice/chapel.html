@@ -179,7 +179,7 @@ svg{overflow:visible}
 .v3 #cap{left:260px;bottom:40px;font-size:52px;color:#23336b;background:#fffbe9;border:4px dashed #23336b;border-radius:14px;padding:8px 34px}
 .v3 #bar{background:#d8342c}
 
-/* ── 4 점심 전: 인포그래픽 ── */
+/* ── 4 점심 시작(4교시 후): 인포그래픽 ── */
 .v4{color:#13260e;background:#eef6e3}
 .v4 .hd{position:absolute;left:100px;right:100px;top:56px;display:flex;justify-content:space-between;font-size:40px;font-weight:700;color:#5f7c51;z-index:5}
 .v4 .hd b{color:#2c9a3c}
@@ -259,7 +259,7 @@ var SAY={
  1:{say:['좋은 아침이에요! 오늘은 금요일, 예배가 있는 날이에요.','오후 한 시까지 강당으로 모여 주세요.','휴대폰과 태블릿PC는 교실에 두고 와요.','성경책도 잊지 말고 꼭 챙겨 주세요.','기억해요! 한 시, 강당, 휴대폰은 두고, 성경책은 챙기기!','오늘도 힘찬 하루 보내요. 영락고등학교!']},
  2:{say:['퀴즈! 오늘 예배는 몇 시까지 갈까요? 정답, 오후 한 시!','그럼 어디로 가야 할까요? 정답, 강당!','가져가면 안 되는 건? 휴대폰과 태블릿PC!','꼭 가져가야 하는 건? 바로 성경책!','정답 정리! 한 시, 강당, 휴대폰은 두고, 성경책은 챙기기!','다 맞혔나요? 영락고등학교, 강당에서 만나요!']},
  3:{say:['금요 예배 준비, 같이 확인해요. 첫 번째, 시간! 오후 한 시까지.','두 번째, 장소! 모두 강당으로 와 주세요.','세 번째, 휴대폰과 태블릿PC는 교실에 두기.','네 번째, 성경책 챙기기.','체크 완료! 한 시, 강당, 휴대폰은 두고, 성경책은 챙기기!','준비됐으면, 영락고등학교 강당에서 만나요!']},
- 4:{say:['예배까지 이제 두 시간도 안 남았어요. 오후 한 시예요.','점심 먹고 나서, 한 시까지 강당으로 와 주세요.','휴대폰과 태블릿PC는 교실에 두고 오는 것, 잊지 마세요.','성경책은 지금 미리 꺼내 두면 좋아요.','점심 먹고 바로! 한 시, 강당, 휴대폰은 두고, 성경책은 챙기기!','영락고등학교, 조금 이따 강당에서 만나요!']},
+ 4:{say:['예배까지 이제 한 시간도 안 남았어요. 오후 한 시예요.','점심 먹고 나서, 한 시까지 강당으로 와 주세요.','휴대폰과 태블릿PC는 교실에 두고 오는 것, 잊지 마세요.','성경책은 지금 미리 꺼내 두면 좋아요.','점심 먹고 바로! 한 시, 강당, 휴대폰은 두고, 성경책은 챙기기!','영락고등학교, 조금 이따 강당에서 만나요!']},
  5:{say:['곧 예배 시간이에요! 오후 한 시까지 강당으로!','지금 출발하면 여유 있게 도착할 수 있어요.','휴대폰과 태블릿PC는 교실에! 들고 가지 않아요.','성경책, 챙겼나요? 한 번 더 확인해요.','마지막 확인! 한 시, 강당, 휴대폰은 두고, 성경책은 챙기기!','영락고등학교 여러분, 강당에서 만나요!']}};
 
 function D(){var n=new Date(),W='일월화수목금토';return (n.getMonth()+1)+'.'+n.getDate()+' ('+W[n.getDay()]+')'}
@@ -404,9 +404,9 @@ var V={
    '<div class="st"><div class="row">'+EMB(280,.1)+'<div><div class="sb in" style="--d:.4s;margin:0">이상, 영락 뉴스였습니다</div><div class="hl in" style="--d:.7s;font-size:170px">강당에서<br><em>만나요!</em></div></div></div></div>']}
 };
 
-// ── 판 고르기: ?v=번호(미리보기), 아니면 시각(9시 전 1 · 10시 전 2 · 11시 전 3 · 12시 전 4 · 그 뒤 5) ──
-var q=location.search.match(/[?&]v=(\d)/),h=new Date().getHours();
-var vn=q&&V[q[1]]?+q[1]:h<9?1:h<10?2:h<11?3:h<12?4:5,C=V[vn],S=document.getElementById('s');
+// ── 판 고르기: ?v=번호(미리보기), 아니면 시각(1교시 후 9:10 → 1 · 2교시 후 → 2 · 3교시 후 → 3 · 4교시 후 12:10 → 4 · 12:30부터 점심 → 5) ──
+var q=location.search.match(/[?&]v=(\d)/),nw=new Date(),m=nw.getHours()*60+nw.getMinutes();
+var vn=q&&V[q[1]]?+q[1]:m<600?1:m<660?2:m<720?3:m<750?4:5,C=V[vn],S=document.getElementById('s');
 S.className='v'+vn+' tr-'+C.tr;
 S.innerHTML=C.frame()+C.sc.map(function(x){return '<div class="sc">'+x+'</div>'}).join('')+'<div id="cap"></div><div id="wipe"><i></i><i></i></div><div id="bar"></div>';
 if(C.init)C.init();
