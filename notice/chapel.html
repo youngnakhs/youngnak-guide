@@ -404,9 +404,9 @@ var V={
    '<div class="st"><div class="row">'+EMB(280,.1)+'<div><div class="sb in" style="--d:.4s;margin:0">이상, 영락 뉴스였습니다</div><div class="hl in" style="--d:.7s;font-size:170px">강당에서<br><em>만나요!</em></div></div></div></div>']}
 };
 
-// ── 판 고르기: ?v=번호(미리보기), 아니면 시각(1교시 후 9:10 → 1 · 2교시 후 → 2 · 3교시 후 → 3 · 4교시 후 12:10 → 4 · 12:30부터 점심 → 5) ──
+// ── 판 고르기: ?v=번호(미리보기), 아니면 시각(1교시 후 9:10 → 1 · 2교시 후 → 2 · 3교시 후 → 3 · 4교시 후 12:10부터 점심 → 5, 4번은 미리보기만) ──
 var q=location.search.match(/[?&]v=(\d)/),nw=new Date(),m=nw.getHours()*60+nw.getMinutes();
-var vn=q&&V[q[1]]?+q[1]:m<600?1:m<660?2:m<720?3:m<750?4:5,C=V[vn],S=document.getElementById('s');
+var vn=q&&V[q[1]]?+q[1]:m<600?1:m<660?2:m<720?3:5,C=V[vn],S=document.getElementById('s');
 S.className='v'+vn+' tr-'+C.tr;
 S.innerHTML=C.frame()+C.sc.map(function(x){return '<div class="sc">'+x+'</div>'}).join('')+'<div id="cap"></div><div id="wipe"><i></i><i></i></div><div id="bar"></div>';
 if(C.init)C.init();
