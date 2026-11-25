@@ -418,6 +418,7 @@ function fit(){var e=document.documentElement,X=e.clientWidth,Y=e.clientHeight;i
   var k=Math.min(X/1920,Y/1080);S.style.transform='translate('+(X-1920*k)/2+'px,'+(Y-1080*k)/2+'px) scale('+k+')';}
 fit();addEventListener('resize',fit);var n=0,t=setInterval(function(){fit();if(++n>9)clearInterval(t)},1000);
 // 목소리: voice/v{판}-{장면}.mp3 있으면 장면 길이를 목소리에 맞춤. 짝수 바퀴(1·3·5…번째)만 소리 — 10분 내내 반복되면 시끄러워서
+var LAPS=+((location.search.match(/[?&]laps=(\d+)/)||[])[1]||0); // ?laps=N → N바퀴 돌고 마지막 장면에서 멈춤
 var SY=SAY[vn].say,VOICE_EVERY=2,AU=SY.map(function(_,j){var x=new Audio('voice/v'+vn+'-'+(j+1)+'.mp3');x.preload='auto';x.ok=false;
   x.addEventListener('loadedmetadata',function(){x.ok=isFinite(x.duration)&&x.duration>0});return x;});
 var sc=S.querySelectorAll('.sc'),base=[5,4.5,5,4.5,6.5,6],i=-1,loop=-1,bar=document.getElementById('bar'),cap=document.getElementById('cap'),wp=document.getElementById('wipe');
@@ -429,7 +430,7 @@ function show(){if(i>=0)sc[i].classList.remove('on');i=(i+1)%sc.length;
   if(au.ok&&loop%VOICE_EVERY==0){d=Math.max(base[i],au.duration+1.2);try{au.currentTime=0;var p=au.play();if(p&&p.catch)p.catch(function(){})}catch(e){}}
   bar.style.transition='none';bar.style.width='0';void bar.offsetWidth;bar.style.transition='width '+d+'s linear';bar.style.width='100%';
   setTimeout(next,d*1000);}
-function next(){cap.classList.remove('on');wp.classList.remove('go');void wp.offsetWidth;wp.classList.add('go');setTimeout(show,C.tr=='page'?150:500);}
+function next(){if(LAPS&&i==sc.length-1&&loop>=LAPS-1)return;cap.classList.remove('on');wp.classList.remove('go');void wp.offsetWidth;wp.classList.add('go');setTimeout(show,C.tr=='page'?150:500);}
 show();
 </script>
 </body>
