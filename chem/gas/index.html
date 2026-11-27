@@ -7,7 +7,7 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap');
 :root{
-  --bg:#10201b;--panel:#182f28;--panel-2:#1f382f;--line:#2c473d;--ink:#f1ede3;--muted:#9cb0a8;
+  --bg:#10201b;--panel:#182f28;--panel-2:#1f382f;--line:#2c473d;--ink:#f1ede3;--muted:#c6d6cf;
   --acid:#e4572e;--acid-2:#f2a541;--neutral:#6fb98f;--base-2:#3e9c9c;--base:#3b6fa0;--pink:#d95bb0;
   --mono:'Space Mono','Courier New',monospace;--sans:'Work Sans',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
 }
@@ -136,6 +136,21 @@ html{-webkit-text-size-adjust:100%;}
 @supports (padding:env(safe-area-inset-bottom)){
   body{padding-bottom:calc(78px + env(safe-area-inset-bottom));}
 }
+
+/* ══ 선명도 (11-27 "색이 명확하게") ══════════════════════════
+   어두운 테마 실험실(탭 있는 것): 보조 글자·선·칸 배경 대비를 올린다 */
+:root:has(.tab-btn){--muted:#c6d6cf;--line:#4b7062;--panel:#1c3a31;--panel-2:#264a3e;}
+:root:has(.tab-btn) .tab-btn{color:#c6d6cf;}
+:root:has(.tab-btn) .tab-btn.active{color:#fff;}
+:root:has(.tab-btn) .tab-btn.active::after{height:3px;}
+:root:has(.tab-btn) .card h2,:root:has(.tab-btn) .card h3{color:#e3ece8;}
+:root:has(.tab-btn) .chip{border-color:#5d8575;}
+:root:has(.tab-btn) .note{color:#d5e1dc;}
+/* 헤스 실험실(자체 라이트/다크): 다크일 때만 보조 글자·선 대비 */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--mute:#c0d2cc;--line:#45605a;}}
+:root[data-theme="dark"]{--mute:#c0d2cc;--line:#45605a;}
+/* 돌아가기 링크(인라인 스타일이라 !important) */
+a[href="../"]{color:#dfe9e4!important;border-color:#5d8575!important;}
 /* == IPAD-FIT END == */
 </style>
 </head>
@@ -180,9 +195,9 @@ html{-webkit-text-size-adjust:100%;}
       <div class="card">
         <h2>수상 치환 장치</h2>
         <div class="stage"><svg viewBox="0 0 340 310" id="rig">
-          <rect x="150" y="190" width="180" height="112" fill="rgba(127,176,224,.18)"/>
+          <rect x="150" y="190" width="180" height="112" fill="rgba(127,176,224,.38)"/>
           <g id="cyl">
-            <rect id="cWater" x="214" y="20" width="52" height="170" fill="rgba(127,176,224,.35)"/>
+            <rect id="cWater" x="214" y="20" width="52" height="170" fill="rgba(127,176,224,.6)"/>
             <rect id="cGas" x="214" y="20" width="52" height="0" fill="rgba(240,240,235,.06)"/>
             <path d="M212 190 V20 Q212 18 214 18 H266 Q268 18 268 20 V190" fill="none" stroke="#f1ede3" stroke-width="2"/>
             <g id="cTicks"></g>
@@ -190,10 +205,10 @@ html{-webkit-text-size-adjust:100%;}
           <path d="M150 160 V302 H330 V160" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
           <line x1="150" x2="330" y1="190" y2="190" stroke="#7fb0e0" stroke-width="1.5"/>
           <path d="M60 180 H96 V210 L130 300 H26 L60 210 Z" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
-          <path d="M37 266 L119 266 L130 300 H26 Z" fill="rgba(242,165,65,.25)"/>
+          <path d="M37 266 L119 266 L130 300 H26 Z" fill="rgba(242,165,65,.5)"/>
           <rect id="rib" x="64" y="290" width="28" height="4" fill="#c9d1d6"/>
           <g id="fBub"></g>
-          <path d="M96 195 H190 V296 H240 V284" fill="none" stroke="#9cb0a8" stroke-width="3"/>
+          <path d="M96 195 H190 V296 H240 V284" fill="none" stroke="#c6d6cf" stroke-width="3"/>
           <g id="cBub"></g>
           <line id="lvIn" x1="200" x2="280" stroke="#ffe066" stroke-dasharray="3 3"/>
           <text x="334" y="184" text-anchor="end" fill="#7fb0e0" font-size="10">수조 수면</text>
@@ -244,8 +259,8 @@ let g={m:0.04,state:'idle',v:0,lev:false};
 
 // 실린더 눈금: 위쪽 0 mL, 50 mL가 y=20+200
 const yOfV=v=>20+v*2.4, SURF=190, HPX=HIN*4.5; // 실린더 좌표(그룹 기준), 수조 수면 y, 수면차 px
-const tk=$('#cTicks');for(let m=0;m<=50;m+=5){const y=yOfV(m);tk.appendChild(el('line',{x1:266,x2:m%10?260:256,y1:y,y2:y,stroke:'#9cb0a8'}));
-  if(m%10===0){const t=el('text',{x:252,y:y+4,'text-anchor':'end',fill:'#9cb0a8','font-size':9});t.textContent=m;tk.appendChild(t);}}
+const tk=$('#cTicks');for(let m=0;m<=50;m+=5){const y=yOfV(m);tk.appendChild(el('line',{x1:266,x2:m%10?260:256,y1:y,y2:y,stroke:'#c6d6cf'}));
+  if(m%10===0){const t=el('text',{x:252,y:y+4,'text-anchor':'end',fill:'#c6d6cf','font-size':9});t.textContent=m;tk.appendChild(t);}}
 let offFix=24; // 실린더 고정 높이: 반응 중엔 '맞추기 전' 높이, 맞춘 뒤엔 안팎 수면이 같은 높이
 function draw(){const off=g.lev?SURF-yOfV(g.v):offFix;
   $('#cyl').setAttribute('transform',`translate(0,${off})`);
