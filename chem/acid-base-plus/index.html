@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>산·염기 더 알기 실험실</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap');
+:root{
+  --bg:#10201b;--panel:#1c3a31;--panel-2:#264a3e;--line:#4b7062;--ink:#f1ede3;--muted:#c6d6cf;
+  --acid:#e4572e;--acid-2:#f2a541;--neutral:#6fb98f;--base:#3b6fa0;
+  --mono:'Space Mono','Courier New',monospace;--sans:'Work Sans',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;color:var(--ink);font-family:var(--sans);padding:28px 16px 60px;
+  background:radial-gradient(circle at 15% 0%,rgba(111,185,143,.08),transparent 45%),radial-gradient(circle at 90% 90%,rgba(228,87,46,.07),transparent 45%),var(--bg);}
+.wrap{max-width:920px;margin:0 auto;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--neutral);text-transform:uppercase;margin-bottom:8px;}
+h1{font-weight:700;font-size:32px;margin:0 0 6px;letter-spacing:-.01em;}
+.sub{color:var(--muted);font-size:14.5px;line-height:1.6;margin:0 0 26px;max-width:620px;}
+.tabs{display:flex;gap:8px;margin-bottom:22px;border-bottom:1px solid var(--line);flex-wrap:wrap;}
+.tab-btn{font-family:var(--sans);font-weight:600;font-size:14px;background:none;border:none;color:var(--muted);padding:10px 4px;cursor:pointer;position:relative;}
+.tab-btn.active{color:#fff;}
+.tab-btn.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:3px;background:var(--neutral);border-radius:2px;}
+.tab-btn+.tab-btn{margin-left:18px;}
+.panel{display:none;}
+.panel.active{display:block;animation:fade .3s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.grid>*{min-width:0;}
+@media(max-width:720px){.grid{grid-template-columns:1fr;}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;}
+.card h2{font-size:12px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#e3ece8;margin:0 0 14px;font-weight:700;}
+.card+.card,.grid+.card,.card+.grid{margin-top:18px;}
+.chip-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.chip{font-family:var(--sans);font-size:13px;font-weight:500;background:var(--panel-2);border:1px solid #5d8575;color:var(--ink);padding:8px 12px;border-radius:20px;cursor:pointer;}
+.chip:hover{border-color:var(--neutral);}
+.chip.active{background:var(--neutral);color:#0d1a15;border-color:var(--neutral);font-weight:700;}
+.chip:disabled{opacity:.45;cursor:default;}
+.lbl{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0 0 8px;}
+.eq{font-family:var(--mono);font-size:14px;text-align:center;padding:12px;background:var(--panel-2);border-radius:8px;margin-bottom:16px;line-height:1.7;}
+.note{font-size:12.5px;color:#d5e1dc;line-height:1.6;background:var(--panel-2);border-radius:8px;padding:10px 12px;margin-top:14px;}
+.note b{color:var(--ink);}
+.note.warn{border:1px solid rgba(242,165,65,.55);background:rgba(242,165,65,.10);}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.go{font-family:var(--sans);font-weight:700;font-size:14.5px;border:none;border-radius:10px;padding:11px 15px;cursor:pointer;background:var(--neutral);color:#0d1a15;touch-action:manipulation;}
+.go.ghost{background:var(--panel-2);color:var(--ink);border:1px solid var(--line);}
+.go:disabled{opacity:.45;cursor:default;}
+.stage{display:flex;justify-content:center;}
+.stage svg{width:100%;max-width:340px;height:auto;}
+svg text{font-family:var(--mono);}
+.read{display:flex;justify-content:space-around;font-family:var(--mono);text-align:center;margin-top:8px;gap:8px;flex-wrap:wrap;}
+.read .big{font-size:22px;font-weight:700;line-height:1.2;}
+.read .u{font-size:11px;color:var(--muted);letter-spacing:.06em;}
+.steps{counter-reset:s;margin:0;padding:0;list-style:none;}
+.steps li{position:relative;padding:0 0 10px 30px;line-height:1.6;font-size:14px;}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;width:21px;height:21px;border-radius:50%;background:var(--panel-2);border:1px solid var(--line);font:700 11px/19px var(--mono);text-align:center;color:var(--neutral);}
+.ans{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:14px;}
+.ans input{width:120px;font:700 16px var(--mono);padding:9px 10px;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);color:var(--ink);}
+.fb{font-size:13.5px;margin-top:8px;min-height:1.2em;line-height:1.6;}
+.fb.ok{color:var(--neutral);}.fb.no{color:var(--acid-2);}
+.tscroll{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th,td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:center;}
+th{font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:400;}
+td.hit{color:#ffd27f;font-weight:600;}
+td select{font:600 13px var(--sans);padding:6px;border-radius:8px;background:var(--panel-2);color:var(--ink);border:1px solid var(--line);}
+.plot{background:var(--panel-2);border-radius:10px;padding:10px;margin-top:12px;}
+.plot svg{width:100%;height:auto;display:block;}
+.q{border-top:1px solid var(--line);padding:12px 0;}
+.q:first-child{border-top:none;padding-top:0;}
+.q p{margin:0 0 8px;line-height:1.6;font-size:14px;}
+.q details{font-size:13px;color:var(--muted);line-height:1.6;}
+.q summary{cursor:pointer;color:var(--neutral);font-weight:600;}
+@media (prefers-reduced-motion:reduce){.panel.active{animation:none;}}
+
+/* == IPAD-FIT BEGIN (자동 생성 · 직접 수정하지 말 것) == */
+/* ══ 아이패드 대응 (자동 삽입 · 화학실험실 파이프라인) ══════════
+   대상 폭 — 세로 744(mini)/810(10.9")/834(Air·Pro11)/1024(Pro12.9")
+            가로 1080/1133/1194/1366
+   원칙 — 손가락 터치 목표 44px 이상, 본문 글자 키우기, 홈판을 화면 폭에 맞춰 확대 */
+html{-webkit-text-size-adjust:100%;}
+
+/* 태블릿 세로부터 */
+@media (min-width:744px){
+  body{padding:38px 30px 78px;font-size:15.5px;}
+  .wrap{max-width:900px;}
+  h1{font-size:38px;}
+  .sub{font-size:16px;line-height:1.7;max-width:680px;}
+
+  /* 탭 — 손가락으로 누를 크기 */
+  .tabs{flex-wrap:wrap;gap:0 4px;}
+  .tab-btn{font-size:15.5px;padding:15px 6px;}
+  .tab-btn+.tab-btn{margin-left:26px;}
+
+  /* 선택 칩 — 44px 이상 */
+  .chip{font-size:14.5px;padding:12px 17px;border-radius:24px;}
+  .card{padding:22px 24px;}
+  .card h3{font-size:12.5px;margin-bottom:16px;}
+  .note{font-size:13.5px;padding:12px 14px;}
+
+  /* 비커·수치 */
+  .beaker-svg{width:172px;height:206px;}
+  .readout .ph-big{font-size:46px;}
+  .verdict{font-size:15px;padding:6px 15px;}
+  .ph-strip-wrap{margin-top:38px;}   /* pH 마커 라벨이 위 설명문과 겹치지 않게 */
+  .ph-strip{height:38px;}
+  .ph-labels{font-size:11.5px;}
+
+  /* 중화 반응 */
+  input[type=range]{height:6px;}
+  .slider-row label{font-size:14px;}
+  .eq{font-size:15.5px;padding:14px;}
+
+  /* 한눈에 비교 */
+  .compare-row{grid-template-columns:repeat(auto-fit,minmax(98px,1fr));gap:16px;}
+  .compare-cell .mini-beaker{width:54px;height:66px;}
+  .compare-cell .c-name{font-size:12.5px;min-height:32px;}
+
+  /* 홈판 — 화면 폭을 다 쓰고 칸을 키운다(손가락으로 칠할 크기) */
+  .well-grid{max-width:100%;gap:5px;margin-top:20px;}
+  .palette-row{gap:10px;}
+  .swatch-btn{padding:10px 14px;}
+  .swatch-dot{width:24px;height:24px;}
+  .swatch-label{font-size:11px;}
+  .toggle-btn{font-size:14.5px;padding:14px 18px;}
+  .tmpl-btn{font-size:13.5px;padding:11px 17px;}
+}
+
+/* 태블릿 가로 · 큰 화면 */
+@media (min-width:1024px){
+  .wrap{max-width:1000px;}
+  .grid{gap:24px;}
+  .well-grid{max-width:840px;}
+  .compare-row{gap:18px;}
+}
+
+/* 아이패드 세로에서 2단이 좁아지는 구간 — 카드 안쪽 여백만 줄여 숨통 */
+@media (min-width:744px) and (max-width:860px){
+  .grid{gap:16px;}
+  .card{padding:20px;}
+}
+
+/* 안전영역(홈 인디케이터) */
+@supports (padding:env(safe-area-inset-bottom)){
+  body{padding-bottom:calc(78px + env(safe-area-inset-bottom));}
+}
+
+/* ══ 선명도 (11-27 "색이 명확하게") ══════════════════════════
+   어두운 테마 실험실(탭 있는 것): 보조 글자·선·칸 배경 대비를 올린다 */
+:root:has(.tab-btn){--muted:#c6d6cf;--line:#4b7062;--panel:#1c3a31;--panel-2:#264a3e;}
+:root:has(.tab-btn) .tab-btn{color:#c6d6cf;}
+:root:has(.tab-btn) .tab-btn.active{color:#fff;}
+:root:has(.tab-btn) .tab-btn.active::after{height:3px;}
+:root:has(.tab-btn) .card h2,:root:has(.tab-btn) .card h3{color:#e3ece8;}
+:root:has(.tab-btn) .chip{border-color:#5d8575;}
+:root:has(.tab-btn) .note{color:#d5e1dc;}
+/* 헤스 실험실(자체 라이트/다크): 다크일 때만 보조 글자·선 대비 */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--mute:#c0d2cc;--line:#45605a;}}
+:root[data-theme="dark"]{--mute:#c0d2cc;--line:#45605a;}
+/* 돌아가기 링크(인라인 스타일이라 !important) */
+a[href="../"]{color:#dfe9e4!important;border-color:#5d8575!important;}
+
+/* ══ 가독성 (11-27) — 탭 있는 실험실: 작은 글씨 키우고 대문자 고정폭 제목을 한글 굵은 제목으로 ══ */
+:root:has(.tab-btn) body{line-height:1.6;}
+:root:has(.tab-btn) .sub{font-size:16px;line-height:1.75;color:#d5e1dc;}
+:root:has(.tab-btn) .tab-btn{font-size:15.5px;}
+:root:has(.tab-btn) .card h2,:root:has(.tab-btn) .card h3{font-family:var(--sans);font-size:15px;letter-spacing:0;text-transform:none;font-weight:700;color:#f1ede3;}
+:root:has(.tab-btn) .note{font-size:14.5px;line-height:1.7;}
+:root:has(.tab-btn) .lbl{font-size:13.5px;}
+:root:has(.tab-btn) .u,:root:has(.tab-btn) .read .u,:root:has(.tab-btn) .readout .u{font-size:12.5px;}
+:root:has(.tab-btn) .eq{font-size:15.5px;line-height:1.7;}
+:root:has(.tab-btn) .fb,:root:has(.tab-btn) .shift{font-size:15px;}
+:root:has(.tab-btn) .steps li,:root:has(.tab-btn) .q p{font-size:15.5px;}
+:root:has(.tab-btn) .q details,:root:has(.tab-btn) .log{font-size:14.5px;}
+:root:has(.tab-btn) th{font-size:12.5px;}
+:root:has(.tab-btn) td{font-size:14.5px;}
+:root:has(.tab-btn) .legend,:root:has(.tab-btn) .bar-l{font-size:13.5px;}
+:root:has(.tab-btn) .chip{font-size:14.5px;}
+:root:has(.tab-btn) .go{font-size:15.5px;}
+:root:has(.tab-btn) .empty{font-size:14px;}
+
+/* 두 칸 격자 안 두 번째 카드가 18px 내려가던 것(.card+.card) 바로잡음 (11-27) */
+.grid>.card{margin-top:0;}
+/* == IPAD-FIT END == */
+</style>
+</head>
+<body>
+  <a href="../" style="display:inline-flex;align-items:center;gap:7px;margin-bottom:18px;
+  font-family:'Space Mono','Courier New',monospace;font-size:12px;letter-spacing:.06em;
+  color:#9cb0a8;text-decoration:none;border:1px solid #2c473d;border-radius:20px;
+  padding:6px 13px;transition:.15s"
+  onmouseover="this.style.color='#f1ede3';this.style.borderColor='#6fb98f'"
+  onmouseout="this.style.color='#9cb0a8';this.style.borderColor='#2c473d'">← 실험실 목록</a>
+<div class="wrap">
+  <div class="eyebrow">Lab 15 · 산과 염기 더 알기</div>
+  <h1>산·염기 더 알기 실험실</h1>
+  <p class="sub">여러 산과 염기 수용액에 전류를 흘리고 금속·달걀 껍데기를 넣어 공통 성질을 찾습니다. 이어서 산과 염기를 섞을 때 나오는 열, 산화 칼슘과 물이 만드는 열로 달걀을 익히는 발열 도시락까지 실험해 보세요.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-p="p1">① 산과 염기의 공통 성질</button>
+    <button class="tab-btn" data-p="p2">② 중화 반응과 온도 변화</button>
+    <button class="tab-btn" data-p="p3">③ 산화 칼슘 반응열 · 발열 조리</button>
+  </div>
+
+  <!-- ① 공통 성질 -->
+  <section class="panel active" id="p1">
+    <div class="grid">
+      <div class="card">
+        <h2>수용액 고르기 (모두 0.1 M)</h2>
+        <div class="chip-list" id="solChips"></div>
+        <p class="lbl">시험 방법</p>
+        <div class="btn-row" style="margin-top:0">
+          <button class="go" data-t="c">전기 전도성</button>
+          <button class="go ghost" data-t="mg">마그네슘 리본</button>
+          <button class="go ghost" data-t="ca">달걀 껍데기 (CaCO₃)</button>
+        </div>
+        <div class="fb" id="obs">용액을 고르고 시험 방법을 누르세요.</div>
+        <div class="note"><b>맛과 촉감은 글로만 배웁니다.</b> 산은 신맛(식초·레몬), 염기는 쓴맛이 나고 손에 묻으면 단백질을 녹여 미끈거립니다. 실험실 용액은 <b>절대 맛보거나 만지지 않습니다.</b> 묻으면 바로 많은 물로 씻으세요.</div>
+      </div>
+      <div class="card">
+        <h2>실험 장치</h2>
+        <div class="stage"><svg viewBox="0 0 320 280" id="app1">
+          <defs><clipPath id="bk1"><path d="M82 112 V250 Q82 260 92 260 H228 Q238 260 238 250 V112 Z"/></clipPath></defs>
+          <rect id="liq1" x="80" y="150" width="160" height="112" fill="rgba(127,176,224,.5)" clip-path="url(#bk1)"/>
+          <g id="gC">
+            <path d="M136 100 V60 H40 V30 M184 100 V60 H280 V30" fill="none" stroke="#c6d6cf" stroke-width="2.5"/>
+            <path d="M40 30 H120 M200 30 H280" fill="none" stroke="#c6d6cf" stroke-width="2.5"/>
+            <rect x="58" y="18" width="40" height="24" rx="3" fill="#0c1915" stroke="#c6d6cf" stroke-width="2"/>
+            <text x="78" y="34" text-anchor="middle" fill="#c6d6cf" font-size="10">6 V</text>
+            <circle id="halo" cx="160" cy="30" r="34" fill="#ffe066" opacity="0"/>
+            <circle id="bulb" cx="160" cy="30" r="17" fill="#0c1915" stroke="#f1ede3" stroke-width="2"/>
+            <path d="M152 33 Q156 22 160 33 Q164 22 168 33" fill="none" stroke="#c6d6cf" stroke-width="1.5"/>
+            <path d="M120 30 H143 M177 30 H200" stroke="#c6d6cf" stroke-width="2.5"/>
+            <rect x="130" y="96" width="12" height="140" fill="#8a8f8c"/><rect x="178" y="96" width="12" height="140" fill="#8a8f8c"/>
+            <text x="136" y="250" text-anchor="middle" fill="#c6d6cf" font-size="9">탄소 막대</text>
+          </g>
+          <g id="gMg" style="display:none">
+            <path d="M160 70 V120" stroke="#c6d6cf" stroke-width="3"/>
+            <path d="M156 118 H164 V236 Q160 246 156 236 Z" fill="#d6d9dc" stroke="#9aa0a4"/>
+            <text x="172" y="90" fill="#c6d6cf" font-size="10">Mg 리본</text>
+          </g>
+          <g id="gCa" style="display:none">
+            <path d="M118 256 L128 244 L142 248 L146 257 Z M150 257 L158 240 L172 243 L176 257 Z M182 257 L190 246 L204 250 L200 257 Z" fill="#f3ead8" stroke="#c9b99a"/>
+            <text x="244" y="250" fill="#c6d6cf" font-size="10">달걀</text><text x="244" y="262" fill="#c6d6cf" font-size="10">껍데기</text>
+          </g>
+          <g id="bub1"></g>
+          <path d="M82 100 V250 Q82 260 92 260 H228 Q238 260 238 250 V100" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
+          <text x="160" y="276" text-anchor="middle" fill="#c6d6cf" font-size="11" id="lab1"></text>
+        </svg></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>성질 기록표 — 관찰은 실험하면 채워집니다. 분류는 직접 고르세요</h2>
+      <div class="tscroll"><table><thead><tr><th>수용액</th><th>전기 전도성</th><th>Mg 리본</th><th>달걀 껍데기</th><th>분류</th></tr></thead><tbody id="propT"></tbody></table></div>
+      <div class="btn-row"><button class="go" id="clsChk">분류 확인</button></div>
+      <div class="fb" id="clsFb"></div>
+    </div>
+    <div class="card">
+      <h2>결론 내리기</h2>
+      <div class="q"><p>1. 산 수용액들이 Mg·달걀 껍데기와 반응하는 공통 성질을 만드는 입자는?</p>
+        <div class="chip-list" id="qa"><button class="chip" data-v="H">H⁺</button><button class="chip" data-v="OH">OH⁻</button><button class="chip" data-v="Cl">Cl⁻</button><button class="chip" data-v="Na">Na⁺</button><button class="chip" data-v="W">H₂O</button></div>
+        <div class="fb" id="qaFb"></div></div>
+      <div class="q"><p>2. 염기 수용액들의 공통 성질(쓴맛, 미끈거림, 산과 중화)을 만드는 입자는?</p>
+        <div class="chip-list" id="qb"><button class="chip" data-v="H">H⁺</button><button class="chip" data-v="OH">OH⁻</button><button class="chip" data-v="K">K⁺</button><button class="chip" data-v="Na">Na⁺</button><button class="chip" data-v="W">H₂O</button></div>
+        <div class="fb" id="qbFb"></div></div>
+      <div class="q"><p>3. 전기 전도성만으로 산·염기를 가려낼 수 있을까요?</p><details><summary>확인</summary>없습니다. 소금물(NaCl 수용액)처럼 이온이 있으면 전류가 흐릅니다. 전도성은 "수용액에 이온이 있다"는 증거일 뿐이고, 산과 염기를 가르는 것은 H⁺와 OH⁻입니다. 아세트산·암모니아수가 희미한 것은 물에 녹아도 일부만 이온화하기 때문입니다.</details></div>
+    </div>
+  </section>
+
+  <!-- ② 중화열 -->
+  <section class="panel" id="p2">
+    <div class="eq">H⁺(aq) + OH⁻(aq) → H₂O(l) &nbsp; ΔH ≈ −57 kJ/mol (발열)</div>
+    <div class="grid">
+      <div class="card">
+        <h2>섞을 양 고르기 (전체 50.0 mL)</h2>
+        <p class="lbl">1.0 M HCl : 1.0 M NaOH</p>
+        <div class="chip-list" id="ratio"></div>
+        <ol class="steps">
+          <li>두 용액의 처음 온도를 잽니다. 오늘 실험실 용액은 <b id="t0txt"></b>입니다.</li>
+          <li>스타이로폼 컵에 HCl을 넣고 NaOH를 한 번에 부은 뒤 저으며 온도를 봅니다.</li>
+          <li><b>가장 높이 올라간 온도</b>를 기록합니다. 비율을 바꿔 모두 해 보세요.</li>
+        </ol>
+        <div class="btn-row"><button class="go" id="mixBtn">섞기</button></div>
+        <div class="note">용액의 밀도 1.0 g/mL, 비열 4.18 J/(g·°C)로 봅니다. 컵 밖으로 새는 열이 조금 있습니다.</div>
+      </div>
+      <div class="card">
+        <h2>스타이로폼 컵 열량계</h2>
+        <div class="stage"><svg viewBox="0 0 320 250" id="cup2">
+          <defs><clipPath id="cp2"><path d="M92 92 L110 226 H210 L228 92 Z"/></clipPath></defs>
+          <rect id="liq2" x="80" y="150" width="160" height="80" fill="rgba(127,176,224,.55)" clip-path="url(#cp2)"/>
+          <path d="M86 86 L106 230 H214 L234 86" fill="none" stroke="#f1ede3" stroke-width="3"/>
+          <rect x="78" y="70" width="164" height="14" rx="4" fill="#e9e4d6" opacity=".85"/>
+          <rect x="182" y="20" width="10" height="190" rx="5" fill="#0c1915" stroke="#c6d6cf" stroke-width="1.5"/>
+          <circle cx="187" cy="212" r="9" fill="#e4572e"/>
+          <rect id="merc" x="184.5" y="150" width="5" height="60" fill="#e4572e"/>
+          <rect x="126" y="40" width="5" height="150" fill="#c6d6cf"/><text x="128" y="34" text-anchor="middle" fill="#c6d6cf" font-size="10">젓개</text>
+          <g id="ion2"></g>
+          <text x="250" y="60" fill="#c6d6cf" font-size="10">온도계</text>
+        </svg></div>
+        <div class="read">
+          <div><div class="big" id="tNow">-</div><div class="u">지금 (°C)</div></div>
+          <div><div class="big" id="tMax">-</div><div class="u">최고 (°C)</div></div>
+          <div><div class="big" id="nW">-</div><div class="u">생긴 H₂O (mmol)</div></div>
+        </div>
+        <div class="fb" id="left2" style="text-align:center"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>측정 결과와 그래프 (가로 = HCl 부피)</h2>
+      <div class="tscroll"><table><thead><tr><th>HCl (mL)</th><th>NaOH (mL)</th><th>처음 (°C)</th><th>최고 (°C)</th><th>ΔT (°C)</th><th>생긴 H₂O (mmol)</th><th>남은 이온</th></tr></thead><tbody id="resT"><tr><td colspan="7" style="color:var(--muted)">아직 측정하지 않았습니다.</td></tr></tbody></table></div>
+      <div class="plot"><svg viewBox="0 0 640 280" id="plot2"></svg></div>
+      <div class="btn-row"><button class="go ghost" id="trend" disabled>추세선 그리기 (5개 이상 측정 후)</button></div>
+    </div>
+    <div class="card">
+      <h2>생각해 보기</h2>
+      <ol class="steps">
+        <li>ΔT가 가장 큰 HCl 부피는 몇 mL입니까?
+          <div class="ans"><input id="pkAns" inputmode="decimal" placeholder="mL"> mL <button class="go ghost" id="pkChk">확인</button></div>
+          <div class="fb" id="pkFb"></div></li>
+        <li>내가 잰 25 : 25 결과로 물 1 mol이 생길 때의 중화열(kJ/mol)을 구하세요.
+          <div class="ans"><input id="hAns" inputmode="decimal" placeholder="kJ/mol"> kJ/mol <button class="go ghost" id="hChk">확인</button></div>
+          <div class="fb" id="hFb"></div></li>
+      </ol>
+      <div class="q"><p>10 : 40과 40 : 10은 ΔT가 왜 거의 같을까요?</p><details><summary>확인</summary>두 경우 모두 적은 쪽(10 mmol)만큼만 H⁺와 OH⁻가 만나 물 10 mmol이 생깁니다. 남는 이온(H⁺ 또는 OH⁻)은 반응하지 않으니 열을 내지 않습니다. 중화열은 <b>생성된 물 분자 수에 비례</b>하므로, 두 이온 수가 같은 1 : 1에서 물이 가장 많이 생겨 온도가 가장 많이 오릅니다.</details></div>
+    </div>
+  </section>
+
+  <!-- ③ CaO -->
+  <section class="panel" id="p3">
+    <div class="eq">CaO(s) + H₂O(l) → Ca(OH)₂(s) &nbsp; ΔH ≈ −65 kJ/mol</div>
+    <div class="grid">
+      <div class="card">
+        <h2>발열 팩 만들기</h2>
+        <p class="lbl">산화 칼슘(생석회) 질량</p>
+        <div class="chip-list" id="caoM"><button class="chip" data-v="20">20 g</button><button class="chip active" data-v="40">40 g</button><button class="chip" data-v="60">60 g</button></div>
+        <p class="lbl">부을 물</p>
+        <div class="chip-list" id="caoW"><button class="chip" data-v="10">10 mL</button><button class="chip active" data-v="20">20 mL</button><button class="chip" data-v="40">40 mL</button><button class="chip" data-v="80">80 mL</button></div>
+        <div class="btn-row"><button class="go" id="heatBtn">물 붓고 20분 지켜보기</button><button class="go ghost" id="heatClr">그래프 지우기</button></div>
+        <div class="note">음식 칸에는 <b>달걀 1개와 물 100 mL</b>가 있습니다. 달걀 속 온도가 <b>70 °C 이상으로 5분 넘게</b> 유지되면 익는다고 합시다. 처음 온도는 <b id="amb3"></b>입니다.</div>
+        <div class="fb" id="cook"></div>
+      </div>
+      <div class="card">
+        <h2>발열 도시락 (옆에서 본 모습)</h2>
+        <div class="stage"><svg viewBox="0 0 320 250">
+          <rect x="40" y="40" width="240" height="190" rx="14" fill="none" stroke="#c6d6cf" stroke-width="2" stroke-dasharray="6 4"/>
+          <text x="160" y="32" text-anchor="middle" fill="#c6d6cf" font-size="10">바깥 봉투 (김 빠지는 구멍)</text>
+          <rect x="70" y="70" width="180" height="88" rx="8" fill="#0c1915" stroke="#f1ede3" stroke-width="2"/>
+          <rect id="food3" x="72" y="108" width="176" height="48" rx="6" fill="rgba(127,176,224,.55)"/>
+          <ellipse id="egg3" cx="160" cy="114" rx="26" ry="34" fill="#f3ead8" stroke="#c9b99a" stroke-width="2"/>
+          <text x="160" y="118" text-anchor="middle" fill="#5a4a2e" font-size="11" id="eggT">20°</text>
+          <rect id="pad3" x="60" y="170" width="200" height="46" rx="8" fill="#d9d4c9" stroke="#f1ede3" stroke-width="2"/>
+          <text x="160" y="198" text-anchor="middle" fill="#1b1b1b" font-size="11" id="padTxt">CaO</text>
+          <g id="steam3"></g>
+        </svg></div>
+        <div class="read">
+          <div><div class="big" id="r3t">0:00</div><div class="u">경과 (분:초)</div></div>
+          <div><div class="big" id="r3p">-</div><div class="u">발열 팩 (°C)</div></div>
+          <div><div class="big" id="r3e">-</div><div class="u">달걀 속 (°C)</div></div>
+          <div><div class="big" id="r3h">0.0</div><div class="u">70 °C↑ (분)</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>달걀 속 온도 — 시간 그래프 (실선 = 달걀 속, 점선 = 발열 팩)</h2>
+      <div class="plot"><svg viewBox="0 0 640 280" id="plot3"></svg></div>
+      <div id="leg3" style="font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.7"></div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h2>계산해 보기 (CaO 56.1, H₂O 18.0)</h2>
+        <ol class="steps">
+          <li>CaO <b id="mq"></b>을 모두 반응시키려면 물이 최소 몇 g 필요할까요?
+            <div class="ans"><input id="wAns" inputmode="decimal" placeholder="g"> g <button class="go ghost" id="wChk">확인</button></div>
+            <div class="fb" id="wFb"></div></li>
+          <li>그때 나오는 열은 몇 kJ일까요?
+            <div class="ans"><input id="qAns" inputmode="decimal" placeholder="kJ"> kJ <button class="go ghost" id="qChk">확인</button></div>
+            <div class="fb" id="qFb"></div></li>
+        </ol>
+      </div>
+      <div class="card">
+        <h2>생각해 보기</h2>
+        <div class="q"><p>1. 물이 너무 적으면 왜 덜 뜨거울까요?</p><details><summary>확인</summary>물이 한계 반응물이 되어 CaO가 다 반응하지 못합니다. CaO 1 mol(56 g)에 물 1 mol(18 g)이 필요하니, 물은 CaO 질량의 약 1/3이 있어야 합니다.</details></div>
+        <div class="q"><p>2. 물이 너무 많아도 왜 덜 뜨거울까요?</p><details><summary>확인</summary>나오는 열은 CaO 양으로 정해지는데, 남는 물이 그 열을 나눠 받습니다(비열이 큰 물을 함께 데워야 함). 같은 열을 더 많은 물질이 받으니 온도가 덜 오릅니다.</details></div>
+        <div class="q"><p>3. 팩 온도가 100 °C 근처에서 멈추는 까닭은?</p><details><summary>확인</summary>물이 끓으면서 열을 수증기로 가져가기 때문입니다(기화열). 그래서 발열 팩 봉투에는 김이 빠지는 구멍이 있습니다.</details></div>
+      </div>
+    </div>
+    <div class="note warn"><b>안전.</b> 산화 칼슘과 생긴 수산화 칼슘은 강한 염기성이라 피부·눈에 닿으면 화상을 입습니다. 장갑·보안경을 쓰고, 물을 부은 팩은 <b>밀폐하지 않습니다</b>(수증기 압력). 반응 중인 팩은 뜨거우니 손으로 잡지 말고, 다 쓴 팩은 식은 뒤 버립니다. 남은 생석회는 습기를 피해 보관합니다.</div>
+  </section>
+</div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+document.querySelectorAll('.tab-btn').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.toggle('active',x===b));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.p));});
+const num=v=>parseFloat(String(v).replace(',','.'));
+function check(inp,fb,ans,tol,okMsg,noMsg){const v=num($(inp).value),f=$(fb);
+  if(isNaN(v)){f.className='fb no';f.textContent='숫자를 넣어 주세요.';return false;}
+  const ok=Math.abs(v-ans)<=Math.abs(ans)*tol;f.className='fb '+(ok?'ok':'no');f.innerHTML=ok?okMsg:noMsg;return ok;}
+function chips(id,cb){const box=$(id);box.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{
+  box.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x===c));cb&&cb(c.dataset.v);});}
+const txt=(g,x,y,s,a={})=>{const t=el('text',Object.assign({x,y,fill:'#c6d6cf','font-size':11},a));t.textContent=s;g.appendChild(t);return t;};
+const gauss=()=>{let u=0;for(let i=0;i<6;i++)u+=Math.random();return (u-3)/Math.SQRT2;};
+
+// ════ ① 공통 성질 ════
+// c: 전도성 단계, mg/ca: 기체 발생 단계 (3 활발, 1 천천히, 's' 처음만, 0 없음)
+const SOL=[
+ {k:'hcl',n:'묽은 염산',f:'HCl',c:3,mg:3,ca:3,t:'acid'},
+ {k:'h2so4',n:'묽은 황산',f:'H₂SO₄',c:4,mg:3,ca:'s',t:'acid'},
+ {k:'ac',n:'아세트산 수용액',f:'CH₃COOH',c:1,mg:1,ca:1,t:'acid'},
+ {k:'naoh',n:'수산화 나트륨',f:'NaOH',c:3,mg:0,ca:0,t:'base'},
+ {k:'koh',n:'수산화 칼륨',f:'KOH',c:3,mg:0,ca:0,t:'base'},
+ {k:'nh3',n:'암모니아수',f:'NH₃',c:1,mg:0,ca:0,t:'base'},
+ {k:'w',n:'증류수',f:'H₂O',c:0,mg:0,ca:0,t:'neu'},
+ {k:'sug',n:'설탕물',f:'C₁₂H₂₂O₁₁',c:0,mg:0,ca:0,t:'neu'}];
+const WORD={c:{4:'아주 밝게',3:'밝게 켜짐',1:'희미하게',0:'안 켜짐'},mg:{3:'기체 발생',1:'천천히 발생',0:'변화 없음'},ca:{3:'기체 발생',1:'천천히 발생',s:'발생 후 곧 멈춤',0:'변화 없음'}};
+let s1=SOL[0],t1='c',t1start=0,rec={};
+$('#solChips').innerHTML=SOL.map((s,i)=>`<button class="chip${i?'':' active'}" data-v="${s.k}">${s.n}</button>`).join('');
+chips('#solChips',v=>{s1=SOL.find(s=>s.k===v);run1(t1);});
+document.querySelectorAll('#p1 [data-t]').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('#p1 [data-t]').forEach(x=>x.classList.toggle('ghost',x!==b));run1(b.dataset.t);});
+function lvl(){const v=s1[t1];if(t1==='c')return 0;if(v==='s')return 3*Math.exp(-(performance.now()-t1start)/2500);return v;}
+function run1(t){t1=t;t1start=performance.now();bubs=[];
+  $('#gC').style.display=t==='c'?'':'none';$('#gMg').style.display=t==='mg'?'':'none';$('#gCa').style.display=t==='ca'?'':'none';
+  const c=s1.c,glow={4:1,3:.85,1:.28,0:0}[t==='c'?c:0];
+  $('#bulb').setAttribute('fill',glow?`rgba(255,224,102,${.25+glow*.75})`:'#0c1915');$('#halo').setAttribute('opacity',glow*.35);
+  $('#lab1').textContent=`${s1.n} (${s1.f})`;
+  const v=s1[t],o=$('#obs');o.className='fb ok';
+  if(t==='c')o.innerHTML=c>=3?`전구가 <b>${WORD.c[c]}</b> 켜집니다. 물에 녹아 거의 모두 이온으로 나뉘어(강전해질) 이온이 많습니다.`+(c===4?' 황산은 H⁺를 2개까지 내놓아 이온이 더 많습니다.':''):c===1?`전구가 <b>희미하게</b> 켜집니다. ${s1.k==='nh3'?'NH₃ + H₂O ⇌ NH₄⁺ + OH⁻에서 일부만 이온이 됩니다.':'CH₃COOH ⇌ CH₃COO⁻ + H⁺에서 일부만 이온이 됩니다.'}`:`전구가 켜지지 않습니다. ${s1.k==='sug'?'설탕은 녹아도 이온이 아닌 분자로 흩어집니다.':'순수한 물은 이온이 거의 없습니다.'}`;
+  else if(t==='mg')o.innerHTML=v?`리본 표면에서 기체 방울이 ${v===1?'천천히 ':''}생깁니다. 성냥불을 대면 '퍽' 소리 → <b>수소(H₂)</b>. Mg + 2H⁺ → Mg²⁺ + H₂`:'아무 변화가 없습니다. 이 용액에는 금속과 반응할 H⁺가 거의 없습니다.';
+  else o.innerHTML=v==='s'?'처음엔 거품이 나다가 곧 멈춥니다. 물에 잘 녹지 않는 <b>CaSO₄</b>가 껍데기 겉을 덮기 때문입니다(그래도 산의 성질은 맞습니다).':v?`껍데기에서 기체가 ${v===1?'천천히 ':''}나옵니다. 석회수에 통하면 뿌옇게 → <b>이산화 탄소(CO₂)</b>. CaCO₃ + 2H⁺ → Ca²⁺ + H₂O + CO₂`:'아무 변화가 없습니다.';
+  (rec[s1.k]=rec[s1.k]||{})[t]=WORD[t][v];drawProp();
+  if(RM)stillBubbles();}
+const cls={};
+function drawProp(){$('#propT').innerHTML=SOL.map(s=>{const r=rec[s.k]||{};const cell=t=>{const w=r[t];return `<td class="${w&&!/없음|안 켜짐/.test(w)?'hit':''}">${w||'·'}</td>`;};
+  return `<tr><td style="text-align:left">${s.n}<br><span style="font:11px var(--mono);color:var(--muted)">${s.f}</span></td>${cell('c')}${cell('mg')}${cell('ca')}<td><select data-k="${s.k}"><option value="">고르기</option><option value="acid">산</option><option value="base">염기</option><option value="neu">어느 쪽도 아님</option></select></td></tr>`;}).join('');
+  document.querySelectorAll('#propT select').forEach(sel=>{sel.value=cls[sel.dataset.k]||'';sel.onchange=()=>cls[sel.dataset.k]=sel.value;});}
+$('#clsChk').onclick=()=>{const f=$('#clsFb'),empty=SOL.reduce((a,s)=>a+['c','mg','ca'].filter(t=>!(rec[s.k]||{})[t]).length,0);
+  if(empty){f.className='fb no';f.textContent=`관찰 칸이 ${empty}개 비었습니다. 모든 용액을 세 가지 방법으로 시험해 보세요.`;return;}
+  const wrong=SOL.filter(s=>cls[s.k]!==s.t);
+  if(!wrong.length){f.className='fb ok';f.innerHTML='모두 맞습니다! <b>산</b>은 Mg·달걀 껍데기와 반응해 기체를 내고, <b>염기</b>는 둘 다와 반응하지 않습니다. 산·염기 수용액은 모두 전류가 흐르고, 증류수·설탕물은 흐르지 않습니다.';}
+  else{f.className='fb no';f.innerHTML=`${wrong.length}개가 다릅니다. 힌트: Mg와 달걀 껍데기 둘 다와 반응하면 산입니다. 반응하지 않는 것 중 <b>전류가 흐르면</b> 염기, 흐르지 않으면 어느 쪽도 아닙니다. (다시 볼 것: ${wrong.map(s=>s.n).join(', ')})`;}};
+function quiz(id,ans,ok,no){chips(id,v=>{const f=$(id+'Fb');f.className='fb '+(v===ans?'ok':'no');f.innerHTML=v===ans?ok:no;});}
+quiz('#qa','H','맞습니다. 산은 물에서 이온화해 <b>H⁺</b>를 내놓습니다(HCl → H⁺ + Cl⁻). 음이온은 산마다 다르지만 H⁺는 모두 같습니다.','음이온(Cl⁻, SO₄²⁻, CH₃COO⁻)은 산마다 다릅니다. 세 산에 모두 들어 있는 이온을 찾아보세요.');
+quiz('#qb','OH','맞습니다. 염기는 물에서 <b>OH⁻</b>를 내놓습니다(NaOH → Na⁺ + OH⁻, NH₃ + H₂O ⇌ NH₄⁺ + OH⁻).','양이온(Na⁺, K⁺, NH₄⁺)은 염기마다 다릅니다. 세 염기에 모두 들어 있는 이온은?');
+drawProp();
+// 기포 애니메이션
+let bubs=[];const bubG=$('#bub1');
+function src(){return t1==='mg'?{x:156+Math.random()*8,y:125+Math.random()*112}:{x:[132,164,193][Math.random()*3|0]+Math.random()*10-5,y:246};}
+function stillBubbles(){bubG.innerHTML='';const L=lvl(),n=t1==='c'?0:Math.round(L*6);for(let i=0;i<n;i++){const p=src();bubG.appendChild(el('circle',{cx:p.x+((i*7)%11-5),cy:p.y-((i*29)%(p.y-158)),r:2.5,fill:'none',stroke:'#f1ede3','stroke-width':1.2}));}}
+let last1=performance.now();
+function tick1(now){const dt=Math.min(.05,(now-last1)/1000);last1=now;
+  if(!RM&&$('#p1').classList.contains('active')){const L=lvl();
+    if(t1!=='c'&&Math.random()<L*dt*9)bubs.push(Object.assign(src(),{r:1.5+Math.random()*2,v:40+Math.random()*30}));
+    bubs.forEach(b=>{b.y-=b.v*dt;b.x+=Math.sin(b.y/9)*.3;});bubs=bubs.filter(b=>b.y>155);
+    bubG.innerHTML='';bubs.forEach(b=>bubG.appendChild(el('circle',{cx:b.x.toFixed(1),cy:b.y.toFixed(1),r:b.r.toFixed(1),fill:'none',stroke:'#f1ede3','stroke-width':1.2})));}
+  requestAnimationFrame(tick1);}
+run1('c');$('#obs').className='fb';$('#obs').textContent='용액을 고르고 시험 방법을 누르세요.';rec={};drawProp();
+requestAnimationFrame(tick1);
+
+// ════ ② 중화열 ════
+const T0=Math.round((19+Math.random()*4)*10)/10,DH=57.1,MC=50*4.18;
+$('#t0txt').textContent=T0.toFixed(1)+' °C';
+const RAT=[10,15,20,25,30,35,40];let xa=25,res2={},anim2=null;
+$('#ratio').innerHTML=RAT.map(v=>`<button class="chip${v===25?' active':''}" data-v="${v}">${v} : ${50-v}</button>`).join('');
+chips('#ratio',v=>{xa=+v;show2(T0,null);});
+// 온도 곡선: 섞은 뒤 빠르게 오르고(τ≈5 s) 컵 밖으로 천천히 식음(τ≈600 s)
+const Tcur=(n,t,k)=>T0+k*n*DH*1000/MC*(1-Math.exp(-t/5))*Math.exp(-t/600);
+function show2(T,mx){const n=Math.min(xa,50-xa); // mmol = mL × 1.0 M
+  $('#tNow').textContent=T.toFixed(1);$('#tMax').textContent=mx==null?'-':mx.toFixed(1);$('#nW').textContent=mx==null?'-':n;
+  $('#merc').setAttribute('y',200-(T-10)*4.4);$('#merc').setAttribute('height',10+(T-10)*4.4);
+  const lv=$('#liq2');lv.setAttribute('y',226-90*(mx==null?0.5:1));
+  const g=$('#ion2');g.innerHTML='';if(mx!=null){const ex=xa-25;if(ex)for(let i=0;i<Math.abs(ex)/5*2;i++)txt(g,104+(i*29)%70,186+(i*13)%34,ex>0?'H⁺':'OH⁻',{fill:ex>0?'#ff9a7a':'#9cc4ff','font-size':10});}
+  $('#left2').textContent=mx==null?`HCl ${xa} mmol, NaOH ${50-xa} mmol을 섞습니다.`:xa===25?'H⁺와 OH⁻가 딱 맞게 모두 반응했습니다.':`${xa>25?'H⁺':'OH⁻'} ${Math.abs(2*xa-50)} mmol이 반응하지 못하고 남았습니다.`;}
+$('#mixBtn').onclick=()=>{if(anim2)return;const n=Math.min(xa,50-xa)/1000,k=0.995+gauss()*0.006;let mx=T0;
+  const fin=()=>{let m=T0;for(let t=0;t<=120;t+=.5)m=Math.max(m,Tcur(n,t,k));m=Math.round(m*10)/10;res2[xa]={T:m,n:n*1000};show2(Tcur(n,120,k),m);table2();plot2();anim2=null;$('#mixBtn').disabled=false;};
+  if(RM)return fin();
+  const st=performance.now();$('#mixBtn').disabled=true;
+  (function f(now){const t=(now-st)/1000*30;const T=Tcur(n,t,k);mx=Math.max(mx,T);show2(T,mx);if(t<120)anim2=requestAnimationFrame(f);else fin();})(st);};
+function table2(){const ks=Object.keys(res2).map(Number).sort((a,b)=>a-b);
+  $('#resT').innerHTML=ks.map(x=>{const r=res2[x],ex=x-25;return `<tr><td>${x}</td><td>${50-x}</td><td>${T0.toFixed(1)}</td><td>${r.T.toFixed(1)}</td><td><b>${(r.T-T0).toFixed(1)}</b></td><td>${r.n}</td><td>${ex?(ex>0?'H⁺ ':'OH⁻ ')+Math.abs(2*ex):'없음'}</td></tr>`;}).join('');
+  $('#trend').disabled=ks.length<5;}
+let trendOn=false;
+function plot2(){const g=$('#plot2');g.innerHTML='';const L=60,R=620,T=14,B=240,X=v=>L+(R-L)*v/50,Y=d=>B-(B-T)*d/8;
+  for(let d=0;d<=8;d+=2){g.appendChild(el('line',{x1:L,x2:R,y1:Y(d),y2:Y(d),stroke:'#3f6355'}));txt(g,L-8,Y(d)+4,d,{'text-anchor':'end'});}
+  for(let v=0;v<=50;v+=10){g.appendChild(el('line',{x1:X(v),x2:X(v),y1:T,y2:B,stroke:'#3f6355','stroke-dasharray':'2 4'}));txt(g,X(v),B+18,v,{'text-anchor':'middle'});}
+  txt(g,R,B+34,'HCl 부피 (mL) →  (NaOH = 50 − HCl)',{'text-anchor':'end'});txt(g,L,T-2,'ΔT (°C)',{'text-anchor':'start'});
+  const ks=Object.keys(res2).map(Number);
+  if(trendOn&&ks.length){const k=ks.reduce((a,x)=>a+(res2[x].T-T0)/Math.min(x,50-x),0)/ks.length;
+    g.appendChild(el('path',{d:`M${X(0)} ${Y(0)} L${X(25)} ${Y(25*k)} L${X(50)} ${Y(0)}`,fill:'none',stroke:'#ffe066','stroke-width':2,'stroke-dasharray':'6 4'}));
+    txt(g,X(25)+8,Y(25*k)-6,'1 : 1에서 최대',{fill:'#ffe066','font-size':12});}
+  ks.forEach(x=>g.appendChild(el('circle',{cx:X(x),cy:Y(res2[x].T-T0),r:6,fill:'#e4572e',stroke:'#f1ede3','stroke-width':1.5})));}
+$('#trend').onclick=()=>{trendOn=true;plot2();};
+$('#pkChk').onclick=()=>{const f=$('#pkFb'),v=num($('#pkAns').value);if(isNaN(v)){f.className='fb no';f.textContent='숫자를 넣어 주세요.';return;}
+  if(v===25){f.className='fb ok';f.innerHTML='맞습니다. HCl 25 mL : NaOH 25 mL, 곧 <b>H⁺와 OH⁻의 수가 같을 때</b> 물이 가장 많이(25 mmol) 생겨 온도가 가장 많이 오릅니다.';}
+  else{f.className='fb no';f.textContent='그래프에서 가장 높은 점을 찾아보세요. 아직 모든 비율을 재지 않았다면 먼저 재 보세요. 1.0 M 용액이라 mL 수 = mmol 수입니다.';}};
+$('#hChk').onclick=()=>{const f=$('#hFb');if(!res2[25]){f.className='fb no';f.textContent='먼저 25 : 25로 섞어 최고 온도를 재세요.';return;}
+  const dT=res2[25].T-T0,ans=MC*dT/0.025/1000;
+  check('#hAns','#hFb',ans,0.03,`맞습니다! q = 50 g × 4.18 × ${dT.toFixed(1)} = ${(MC*dT).toFixed(0)} J, 물 0.025 mol로 나누면 <b>${ans.toFixed(1)} kJ/mol</b>. 이론값 57 kJ/mol보다 조금 작은 것은 컵·공기로 열이 새기 때문입니다.`,
+    '① 열량 q = 질량(50 g) × 비열(4.18) × ΔT ② 생긴 물 = 1.0 M × 0.025 L = 0.025 mol ③ q ÷ 몰수를 kJ로 바꾸세요(÷1000).');};
+show2(T0,null);plot2();
+
+// ════ ③ CaO 발열 팩 ════
+const TA=Math.round((15+Math.random()*7)*10)/10;$('#amb3').textContent=TA.toFixed(1)+' °C';
+let mC=40,wC=20,runs3=[],anim3=null,cooked=false;
+chips('#caoM',v=>mC=+v);chips('#caoW',v=>wC=+v);
+// 한 덩어리 열 모형: 음식 칸(달걀 60 g×3.2 + 물 100 g×4.18 + 용기 40 J/K) + 팩 속 물질, 1 s 간격
+// ponytail: 팩·음식을 한 온도로 묶고 달걀 속만 지연(τ=150 s); 열전달 상세 모형은 필요할 때
+function sim3(m,W){const nMax=Math.min(m/56.08,W/18.02),Cf=192+418+40;let n=0,T=TA,E=TA,w=W,out=[],hold=0;
+  for(let t=0;t<=1200;t++){if(t%10===0)out.push([t,T,E]);
+    const dn=(nMax-n)*(1-Math.exp(-1/55));n+=dn;
+    const C=Cf+4.18*Math.max(0,w-18.02*n)+1.18*74.1*n+0.75*(m-56.08*n);
+    T+=dn*65200/C;if(T>100){const ev=Math.min((T-100)*C/2260,Math.max(0,w-18.02*n));w-=ev;T=100;}
+    T-=(T-TA)*0.55/C;E+=(T-E)/150;if(E>=70)hold++;}
+  return {pts:out,hold,max:Math.max(...out.map(p=>p[1])),emax:Math.max(...out.map(p=>p[2])),nMax};}
+const COL=['#ffb15c','#4fd6e0','#ff6fae','#a78bfa','#58f0a5','#ffe066'];
+function plot3(cur,upto){const g=$('#plot3');g.innerHTML='';const L=56,R=620,T=14,B=236,X=t=>L+(R-L)*t/1200,Y=c=>B-(B-T)*(c-10)/100;
+  g.appendChild(el('rect',{x:L,y:Y(110),width:R-L,height:Y(70)-Y(110),fill:'rgba(255,177,92,.08)'}));
+  for(let c=10;c<=110;c+=20){g.appendChild(el('line',{x1:L,x2:R,y1:Y(c),y2:Y(c),stroke:'#3f6355'}));txt(g,L-8,Y(c)+4,c,{'text-anchor':'end'});}
+  for(let m=0;m<=20;m+=5)txt(g,X(m*60),B+18,m,{'text-anchor':'middle'});
+  g.appendChild(el('line',{x1:L,x2:R,y1:Y(70),y2:Y(70),stroke:'#ffb15c','stroke-dasharray':'6 4','stroke-width':1.5}));
+  txt(g,R-4,Y(70)-6,'70 °C',{'text-anchor':'end',fill:'#ffb15c'});
+  txt(g,R,B+34,'시간 (분) →',{'text-anchor':'end'});txt(g,L,T-2,'온도 (°C)');
+  const line=(pts,i,c,dash)=>g.appendChild(el('path',{d:pts.map((p,j)=>(j?'L':'M')+X(p[0]).toFixed(1)+' '+Y(p[i]).toFixed(1)).join(' '),fill:'none',stroke:c,'stroke-width':dash?1.5:2.8,'stroke-dasharray':dash?'4 4':'none',opacity:dash?.8:1}));
+  runs3.forEach((r,k)=>{const p=(cur===r)?r.s.pts.filter(q=>q[0]<=upto):r.s.pts;if(p.length<2)return;line(p,1,r.c,1);line(p,2,r.c,0);});
+  $('#leg3').innerHTML=runs3.map(r=>`<span style="color:${r.c}">━</span> CaO ${r.m} g + 물 ${r.w} mL → 달걀 최고 ${r.s.emax.toFixed(0)} °C, 70 °C 이상 ${(r.s.hold/60).toFixed(1)}분 ${r.s.hold>=300?'<b style="color:#58f0a5">익음</b>':'<b style="color:#f2a541">덜 익음</b>'}`).join('<br>');}
+function pad3(p,T,E,t){$('#r3t').textContent=`${Math.floor(t/60)}:${String(Math.floor(t%60)).padStart(2,'0')}`;$('#r3p').textContent=T.toFixed(0);$('#r3e').textContent=E.toFixed(0);$('#r3h').textContent=p?(p.s.pts.filter(q=>q[0]<=t&&q[2]>=70).length*10/60).toFixed(1):'0.0';
+  $('#eggT').textContent=E.toFixed(0)+'°';const f=Math.max(0,Math.min(1,(E-55)/25));$('#egg3').setAttribute('fill',`rgb(${243-f*8},${234-f*4},${216+f*30})`);
+  const r=Math.min(1,(T-TA)/70);$('#pad3').setAttribute('fill',`rgb(${217+r*38},${212-r*60},${201-r*120})`);
+  const g=$('#steam3');g.innerHTML='';if(T>=95&&!RM)for(let i=0;i<3;i++){const y=60-((t*2+i*30)%40);g.appendChild(el('path',{d:`M${130+i*30} ${y+20} q6 -8 0 -14 q-6 -8 0 -14`,fill:'none',stroke:'#f1ede3','stroke-width':2,opacity:.6}));}}
+$('#heatBtn').onclick=()=>{if(anim3)return;const s=sim3(mC,wC);const r={m:mC,w:wC,s,c:COL[runs3.length%COL.length]};runs3.push(r);if(runs3.length>6)runs3.shift();
+  $('#padTxt').textContent=`CaO ${mC} g + 물 ${wC} mL`;
+  const fin=()=>{const p=s.pts[s.pts.length-1];pad3(r,p[1],p[2],1200);plot3(null);anim3=null;$('#heatBtn').disabled=false;
+    const f=$('#cook'),lim=s.nMax<mC/56.08-1e-9;
+    if(s.hold>=300){cooked=true;f.className='fb ok';f.innerHTML=`달걀이 익었습니다! 70 °C 이상 ${(s.hold/60).toFixed(1)}분. CaO ${(s.nMax).toFixed(2)} mol이 반응해 ${(s.nMax*65.2).toFixed(0)} kJ이 나왔습니다.`;}
+    else{f.className='fb no';f.innerHTML=`덜 익었습니다(70 °C 이상 ${(s.hold/60).toFixed(1)}분). `+(lim?`물이 모자라 CaO의 ${Math.round(s.nMax*56.08/mC*100)} %만 반응했습니다.`:wC>=3*mC/56.08*18?'남는 물이 많아 열을 나눠 가졌거나, CaO가 적어 열이 모자랍니다.':'CaO가 내는 열이 음식 칸을 데우기에 모자랍니다.')+(cooked?'':' 질량과 물의 양을 바꿔 보세요.');}};
+  if(RM)return fin();
+  const st=performance.now();$('#heatBtn').disabled=true;
+  (function f(now){const t=Math.min(1200,(now-st)/1000*150),p=s.pts[Math.min(s.pts.length-1,Math.floor(t/10))];pad3(r,p[1],p[2],t);plot3(r,t);
+    if(t<1200)anim3=requestAnimationFrame(f);else fin();})(st);};
+$('#heatClr').onclick=()=>{if(anim3)return;runs3=[];plot3(null);};
+const MQ=30+Math.floor(Math.random()*26);$('#mq').textContent=MQ+' g';
+$('#wChk').onclick=()=>check('#wAns','#wFb',MQ*18.02/56.08,0.03,`맞습니다. CaO ${MQ} g = ${(MQ/56.08).toFixed(3)} mol, 물도 같은 몰수가 필요하니 × 18.0 = <b>${(MQ*18.02/56.08).toFixed(1)} g</b>.`,'① CaO 몰수 = 질량 ÷ 56.1 ② 반응식에서 CaO : H₂O = 1 : 1 ③ 물 몰수 × 18.0 = 질량');
+$('#qChk').onclick=()=>check('#qAns','#qFb',MQ/56.08*65.2,0.03,`맞습니다. ${(MQ/56.08).toFixed(3)} mol × 65 kJ/mol ≈ <b>${(MQ/56.08*65.2).toFixed(1)} kJ</b>. 물 100 g을 약 ${(MQ/56.08*65200/418).toFixed(0)} °C 올릴 수 있는 열입니다.`,'CaO 몰수에 반응 1 mol당 열(65 kJ)을 곱하세요. ΔH의 − 부호는 "열을 내놓는다"는 뜻입니다.');
+pad3(null,TA,TA,0);plot3(null);
+})();
+</script>
+</body>
+</html>

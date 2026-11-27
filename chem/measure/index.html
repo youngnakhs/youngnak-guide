@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>측정 실험실</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap');
+:root{
+  --bg:#10201b;--panel:#1c3a31;--panel-2:#264a3e;--line:#4b7062;--ink:#f1ede3;--muted:#c6d6cf;
+  --acid-2:#f2a541;--neutral:#6fb98f;
+  --mono:'Space Mono','Courier New',monospace;--sans:'Work Sans',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;color:var(--ink);font-family:var(--sans);padding:28px 16px 60px;
+  background:radial-gradient(circle at 15% 0%,rgba(111,185,143,.08),transparent 45%),radial-gradient(circle at 90% 90%,rgba(79,214,224,.07),transparent 45%),var(--bg);}
+.wrap{max-width:920px;margin:0 auto;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--neutral);text-transform:uppercase;margin-bottom:8px;}
+h1{font-weight:700;font-size:32px;margin:0 0 6px;letter-spacing:-.01em;}
+.sub{color:var(--muted);font-size:14.5px;line-height:1.6;margin:0 0 26px;max-width:620px;}
+.tabs{display:flex;gap:8px;margin-bottom:22px;border-bottom:1px solid var(--line);flex-wrap:wrap;}
+.tab-btn{font-family:var(--sans);font-weight:600;font-size:14px;background:none;border:none;color:var(--muted);padding:10px 4px;cursor:pointer;position:relative;}
+.tab-btn.active{color:#fff;}
+.tab-btn.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:3px;background:var(--neutral);border-radius:2px;}
+.tab-btn+.tab-btn{margin-left:18px;}
+.panel{display:none;}
+.panel.active{display:block;animation:fade .3s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.grid>*{min-width:0;}
+@media(max-width:720px){.grid{grid-template-columns:1fr;}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;}
+.card h2{font-size:12px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#e3ece8;margin:0 0 14px;font-weight:700;}
+.card+.card,.grid+.card,.card+.grid{margin-top:18px;}
+.chip-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.chip{font-family:var(--sans);font-size:13px;font-weight:500;background:var(--panel-2);border:1px solid #5d8575;color:var(--ink);padding:8px 12px;border-radius:20px;cursor:pointer;}
+.chip:hover{border-color:var(--neutral);}
+.chip.active{background:var(--neutral);color:#0d1a15;border-color:var(--neutral);font-weight:700;}
+.chip.done::after{content:' ✓';}
+.chip:disabled{opacity:.45;cursor:default;}
+.lbl{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0 0 8px;}
+.eq{font-family:var(--mono);font-size:14px;text-align:center;padding:12px;background:var(--panel-2);border-radius:8px;margin-bottom:16px;line-height:1.7;}
+.note{font-size:12.5px;color:#d5e1dc;line-height:1.6;background:var(--panel-2);border-radius:8px;padding:10px 12px;margin-top:14px;}
+.note b{color:var(--ink);}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.go{font-family:var(--sans);font-weight:700;font-size:14.5px;border:none;border-radius:10px;padding:11px 15px;cursor:pointer;background:var(--neutral);color:#0d1a15;touch-action:manipulation;}
+.go.ghost{background:var(--panel-2);color:var(--ink);border:1px solid var(--line);}
+.go:disabled{opacity:.45;cursor:default;}
+.stage{display:flex;justify-content:center;}
+.stage svg{width:100%;max-width:340px;height:auto;}
+svg text{font-family:var(--mono);}
+.read{display:flex;justify-content:space-around;font-family:var(--mono);text-align:center;margin-top:8px;gap:8px;flex-wrap:wrap;}
+.read .big{font-size:22px;font-weight:700;line-height:1.2;}
+.read .u{font-size:11px;color:var(--muted);letter-spacing:.06em;}
+.steps{counter-reset:s;margin:0;padding:0;list-style:none;}
+.steps li{position:relative;padding:0 0 10px 30px;line-height:1.6;font-size:14px;}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;width:21px;height:21px;border-radius:50%;background:var(--panel-2);border:1px solid var(--line);font:700 11px/19px var(--mono);text-align:center;color:var(--neutral);}
+.ans{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:14px;}
+.ans input{width:120px;font:700 16px var(--mono);padding:9px 10px;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);color:var(--ink);}
+.fb{font-size:13.5px;margin-top:8px;min-height:1.2em;line-height:1.6;}
+.fb.ok{color:var(--neutral);}.fb.no{color:var(--acid-2);}
+.tscroll{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th,td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:center;}
+th{font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:400;}
+.plot{background:var(--panel-2);border-radius:10px;padding:10px;margin-top:12px;}
+.plot svg{width:100%;height:auto;display:block;}
+.q{border-top:1px solid var(--line);padding:12px 0;}
+.q:first-child{border-top:none;padding-top:0;}
+.q p{margin:0 0 8px;line-height:1.6;font-size:14px;}
+.q details{font-size:13px;color:var(--muted);line-height:1.6;}
+.q summary{cursor:pointer;color:var(--neutral);font-weight:600;}
+.sl{display:flex;align-items:center;gap:10px;font-size:14px;margin:4px 0 12px;}
+.sl input{flex:1;min-width:0;accent-color:var(--neutral);height:28px;}
+.sl b{font-family:var(--mono);min-width:72px;text-align:right;}
+.score{font-family:var(--mono);font-size:40px;font-weight:700;line-height:1;color:#4fd6e0;}
+@media (prefers-reduced-motion:reduce){.panel.active{animation:none;}}
+
+/* == IPAD-FIT BEGIN (자동 생성 · 직접 수정하지 말 것) == */
+/* ══ 아이패드 대응 (자동 삽입 · 화학실험실 파이프라인) ══════════
+   대상 폭 — 세로 744(mini)/810(10.9")/834(Air·Pro11)/1024(Pro12.9")
+            가로 1080/1133/1194/1366
+   원칙 — 손가락 터치 목표 44px 이상, 본문 글자 키우기, 홈판을 화면 폭에 맞춰 확대 */
+html{-webkit-text-size-adjust:100%;}
+
+/* 태블릿 세로부터 */
+@media (min-width:744px){
+  body{padding:38px 30px 78px;font-size:15.5px;}
+  .wrap{max-width:900px;}
+  h1{font-size:38px;}
+  .sub{font-size:16px;line-height:1.7;max-width:680px;}
+
+  /* 탭 — 손가락으로 누를 크기 */
+  .tabs{flex-wrap:wrap;gap:0 4px;}
+  .tab-btn{font-size:15.5px;padding:15px 6px;}
+  .tab-btn+.tab-btn{margin-left:26px;}
+
+  /* 선택 칩 — 44px 이상 */
+  .chip{font-size:14.5px;padding:12px 17px;border-radius:24px;}
+  .card{padding:22px 24px;}
+  .card h3{font-size:12.5px;margin-bottom:16px;}
+  .note{font-size:13.5px;padding:12px 14px;}
+
+  /* 비커·수치 */
+  .beaker-svg{width:172px;height:206px;}
+  .readout .ph-big{font-size:46px;}
+  .verdict{font-size:15px;padding:6px 15px;}
+  .ph-strip-wrap{margin-top:38px;}   /* pH 마커 라벨이 위 설명문과 겹치지 않게 */
+  .ph-strip{height:38px;}
+  .ph-labels{font-size:11.5px;}
+
+  /* 중화 반응 */
+  input[type=range]{height:6px;}
+  .slider-row label{font-size:14px;}
+  .eq{font-size:15.5px;padding:14px;}
+
+  /* 한눈에 비교 */
+  .compare-row{grid-template-columns:repeat(auto-fit,minmax(98px,1fr));gap:16px;}
+  .compare-cell .mini-beaker{width:54px;height:66px;}
+  .compare-cell .c-name{font-size:12.5px;min-height:32px;}
+
+  /* 홈판 — 화면 폭을 다 쓰고 칸을 키운다(손가락으로 칠할 크기) */
+  .well-grid{max-width:100%;gap:5px;margin-top:20px;}
+  .palette-row{gap:10px;}
+  .swatch-btn{padding:10px 14px;}
+  .swatch-dot{width:24px;height:24px;}
+  .swatch-label{font-size:11px;}
+  .toggle-btn{font-size:14.5px;padding:14px 18px;}
+  .tmpl-btn{font-size:13.5px;padding:11px 17px;}
+}
+
+/* 태블릿 가로 · 큰 화면 */
+@media (min-width:1024px){
+  .wrap{max-width:1000px;}
+  .grid{gap:24px;}
+  .well-grid{max-width:840px;}
+  .compare-row{gap:18px;}
+}
+
+/* 아이패드 세로에서 2단이 좁아지는 구간 — 카드 안쪽 여백만 줄여 숨통 */
+@media (min-width:744px) and (max-width:860px){
+  .grid{gap:16px;}
+  .card{padding:20px;}
+}
+
+/* 안전영역(홈 인디케이터) */
+@supports (padding:env(safe-area-inset-bottom)){
+  body{padding-bottom:calc(78px + env(safe-area-inset-bottom));}
+}
+
+/* ══ 선명도 (11-27 "색이 명확하게") ══════════════════════════
+   어두운 테마 실험실(탭 있는 것): 보조 글자·선·칸 배경 대비를 올린다 */
+:root:has(.tab-btn){--muted:#c6d6cf;--line:#4b7062;--panel:#1c3a31;--panel-2:#264a3e;}
+:root:has(.tab-btn) .tab-btn{color:#c6d6cf;}
+:root:has(.tab-btn) .tab-btn.active{color:#fff;}
+:root:has(.tab-btn) .tab-btn.active::after{height:3px;}
+:root:has(.tab-btn) .card h2,:root:has(.tab-btn) .card h3{color:#e3ece8;}
+:root:has(.tab-btn) .chip{border-color:#5d8575;}
+:root:has(.tab-btn) .note{color:#d5e1dc;}
+/* 헤스 실험실(자체 라이트/다크): 다크일 때만 보조 글자·선 대비 */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--mute:#c0d2cc;--line:#45605a;}}
+:root[data-theme="dark"]{--mute:#c0d2cc;--line:#45605a;}
+/* 돌아가기 링크(인라인 스타일이라 !important) */
+a[href="../"]{color:#dfe9e4!important;border-color:#5d8575!important;}
+
+/* ══ 가독성 (11-27) — 탭 있는 실험실: 작은 글씨 키우고 대문자 고정폭 제목을 한글 굵은 제목으로 ══ */
+:root:has(.tab-btn) body{line-height:1.6;}
+:root:has(.tab-btn) .sub{font-size:16px;line-height:1.75;color:#d5e1dc;}
+:root:has(.tab-btn) .tab-btn{font-size:15.5px;}
+:root:has(.tab-btn) .card h2,:root:has(.tab-btn) .card h3{font-family:var(--sans);font-size:15px;letter-spacing:0;text-transform:none;font-weight:700;color:#f1ede3;}
+:root:has(.tab-btn) .note{font-size:14.5px;line-height:1.7;}
+:root:has(.tab-btn) .lbl{font-size:13.5px;}
+:root:has(.tab-btn) .u,:root:has(.tab-btn) .read .u,:root:has(.tab-btn) .readout .u{font-size:12.5px;}
+:root:has(.tab-btn) .eq{font-size:15.5px;line-height:1.7;}
+:root:has(.tab-btn) .fb,:root:has(.tab-btn) .shift{font-size:15px;}
+:root:has(.tab-btn) .steps li,:root:has(.tab-btn) .q p{font-size:15.5px;}
+:root:has(.tab-btn) .q details,:root:has(.tab-btn) .log{font-size:14.5px;}
+:root:has(.tab-btn) th{font-size:12.5px;}
+:root:has(.tab-btn) td{font-size:14.5px;}
+:root:has(.tab-btn) .legend,:root:has(.tab-btn) .bar-l{font-size:13.5px;}
+:root:has(.tab-btn) .chip{font-size:14.5px;}
+:root:has(.tab-btn) .go{font-size:15.5px;}
+:root:has(.tab-btn) .empty{font-size:14px;}
+
+/* 두 칸 격자 안 두 번째 카드가 18px 내려가던 것(.card+.card) 바로잡음 (11-27) */
+.grid>.card{margin-top:0;}
+/* == IPAD-FIT END == */
+</style>
+</head>
+<body>
+  <a href="../" style="display:inline-flex;align-items:center;gap:7px;margin-bottom:18px;
+  font-family:'Space Mono','Courier New',monospace;font-size:12px;letter-spacing:.06em;
+  color:#9cb0a8;text-decoration:none;border:1px solid #2c473d;border-radius:20px;
+  padding:6px 13px;transition:.15s"
+  onmouseover="this.style.color='#f1ede3';this.style.borderColor='#6fb98f'"
+  onmouseout="this.style.color='#9cb0a8';this.style.borderColor='#2c473d'">← 실험실 목록</a>
+<div class="wrap">
+  <div class="eyebrow">Lab 16 · 측정과 어림</div>
+  <h1>측정 실험실</h1>
+  <p class="sub">눈으로 어림한 값과 도구로 잰 값을 비교해 오차를 구하고, 측정 도구의 눈금을 바르게 읽는 법과 유효숫자를 익힙니다. 이어서 구멍 뚫린 컵으로 1분 액체 타이머를 만들며 변인 통제를 연습해 보세요.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-p="p1">① 물의 질량 어림하기</button>
+    <button class="tab-btn" data-p="p2">② 액체 타이머 만들기</button>
+  </div>
+
+  <!-- ① 어림 -->
+  <section class="panel active" id="p1">
+    <div class="grid">
+      <div class="card">
+        <h2>그릇 고르기</h2>
+        <div class="chip-list" id="ctr"></div>
+        <ol class="steps">
+          <li>그림과 자를 보고 물의 질량을 <b>먼저 어림</b>합니다.
+            <div class="ans"><input id="est" inputmode="decimal" placeholder="g"> g <button class="go ghost" id="estOk">어림값 확정</button></div></li>
+          <li>저울에 올려 잽니다. (그릇 무게는 영점 버튼으로 뺐습니다)
+            <div class="btn-row"><button class="go" id="weigh" disabled>저울로 재기</button></div></li>
+        </ol>
+        <div class="fb" id="estFb"></div>
+        <div class="note">물 <b>1 mL ≈ 1 g</b>, 1 L ≈ 1 kg. 우유 작은 팩 = 200 mL, 큰 팩 = 1 L를 떠올리면 어림이 쉽습니다.</div>
+      </div>
+      <div class="card">
+        <h2 id="ctrName">그릇</h2>
+        <div class="stage"><svg viewBox="0 0 320 300" id="ctrSvg"></svg></div>
+        <div class="read">
+          <div><div class="big" id="scaleRead">----</div><div class="u" id="scaleU">저울 표시</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>어림 기록</h2>
+      <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-bottom:10px">
+        <div><div class="score" id="score">-</div><div class="lbl" style="margin:4px 0 0">어림 실력 (100점 만점)</div></div>
+        <div style="flex:1;min-width:200px;font-size:13px;color:var(--muted);line-height:1.6">점수 = 100 − 2 × 상대 오차(%). 그릇을 모두 재면 평균 점수가 나옵니다.<br>절대 오차 = |어림값 − 측정값|, 상대 오차 = 절대 오차 ÷ 측정값 × 100</div>
+      </div>
+      <div class="tscroll"><table><thead><tr><th>그릇</th><th>어림 (g)</th><th>측정 (g)</th><th>측정 도구</th><th>절대 오차 (g)</th><th>상대 오차</th><th>점수</th></tr></thead><tbody id="estT"><tr><td colspan="7" style="color:var(--muted)">아직 잰 그릇이 없습니다.</td></tr></tbody></table></div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h2>눈금 실린더 읽기 (100 mL, 최소 눈금 1 mL)</h2>
+        <div class="stage"><svg viewBox="0 0 320 300" id="cyl"></svg></div>
+        <div class="ans">읽은 값 <input id="cylAns" inputmode="decimal" placeholder="mL"> mL <button class="go ghost" id="cylChk">확인</button><button class="go ghost" id="cylNew">다른 문제</button></div>
+        <div class="fb" id="cylFb"></div>
+        <div class="note">눈높이를 액면과 <b>수평</b>으로 맞추고, 물이 오목하게 휜 면(메니스커스)의 <b>가장 낮은 곳</b>을 읽습니다. 최소 눈금의 <b>1/10까지 어림</b>해 읽으므로 0.1 mL 자리까지 씁니다.</div>
+      </div>
+      <div class="card">
+        <h2>유효숫자</h2>
+        <p style="font-size:14px;line-height:1.6;margin:0 0 8px">측정값에서 <b>확실한 숫자 + 마지막 어림한 숫자 1개</b>가 유효숫자입니다.</p>
+        <div class="eq" id="sfVal" style="font-size:20px"></div>
+        <div class="ans">유효숫자 <input id="sfAns" inputmode="numeric" placeholder="개" style="width:80px"> 개 <button class="go ghost" id="sfChk">확인</button><button class="go ghost" id="sfNew">다른 수</button></div>
+        <div class="fb" id="sfFb"></div>
+        <div class="q" style="margin-top:12px"><p>전자저울이 154.3 g을 보일 때와 주방 저울이 154 g을 보일 때, 무엇이 다를까요?</p><details><summary>확인</summary>값은 비슷해도 <b>정밀도</b>가 다릅니다. 154.3 g은 0.1 g 자리까지(유효숫자 4개), 154 g은 1 g 자리까지(3개) 믿을 수 있습니다. 측정값은 도구가 보여 주는 자리까지 그대로 씁니다. 154 g을 154.0 g이라고 쓰면 안 됩니다.</details></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ② 액체 타이머 -->
+  <section class="panel" id="p2">
+    <div class="eq">dh/dt = −(a/A)·C·√(2gh) &nbsp;→&nbsp; 다 빠지는 시간 t = (A / Ca)·√(2h₀/g)</div>
+    <div class="grid">
+      <div class="card">
+        <h2>타이머 설계 (컵 안지름 8.0 cm)</h2>
+        <p class="lbl">구멍 지름 (밑바닥 한가운데)</p>
+        <div class="chip-list" id="hole"><button class="chip" data-v="2">2 mm</button><button class="chip" data-v="3">3 mm</button><button class="chip active" data-v="4">4 mm</button><button class="chip" data-v="5">5 mm</button><button class="chip" data-v="6">6 mm</button></div>
+        <p class="lbl">처음 물 높이 (구멍에서부터)</p>
+        <div class="sl"><input type="range" id="h0" min="3" max="15" step="0.1" value="10"><b id="h0v">10.0 cm</b></div>
+        <p class="lbl">액체 (점성이 클수록 잘 안 흐름)</p>
+        <div class="chip-list" id="liq"><button class="chip active" data-v="0">물</button><button class="chip" data-v="1">진한 설탕물</button><button class="chip" data-v="2">식용유</button></div>
+        <p class="lbl">재생 속도</p>
+        <div class="chip-list" id="spd"><button class="chip" data-v="1">실제 시간 ×1</button><button class="chip active" data-v="5">빠르게 ×5</button></div>
+        <div class="btn-row"><button class="go" id="runT">물 채우고 시작</button><button class="go ghost" id="clrT">기록 지우기</button></div>
+        <div class="note">목표: <b>60 ± 1.5초</b>에 물이 다 빠지는 타이머. 같은 설정으로 <b>세 번</b> 재서 평균이 목표 안이고, 가장 큰 값과 작은 값의 차이가 2초 이하이면 성공입니다. 사람이 스톱워치를 누르는 시간과 구멍 가장자리 상태 때문에 매번 조금씩 다릅니다.</div>
+      </div>
+      <div class="card">
+        <h2>컵 타이머</h2>
+        <div class="stage"><svg viewBox="0 0 320 310" id="cupT"></svg></div>
+        <div class="read">
+          <div><div class="big" id="swT">0.00</div><div class="u">스톱워치 (s)</div></div>
+          <div><div class="big" id="hT">-</div><div class="u">물 높이 (cm)</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>이 설정의 시험 기록</h2>
+      <div class="tscroll"><table><thead><tr><th>설정</th><th>1회 (s)</th><th>2회 (s)</th><th>3회 (s)</th><th>평균 (s)</th><th>차이 (s)</th></tr></thead><tbody id="trT"></tbody></table></div>
+      <div class="fb" id="trFb"></div>
+      <div class="plot"><svg viewBox="0 0 640 280" id="plotT"></svg></div>
+      <div id="legT" style="font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.7"></div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h2>규칙 찾기</h2>
+        <ol class="steps">
+          <li>다른 조건은 같게 하고 <b>구멍 지름만 2배</b>로 하면 시간은 몇 배가 될까요? (직접 재 보고 답하세요)
+            <div class="ans"><input id="dAns" inputmode="decimal" placeholder="배"> 배 <button class="go ghost" id="dChk">확인</button></div>
+            <div class="fb" id="dFb"></div></li>
+          <li><b>처음 물 높이만 4배</b>로 하면 시간은 몇 배가 될까요?
+            <div class="ans"><input id="hAns" inputmode="decimal" placeholder="배"> 배 <button class="go ghost" id="hChk">확인</button></div>
+            <div class="fb" id="hFb"></div></li>
+        </ol>
+      </div>
+      <div class="card">
+        <h2>변인 통제</h2>
+        <p style="font-size:14px;line-height:1.6;margin:0 0 8px">"구멍 지름이 클수록 빨리 빠진다"를 확인하려 합니다. <b>같게 유지할 것</b>을 모두 고르세요.</p>
+        <div class="chip-list" id="ctl"><button class="chip" data-v="d">구멍 지름</button><button class="chip" data-v="h">처음 물 높이</button><button class="chip" data-v="l">액체 종류</button><button class="chip" data-v="c">컵 크기</button><button class="chip" data-v="t">걸린 시간</button></div>
+        <button class="go ghost" id="ctlChk">확인</button>
+        <div class="fb" id="ctlFb"></div>
+        <div class="q" style="margin-top:12px"><p>물 높이가 절반이 될 때까지의 시간은 전체의 절반일까요?</p><details><summary>확인</summary>아닙니다. 물이 높을수록 구멍에서 나가는 속도(√2gh)가 커서 처음에 빨리 줄어듭니다. h = h₀(1 − t/T)²에서 h = h₀/2가 되는 때는 t = (1 − 1/√2)T ≈ <b>0.29 T</b>. 그래프가 처음엔 가파르고 끝으로 갈수록 완만한 까닭입니다.</details></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+document.querySelectorAll('.tab-btn').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.toggle('active',x===b));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.p));});
+const num=v=>parseFloat(String(v).replace(',','.'));
+function check(inp,fb,ans,tol,okMsg,noMsg){const v=num($(inp).value),f=$(fb);
+  if(isNaN(v)){f.className='fb no';f.textContent='숫자를 넣어 주세요.';return false;}
+  const ok=Math.abs(v-ans)<=Math.abs(ans)*tol;f.className='fb '+(ok?'ok':'no');f.innerHTML=ok?okMsg:noMsg;return ok;}
+function chips(id,cb){const box=$(id);box.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{
+  box.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x===c));cb&&cb(c.dataset.v);});}
+const txt=(g,x,y,s,a={})=>{const t=el('text',Object.assign({x,y,fill:'#c6d6cf','font-size':11},a));t.textContent=s;g.appendChild(t);return t;};
+const gauss=()=>{let u=0;for(let i=0;i<6;i++)u+=Math.random();return (u-3)/Math.SQRT2;};
+const WATER='rgba(127,176,224,.55)';
+
+// ════ ① 어림 ════
+// 그릇 = 원뿔대(아래 반지름 rb, 위 rt, 높이 H, cm). 병은 몸통만 채움. 물 높이는 매번 무작위.
+const CT=[
+ {k:'cup',n:'종이컵',rb:2.5,rt:3.5,H:7.0},
+ {k:'mug',n:'머그컵',rb:3.7,rt:3.7,H:8.2,handle:1},
+ {k:'pet5',n:'500 mL 페트병',rb:3.3,rt:3.3,H:14,neck:6},
+ {k:'pet2',n:'2 L 페트병',rb:5.2,rt:5.2,H:24,neck:8},
+ {k:'pail',n:'양동이',rb:11,rt:13,H:23,bail:1}];
+const vol=(c,h)=>{const r=c.rb+(c.rt-c.rb)*h/c.H;return Math.PI*h*(c.rb*c.rb+c.rb*r+r*r)/3;};
+CT.forEach(c=>{c.h=c.H*(0.35+Math.random()*0.55);c.m=vol(c,c.h)*0.998;
+  c.tool=c.m<600?{n:'전자저울',res:0.1,d:1}:c.m<3000?{n:'주방 저울',res:1,d:0}:{n:'바닥 저울',res:10,d:0};
+  c.meas=Math.round(c.m/c.tool.res)*c.tool.res;});
+let cc=CT[0],done={},pending=null;
+$('#ctr').innerHTML=CT.map((c,i)=>`<button class="chip${i?'':' active'}" data-v="${c.k}">${c.n}</button>`).join('');
+chips('#ctr',v=>{cc=CT.find(c=>c.k===v);drawCtr(false);});
+function drawCtr(showRead){const g=$('#ctrSvg');g.innerHTML='';const c=cc,tot=c.H+(c.neck||0)+(c.bail?4:0);
+  const s=200/Math.max(tot,c.rt*2*0.75),base=250,cx=170,X=r=>r*s,Y=h=>base-h*s;
+  // 저울
+  g.appendChild(el('rect',{x:60,y:base,width:220,height:14,rx:4,fill:'#8a8f8c'}));
+  g.appendChild(el('rect',{x:80,y:base+14,width:180,height:30,rx:4,fill:'#0c1915',stroke:'#c6d6cf'}));
+  txt(g,250,base+34,showRead?(c.meas.toFixed(c.tool.d)+' g'):'0'+(c.tool.d?'.0':'')+' g',{'text-anchor':'end',fill:'#58f0a5','font-size':15,id:'lcd'});
+  txt(g,90,base+34,c.tool.n,{'font-size':10});
+  // 물
+  const rh=c.rb+(c.rt-c.rb)*c.h/c.H;
+  g.appendChild(el('path',{d:`M${cx-X(c.rb)} ${base} L${cx-X(rh)} ${Y(c.h)} H${cx+X(rh)} L${cx+X(c.rb)} ${base} Z`,fill:WATER}));
+  g.appendChild(el('line',{x1:cx-X(rh),x2:cx+X(rh),y1:Y(c.h),y2:Y(c.h),stroke:'#bfe0ff','stroke-width':1.5}));
+  // 그릇 외곽
+  const o=`M${cx-X(c.rt)} ${Y(c.H)} L${cx-X(c.rb)} ${base} H${cx+X(c.rb)} L${cx+X(c.rt)} ${Y(c.H)}`;
+  if(c.neck){const nr=Math.min(1.3,c.rb*.35);g.appendChild(el('path',{d:`M${cx-X(c.rb)} ${base} V${Y(c.H)} Q${cx-X(c.rb)} ${Y(c.H+c.neck*.6)} ${cx-X(nr)} ${Y(c.H+c.neck*.8)} V${Y(c.H+c.neck)} M${cx+X(nr)} ${Y(c.H+c.neck)} V${Y(c.H+c.neck*.8)} Q${cx+X(c.rb)} ${Y(c.H+c.neck*.6)} ${cx+X(c.rb)} ${Y(c.H)} V${base} H${cx-X(c.rb)}`,fill:'none',stroke:'#f1ede3','stroke-width':2.5}));
+    g.appendChild(el('rect',{x:cx-X(nr)-3,y:Y(c.H+c.neck)-10,width:2*X(nr)+6,height:10,rx:2,fill:'#4fd6e0'}));}
+  else g.appendChild(el('path',{d:o,fill:'none',stroke:'#f1ede3','stroke-width':2.5}));
+  if(c.handle)g.appendChild(el('path',{d:`M${cx+X(c.rt)} ${Y(c.H*.8)} q${X(2.6)} 0 ${X(2.6)} ${X(2.5)} t${-X(2.6)} ${X(2.5)}`,fill:'none',stroke:'#f1ede3','stroke-width':5}));
+  if(c.bail)g.appendChild(el('path',{d:`M${cx-X(c.rt)} ${Y(c.H*.95)} Q${cx} ${Y(c.H+8)} ${cx+X(c.rt)} ${Y(c.H*.95)}`,fill:'none',stroke:'#c6d6cf','stroke-width':2}));
+  // 자 (cm)
+  const rx=36,step=tot>20?5:tot>10?2:1;g.appendChild(el('rect',{x:rx-8,y:Y(Math.ceil(tot)),width:22,height:Math.ceil(tot)*s,fill:'#e9d9a6',opacity:.9}));
+  for(let i=0;i<=Math.ceil(tot);i++){const y=Y(i),big=i%step===0;g.appendChild(el('line',{x1:rx+14,x2:rx+14-(big?10:5),y1:y,y2:y,stroke:'#3a2f12','stroke-width':1}));if(big&&i)txt(g,rx-11,y+4,i,{'text-anchor':'end','font-size':10});}
+  txt(g,rx+3,Y(Math.ceil(tot))-6,'cm',{'text-anchor':'middle','font-size':10});
+  $('#ctrName').textContent=`${c.n} · 실제 크기 비율`;$('#scaleRead').textContent=showRead?c.meas.toFixed(c.tool.d):'----';$('#scaleU').textContent=`${c.tool.n} (최소 ${c.tool.res} g)`;
+  const d=done[c.k];$('#est').value=d?d.est:'';$('#est').disabled=!!d;$('#estOk').disabled=!!d;$('#weigh').disabled=!(pending&&pending.k===c.k);
+  if(!showRead){$('#estFb').className='fb';$('#estFb').innerHTML=d?`이미 잰 그릇입니다. 측정값 ${c.meas.toFixed(c.tool.d)} g.`:'';}}
+$('#estOk').onclick=()=>{const v=num($('#est').value),f=$('#estFb');if(isNaN(v)||v<=0){f.className='fb no';f.textContent='어림한 질량을 g 단위 숫자로 넣어 주세요.';return;}
+  pending={k:cc.k,est:v};$('#est').disabled=true;$('#estOk').disabled=true;$('#weigh').disabled=false;f.className='fb';f.textContent=`어림값 ${v} g을 적었습니다. 이제 저울로 재 보세요.`;};
+$('#weigh').onclick=()=>{if(!pending)return;const c=cc,est=pending.est;pending=null;$('#weigh').disabled=true;
+  const fin=()=>{drawCtr(true);const ab=Math.abs(est-c.meas),rel=ab/c.meas*100,sc=Math.max(0,Math.round(100-2*rel));
+    done[c.k]={est,ab,rel,sc};document.querySelector(`#ctr [data-v="${c.k}"]`).classList.add('done');
+    const f=$('#estFb');f.className='fb '+(rel<=15?'ok':'no');
+    f.innerHTML=`측정값 <b>${c.meas.toFixed(c.tool.d)} g</b>. 절대 오차 ${ab.toFixed(c.tool.d)} g, 상대 오차 <b>${rel.toFixed(1)} %</b> → ${rel<=5?'눈썰미 장인!':rel<=15?'잘 어림했습니다.':rel<=30?'괜찮습니다. 자를 보고 부피를 떠올려 보세요.':'차이가 큽니다. 지름 × 지름 × 높이 × 0.8 정도가 원기둥 부피(mL)입니다.'}`;
+    estTable();};
+  if(RM)return fin();
+  const st=performance.now();(function f(now){const p=Math.min(1,(now-st)/900),v=c.meas*(1-Math.pow(1-p,3));
+    const t=$('#lcd');if(t)t.textContent=(Math.round(v/c.tool.res)*c.tool.res).toFixed(c.tool.d)+' g';$('#scaleRead').textContent=(Math.round(v/c.tool.res)*c.tool.res).toFixed(c.tool.d);
+    if(p<1)requestAnimationFrame(f);else fin();})(st);};
+function estTable(){const ks=CT.filter(c=>done[c.k]);
+  $('#estT').innerHTML=ks.map(c=>{const d=done[c.k];return `<tr><td>${c.n}</td><td>${d.est}</td><td>${c.meas.toFixed(c.tool.d)}</td><td>${c.tool.n} (${c.tool.res} g)</td><td>${d.ab.toFixed(c.tool.d)}</td><td>${d.rel.toFixed(1)} %</td><td><b>${d.sc}</b></td></tr>`;}).join('');
+  const avg=ks.reduce((a,c)=>a+done[c.k].sc,0)/ks.length;$('#score').textContent=Math.round(avg);}
+drawCtr(false);
+
+// 눈금 실린더: 확대 창 (±6 mL)
+let cylV;
+function newCyl(){cylV=Math.round((32+Math.random()*56)*10)/10;if(Math.abs(cylV-Math.round(cylV))<0.05)cylV+=0.3;cylV=Math.round(cylV*10)/10;
+  const g=$('#cyl');g.innerHTML='';
+  // 전체 모습 (왼쪽)
+  g.appendChild(el('rect',{x:40,y:30+200*(1-cylV/100),width:28,height:200*cylV/100,fill:WATER}));
+  g.appendChild(el('path',{d:'M40 20 V232 H68 V20',fill:'none',stroke:'#f1ede3','stroke-width':2}));
+  g.appendChild(el('rect',{x:26,y:232,width:56,height:8,rx:2,fill:'#c6d6cf'}));
+  for(let m=0;m<=100;m+=10){const y=230-200*m/100;g.appendChild(el('line',{x1:40,x2:50,y1:y,y2:y,stroke:'#c6d6cf'}));}
+  const zy=230-200*cylV/100;g.appendChild(el('rect',{x:34,y:zy-14,width:40,height:28,fill:'none',stroke:'#ffe066','stroke-width':1.5}));
+  g.appendChild(el('path',{d:`M74 ${zy-14} L120 20 M74 ${zy+14} L120 290`,stroke:'#ffe066','stroke-width':1,'stroke-dasharray':'3 3'}));
+  // 확대 창
+  const L=120,R=300,T=20,B=290,cx=210,px=(B-T)/12,Y=v=>(T+B)/2-(v-cylV)*px;
+  g.appendChild(el('defs',{})).innerHTML='<clipPath id="zw"><rect x="120" y="20" width="180" height="270" rx="10"/></clipPath>';
+  const z=el('g',{'clip-path':'url(#zw)'});g.appendChild(z);
+  z.appendChild(el('rect',{x:L,y:T,width:R-L,height:B-T,fill:'#0c1915'}));
+  const wl=140,wr=280,lift=0.55*px;
+  z.appendChild(el('path',{d:`M${wl} ${B} V${Y(cylV)-lift} Q${wl+8} ${Y(cylV)} ${cx} ${Y(cylV)} Q${wr-8} ${Y(cylV)} ${wr} ${Y(cylV)-lift} V${B} Z`,fill:WATER}));
+  z.appendChild(el('path',{d:`M${wl} ${Y(cylV)-lift} Q${wl+8} ${Y(cylV)} ${cx} ${Y(cylV)} Q${wr-8} ${Y(cylV)} ${wr} ${Y(cylV)-lift}`,fill:'none',stroke:'#bfe0ff','stroke-width':2}));
+  for(let m=Math.floor(cylV-7);m<=Math.ceil(cylV+7);m++){const y=Y(m),big=m%5===0;z.appendChild(el('line',{x1:wl,x2:wl+(m%10===0?60:big?44:26),y1:y,y2:y,stroke:'#f1ede3','stroke-width':big?2:1.2}));
+    if(big)txt(z,wl+(m%10===0?66:50),y+5,m,{fill:'#f1ede3','font-size':14});}
+  z.appendChild(el('line',{x1:wl,x2:wl,y1:T,y2:B,stroke:'#f1ede3','stroke-width':2.5}));z.appendChild(el('line',{x1:wr,x2:wr,y1:T,y2:B,stroke:'#f1ede3','stroke-width':2.5}));
+  g.appendChild(el('rect',{x:L,y:T,width:R-L,height:B-T,rx:10,fill:'none',stroke:'#ffe066','stroke-width':1.5}));
+  $('#cylAns').value='';$('#cylFb').className='fb';$('#cylFb').textContent='';}
+$('#cylNew').onclick=newCyl;
+$('#cylChk').onclick=()=>{const v=num($('#cylAns').value),f=$('#cylFb');if(isNaN(v)){f.className='fb no';f.textContent='숫자를 넣어 주세요.';return;}
+  const d=Math.abs(v-cylV);
+  if(d<=0.21&&/\.\d/.test($('#cylAns').value.replace(',','.'))){f.className='fb ok';f.innerHTML=`좋습니다! 정답 근처는 <b>${cylV.toFixed(1)} mL</b>. 마지막 자리(0.1 mL)는 어림한 숫자라 ±0.1~0.2 정도는 사람마다 다를 수 있습니다.`;}
+  else if(d<=0.21){f.className='fb no';f.textContent='값은 맞지만 최소 눈금(1 mL)의 1/10 자리까지 써야 합니다. 예: 47.0 mL처럼 소수 첫째 자리까지.';}
+  else if(d<=0.7){f.className='fb no';f.textContent='가깝습니다. 휜 면의 가장자리가 아니라 가운데 가장 낮은 곳을 읽었나요? 눈금 사이를 10칸으로 나눠 어림해 보세요.';}
+  else{f.className='fb no';f.textContent='긴 눈금 숫자(5 mL마다)를 먼저 찾고, 그 위로 작은 눈금(1 mL)을 몇 칸 올라가는지 세어 보세요.';}};
+newCyl();
+
+// 유효숫자
+const SF=[['154.3 g',4,'0이 아닌 숫자는 모두 유효숫자입니다.'],['0.0450 g',3,'앞쪽 0(0.0)은 자리만 나타내므로 빼고, 끝의 0은 측정한 숫자라 셉니다: 4, 5, 0.'],['250.0 mL',4,'소수점 아래 끝의 0도 측정한 숫자입니다.'],['1.20 × 10³ g',3,'과학적 표기에서는 앞부분(1.20)의 숫자만 셉니다.'],['0.008 L',1,'앞의 0은 모두 자리 표시입니다.'],['1005 g',4,'0이 아닌 숫자 사이의 0은 유효숫자입니다.'],['36.50 °C',4,'끝의 0까지 체온계가 읽은 숫자입니다.'],['0.60 mm',2,'앞의 0은 빼고 6과 끝의 0을 셉니다.']];
+let sf;function newSf(){let n;do{n=SF[Math.random()*SF.length|0];}while(n===sf);sf=n;$('#sfVal').textContent=sf[0];$('#sfAns').value='';$('#sfFb').className='fb';$('#sfFb').textContent='';}
+$('#sfNew').onclick=newSf;
+$('#sfChk').onclick=()=>{const v=num($('#sfAns').value),f=$('#sfFb');if(isNaN(v)){f.className='fb no';f.textContent='숫자를 넣어 주세요.';return;}
+  if(v===sf[1]){f.className='fb ok';f.innerHTML=`맞습니다. <b>${sf[1]}개</b>. ${sf[2]}`;}else{f.className='fb no';f.textContent='규칙: ① 0이 아닌 숫자는 모두 센다 ② 숫자 사이의 0은 센다 ③ 맨 앞의 0은 세지 않는다 ④ 소수점이 있는 수의 끝 0은 센다.';}};
+newSf();
+
+// ════ ② 액체 타이머 ════
+// 토리첼리: 유출 속도 C·√(2gh). √h가 시간에 대해 일정하게 줄어 h(t) = h₀(1 − t/T)²
+// ponytail: 점성은 유출 계수 C를 낮추는 것으로만 반영(실제로 아주 작은 구멍·식용유는 층류라 모양이 달라짐)
+const A=Math.PI*4*4,G=980,LIQ=[{n:'물',C:0.61,c:'rgba(127,176,224,.6)'},{n:'진한 설탕물',C:0.50,c:'rgba(240,210,150,.6)'},{n:'식용유',C:0.36,c:'rgba(232,200,80,.65)'}];
+let dH=4,H0=10,lq=0,spd=5,runs=[],animT=null;
+const Ttot=(d,h,C)=>A/(C*Math.PI*(d/20)**2)*Math.sqrt(2*h/G);
+const key=()=>`${dH} mm · ${H0.toFixed(1)} cm · ${LIQ[lq].n}`;
+chips('#hole',v=>{dH=+v;setT();});chips('#liq',v=>{lq=+v;setT();});chips('#spd',v=>spd=+v);
+$('#h0').oninput=e=>{H0=+e.target.value;$('#h0v').textContent=H0.toFixed(1)+' cm';setT();};
+function cup(h,t,flow){const g=$('#cupT');g.innerHTML='';const s=15,cx=150,base=230,w=8*s/2,Y=v=>base-v*s;
+  g.appendChild(el('rect',{x:cx-w,y:Y(h),width:2*w,height:h*s,fill:LIQ[lq].c}));
+  g.appendChild(el('path',{d:`M${cx-w} ${Y(14.5)} V${base} H${cx-3} M${cx+3} ${base} H${cx+w} V${Y(14.5)}`,fill:'none',stroke:'#f1ede3','stroke-width':2.5}));
+  g.appendChild(el('line',{x1:cx-w-6,x2:cx+w+6,y1:Y(H0),y2:Y(H0),stroke:'#ffe066','stroke-dasharray':'4 3'}));txt(g,cx+w+10,Y(H0)+4,'처음 '+H0.toFixed(1),{fill:'#ffe066','font-size':10});
+  for(let i=0;i<=14;i+=2){g.appendChild(el('line',{x1:cx-w,x2:cx-w+(i%4?6:10),y1:Y(i),y2:Y(i),stroke:'#c6d6cf'}));if(i%4===0)txt(g,cx-w-6,Y(i)+4,i,{'text-anchor':'end','font-size':10});}
+  if(flow&&h>0.02){const sw=Math.max(1.5,dH*0.9*Math.min(1,Math.sqrt(h/4)+.3));g.appendChild(el('path',{d:`M${cx-sw/2} ${base} L${cx-sw/3} 292 H${cx+sw/3} L${cx+sw/2} ${base} Z`,fill:LIQ[lq].c}));}
+  g.appendChild(el('path',{d:'M100 260 V300 H200 V260',fill:'none',stroke:'#c6d6cf','stroke-width':2}));
+  const caught=Math.max(0,H0-h)/H0;g.appendChild(el('rect',{x:102,y:298-30*caught,width:96,height:30*caught,fill:LIQ[lq].c}));
+  // 스톱워치 아이콘 텍스트
+  const sx=266,sy=266;txt(g,sx,sy+6,t.toFixed(1)+' s',{'text-anchor':'middle',fill:'#4fd6e0','font-size':15});g.appendChild(el('circle',{cx:sx,cy:sy,r:34,fill:'none',stroke:'#4fd6e0','stroke-width':2}));
+  g.appendChild(el('line',{x1:sx,y1:sy,x2:sx+26*Math.sin(t/60*2*Math.PI),y2:sy-26*Math.cos(t/60*2*Math.PI),stroke:'#4fd6e0','stroke-width':2,opacity:.5}));
+  $('#swT').textContent=t.toFixed(2);$('#hT').textContent=h.toFixed(1);}
+function setT(){if(animT)return;cup(H0,0,false);trTable();}
+const TC=['#4fd6e0','#ffb15c','#ff6fae','#a78bfa','#58f0a5','#ffe066'];
+$('#runT').onclick=()=>{if(animT)return;const C=LIQ[lq].C*(1+0.012*gauss()),T=Ttot(dH,H0,C),meas=Math.max(0,T+0.15*gauss());
+  const r={k:key(),d:dH,h0:H0,T,meas,c:TC[runs.length%TC.length]};
+  const fin=()=>{animT=null;$('#runT').disabled=false;runs.push(r);if(runs.length>9)runs.shift();cup(0,meas,false);trTable();plotT();};
+  if(RM)return fin();
+  $('#runT').disabled=true;const st=performance.now();
+  (function f(now){const t=Math.min(T,(now-st)/1000*spd),h=H0*(1-t/T)**2;cup(h,t,true);plotT({...r,upto:t});
+    if(t<T)animT=requestAnimationFrame(f);else fin();})(st);};
+$('#clrT').onclick=()=>{if(animT)return;runs=[];trTable();plotT();$('#trFb').className='fb';$('#trFb').textContent='';};
+function trTable(){const k=key(),rs=runs.filter(r=>r.k===k).slice(-3),f=$('#trFb');
+  const m=rs.length?rs.reduce((a,r)=>a+r.meas,0)/rs.length:0,sp=rs.length?Math.max(...rs.map(r=>r.meas))-Math.min(...rs.map(r=>r.meas)):0;
+  $('#trT').innerHTML=`<tr><td style="text-align:left">${k}</td>${[0,1,2].map(i=>`<td>${rs[i]?rs[i].meas.toFixed(2):'·'}</td>`).join('')}<td><b>${rs.length?m.toFixed(2):'·'}</b></td><td>${rs.length>1?sp.toFixed(2):'·'}</td></tr>`;
+  if(rs.length<3){f.className='fb';f.textContent=rs.length?`같은 설정으로 ${3-rs.length}번 더 재 보세요.`:'설정을 정하고 시작을 누르세요. 설정을 바꾸면 새 줄에서 다시 셉니다.';return;}
+  if(Math.abs(m-60)<=1.5&&sp<=2){f.className='fb ok';f.innerHTML=`<b>1분 타이머 완성!</b> 평균 ${m.toFixed(2)} s, 차이 ${sp.toFixed(2)} s. 같은 설정에서 결과가 비슷하게 되풀이되니 믿을 만한 타이머입니다.`;}
+  else if(Math.abs(m-60)>1.5){f.className='fb no';f.textContent=`평균 ${m.toFixed(1)} s → ${m>60?'너무 깁니다. 구멍을 키우거나 물을 덜 채우세요.':'너무 짧습니다. 구멍을 줄이거나 물을 더 채우세요.'} 물 높이는 0.1 cm 단위로 바꿀 수 있습니다.`;}
+  else{f.className='fb no';f.textContent=`평균은 맞지만 차이가 ${sp.toFixed(1)} s로 큽니다. 한 번 더 재 보세요.`;}}
+function plotT(cur){const g=$('#plotT');g.innerHTML='';const all=runs.concat(cur?[cur]:[]),tm=Math.max(90,...all.map(r=>r.T));const xm=Math.ceil(tm/30)*30;
+  const L=56,R=620,T=14,B=236,X=t=>L+(R-L)*t/xm,Y=h=>B-(B-T)*h/15;
+  for(let h=0;h<=15;h+=3){g.appendChild(el('line',{x1:L,x2:R,y1:Y(h),y2:Y(h),stroke:'#3f6355'}));txt(g,L-8,Y(h)+4,h,{'text-anchor':'end'});}
+  for(let t=0;t<=xm;t+=xm>180?60:15)txt(g,X(t),B+18,t,{'text-anchor':'middle'});
+  g.appendChild(el('line',{x1:X(60),x2:X(60),y1:T,y2:B,stroke:'#ffe066','stroke-dasharray':'6 4','stroke-width':1.5}));txt(g,X(60)+6,T+12,'60 s',{fill:'#ffe066'});
+  txt(g,R,B+34,'시간 (s) →',{'text-anchor':'end'});txt(g,L,T-2,'물 높이 (cm)');
+  all.forEach(r=>{const up=r.upto==null?r.T:r.upto,n=40,d=[];for(let i=0;i<=n;i++){const t=up*i/n;d.push((i?'L':'M')+X(t).toFixed(1)+' '+Y(r.h0*(1-t/r.T)**2).toFixed(1));}
+    g.appendChild(el('path',{d:d.join(' '),fill:'none',stroke:r.c,'stroke-width':2.5}));});
+  $('#legT').innerHTML=runs.map(r=>`<span style="color:${r.c}">━</span> ${r.k} → ${r.meas.toFixed(2)} s`).join('<br>');}
+const R1=()=>{const rs=runs;for(const a of rs)for(const b of rs)if(b.d===2*a.d&&b.h0===a.h0)return b.meas/a.meas;return null;};
+$('#dChk').onclick=()=>check('#dAns','#dFb',0.25,0.08,'맞습니다. 구멍 넓이는 지름²에 비례하므로 지름 2배 → 넓이 4배 → 같은 시간에 4배 흐르니 시간은 <b>1/4 (0.25배)</b>입니다.'+(R1()?` 내 측정: ${R1().toFixed(2)}배.`:''),'예: 2 mm와 4 mm(또는 3 mm와 6 mm)로 같은 높이에서 재 보고 나누어 보세요. 구멍의 넓이는 지름과 어떤 관계일까요?');
+$('#hChk').onclick=()=>check('#hAns','#hFb',2,0.06,'맞습니다. t ∝ √h₀이므로 높이 4배 → 시간 <b>√4 = 2배</b>. 물이 높으면 빨리 나가기도 하므로 4배가 되지는 않습니다.','예: 3.5 cm와 14.0 cm로 재 보세요. 물이 많으면 오래 걸리지만, 물이 높을수록 구멍에서 더 세게 나옵니다.');
+$('#ctlChk').onclick=()=>{const sel=[...document.querySelectorAll('#ctl .chip.active')].map(c=>c.dataset.v).sort().join(''),f=$('#ctlFb');
+  if(sel==='chl'){f.className='fb ok';f.innerHTML='맞습니다. <b>바꾸는 변인</b>은 구멍 지름 하나, <b>측정하는 변인</b>은 걸린 시간, 나머지(처음 높이·액체·컵 크기)는 모두 <b>통제 변인</b>으로 같게 둡니다.';}
+  else{f.className='fb no';f.textContent=sel.includes('d')?'구멍 지름은 일부러 바꾸는 변인(조작 변인)입니다.':sel.includes('t')?'걸린 시간은 결과로 재는 변인(종속 변인)입니다.':'시간에 영향을 줄 수 있는 다른 조건이 더 있습니다.';}};
+document.querySelectorAll('#ctl .chip').forEach(c=>c.onclick=()=>c.classList.toggle('active'));
+setT();plotT();
+})();
+</script>
+</body>
+</html>

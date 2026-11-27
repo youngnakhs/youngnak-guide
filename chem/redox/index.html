@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>산화·환원 실험실</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap');
+:root{
+  --bg:#10201b;--panel:#1c3a31;--panel-2:#264a3e;--line:#4b7062;--ink:#f1ede3;--muted:#c6d6cf;
+  --acid-2:#f2a541;--neutral:#6fb98f;
+  --mono:'Space Mono','Courier New',monospace;--sans:'Work Sans',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;color:var(--ink);font-family:var(--sans);padding:28px 16px 60px;
+  background:radial-gradient(circle at 15% 0%,rgba(111,185,143,.08),transparent 45%),radial-gradient(circle at 90% 90%,rgba(255,111,174,.07),transparent 45%),var(--bg);}
+.wrap{max-width:920px;margin:0 auto;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--neutral);text-transform:uppercase;margin-bottom:8px;}
+h1{font-weight:700;font-size:32px;margin:0 0 6px;letter-spacing:-.01em;}
+.sub{color:var(--muted);font-size:14.5px;line-height:1.6;margin:0 0 26px;max-width:620px;}
+.tabs{display:flex;gap:8px;margin-bottom:22px;border-bottom:1px solid var(--line);flex-wrap:wrap;}
+.tab-btn{font-family:var(--sans);font-weight:600;font-size:14px;background:none;border:none;color:var(--muted);padding:10px 4px;cursor:pointer;position:relative;}
+.tab-btn.active{color:#fff;}
+.tab-btn.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:3px;background:var(--neutral);border-radius:2px;}
+.tab-btn+.tab-btn{margin-left:18px;}
+.panel{display:none;}
+.panel.active{display:block;animation:fade .3s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:720px){.grid{grid-template-columns:1fr;}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;min-width:0;}
+.card h2{font-size:12px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#e3ece8;margin:0 0 14px;font-weight:700;}
+.card+.card,.grid+.card,.card+.grid{margin-top:18px;}
+.chip-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.chip{font-family:var(--sans);font-size:13px;font-weight:500;background:var(--panel-2);border:1px solid #5d8575;color:var(--ink);padding:8px 12px;border-radius:20px;cursor:pointer;}
+.chip.active{background:var(--neutral);color:#0d1a15;border-color:var(--neutral);font-weight:700;}
+.chip:disabled{opacity:.45;cursor:default;}
+.lbl{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0 0 8px;}
+.eq{font-family:var(--mono);font-size:14px;text-align:center;padding:12px;background:var(--panel-2);border-radius:8px;margin-bottom:16px;line-height:1.7;}
+.note{font-size:12.5px;color:#d5e1dc;line-height:1.6;background:var(--panel-2);border-radius:8px;padding:10px 12px;margin-top:14px;}
+.note b{color:var(--ink);}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.go{font-family:var(--sans);font-weight:700;font-size:14.5px;border:none;border-radius:10px;padding:11px 15px;cursor:pointer;background:var(--neutral);color:#0d1a15;touch-action:manipulation;}
+.go.ghost{background:var(--panel-2);color:var(--ink);border:1px solid var(--line);}
+.go:disabled{opacity:.45;cursor:default;}
+.stage{display:flex;justify-content:center;}
+.stage svg{width:100%;max-width:360px;height:auto;}
+svg text{font-family:var(--mono);}
+.read{display:flex;justify-content:space-around;font-family:var(--mono);text-align:center;margin-top:8px;gap:8px;}
+.read .big{font-size:24px;font-weight:700;line-height:1.2;}
+.read .u{font-size:11px;color:var(--muted);letter-spacing:.06em;}
+.half{font-family:var(--mono);font-size:13.5px;line-height:1.8;background:var(--panel-2);border-radius:8px;padding:10px 12px;margin-top:12px;}
+.half b{font-family:var(--sans);}
+.steps{counter-reset:s;margin:0;padding:0;list-style:none;}
+.steps li{position:relative;padding:0 0 10px 30px;line-height:1.6;font-size:14px;}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;width:21px;height:21px;border-radius:50%;background:var(--panel-2);border:1px solid var(--line);font:700 11px/19px var(--mono);text-align:center;color:var(--neutral);}
+.ans{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:14px;}
+.ans input{width:120px;font:700 16px var(--mono);padding:9px 10px;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);color:var(--ink);}
+.fb{font-size:13.5px;margin-top:8px;min-height:1.2em;line-height:1.6;}
+.fb.ok{color:var(--neutral);}.fb.no{color:var(--acid-2);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th,td{padding:7px 4px;border-bottom:1px solid var(--line);text-align:center;}
+th{font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:400;}
+#mGrid .chip{padding:7px 8px;font-size:12.5px;min-width:56px;}
+#mGrid td.res-o{color:var(--neutral);font-weight:700;}
+.plot{background:var(--panel-2);border-radius:10px;padding:10px;margin-top:12px;}
+.plot svg{width:100%;height:auto;display:block;}
+.tog{display:flex;align-items:center;gap:10px;font-size:14px;margin-top:6px;cursor:pointer;}
+.tog input{width:22px;height:22px;accent-color:var(--neutral);}
+.q{border-top:1px solid var(--line);padding:12px 0;}
+.q:first-child{border-top:none;padding-top:0;}
+.q p{margin:0 0 8px;line-height:1.6;font-size:14px;}
+.q details{font-size:13px;color:#d5e1dc;line-height:1.6;}
+.q summary{cursor:pointer;color:var(--neutral);font-weight:600;}
+.ord{font-family:var(--mono);font-size:16px;font-weight:700;min-height:1.6em;margin:4px 0 6px;}
+@media (prefers-reduced-motion:reduce){.panel.active{animation:none;}}
+
+/* == IPAD-FIT BEGIN (자동 생성 · 직접 수정하지 말 것) == */
+/* ══ 아이패드 대응 (자동 삽입 · 화학실험실 파이프라인) ══════════
+   대상 폭 — 세로 744(mini)/810(10.9")/834(Air·Pro11)/1024(Pro12.9")
+            가로 1080/1133/1194/1366
+   원칙 — 손가락 터치 목표 44px 이상, 본문 글자 키우기, 홈판을 화면 폭에 맞춰 확대 */
+html{-webkit-text-size-adjust:100%;}
+
+/* 태블릿 세로부터 */
+@media (min-width:744px){
+  body{padding:38px 30px 78px;font-size:15.5px;}
+  .wrap{max-width:900px;}
+  h1{font-size:38px;}
+  .sub{font-size:16px;line-height:1.7;max-width:680px;}
+
+  /* 탭 — 손가락으로 누를 크기 */
+  .tabs{flex-wrap:wrap;gap:0 4px;}
+  .tab-btn{font-size:15.5px;padding:15px 6px;}
+  .tab-btn+.tab-btn{margin-left:26px;}
+
+  /* 선택 칩 — 44px 이상 */
+  .chip{font-size:14.5px;padding:12px 17px;border-radius:24px;}
+  .card{padding:22px 24px;}
+  .card h3{font-size:12.5px;margin-bottom:16px;}
+  .note{font-size:13.5px;padding:12px 14px;}
+
+  /* 비커·수치 */
+  .beaker-svg{width:172px;height:206px;}
+  .readout .ph-big{font-size:46px;}
+  .verdict{font-size:15px;padding:6px 15px;}
+  .ph-strip-wrap{margin-top:38px;}   /* pH 마커 라벨이 위 설명문과 겹치지 않게 */
+  .ph-strip{height:38px;}
+  .ph-labels{font-size:11.5px;}
+
+  /* 중화 반응 */
+  input[type=range]{height:6px;}
+  .slider-row label{font-size:14px;}
+  .eq{font-size:15.5px;padding:14px;}
+
+  /* 한눈에 비교 */
+  .compare-row{grid-template-columns:repeat(auto-fit,minmax(98px,1fr));gap:16px;}
+  .compare-cell .mini-beaker{width:54px;height:66px;}
+  .compare-cell .c-name{font-size:12.5px;min-height:32px;}
+
+  /* 홈판 — 화면 폭을 다 쓰고 칸을 키운다(손가락으로 칠할 크기) */
+  .well-grid{max-width:100%;gap:5px;margin-top:20px;}
+  .palette-row{gap:10px;}
+  .swatch-btn{padding:10px 14px;}
+  .swatch-dot{width:24px;height:24px;}
+  .swatch-label{font-size:11px;}
+  .toggle-btn{font-size:14.5px;padding:14px 18px;}
+  .tmpl-btn{font-size:13.5px;padding:11px 17px;}
+}
+
+/* 태블릿 가로 · 큰 화면 */
+@media (min-width:1024px){
+  .wrap{max-width:1000px;}
+  .grid{gap:24px;}
+  .well-grid{max-width:840px;}
+  .compare-row{gap:18px;}
+}
+
+/* 아이패드 세로에서 2단이 좁아지는 구간 — 카드 안쪽 여백만 줄여 숨통 */
+@media (min-width:744px) and (max-width:860px){
+  .grid{gap:16px;}
+  .card{padding:20px;}
+}
+
+/* 안전영역(홈 인디케이터) */
+@supports (padding:env(safe-area-inset-bottom)){
+  body{padding-bottom:calc(78px + env(safe-area-inset-bottom));}
+}
+
+/* ══ 선명도 (11-27 "색이 명확하게") ══════════════════════════
+   어두운 테마 실험실(탭 있는 것): 보조 글자·선·칸 배경 대비를 올린다 */
+:root:has(.tab-btn){--muted:#c6d6cf;--line:#4b7062;--panel:#1c3a31;--panel-2:#264a3e;}
+:root:has(.tab-btn) .tab-btn{color:#c6d6cf;}
+:root:has(.tab-btn) .tab-btn.active{color:#fff;}
+:root:has(.tab-btn) .tab-btn.active::after{height:3px;}
+:root:has(.tab-btn) .card h2,:root:has(.tab-btn) .card h3{color:#e3ece8;}
+:root:has(.tab-btn) .chip{border-color:#5d8575;}
+:root:has(.tab-btn) .note{color:#d5e1dc;}
+/* 헤스 실험실(자체 라이트/다크): 다크일 때만 보조 글자·선 대비 */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--mute:#c0d2cc;--line:#45605a;}}
+:root[data-theme="dark"]{--mute:#c0d2cc;--line:#45605a;}
+/* 돌아가기 링크(인라인 스타일이라 !important) */
+a[href="../"]{color:#dfe9e4!important;border-color:#5d8575!important;}
+
+/* ══ 가독성 (11-27) — 탭 있는 실험실: 작은 글씨 키우고 대문자 고정폭 제목을 한글 굵은 제목으로 ══ */
+:root:has(.tab-btn) body{line-height:1.6;}
+:root:has(.tab-btn) .sub{font-size:16px;line-height:1.75;color:#d5e1dc;}
+:root:has(.tab-btn) .tab-btn{font-size:15.5px;}
+:root:has(.tab-btn) .card h2,:root:has(.tab-btn) .card h3{font-family:var(--sans);font-size:15px;letter-spacing:0;text-transform:none;font-weight:700;color:#f1ede3;}
+:root:has(.tab-btn) .note{font-size:14.5px;line-height:1.7;}
+:root:has(.tab-btn) .lbl{font-size:13.5px;}
+:root:has(.tab-btn) .u,:root:has(.tab-btn) .read .u,:root:has(.tab-btn) .readout .u{font-size:12.5px;}
+:root:has(.tab-btn) .eq{font-size:15.5px;line-height:1.7;}
+:root:has(.tab-btn) .fb,:root:has(.tab-btn) .shift{font-size:15px;}
+:root:has(.tab-btn) .steps li,:root:has(.tab-btn) .q p{font-size:15.5px;}
+:root:has(.tab-btn) .q details,:root:has(.tab-btn) .log{font-size:14.5px;}
+:root:has(.tab-btn) th{font-size:12.5px;}
+:root:has(.tab-btn) td{font-size:14.5px;}
+:root:has(.tab-btn) .legend,:root:has(.tab-btn) .bar-l{font-size:13.5px;}
+:root:has(.tab-btn) .chip{font-size:14.5px;}
+:root:has(.tab-btn) .go{font-size:15.5px;}
+:root:has(.tab-btn) .empty{font-size:14px;}
+
+/* 두 칸 격자 안 두 번째 카드가 18px 내려가던 것(.card+.card) 바로잡음 (11-27) */
+.grid>.card{margin-top:0;}
+/* == IPAD-FIT END == */
+</style>
+</head>
+<body>
+  <a href="../" style="display:inline-flex;align-items:center;gap:7px;margin-bottom:18px;
+  font-family:'Space Mono','Courier New',monospace;font-size:12px;letter-spacing:.06em;
+  color:#9cb0a8;text-decoration:none;border:1px solid #2c473d;border-radius:20px;
+  padding:6px 13px;transition:.15s"
+  onmouseover="this.style.color='#f1ede3';this.style.borderColor='#6fb98f'"
+  onmouseout="this.style.color='#9cb0a8';this.style.borderColor='#2c473d'">← 실험실 목록</a>
+<div class="wrap">
+  <div class="eyebrow">Lab 11 · 산화와 환원</div>
+  <h1>산화·환원 실험실</h1>
+  <p class="sub">산소를 얻고 잃는 반응, 전자를 주고받는 반응을 직접 일으켜 봅니다. 산화 구리를 탄소로 환원하고, 금속끼리 반응성을 겨루고, 흔들면 색이 바뀌는 용액과 스스로 빛나는 루미놀까지 관찰해 보세요.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-p="p1">① 산화 구리(Ⅱ)와 탄소</button>
+    <button class="tab-btn" data-p="p2">② 금속의 반응성</button>
+    <button class="tab-btn" data-p="p3">③ 신호등 반응</button>
+    <button class="tab-btn" data-p="p4">④ 루미놀</button>
+  </div>
+
+  <!-- ① CuO + C -->
+  <section class="panel active" id="p1">
+    <div class="eq">2CuO(s, 검은색) + C(s) → 2Cu(s, 붉은색) + CO₂(g)</div>
+    <div class="grid">
+      <div class="card">
+        <h2>실험 순서</h2>
+        <ol class="steps">
+          <li>산화 구리(Ⅱ)와 탄소 가루를 섞어 시험관에 넣고, 시험관째 질량을 잽니다.</li>
+          <li>유리관 끝을 석회수에 담그고 가열합니다. 석회수와 가루의 색을 지켜보세요.</li>
+          <li>반응이 끝나면 <b>무엇부터</b> 할지 생각해서 정리합니다.</li>
+          <li>식힌 뒤 다시 질량을 잽니다.</li>
+        </ol>
+        <div class="btn-row">
+          <button class="go" id="cuW0">가열 전 질량 재기</button>
+          <button class="go" id="cuHeat" disabled>가열하기</button>
+        </div>
+        <div class="btn-row">
+          <button class="go ghost" id="cuPull" disabled>석회수에서 유리관 빼기</button>
+          <button class="go ghost" id="cuOff" disabled>불 끄기</button>
+          <button class="go" id="cuW1" disabled>식힌 뒤 질량 재기</button>
+        </div>
+        <div class="btn-row"><button class="go ghost" id="cuReset">처음부터</button></div>
+        <div class="fb" id="cuMsg"></div>
+      </div>
+      <div class="card">
+        <h2>장치</h2>
+        <div class="stage"><svg viewBox="0 0 340 290" id="cuSvg">
+          <defs>
+            <clipPath id="cuTc"><path d="M190 76 H48 A12 12 0 0 0 48 100 H190 Z"/></clipPath>
+            <clipPath id="lwC"><path d="M270 120 V200 A16 16 0 0 0 302 200 V120 Z"/></clipPath>
+          </defs>
+          <line x1="20" y1="282" x2="320" y2="282" stroke="#4b7062" stroke-width="2"/>
+          <line x1="150" y1="282" x2="150" y2="40" stroke="#7d9a8f" stroke-width="3"/>
+          <line x1="150" y1="84" x2="128" y2="84" stroke="#7d9a8f" stroke-width="3"/>
+          <g transform="rotate(5 120 88)">
+            <rect id="cuP" x="34" y="89" width="80" height="12" clip-path="url(#cuTc)"/>
+            <path d="M190 76 H48 A12 12 0 0 0 48 100 H190" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
+            <rect x="188" y="73" width="14" height="30" rx="2" fill="#a4835f"/>
+            <text x="70" y="70" text-anchor="middle" fill="#c6d6cf" font-size="11" id="cuPLab">CuO + C</text>
+          </g>
+          <path d="M202 93 H284 V205" fill="none" stroke="#f1ede3" stroke-width="3"/>
+          <g id="lwG">
+            <rect id="lwLiq" x="268" y="150" width="36" height="70" clip-path="url(#lwC)"/>
+            <g id="lwB" clip-path="url(#lwC)"></g>
+            <path d="M270 120 V200 A16 16 0 0 0 302 200 V120" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
+            <text x="286" y="238" text-anchor="middle" fill="#c6d6cf" font-size="11">석회수</text>
+          </g>
+          <rect x="52" y="215" width="34" height="66" rx="4" fill="#5f7d73" stroke="#c6d6cf"/>
+          <rect x="62" y="196" width="14" height="20" fill="#8fa89f"/>
+          <path id="cuFl" d="" fill="rgba(110,170,255,.85)"/>
+          <path id="cuFl2" d="" fill="rgba(255,220,120,.85)"/>
+          <text x="69" y="276" text-anchor="middle" fill="#0d1a15" font-size="10" font-weight="700">버너</text>
+        </svg></div>
+        <div class="read">
+          <div><div class="big" id="cuM0">–</div><div class="u">가열 전 (g)</div></div>
+          <div><div class="big" id="cuM1">–</div><div class="u">가열 후 (g)</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>정리하기</h2>
+      <ol class="steps">
+        <li>산소를 <b>얻은</b> 물질, 곧 <b>산화된 물질</b>을 고르세요.
+          <div class="chip-list" id="oxQ" style="margin-top:8px"><button class="chip" data-v="CuO">CuO</button><button class="chip" data-v="C">C</button><button class="chip" data-v="Cu">Cu</button><button class="chip" data-v="CO2">CO₂</button></div>
+          <div class="fb" id="oxFb"></div></li>
+        <li>산소를 <b>잃은</b> 물질, 곧 <b>환원된 물질</b>을 고르세요.
+          <div class="chip-list" id="redQ" style="margin-top:8px"><button class="chip" data-v="CuO">CuO</button><button class="chip" data-v="C">C</button><button class="chip" data-v="Cu">Cu</button><button class="chip" data-v="CO2">CO₂</button></div>
+          <div class="fb" id="redFb"></div></li>
+        <li>빠져나간 이산화 탄소의 질량은 몇 g일까요? (소수 둘째 자리까지)
+          <div class="ans"><input id="co2A" inputmode="decimal" placeholder="g"> g <button class="go ghost" id="co2C">확인</button></div>
+          <div class="fb" id="co2Fb"></div></li>
+      </ol>
+      <div class="note">산화와 환원은 <b>항상 함께</b> 일어납니다. 한 물질이 내준 산소를 다른 물질이 받기 때문입니다. 이렇게 다른 물질을 환원시키는 물질(여기서는 C)을 <b>환원제</b>라고 합니다.</div>
+    </div>
+  </section>
+
+  <!-- ② 금속의 반응성 -->
+  <section class="panel" id="p2">
+    <div class="grid">
+      <div class="card">
+        <h2>금속 × 수용액 (칸을 눌러 넣어 보기)</h2>
+        <div style="overflow-x:auto"><table id="mGrid"></table></div>
+        <div class="note">금속 조각을 다른 금속 이온이 든 수용액에 넣습니다. 금속 표면에 <b>다른 금속이 붙어 나오면(석출)</b> 반응한 것입니다.</div>
+      </div>
+      <div class="card">
+        <h2>비커</h2>
+        <div class="stage"><svg viewBox="0 0 260 230" id="mSvg">
+          <defs><clipPath id="bkC"><path d="M62 40 V196 Q62 210 76 210 H184 Q198 210 198 196 V40 Z"/></clipPath></defs>
+          <rect id="bkLiq" x="60" y="78" width="140" height="134" clip-path="url(#bkC)"/>
+          <g id="mStrip"><rect id="mRod" x="118" y="0" width="24" height="170" rx="2"/><g id="mDep"></g></g>
+          <path d="M62 40 V196 Q62 210 76 210 H184 Q198 210 198 196 V40" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
+          <text x="130" y="226" text-anchor="middle" fill="#c6d6cf" font-size="11" id="bkLab">칸을 골라 주세요</text>
+        </svg></div>
+        <div class="fb" id="mMsg" style="text-align:center"></div>
+        <div class="half" id="mHalf">반응이 일어나면 여기에 전자 이동 반응식이 나옵니다.</div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>반응성 순서 정하기</h2>
+      <p style="margin:0 0 10px;font-size:14px;line-height:1.6">표의 결과를 보고 <b>반응성이 큰 금속부터</b> 차례로 누르세요. 전자를 잃고 양이온이 되기 쉬울수록 반응성이 큽니다.</p>
+      <div class="chip-list" id="ordQ"></div>
+      <div class="ord" id="ordShow"></div>
+      <div class="btn-row"><button class="go ghost" id="ordR">다시 고르기</button></div>
+      <div class="fb" id="ordFb"></div>
+    </div>
+  </section>
+
+  <!-- ③ 신호등 반응 -->
+  <section class="panel" id="p3">
+    <div class="eq" id="sgEq"></div>
+    <div class="grid">
+      <div class="card">
+        <h2>용액 고르고 흔들기</h2>
+        <p class="lbl">지시약 (포도당 + NaOH 수용액에 넣음)</p>
+        <div class="chip-list" id="sgDye"><button class="chip active" data-v="ic">인디고 카민</button><button class="chip" data-v="mb">메틸렌 블루</button></div>
+        <div class="btn-row">
+          <button class="go" id="sgS1">살짝 흔들기</button>
+          <button class="go" id="sgS2">세게 흔들기</button>
+          <button class="go ghost" id="sgR">처음부터</button>
+        </div>
+        <div class="note">마개를 막은 플라스크 위쪽에는 <b>공기</b>가 들어 있습니다. 흔들면 공기 중 산소가 용액에 녹아듭니다. 흔든 뒤 <b>가만히 두고</b> 색이 어떻게 돌아오는지 지켜보세요.</div>
+      </div>
+      <div class="card">
+        <h2>삼각 플라스크</h2>
+        <div class="stage"><svg viewBox="0 0 260 230">
+          <defs><clipPath id="fkC"><path d="M112 30 V82 L52 196 Q46 210 62 210 H198 Q214 210 208 196 L148 82 V30 Z"/></clipPath></defs>
+          <g id="fk">
+            <rect id="fkLiq" x="40" y="128" width="180" height="90" clip-path="url(#fkC)"/>
+            <path d="M112 30 V82 L52 196 Q46 210 62 210 H198 Q214 210 208 196 L148 82 V30" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
+            <rect x="108" y="18" width="44" height="16" rx="3" fill="#a4835f"/>
+            <text x="130" y="112" text-anchor="middle" fill="#c6d6cf" font-size="10">공기 (O₂)</text>
+          </g>
+        </svg></div>
+        <div class="read"><div><div class="big" id="sgName">–</div><div class="u">지금 색</div></div><div><div class="big" id="sgX">–</div><div class="u">산화형 비율 (%)</div></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>색 변화 기록 (지난 40초)</h2>
+      <div class="plot"><svg viewBox="0 0 640 220" id="sgPlot"></svg></div>
+    </div>
+    <div class="card">
+      <h2>생각해 보기</h2>
+      <div class="q"><p>1. 흔들면 색이 바뀌는 까닭은 무엇일까요?</p><details><summary>확인</summary>흔들 때 공기 중 산소(O₂)가 용액에 녹아들어 지시약의 환원형을 <b>산화</b>시킵니다. 인디고 카민은 노랑(환원형) → 빨강 → 초록(산화형), 메틸렌 블루는 무색(환원형) → 파랑(산화형)이 됩니다.</details></div>
+      <div class="q"><p>2. 가만히 두면 색이 처음대로 돌아오는 까닭은?</p><details><summary>확인</summary>염기성 용액 속 포도당이 <b>환원제</b>로 작용해 산화된 지시약에 전자를 주어 다시 <b>환원</b>시키기 때문입니다. 포도당 자신은 산화되어 글루콘산 이온이 됩니다.</details></div>
+      <div class="q"><p>3. 이 반응에서 산화제와 환원제는 각각 무엇일까요?</p><details><summary>확인</summary>산화제는 산소(O₂), 환원제는 포도당입니다. 지시약은 둘 사이에서 전자를 받았다가 내주며 색으로 '중계'해 줍니다.</details></div>
+      <div class="q"><p>4. 수십 번 되풀이하면 색이 더는 돌아오지 않게 됩니다. 왜일까요?</p><details><summary>확인</summary>포도당은 계속 산화되어 소모됩니다. 포도당이 거의 다 없어지면 지시약을 환원시킬 물질이 없어 산화형 색에 머뭅니다. (플라스크 속 산소가 다 떨어져도 더는 산화되지 않습니다.)</details></div>
+    </div>
+  </section>
+
+  <!-- ④ 루미놀 -->
+  <section class="panel" id="p4">
+    <div class="eq">루미놀 + H₂O₂ —(NaOH, 철 촉매)→ 3-아미노프탈산 이온* + N₂ + H₂O<br>3-아미노프탈산 이온* → 3-아미노프탈산 이온 + 빛 (약 425 nm, 청색)</div>
+    <div class="grid">
+      <div class="card">
+        <h2>조건 고르기</h2>
+        <p class="lbl">루미놀 + NaOH 수용액에 함께 넣을 것</p>
+        <div class="chip-list" id="lmCat"><button class="chip active" data-v="none">촉매 없음 (H₂O₂만)</button><button class="chip" data-v="fe">K₃[Fe(CN)₆] + H₂O₂</button><button class="chip" data-v="blood">혈액 한 방울 + H₂O₂</button></div>
+        <label class="tog"><input type="checkbox" id="lmDark"> 불 끄기 (어두운 방)</label>
+        <div class="btn-row">
+          <button class="go" id="lmGo">섞기</button>
+          <button class="go ghost" id="lmClr">그래프 지우기</button>
+        </div>
+        <div class="fb" id="lmMsg"></div>
+        <div class="note">세 조건을 차례로 섞어 그래프에 겹쳐 그려 보세요. 밝기는 가장 밝은 경우를 1로 둔 <b>상대값</b>입니다.</div>
+      </div>
+      <div class="card">
+        <h2>시험관</h2>
+        <div class="stage"><svg viewBox="0 0 260 230">
+          <defs>
+            <clipPath id="lmC"><path d="M104 20 V170 A26 26 0 0 0 156 170 V20 Z"/></clipPath>
+            <filter id="blur" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation="14"/></filter>
+          </defs>
+          <rect id="lmRoom" x="0" y="0" width="260" height="230" rx="10"/>
+          <ellipse id="lmGlow" cx="130" cy="150" rx="46" ry="62" fill="#5a8cff" filter="url(#blur)" opacity="0"/>
+          <rect id="lmLiq" x="100" y="90" width="60" height="110" clip-path="url(#lmC)"/>
+          <path d="M104 20 V170 A26 26 0 0 0 156 170 V20" fill="none" stroke="#f1ede3" stroke-width="2.5" id="lmTube"/>
+          <text x="130" y="222" text-anchor="middle" font-size="11" id="lmLab"></text>
+        </svg></div>
+        <div class="read"><div><div class="big" id="lmT">0.0</div><div class="u">시간 (s)</div></div><div><div class="big" id="lmI">0.00</div><div class="u">밝기 (상대)</div></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>밝기 – 시간 그래프</h2>
+      <div class="plot"><svg viewBox="0 0 640 260" id="lmPlot"></svg></div>
+    </div>
+    <div class="card">
+      <h2>생각해 보기</h2>
+      <div class="q"><p>1. 루미놀은 산화될까요, 환원될까요? 빛은 어디에서 나올까요?</p><details><summary>확인</summary>루미놀은 과산화 수소에 의해 <b>산화</b>되어 질소(N₂)를 내놓고 들뜬 상태의 3-아미노프탈산 이온이 됩니다. 이 이온이 바닥 상태로 돌아가면서 에너지를 <b>빛</b>으로 내놓습니다(화학 발광). 열이 거의 나지 않아 '차가운 빛'이라고도 합니다.</details></div>
+      <div class="q"><p>2. 촉매가 없을 때와 있을 때 그래프는 어떻게 다른가요?</p><details><summary>확인</summary>촉매(철 이온)가 있으면 반응이 빨라져 같은 시간에 훨씬 많은 분자가 빛을 내므로 밝고, 반응물이 빨리 소모되어 금방 어두워집니다. 촉매가 없으면 아주 흐린 빛이 오래 갑니다.</details></div>
+      <div class="q"><p>3. 과학 수사에서 루미놀로 핏자국을 찾을 수 있는 까닭은?</p><details><summary>확인</summary>혈액 속 헤모글로빈의 <b>철(헴)</b>이 촉매 역할을 해서, 눈에 보이지 않을 만큼 적은 피가 묻은 곳에서도 청색 빛이 납니다. 빛이 약하므로 반드시 <b>어두운 곳</b>에서 관찰합니다.</details></div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const txt=(g,x,y,s,a={})=>{const t=el('text',Object.assign({x,y,fill:'#c6d6cf','font-size':11},a));t.textContent=s;g.appendChild(t);return t;};
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+document.querySelectorAll('.tab-btn').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.toggle('active',x===b));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.p));});
+const num=v=>parseFloat(String(v).replace(',','.'));
+function check(inp,fb,ans,tol,okMsg,noMsg){const v=num($(inp).value),f=$(fb);
+  if(isNaN(v)){f.className='fb no';f.textContent='숫자를 넣어 주세요.';return false;}
+  const ok=Math.abs(v-ans)<=Math.abs(ans)*tol;f.className='fb '+(ok?'ok':'no');f.innerHTML=ok?okMsg:noMsg;return ok;}
+function chips(id,cb){const box=$(id);box.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{
+  box.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x===c));cb&&cb(c.dataset.v);});}
+const lerp=(a,b,t)=>a.map((x,i)=>x+(b[i]-x)*t);
+const rgba=c=>`rgba(${Math.round(c[0])},${Math.round(c[1])},${Math.round(c[2])},${(c[3]??1).toFixed(2)})`;
+const active=id=>$(id).classList.contains('active');
+
+// ── ① 2CuO + C → 2Cu + CO2 (이번 시료: 시험관 21~24 g, CuO 3.2~4.8 g, C는 꼭 맞는 양)
+const tubeM=21+Math.random()*3,mCuO=3.2+Math.random()*1.6,mC=mCuO*12.01/(2*79.55),mCu=mCuO*63.55/79.55;
+const r2=x=>Math.round(x*100)/100;
+const M0=r2(tubeM+mCuO+mC),M1=r2(tubeM+mCu),CO2=r2(M0-M1);
+let cu,cuLast=0;
+function cuInit(){cu={step:0,p:0,pulled:false,fire:false,bub:[]};$('#cuM0').textContent='–';$('#cuM1').textContent='–';$('#cuMsg').className='fb';$('#cuMsg').textContent='먼저 가열 전 질량을 재세요.';$('#lwG').setAttribute('transform','');cuUI();cuDraw(0);}
+function cuUI(){const s=cu.step;$('#cuW0').disabled=s!==0;$('#cuHeat').disabled=s!==1;$('#cuPull').disabled=s!==3||cu.pulled;$('#cuOff').disabled=s!==3;$('#cuW1').disabled=s!==4;}
+function cuDraw(t){const p=cu.p;
+  $('#cuP').setAttribute('fill',rgba(lerp([30,30,32],[188,92,52],p)));
+  $('#cuPLab').textContent=p<.05?'CuO + C':p<.98?'반응 중…':'Cu (붉은색)';
+  $('#lwLiq').setAttribute('fill',rgba(lerp([215,230,235,.5],[245,245,238,.95],Math.min(1,p*1.3))));
+  const f=cu.fire?1:0,w=RM?0:Math.sin(t/90)*3+Math.sin(t/37)*1.5;
+  $('#cuFl').setAttribute('d',f?`M60 196 Q${66+w} ${150} ${69+w} 112 Q${72+w} 150 78 196 Z`:'');
+  $('#cuFl2').setAttribute('d',f?`M64 196 Q${68+w/2} 166 ${69+w/2} 142 Q${70+w/2} 166 74 196 Z`:'');
+  const g=$('#lwB');g.innerHTML='';cu.bub.forEach(b=>g.appendChild(el('circle',{cx:b.x,cy:b.y,r:2.6,fill:'none',stroke:'#f1ede3','stroke-width':1.2})));}
+function cuTick(now){const dt=Math.min(.1,(now-cuLast)/1000||0);cuLast=now;
+  if(cu.step===2){cu.p=Math.min(1,cu.p+dt/6);
+    if(!RM&&Math.random()<dt*9)cu.bub.push({x:282+Math.random()*4,y:202});
+    if(cu.p>=1){cu.step=3;$('#cuMsg').className='fb';$('#cuMsg').innerHTML='검은 가루가 붉게 변했고 석회수가 뿌옇게 흐려졌습니다(CO₂ 확인). 이제 정리할 차례입니다. <b>무엇부터?</b>';cuUI();}}
+  cu.bub.forEach(b=>b.y-=dt*60);cu.bub=cu.bub.filter(b=>b.y>150);
+  if(active('#p1'))cuDraw(now);requestAnimationFrame(cuTick);}
+$('#cuW0').onclick=()=>{cu.step=1;$('#cuM0').textContent=M0.toFixed(2);$('#cuMsg').textContent='질량을 기록했습니다. 이제 가열하세요.';cuUI();};
+$('#cuHeat').onclick=()=>{cu.step=2;cu.fire=true;if(RM)cu.p=.999;$('#cuMsg').textContent='가열 중… 유리관 끝에서 기포가 나옵니다.';cuUI();};
+$('#cuPull').onclick=()=>{cu.pulled=true;$('#lwG').setAttribute('transform','translate(0 50)');$('#cuMsg').className='fb ok';$('#cuMsg').textContent='좋습니다. 석회수에서 유리관을 먼저 뺐습니다. 이제 불을 끄세요.';cuUI();};
+$('#cuOff').onclick=()=>{if(!cu.pulled){$('#cuMsg').className='fb no';$('#cuMsg').textContent='잠깐! 유리관이 석회수에 잠긴 채 불을 끄면, 시험관 속 기체가 식어 부피가 줄면서 석회수가 거꾸로 빨려 들어가 뜨거운 시험관이 깨질 수 있습니다. 유리관부터 빼세요.';return;}
+  cu.fire=false;cu.step=4;$('#cuMsg').className='fb';$('#cuMsg').textContent='불을 껐습니다. 충분히 식힌 뒤 질량을 재세요.';cuUI();};
+$('#cuW1').onclick=()=>{cu.step=5;$('#cuM1').textContent=M1.toFixed(2);$('#cuMsg').textContent='질량이 줄었습니다. 줄어든 만큼은 어디로 갔을까요? 아래에서 정리해 보세요.';cuUI();};
+$('#cuReset').onclick=cuInit;
+chips('#oxQ',v=>{const f=$('#oxFb'),ok=v==='C';f.className='fb '+(ok?'ok':'no');
+  f.innerHTML=ok?'맞습니다. 탄소(C)는 CuO에게서 산소를 얻어 CO₂가 되었으니 <b>산화</b>되었습니다.':v==='CuO'?'CuO는 산소를 얻었나요, 잃었나요? 반응 전후의 화학식을 비교해 보세요.':'반응물(왼쪽) 가운데에서 고르세요. 산소가 어느 물질에서 어느 물질로 옮겨 갔는지 보세요.';});
+chips('#redQ',v=>{const f=$('#redFb'),ok=v==='CuO';f.className='fb '+(ok?'ok':'no');
+  f.innerHTML=ok?'맞습니다. 산화 구리(Ⅱ)는 산소를 잃고 구리(Cu)가 되었으니 <b>환원</b>되었습니다.':v==='C'?'C는 산소를 얻어 CO₂가 되었습니다. 산소를 잃은 쪽은?':'반응물(왼쪽) 가운데에서 고르세요. 산소를 내준 물질이 환원된 물질입니다.';});
+$('#co2C').onclick=()=>{if(cu.step<5){const f=$('#co2Fb');f.className='fb no';f.textContent='먼저 실험을 마치고 가열 전·후 질량을 모두 재세요.';return;}
+  check('#co2A','#co2Fb',CO2,0.02,`맞습니다! ${M0.toFixed(2)} − ${M1.toFixed(2)} = <b>${CO2.toFixed(2)} g</b>. 시험관 밖으로 빠져나간 기체는 CO₂뿐이므로 줄어든 질량이 곧 CO₂의 질량입니다(질량 보존 법칙).`,
+  `다시 해 보세요. ① 고체 가운데 시험관 밖으로 나간 것은 없습니다. ② 빠져나간 것은 기체 CO₂뿐입니다. ③ CO₂ 질량 = 가열 전 질량 − 가열 후 질량 = ${M0.toFixed(2)} − ${M1.toFixed(2)}`);};
+cuInit();requestAnimationFrame(cuTick);
+
+// ── ② 금속의 반응성 (Zn > Fe > Cu > Ag)
+const MET=[{s:'Zn',n:'아연',q:2,c:[165,178,186]},{s:'Fe',n:'철',q:2,c:[100,100,108]},{s:'Cu',n:'구리',q:2,c:[198,112,70]},{s:'Ag',n:'은',q:1,c:[222,224,230]}];
+const SOL=['ZnSO₄','FeSO₄','CuSO₄','AgNO₃'];
+const ICOL=[[215,230,238,.5],[160,210,150,.6],[50,120,215,.78],[215,230,238,.5]];
+const sup={1:'⁺',2:'²⁺'},ion=i=>MET[i].s+sup[MET[i].q],cf=n=>n===1?'':n;
+let mTry={},mAnim=null;
+function mGrid(){let h='<tr><th>금속 ＼ 용액</th>'+SOL.map(s=>`<th>${s}</th>`).join('')+'</tr>';
+  MET.forEach((m,i)=>{h+=`<tr><th style="font-size:12.5px;color:#f1ede3">${m.n} ${m.s}</th>`;
+    SOL.forEach((s,j)=>{const k=i+'-'+j;h+=i===j?'<td style="color:#7d9a8f">—</td>':k in mTry?`<td class="${mTry[k]?'res-o':''}">${mTry[k]?'○ 석출':'× 없음'}</td>`:`<td><button class="chip" data-m="${i}" data-s="${j}">넣기</button></td>`;});h+='</tr>';});
+  $('#mGrid').innerHTML=h;$('#mGrid').querySelectorAll('button').forEach(b=>b.onclick=()=>mRun(+b.dataset.m,+b.dataset.s));}
+function mRun(i,j){const react=i<j,M=MET[i],N=MET[j],k=i+'-'+j;
+  $('#mRod').setAttribute('fill',rgba(M.c));$('#bkLab').textContent=`${M.s} 조각 → ${SOL[j]} 수용액`;
+  const c0=ICOL[j],c1=react?lerp(c0,ICOL[i],.8):c0,dep=$('#mDep');dep.innerHTML='';
+  const dots=[];if(react)for(let n=0;n<70;n++)dots.push({x:116+Math.random()*28,y:92+Math.random()*112,r:1.5+Math.random()*2.5,a:Math.random()*6.28});
+  $('#mMsg').className='fb';$('#mMsg').textContent='관찰 중…';const t0=performance.now();cancelAnimationFrame(mAnim);
+  const step=now=>{const t=RM?1:Math.min(1,(now-t0)/3500),drop=Math.min(1,t*4);
+    $('#mStrip').setAttribute('transform',`translate(0 ${-110+drop*150})`);
+    $('#bkLiq').setAttribute('fill',rgba(lerp(c0,c1,Math.max(0,(t-.25)/.75))));
+    dep.innerHTML='';const show=Math.max(0,(t-.2)/.8);
+    dots.slice(0,Math.round(dots.length*show)).forEach(d=>{
+      if(N.s==='Ag'){const L=d.r*3*show;dep.appendChild(el('path',{d:`M${d.x} ${d.y-40} l${Math.cos(d.a)*L} ${Math.sin(d.a)*L} M${d.x} ${d.y-40} l${-Math.cos(d.a+1)*L} ${Math.sin(d.a+1)*L}`,stroke:'#eef0f4','stroke-width':1.6}));}
+      else dep.appendChild(el('circle',{cx:d.x,cy:d.y-40,r:d.r*show,fill:rgba(N.c)}));});
+    if(t<1)mAnim=requestAnimationFrame(step);else mDone();};
+  const mDone=()=>{mTry[k]=react;mGrid();const m=$('#mMsg');
+    if(react){m.className='fb ok';m.textContent=`${M.n} 표면에 ${N.n}이(가) 석출되었습니다.`+(j===2?' 푸른색이 옅어집니다.':i===2?' 용액이 푸르게 변합니다.':i===1?' 용액이 옅은 초록빛을 띱니다.':'');
+      const g=(M.q===2&&N.q===2)?2:1,a=N.q/(g===2?2:1),b=M.q/(g===2?2:1);
+      $('#mHalf').innerHTML=`<b>전체</b> ${cf(a)}${M.s}(s) + ${cf(b)}${ion(j)}(aq) → ${cf(a)}${ion(i)}(aq) + ${cf(b)}${N.s}(s)<br><b>산화</b> ${M.s} → ${ion(i)} + ${M.q}e⁻ &nbsp;(전자를 잃음)<br><b>환원</b> ${ion(j)} + ${cf(N.q)}e⁻ → ${N.s} &nbsp;(전자를 얻음)`;}
+    else{m.className='fb no';m.textContent='아무 변화가 없습니다.';
+      $('#mHalf').innerHTML=`${M.s}(s) + ${ion(j)}(aq) → 반응 없음<br>${M.s}이(가) ${N.s}보다 전자를 잃기 어려워, ${ion(j)}에게 전자를 줄 수 없습니다.`;}};
+  mAnim=requestAnimationFrame(step);}
+$('#bkLiq').setAttribute('fill',rgba(ICOL[0]));$('#mRod').setAttribute('fill','none');mGrid();
+let ord=[];
+$('#ordQ').innerHTML=[2,0,3,1].map(i=>`<button class="chip" data-v="${i}">${MET[i].n} ${MET[i].s}</button>`).join('');
+function ordDraw(){$('#ordShow').textContent=ord.length?ord.map(i=>MET[i].s).join(' > '):'(아직 고르지 않음)';
+  $('#ordQ').querySelectorAll('.chip').forEach(c=>c.disabled=ord.includes(+c.dataset.v));
+  const f=$('#ordFb');if(ord.length<4){f.className='fb';f.textContent='';return;}
+  const ok=ord.join()==='0,1,2,3';f.className='fb '+(ok?'ok':'no');
+  f.innerHTML=ok?'맞습니다! <b>Zn &gt; Fe &gt; Cu &gt; Ag</b>. 반응성이 큰 금속은 전자를 내주고 양이온이 되며(산화), 반응성이 작은 금속의 이온은 그 전자를 받아 금속으로 석출됩니다(환원).':
+    '다시 생각해 보세요. ① 표에서 ○인 칸은 "그 줄의 금속 > 그 칸 용액의 금속"입니다. ② 다른 금속을 가장 많이 석출시킨 금속이 1등입니다. ③ 어떤 용액에 넣어도 반응하지 않은 금속이 꼴찌입니다. 아직 해 보지 않은 칸이 있다면 먼저 넣어 보세요.';}
+$('#ordQ').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{if(ord.length<4)ord.push(+c.dataset.v);ordDraw();});
+$('#ordR').onclick=()=>{ord=[];ordDraw();};ordDraw();
+
+// ── ③ 신호등 반응: x = 지시약 중 산화형 비율. 흔들면 O₂가 산화, 포도당이 일정한 빠르기로 환원
+const DYE={ic:{eq:'흔들기(O₂, 산화) → &nbsp;노랑(환원형) ⇄ 빨강 ⇄ 초록(산화형)&nbsp; ← 가만히(포도당, 환원)',
+  col:x=>x<.5?[...lerp([228,188,40],[205,45,55],x/.5),.82]:[...lerp([205,45,55],[40,150,75],(x-.5)/.5),.82],name:x=>x<.25?'노랑':x<.75?'빨강':'초록'},
+  mb:{eq:'흔들기(O₂, 산화) → &nbsp;무색(환원형) ⇄ 파랑(산화형)&nbsp; ← 가만히(포도당, 환원)',
+  col:x=>lerp([215,228,232,.48],[30,90,210,.88],x),name:x=>x<.3?'무색':'파랑'}};
+let sg={dye:'ic',x:0,hist:[],shake:0},sgLast=0,sgAcc=0;
+function sgSet(d){sg={dye:d,x:0,hist:[],shake:0};$('#sgEq').innerHTML=DYE[d].eq;}
+chips('#sgDye',sgSet);
+$('#sgS1').onclick=()=>{sg.x=Math.min(1,sg.x+.38);sg.shake=RM?0:.6;};
+$('#sgS2').onclick=()=>{sg.x=1;sg.shake=RM?0:.9;};
+$('#sgR').onclick=()=>sgSet(sg.dye);
+function sgTick(now){const dt=Math.min(.1,(now-sgLast)/1000||0);sgLast=now;
+  sg.x=Math.max(0,sg.x-0.055*dt);sgAcc+=dt;
+  if(sgAcc>=.2){sgAcc=0;sg.hist.push(sg.x);if(sg.hist.length>200)sg.hist.shift();}
+  if(active('#p3')){const D=DYE[sg.dye];sg.shake=Math.max(0,sg.shake-dt);
+    $('#fk').setAttribute('transform',`rotate(${(sg.shake>0?Math.sin(now/45)*14*sg.shake:0).toFixed(2)} 130 210)`);
+    $('#fkLiq').setAttribute('fill',rgba(D.col(sg.x)));$('#sgName').textContent=D.name(sg.x);$('#sgX').textContent=Math.round(sg.x*100);sgPlot();}
+  requestAnimationFrame(sgTick);}
+function sgPlot(){const g=$('#sgPlot');g.innerHTML='';const L=60,R=620,T=14,B=160,D=DYE[sg.dye],h=sg.hist,n=h.length;
+  [0,.5,1].forEach(y=>{const Y=B-(B-T)*y;g.appendChild(el('line',{x1:L,x2:R,y1:Y,y2:Y,stroke:'#3f6355'}));txt(g,L-8,Y+4,Math.round(y*100),{'text-anchor':'end'});});
+  txt(g,L,T-3,'산화형 %',{'font-size':10});txt(g,R,212,'← 40초 전 · 지금 →',{'text-anchor':'end'});
+  const X=i=>R-(n-1-i)*(R-L)/199;
+  for(let i=0;i<n;i++)g.appendChild(el('rect',{x:X(i)-1.6,y:172,width:3.2,height:22,fill:rgba([...D.col(h[i]).slice(0,3),1])}));
+  if(n>1)g.appendChild(el('path',{d:h.map((y,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+(B-(B-T)*y).toFixed(1)).join(' '),fill:'none',stroke:'#f1ede3','stroke-width':2.5}));}
+sgSet('ic');requestAnimationFrame(sgTick);
+
+// ── ④ 루미놀: 밝기 I(t) = A·(e^(−t/τd) − e^(−t/τr)) 를 봉우리 = A로 맞춤
+const LUM={none:{n:'촉매 없음',A:.04,tr:3,td:60,c:'#c6d6cf'},fe:{n:'K₃[Fe(CN)₆]',A:1,tr:.35,td:6,c:'#4fd6e0'},blood:{n:'혈액',A:.55,tr:1.2,td:22,c:'#ff6fae'}};
+for(const k in LUM){const L=LUM[k],tp=Math.log(L.td/L.tr)*L.tr*L.td/(L.td-L.tr);L.k=L.A/(Math.exp(-tp/L.td)-Math.exp(-tp/L.tr));}
+const lumI=(k,t)=>{const L=LUM[k];return t<=0?0:L.k*(Math.exp(-t/L.td)-Math.exp(-t/L.tr));};
+const TMAX=30;let lm={cat:'none',run:null,shown:null,t:0,tr:{}},lmLast=0;
+chips('#lmCat',v=>{lm.cat=v;});
+$('#lmDark').onchange=lmDraw;
+$('#lmGo').onclick=()=>{lm.run=lm.shown=lm.cat;lm.t=0;lm.tr[lm.cat]=[];$('#lmGo').disabled=true;$('#lmMsg').className='fb';$('#lmMsg').textContent=`${LUM[lm.cat].n} 조건으로 섞었습니다. (화면 1초 = 실제 2초)`;};
+$('#lmClr').onclick=()=>{lm.tr={};lmDraw();};
+function lmDraw(){const dark=$('#lmDark').checked,I=lm.shown?lumI(lm.shown,lm.t):0,vis=dark?1:.22;
+  $('#lmRoom').setAttribute('fill',dark?'#05090c':'#6f8d83');
+  $('#lmTube').setAttribute('stroke',dark?'#55646a':'#f1ede3');
+  $('#lmLab').setAttribute('fill',dark?'#c6d6cf':'#0d1a15');$('#lmLab').textContent=dark?'어두운 방':'밝은 방';
+  $('#lmLiq').setAttribute('fill',rgba(lerp(dark?[40,50,60,.6]:[225,235,225,.55],[120,170,255,.95],Math.min(1,I*vis*1.6))));
+  $('#lmGlow').setAttribute('opacity',(Math.min(1,I*1.4)*vis).toFixed(3));
+  $('#lmT').textContent=lm.t.toFixed(1);$('#lmI').textContent=I.toFixed(2);
+  const g=$('#lmPlot');g.innerHTML='';const L=60,R=620,T=14,B=210,X=t=>L+(R-L)*t/TMAX,Y=i=>B-(B-T)*i;
+  for(let i=0;i<=1.001;i+=.25){g.appendChild(el('line',{x1:L,x2:R,y1:Y(i),y2:Y(i),stroke:'#3f6355'}));txt(g,L-8,Y(i)+4,i.toFixed(2),{'text-anchor':'end'});}
+  for(let t=0;t<=TMAX;t+=5)txt(g,X(t),B+18,t,{'text-anchor':'middle'});txt(g,R,B+36,'시간 (s)',{'text-anchor':'end'});
+  let lx=R-440;for(const k in lm.tr){const p=lm.tr[k];if(p.length>1)g.appendChild(el('path',{d:p.map((q,i)=>(i?'L':'M')+X(q[0]).toFixed(1)+' '+Y(q[1]).toFixed(1)).join(' '),fill:'none',stroke:LUM[k].c,'stroke-width':2.5}));
+    g.appendChild(el('rect',{x:lx,y:T+4,width:14,height:4,fill:LUM[k].c}));txt(g,lx+20,T+10,LUM[k].n,{fill:LUM[k].c});lx+=150;}}
+function lmTick(now){const dt=Math.min(.1,(now-lmLast)/1000||0);lmLast=now;
+  if(lm.run){lm.t=Math.min(TMAX,lm.t+dt*2);lm.tr[lm.run].push([lm.t,lumI(lm.run,lm.t)]);
+    if(lm.t>=TMAX){const k=lm.run;lm.run=null;$('#lmGo').disabled=false;const m=$('#lmMsg');m.className='fb ok';
+      m.textContent=k==='none'?'촉매가 없으면 빛이 아주 약합니다. 밝은 방에서는 거의 보이지 않아요.':k==='fe'?'촉매(Fe³⁺)가 있으면 순간적으로 밝게 빛나고 빨리 어두워집니다.':'혈액 속 철(헴)도 촉매 역할을 합니다. 어두운 방이어야 잘 보입니다.';
+      lm.t=TMAX;}}
+  if(active('#p4'))lmDraw();requestAnimationFrame(lmTick);}
+lmDraw();requestAnimationFrame(lmTick);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>화학 결합 실험실</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap');
+:root{
+  --bg:#10201b;--panel:#1c3a31;--panel-2:#264a3e;--line:#4b7062;--ink:#f1ede3;--muted:#c6d6cf;
+  --acid-2:#f2a541;--neutral:#6fb98f;
+  --mono:'Space Mono','Courier New',monospace;--sans:'Work Sans',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;color:var(--ink);font-family:var(--sans);padding:28px 16px 60px;
+  background:radial-gradient(circle at 15% 0%,rgba(111,185,143,.08),transparent 45%),radial-gradient(circle at 90% 90%,rgba(79,214,224,.08),transparent 45%),var(--bg);}
+.wrap{max-width:920px;margin:0 auto;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--neutral);text-transform:uppercase;margin-bottom:8px;}
+h1{font-weight:700;font-size:32px;margin:0 0 6px;letter-spacing:-.01em;}
+.sub{color:var(--muted);font-size:14.5px;line-height:1.6;margin:0 0 26px;max-width:620px;}
+.tabs{display:flex;gap:8px;margin-bottom:22px;border-bottom:1px solid var(--line);flex-wrap:wrap;}
+.tab-btn{font-family:var(--sans);font-weight:600;font-size:14px;background:none;border:none;color:var(--muted);padding:10px 4px;cursor:pointer;position:relative;}
+.tab-btn.active{color:#fff;}
+.tab-btn.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:3px;background:var(--neutral);border-radius:2px;}
+.tab-btn+.tab-btn{margin-left:18px;}
+.panel{display:none;}
+.panel.active{display:block;animation:fade .3s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:720px){.grid{grid-template-columns:1fr;}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;min-width:0;}
+.card h2{font-size:12px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#e3ece8;margin:0 0 14px;font-weight:700;}
+.card+.card,.grid+.card,.card+.grid,.grid+.grid{margin-top:18px;}
+.grid>.card{margin-top:0;}
+.chip-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.chip{font-family:var(--sans);font-size:13px;font-weight:500;background:var(--panel-2);border:1px solid #5d8575;color:var(--ink);padding:8px 12px;border-radius:20px;cursor:pointer;}
+.chip.active{background:var(--neutral);color:#0d1a15;border-color:var(--neutral);font-weight:700;}
+.chip:disabled{opacity:.45;cursor:default;}
+.lbl{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0 0 8px;}
+.eq{font-family:var(--mono);font-size:14px;text-align:center;padding:12px;background:var(--panel-2);border-radius:8px;margin-bottom:16px;line-height:1.7;}
+.note{font-size:12.5px;color:#d5e1dc;line-height:1.6;background:var(--panel-2);border-radius:8px;padding:10px 12px;margin-top:14px;}
+.note b{color:var(--ink);}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.go{font-family:var(--sans);font-weight:700;font-size:14.5px;border:none;border-radius:10px;padding:11px 15px;cursor:pointer;background:var(--neutral);color:#0d1a15;touch-action:manipulation;}
+.go.ghost{background:var(--panel-2);color:var(--ink);border:1px solid var(--line);}
+.go:disabled{opacity:.45;cursor:default;}
+.stage{display:flex;justify-content:center;}
+.stage svg{width:100%;height:auto;}
+svg text{font-family:var(--mono);}
+.read{display:flex;justify-content:space-around;font-family:var(--mono);text-align:center;margin-top:8px;gap:8px;}
+.read .big{font-size:24px;font-weight:700;line-height:1.2;}
+.read .u{font-size:11px;color:var(--muted);letter-spacing:.06em;}
+.ans{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:14px;}
+select{font:600 14px var(--sans);padding:7px 8px;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);color:var(--ink);max-width:100%;}
+.fb{font-size:13.5px;margin-top:8px;min-height:1.2em;line-height:1.6;}
+.fb.ok{color:var(--neutral);}.fb.no{color:var(--acid-2);}
+.scroll{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th,td{padding:7px 5px;border-bottom:1px solid var(--line);text-align:center;line-height:1.45;}
+th{font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:400;}
+td.y{color:#ffe066;font-weight:700;}td.n{color:var(--muted);}
+.plot{background:var(--panel-2);border-radius:10px;padding:10px;}
+.plot svg{width:100%;height:auto;display:block;}
+.tog{display:flex;align-items:center;gap:10px;font-size:14px;margin-top:6px;cursor:pointer;}
+.tog input{width:22px;height:22px;accent-color:var(--neutral);}
+#mol{touch-action:none;cursor:grab;}
+.q{border-top:1px solid var(--line);padding:12px 0;}
+.q:first-child{border-top:none;padding-top:0;}
+.q p{margin:0 0 8px;line-height:1.6;font-size:14px;}
+.q details{font-size:13px;color:#d5e1dc;line-height:1.6;}
+.q summary{cursor:pointer;color:var(--neutral);font-weight:600;}
+@media (prefers-reduced-motion:reduce){.panel.active{animation:none;}}
+
+/* == IPAD-FIT BEGIN (자동 생성 · 직접 수정하지 말 것) == */
+/* ══ 아이패드 대응 (자동 삽입 · 화학실험실 파이프라인) ══════════
+   대상 폭 — 세로 744(mini)/810(10.9")/834(Air·Pro11)/1024(Pro12.9")
+            가로 1080/1133/1194/1366
+   원칙 — 손가락 터치 목표 44px 이상, 본문 글자 키우기, 홈판을 화면 폭에 맞춰 확대 */
+html{-webkit-text-size-adjust:100%;}
+
+/* 태블릿 세로부터 */
+@media (min-width:744px){
+  body{padding:38px 30px 78px;font-size:15.5px;}
+  .wrap{max-width:900px;}
+  h1{font-size:38px;}
+  .sub{font-size:16px;line-height:1.7;max-width:680px;}
+
+  /* 탭 — 손가락으로 누를 크기 */
+  .tabs{flex-wrap:wrap;gap:0 4px;}
+  .tab-btn{font-size:15.5px;padding:15px 6px;}
+  .tab-btn+.tab-btn{margin-left:26px;}
+
+  /* 선택 칩 — 44px 이상 */
+  .chip{font-size:14.5px;padding:12px 17px;border-radius:24px;}
+  .card{padding:22px 24px;}
+  .card h3{font-size:12.5px;margin-bottom:16px;}
+  .note{font-size:13.5px;padding:12px 14px;}
+
+  /* 비커·수치 */
+  .beaker-svg{width:172px;height:206px;}
+  .readout .ph-big{font-size:46px;}
+  .verdict{font-size:15px;padding:6px 15px;}
+  .ph-strip-wrap{margin-top:38px;}   /* pH 마커 라벨이 위 설명문과 겹치지 않게 */
+  .ph-strip{height:38px;}
+  .ph-labels{font-size:11.5px;}
+
+  /* 중화 반응 */
+  input[type=range]{height:6px;}
+  .slider-row label{font-size:14px;}
+  .eq{font-size:15.5px;padding:14px;}
+
+  /* 한눈에 비교 */
+  .compare-row{grid-template-columns:repeat(auto-fit,minmax(98px,1fr));gap:16px;}
+  .compare-cell .mini-beaker{width:54px;height:66px;}
+  .compare-cell .c-name{font-size:12.5px;min-height:32px;}
+
+  /* 홈판 — 화면 폭을 다 쓰고 칸을 키운다(손가락으로 칠할 크기) */
+  .well-grid{max-width:100%;gap:5px;margin-top:20px;}
+  .palette-row{gap:10px;}
+  .swatch-btn{padding:10px 14px;}
+  .swatch-dot{width:24px;height:24px;}
+  .swatch-label{font-size:11px;}
+  .toggle-btn{font-size:14.5px;padding:14px 18px;}
+  .tmpl-btn{font-size:13.5px;padding:11px 17px;}
+}
+
+/* 태블릿 가로 · 큰 화면 */
+@media (min-width:1024px){
+  .wrap{max-width:1000px;}
+  .grid{gap:24px;}
+  .well-grid{max-width:840px;}
+  .compare-row{gap:18px;}
+}
+
+/* 아이패드 세로에서 2단이 좁아지는 구간 — 카드 안쪽 여백만 줄여 숨통 */
+@media (min-width:744px) and (max-width:860px){
+  .grid{gap:16px;}
+  .card{padding:20px;}
+}
+
+/* 안전영역(홈 인디케이터) */
+@supports (padding:env(safe-area-inset-bottom)){
+  body{padding-bottom:calc(78px + env(safe-area-inset-bottom));}
+}
+
+/* ══ 선명도 (11-27 "색이 명확하게") ══════════════════════════
+   어두운 테마 실험실(탭 있는 것): 보조 글자·선·칸 배경 대비를 올린다 */
+:root:has(.tab-btn){--muted:#c6d6cf;--line:#4b7062;--panel:#1c3a31;--panel-2:#264a3e;}
+:root:has(.tab-btn) .tab-btn{color:#c6d6cf;}
+:root:has(.tab-btn) .tab-btn.active{color:#fff;}
+:root:has(.tab-btn) .tab-btn.active::after{height:3px;}
+:root:has(.tab-btn) .card h2,:root:has(.tab-btn) .card h3{color:#e3ece8;}
+:root:has(.tab-btn) .chip{border-color:#5d8575;}
+:root:has(.tab-btn) .note{color:#d5e1dc;}
+/* 헤스 실험실(자체 라이트/다크): 다크일 때만 보조 글자·선 대비 */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--mute:#c0d2cc;--line:#45605a;}}
+:root[data-theme="dark"]{--mute:#c0d2cc;--line:#45605a;}
+/* 돌아가기 링크(인라인 스타일이라 !important) */
+a[href="../"]{color:#dfe9e4!important;border-color:#5d8575!important;}
+
+/* ══ 가독성 (11-27) — 탭 있는 실험실: 작은 글씨 키우고 대문자 고정폭 제목을 한글 굵은 제목으로 ══ */
+:root:has(.tab-btn) body{line-height:1.6;}
+:root:has(.tab-btn) .sub{font-size:16px;line-height:1.75;color:#d5e1dc;}
+:root:has(.tab-btn) .tab-btn{font-size:15.5px;}
+:root:has(.tab-btn) .card h2,:root:has(.tab-btn) .card h3{font-family:var(--sans);font-size:15px;letter-spacing:0;text-transform:none;font-weight:700;color:#f1ede3;}
+:root:has(.tab-btn) .note{font-size:14.5px;line-height:1.7;}
+:root:has(.tab-btn) .lbl{font-size:13.5px;}
+:root:has(.tab-btn) .u,:root:has(.tab-btn) .read .u,:root:has(.tab-btn) .readout .u{font-size:12.5px;}
+:root:has(.tab-btn) .eq{font-size:15.5px;line-height:1.7;}
+:root:has(.tab-btn) .fb,:root:has(.tab-btn) .shift{font-size:15px;}
+:root:has(.tab-btn) .steps li,:root:has(.tab-btn) .q p{font-size:15.5px;}
+:root:has(.tab-btn) .q details,:root:has(.tab-btn) .log{font-size:14.5px;}
+:root:has(.tab-btn) th{font-size:12.5px;}
+:root:has(.tab-btn) td{font-size:14.5px;}
+:root:has(.tab-btn) .legend,:root:has(.tab-btn) .bar-l{font-size:13.5px;}
+:root:has(.tab-btn) .chip{font-size:14.5px;}
+:root:has(.tab-btn) .go{font-size:15.5px;}
+:root:has(.tab-btn) .empty{font-size:14px;}
+
+/* 두 칸 격자 안 두 번째 카드가 18px 내려가던 것(.card+.card) 바로잡음 (11-27) */
+.grid>.card{margin-top:0;}
+/* == IPAD-FIT END == */
+</style>
+</head>
+<body>
+  <a href="../" style="display:inline-flex;align-items:center;gap:7px;margin-bottom:18px;
+  font-family:'Space Mono','Courier New',monospace;font-size:12px;letter-spacing:.06em;
+  color:#9cb0a8;text-decoration:none;border:1px solid #2c473d;border-radius:20px;
+  padding:6px 13px;transition:.15s"
+  onmouseover="this.style.color='#f1ede3';this.style.borderColor='#6fb98f'"
+  onmouseout="this.style.color='#9cb0a8';this.style.borderColor='#2c473d'">← 실험실 목록</a>
+<div class="wrap">
+  <div class="eyebrow">Lab 14 · 화학 결합</div>
+  <h1>화학 결합 실험실</h1>
+  <p class="sub">물질이 어떤 상태에서 전류를 흘리는지 보면 결합의 종류를 알 수 있습니다. 분자의 모양으로 극성을 예측하고, 대전된 빨대와 용해성 실험으로 직접 확인해 보세요.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-p="p1">① 전기 전도성으로 결합 구분</button>
+    <button class="tab-btn" data-p="p2">② 분자 구조와 극성</button>
+  </div>
+
+  <!-- ① 전기 전도성 -->
+  <section class="panel active" id="p1">
+    <div class="grid">
+      <div class="card">
+        <h2>전기 전도성 장치 · 6 V 전구 + 전류계</h2>
+        <p class="lbl">물질</p>
+        <div class="chip-list" id="subC">
+          <button class="chip active" data-v="NaCl">염화 나트륨</button><button class="chip" data-v="KNO3">질산 칼륨</button><button class="chip" data-v="sugar">설탕</button>
+          <button class="chip" data-v="eth">에탄올</button><button class="chip" data-v="Cu">구리</button><button class="chip" data-v="C">흑연</button>
+        </div>
+        <p class="lbl">상태</p>
+        <div class="chip-list" id="stC"><button class="chip active" data-v="s">고체</button><button class="chip" data-v="aq">수용액</button><button class="chip" data-v="l">액체(용융)</button></div>
+        <div class="stage"><svg viewBox="0 0 360 270" id="circ" style="max-width:420px">
+          <g id="cWire" fill="none" stroke="#c6d6cf" stroke-width="2.5"><path d="M130 150 V130 H24 V40 H336 V130 H230 V150"/></g>
+          <rect x="44" y="28" width="40" height="24" fill="#1c3a31"/>
+          <line x1="52" x2="52" y1="26" y2="54" stroke="#f1ede3" stroke-width="3"/><line x1="62" x2="62" y1="33" y2="47" stroke="#f1ede3" stroke-width="5"/>
+          <line x1="70" x2="70" y1="26" y2="54" stroke="#f1ede3" stroke-width="3"/><line x1="80" x2="80" y1="33" y2="47" stroke="#f1ede3" stroke-width="5"/>
+          <text x="64" y="70" text-anchor="middle" fill="#c6d6cf" font-size="11">6 V</text>
+          <circle id="halo" cx="170" cy="40" r="34" fill="#ffe066" opacity="0"/>
+          <circle id="bulb" cx="170" cy="40" r="15" fill="#2b3a35" stroke="#f1ede3" stroke-width="2"/>
+          <path d="M162 46 Q166 32 170 46 Q174 32 178 46" fill="none" stroke="#f1ede3" stroke-width="1.3"/>
+          <text x="170" y="74" text-anchor="middle" fill="#c6d6cf" font-size="11">전구</text>
+          <circle cx="270" cy="40" r="17" fill="#1c3a31" stroke="#f1ede3" stroke-width="2"/>
+          <text x="270" y="45" text-anchor="middle" fill="#f1ede3" font-size="14" font-weight="700">A</text>
+          <g id="eDots"></g>
+          <g id="vessel"></g>
+          <rect x="124" y="148" width="12" height="86" rx="2" fill="#3a3f42" stroke="#9aa5a9"/>
+          <rect x="224" y="148" width="12" height="86" rx="2" fill="#3a3f42" stroke="#9aa5a9"/>
+          <g id="parts"></g>
+          <text x="180" y="266" text-anchor="middle" fill="#c6d6cf" font-size="11" id="cInfo"></text>
+        </svg></div>
+        <div class="read"><div><div class="big" id="amp">0</div><div class="u">전류 (mA)</div></div><div><div class="big" id="lamp">꺼짐</div><div class="u">전구</div></div></div>
+        <div class="fb" id="cMsg" style="text-align:center"></div>
+      </div>
+      <div class="card">
+        <h2>결과표 · 결합의 종류 고르기</h2>
+        <div class="scroll"><table><thead><tr><th>물질</th><th>고체</th><th>수용액</th><th>액체<br>(용융)</th><th>결합</th><th></th></tr></thead><tbody id="cT"></tbody></table></div>
+        <div class="btn-row"><button class="go" id="clsChk">분류 확인</button></div>
+        <div class="fb" id="clsFb"></div>
+        <div class="note"><b>○</b> 전구가 켜짐 · <b>×</b> 켜지지 않음 · <b>—</b> 그 상태를 만들 수 없음. 시험한 결과가 표에 자동으로 기록됩니다.</div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>생각해 보기</h2>
+      <div class="q"><p>1. 고체 상태의 전기 전도성만으로 이온 결합 물질과 공유 결합 물질을 구별할 수 있을까요?</p><details><summary>확인</summary>구별할 수 없습니다. NaCl 고체도, 설탕 고체도 전류가 흐르지 않습니다. 녹이거나 물에 녹였을 때 전류가 흐르면 이온 결합 물질입니다.</details></div>
+      <div class="q"><p>2. 이온 결합 물질은 고체에서는 전류가 안 흐르는데 액체·수용액에서는 흐르는 까닭은?</p><details><summary>확인</summary>고체에서는 양이온과 음이온이 서로 단단히 끌어당겨 제자리에 고정되어 있습니다. 녹거나 물에 녹으면 이온이 자유롭게 움직일 수 있어, 양이온은 (−)극으로, 음이온은 (+)극으로 이동하며 전하를 옮깁니다.</details></div>
+      <div class="q"><p>3. 금속은 고체에서도 전류가 흐르는 까닭은?</p><details><summary>확인</summary>금속 양이온 사이를 <b>자유 전자</b>가 돌아다니기 때문입니다. 전압을 걸면 자유 전자가 (+)극 쪽으로 이동합니다.</details></div>
+    </div>
+  </section>
+
+  <!-- ② 분자 구조와 극성 -->
+  <section class="panel" id="p2">
+    <div class="grid">
+      <div class="card">
+        <h2>분자 모형 (끌어서 돌려 보세요)</h2>
+        <div class="chip-list" id="molC">
+          <button class="chip active" data-v="H2O">H₂O</button><button class="chip" data-v="CO2">CO₂</button><button class="chip" data-v="NH3">NH₃</button>
+          <button class="chip" data-v="CH4">CH₄</button><button class="chip" data-v="BF3">BF₃</button><button class="chip" data-v="CCl4">CCl₄</button>
+        </div>
+        <div class="stage"><svg viewBox="0 0 320 280" id="mol" style="max-width:380px"></svg></div>
+        <label class="tog"><input type="checkbox" id="tDip" checked> 결합 쌍극자 (δ+ → δ−)</label>
+        <label class="tog"><input type="checkbox" id="tLp" checked> 중심 원자의 비공유 전자쌍</label>
+        <label class="tog"><input type="checkbox" id="tNet" disabled> 분자 전체 쌍극자 (예측 후 볼 수 있음)</label>
+      </div>
+      <div class="card">
+        <h2>모양으로 극성 예측</h2>
+        <div class="scroll"><table><tbody id="molInfo"></tbody></table></div>
+        <p style="font-size:14px;line-height:1.6;margin:14px 0 8px">이 분자는 극성 분자일까요, 무극성 분자일까요?</p>
+        <div class="chip-list" id="polC"><button class="chip" data-v="1">극성 분자</button><button class="chip" data-v="0">무극성 분자</button></div>
+        <div class="fb" id="polFb"></div>
+        <div class="note">전기 음성도: H 2.1 · B 2.0 · C 2.5 · N 3.0 · O 3.5 · F 4.0 · Cl 3.0. 결합 쌍극자 화살표는 전기 음성도가 작은 원자(δ+)에서 큰 원자(δ−) 쪽을 향합니다. 결합이 극성이어도 분자 모양이 대칭이면 쌍극자가 <b>서로 상쇄</b>되어 무극성 분자가 됩니다.</div>
+        <p class="lbl" style="margin-top:14px">맞힌 분자</p>
+        <div id="molDone" style="font-size:13.5px;line-height:1.8;color:#d5e1dc">아직 없습니다.</div>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h2>대전된 빨대 실험</h2>
+        <p class="lbl">뷰렛에서 가늘게 흘릴 액체</p>
+        <div class="chip-list" id="lqC"><button class="chip active" data-v="w">물</button><button class="chip" data-v="hx">헥세인</button><button class="chip" data-v="ccl4">사염화 탄소</button><button class="chip" data-v="et">에탄올</button></div>
+        <div class="stage"><svg viewBox="0 0 300 280" id="straw" style="max-width:340px"></svg></div>
+        <p class="lbl">예측: 털가죽에 문질러 대전시킨 빨대를 가까이 대면 액체 줄기가</p>
+        <div class="chip-list" id="lpC"><button class="chip" data-v="1">빨대 쪽으로 휜다</button><button class="chip" data-v="0">휘지 않는다</button></div>
+        <div class="btn-row" style="margin-top:0"><button class="go" id="strawGo" disabled>빨대 가까이 대기</button><button class="go ghost" id="strawAway">빨대 치우기</button></div>
+        <div class="fb" id="strawFb"></div>
+      </div>
+      <div class="card">
+        <h2>용해성 · 비슷한 것끼리 녹는다</h2>
+        <p class="lbl">용질</p>
+        <div class="chip-list" id="soC"><button class="chip active" data-v="I2">아이오딘 I₂</button><button class="chip" data-v="NaCl">염화 나트륨 NaCl</button></div>
+        <p class="lbl">용매</p>
+        <div class="chip-list" id="svC"><button class="chip active" data-v="w">물</button><button class="chip" data-v="hx">헥세인</button><button class="chip" data-v="both">물 + 헥세인 (두 층)</button></div>
+        <div class="stage"><svg viewBox="0 0 240 240" id="tube" style="max-width:260px"></svg></div>
+        <p class="lbl" id="spQ">예측</p>
+        <div class="chip-list" id="spC"></div>
+        <div class="btn-row" style="margin-top:0"><button class="go" id="shake" disabled>흔들어 섞기</button></div>
+        <div class="fb" id="solFb"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>예측과 결과 기록</h2>
+      <div class="scroll"><table><thead><tr><th>실험</th><th>예측</th><th>결과</th><th></th></tr></thead><tbody id="logT"><tr><td colspan="4" style="color:#c6d6cf">아직 실험하지 않았습니다.</td></tr></tbody></table></div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const txt=(g,x,y,s,a={})=>{const t=el('text',Object.assign({x,y,fill:'#c6d6cf','font-size':11},a));t.textContent=s;g.appendChild(t);return t;};
+document.querySelectorAll('.tab-btn').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.toggle('active',x===b));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.p));});
+function chips(id,cb){const box=$(id);box.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{
+  box.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x===c));cb&&cb(c.dataset.v);});}
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ── ① 전기 전도성 (전구 정격 300 mA)
+const SUB={
+  NaCl:{n:'염화 나트륨',f:'NaCl',bond:'ion',I:{s:0,aq:150,l:260},mp:801,ion:['Na⁺','Cl⁻'],col:'#f4f4ee'},
+  KNO3:{n:'질산 칼륨',f:'KNO₃',bond:'ion',I:{s:0,aq:120,l:210},mp:334,ion:['K⁺','NO₃⁻'],col:'#f4f4ee'},
+  sugar:{n:'설탕',f:'C₁₂H₂₂O₁₁',bond:'cov',I:{s:0,aq:0,l:0},mp:186,col:'#f4f0e4',lNote:'녹은 설탕(186 °C)'},
+  eth:{n:'에탄올',f:'C₂H₅OH',bond:'cov',I:{s:null,aq:0,l:0},col:'#dfe8ee',sNote:'에탄올은 실온에서 액체입니다(녹는점 −114 °C). 고체로 만들기 어렵습니다.',lNote:'에탄올 (실온 액체)'},
+  Cu:{n:'구리',f:'Cu',bond:'met',I:{s:300,aq:null,l:300},mp:1085,col:'#c8783e',aqNote:'구리는 물에 녹지 않아 수용액을 만들 수 없습니다.'},
+  C:{n:'흑연',f:'C',bond:'cov',I:{s:270,aq:null,l:null},col:'#4a4f52',aqNote:'흑연은 물에 녹지 않아 수용액을 만들 수 없습니다.',lNote2:'흑연은 3600 °C가 넘어도 녹지 않고 바로 기체가 됩니다(승화). 액체로 만들 수 없습니다.'}};
+const ST={s:'고체',aq:'수용액',l:'액체(용융)'},BOND={ion:'이온 결합',cov:'공유 결합',met:'금속 결합'};
+let sub='NaCl',st='s',res={},flow=0,ePh=0,parts=[];
+function buildTable(){$('#cT').innerHTML=Object.keys(SUB).map(k=>`<tr data-k="${k}"><td style="text-align:left"><b>${SUB[k].n}</b><br><span style="font-family:var(--mono);font-size:11px;color:#c6d6cf">${SUB[k].f}</span></td>`+
+  ['s','aq','l'].map(s=>`<td data-s="${s}" class="n">·</td>`).join('')+`<td><select data-k="${k}"><option value="">고르기</option><option value="ion">이온</option><option value="cov">공유</option><option value="met">금속</option></select></td><td class="mk"></td></tr>`).join('');}
+function cell(k,s,v){const td=$(`#cT tr[data-k="${k}"] td[data-s="${s}"]`);td.textContent=v==null?'—':v>0?'○':'×';td.className=v>0?'y':'n';}
+function test(){const S=SUB[sub],I=S.I[st],m=$('#cMsg');
+  if(I==null){flow=0;cell(sub,st,null);m.className='fb no';m.textContent=st==='s'?S.sNote:st==='aq'?S.aqNote:S.lNote2;drawVessel(true);showRead(0);return;}
+  flow=I;cell(sub,st,I);m.className='fb';
+  m.textContent=I>0?`${S.n} ${ST[st]}: 전류 ${I} mA가 흐르고 전구가 ${I>=250?'밝게':'켜져'} 빛납니다.`:`${S.n} ${ST[st]}: 전류가 흐르지 않습니다. 전구가 꺼져 있습니다.`;
+  drawVessel(false);showRead(I);}
+function showRead(I){$('#amp').textContent=I;const b=Math.min(1,(I/300)**2);$('#lamp').textContent=I===0?'꺼짐':b>.6?'밝음':'켜짐';
+  $('#bulb').setAttribute('fill',I?`rgba(255,224,102,${(.45+.55*b).toFixed(2)})`:'#2b3a35');$('#halo').setAttribute('opacity',(b*.35).toFixed(2));}
+function drawVessel(none){const g=$('#vessel');g.innerHTML='';parts=[];const S=SUB[sub];
+  $('#cInfo').textContent=none?'':st==='l'&&S.mp&&sub!=='eth'?`가열해 녹임 (녹는점 ${S.mp} °C)`:'';
+  if(none)return;
+  if(st==='s'){g.appendChild(el('rect',{x:136,y:178,width:88,height:40,rx:3,fill:S.col,stroke:'#f1ede3','stroke-width':1.2,opacity:.92}));
+    const kind=S.bond==='ion'?'lat':S.bond==='met'?'met':sub==='C'?'gra':'mol';
+    for(let i=0;i<8;i++)for(let j=0;j<3;j++){const x=142+i*11,y=186+j*12;
+      if(kind==='lat')parts.push({x,y,hx:x,hy:y,t:(i+j)%2?'-':'+',fix:1});
+      else if(kind==='met')parts.push({x,y,hx:x,hy:y,t:'m',fix:1});
+      else if(kind==='mol'&&(i+j)%2===0)parts.push({x,y,hx:x,hy:y,t:'o',fix:1});}
+    if(sub==='C')for(let j=0;j<3;j++)g.appendChild(el('line',{x1:138,x2:222,y1:186+j*12,y2:186+j*12,stroke:'#9aa5a9','stroke-width':1.5}));
+    if(flow>0)for(let i=0;i<10;i++)parts.push({x:138+Math.random()*84,y:186+12*Math.floor(Math.random()*3),t:'e'});
+    return;}
+  const hot=st==='l'&&sub!=='eth',liq=hot?(sub==='Cu'?'rgba(255,140,50,.85)':'rgba(255,170,90,.6)'):'rgba(150,200,235,.5)';
+  g.appendChild(el('path',{d:'M110 165 H250 V236 Q250 246 240 246 H120 Q110 246 110 236 Z',fill:liq}));
+  g.appendChild(el('path',{d:'M106 156 V238 Q106 250 118 250 H242 Q254 250 254 238 V156',fill:'none',stroke:'#f1ede3','stroke-width':2.5}));
+  if(hot)[150,180,210].forEach(x=>g.appendChild(el('path',{d:`M${x-8} 268 Q${x} 248 ${x+8} 268 Z`,fill:'#4f8cff',opacity:.8})));
+  if(S.bond==='ion')for(let i=0;i<14;i++)parts.push({x:140+Math.random()*80,y:172+Math.random()*68,t:i%2?'-':'+'});
+  else if(S.bond==='met')for(let i=0;i<14;i++)parts.push({x:140+Math.random()*80,y:172+Math.random()*68,t:'e'});
+  else for(let i=0;i<9;i++)parts.push({x:140+Math.random()*80,y:172+Math.random()*68,t:'o'});}
+function stepParts(dt){const v=flow/300*40;
+  parts.forEach(p=>{if(p.fix){if(!reduce){p.x=p.hx+(Math.random()-.5)*1.2;p.y=p.hy+(Math.random()-.5)*1.2;}return;}
+    if(p.t==='+'){p.x-=v*dt;if(p.x<140)p.x=220;}else if(p.t==='-'){p.x+=v*dt;if(p.x>220)p.x=140;}
+    else if(p.t==='e'){p.x+=v*1.6*dt;if(p.x>222)p.x=138;}
+    if(p.t!=='e'||st!=='s'){p.y+=(Math.random()-.5)*14*dt*(reduce?0:1);p.y=Math.max(172,Math.min(240,p.y));}
+    if(p.t==='o'&&!reduce){p.x+=(Math.random()-.5)*20*dt;p.x=Math.max(140,Math.min(220,p.x));}});}
+function drawParts(){const g=$('#parts');g.innerHTML='';parts.forEach(p=>{
+  if(p.t==='+'||p.t==='-'){g.appendChild(el('circle',{cx:p.x,cy:p.y,r:p.t==='+'?4.2:5.2,fill:p.t==='+'?'#ff8a5c':'#6fb3ff'}));
+    txt(g,p.x,p.y+3.3,p.t==='+'?'+':'−',{'text-anchor':'middle','font-size':8,fill:'#0d1a15','font-weight':700});}
+  else if(p.t==='m')g.appendChild(el('circle',{cx:p.x,cy:p.y,r:4.2,fill:'#e09a62',stroke:'#7a4a28'}));
+  else if(p.t==='e')g.appendChild(el('circle',{cx:p.x,cy:p.y,r:2,fill:'#ffe066'}));
+  else g.appendChild(el('circle',{cx:p.x,cy:p.y,r:3.4,fill:'#e8e4d8',opacity:.85}));});}
+// 도선 속 전자: 왼쪽 전극 → 전지 → 오른쪽 (그림상 일정 간격 점)
+const WP=[[130,150],[130,130],[24,130],[24,40],[336,40],[336,130],[230,130],[230,150]];
+const segL=WP.slice(1).map((p,i)=>Math.hypot(p[0]-WP[i][0],p[1]-WP[i][1])),TOT=segL.reduce((a,b)=>a+b);
+function at(d){d=((d%TOT)+TOT)%TOT;for(let i=0;i<segL.length;i++){if(d<=segL[i]){const t=d/segL[i];return[WP[i][0]+(WP[i+1][0]-WP[i][0])*t,WP[i][1]+(WP[i+1][1]-WP[i][1])*t];}d-=segL[i];}return WP[0];}
+function drawE(){const g=$('#eDots');g.innerHTML='';if(!flow)return;for(let d=0;d<TOT;d+=26){const[x,y]=at(d+ePh);g.appendChild(el('circle',{cx:x,cy:y,r:2.4,fill:'#ffe066'}));}}
+buildTable();
+chips('#subC',v=>{sub=v;test();});chips('#stC',v=>{st=v;test();});test();
+$('#clsChk').onclick=()=>{const f=$('#clsFb'),wrong=[];let blank=0;
+  document.querySelectorAll('#cT select').forEach(s=>{const k=s.dataset.k,mk=$(`#cT tr[data-k="${k}"] .mk`);
+    if(!s.value){blank++;mk.textContent='';return;}const ok=s.value===SUB[k].bond;mk.textContent=ok?'✓':'✗';mk.style.color=ok?'#6fb98f':'#f2a541';if(!ok)wrong.push(k);});
+  if(blank){f.className='fb no';f.textContent=`아직 고르지 않은 물질이 ${blank}개 있습니다.`;return;}
+  if(!wrong.length){f.className='fb ok';f.innerHTML='모두 맞습니다. <b>이온 결합</b>: 고체 ×, 액체·수용액 ○ / <b>금속 결합</b>: 고체·액체 모두 ○ / <b>공유 결합</b>: 대부분 어느 상태에서나 × (흑연은 예외적으로 고체 ○).';return;}
+  const why={NaCl:'NaCl은 고체에서는 ×, 녹이거나 물에 녹이면 ○입니다. 이온이 고정되어 있다가 움직일 수 있게 되는 <b>이온 결합</b> 물질입니다.',
+    KNO3:'KNO₃도 NaCl처럼 고체 ×, 수용액·용융 ○입니다. K⁺과 NO₃⁻(다원자 이온)으로 된 <b>이온 결합</b> 물질입니다. NO₃⁻ 안의 N–O는 공유 결합이지만, K⁺과 NO₃⁻ 사이는 이온 결합입니다.',
+    sugar:'설탕은 고체·수용액·용융 모두 ×입니다. 물에 녹아도 이온으로 나뉘지 않고 분자 그대로 흩어지는 <b>공유 결합</b> 물질입니다.',
+    eth:'에탄올은 액체로도, 물에 섞어도 ×입니다. 이온이 없는 분자로 된 <b>공유 결합</b> 물질입니다.',
+    Cu:'구리는 고체에서도 ○입니다. 자유 전자가 움직이는 <b>금속 결합</b> 물질입니다.',
+    C:'흑연은 고체에서 ○이지만 금속이 아닙니다. 탄소 원자끼리 <b>공유 결합</b>한 공유 결정인데, 각 탄소의 남는 전자 1개가 층을 따라 움직일 수 있어 예외적으로 전류가 흐릅니다. (같은 탄소인 다이아몬드는 전류가 흐르지 않습니다.)'};
+  f.className='fb no';f.innerHTML=wrong.map(k=>`✗ <b>${SUB[k].n}</b>: ${why[k]}`).join('<br>');};
+
+// ── ② 분자 모형
+const EN={H:2.1,B:2.0,C:2.5,N:3.0,O:3.5,F:4.0,Cl:3.0};
+const ACOL={H:'#f1ede3',O:'#ff5f57',N:'#6fa8ff',C:'#5d6468',B:'#ffb08a',F:'#b6f06a',Cl:'#58f0a5'};
+const tet=(r)=>[[0,r,0],...[90,210,330].map(a=>[.943*r*Math.cos(a*Math.PI/180),-r/3,.943*r*Math.sin(a*Math.PI/180)])];
+const MOL={
+  H2O:{n:'물 H₂O',c:'O',sub:'H',pos:[[.791,-.612,0],[-.791,-.612,0]],lp:[[0,.58,.81],[0,.58,-.81]],shape:'굽은형',ang:'104.5°',polar:1},
+  CO2:{n:'이산화 탄소 CO₂',c:'C',sub:'O',pos:[[1.15,0,0],[-1.15,0,0]],lp:[],shape:'직선형',ang:'180°',polar:0,dbl:1},
+  NH3:{n:'암모니아 NH₃',c:'N',sub:'H',pos:[90,210,330].map(a=>[.928*Math.cos(a*Math.PI/180),-.372,.928*Math.sin(a*Math.PI/180)]),lp:[[0,.8,0]],shape:'삼각뿔형',ang:'107°',polar:1},
+  CH4:{n:'메테인 CH₄',c:'C',sub:'H',pos:tet(1),lp:[],shape:'정사면체형',ang:'109.5°',polar:0},
+  BF3:{n:'삼플루오린화 붕소 BF₃',c:'B',sub:'F',pos:[90,210,330].map(a=>[1.1*Math.cos(a*Math.PI/180),1.1*Math.sin(a*Math.PI/180),0]),lp:[],shape:'평면 삼각형',ang:'120°',polar:0},
+  CCl4:{n:'사염화 탄소 CCl₄',c:'C',sub:'Cl',pos:tet(1.25),lp:[],shape:'정사면체형',ang:'109.5°',polar:0}};
+let mk='H2O',yaw=.6,pitch=.25,drag=null,done={};
+function dipoles(M){const d=EN[M.sub]-EN[M.c];return M.pos.map(p=>{const L=Math.hypot(...p);return p.map(x=>x/L*d);});}
+function net(M){return dipoles(M).reduce((a,v)=>a.map((x,i)=>x+v[i]),[0,0,0]);}
+function proj(p){const[x,y,z]=p,cy=Math.cos(yaw),sy=Math.sin(yaw),x1=x*cy+z*sy,z1=-x*sy+z*cy,cp=Math.cos(pitch),sp=Math.sin(pitch),y2=y*cp-z1*sp,z2=y*sp+z1*cp;
+  return[160+x1*78,140-y2*78,z2];}
+function arrow(g,a,b,col,w,cross){const dx=b[0]-a[0],dy=b[1]-a[1],L=Math.hypot(dx,dy);if(L<6)return;const ux=dx/L,uy=dy/L;
+  g.appendChild(el('line',{x1:a[0],y1:a[1],x2:b[0]-ux*8,y2:b[1]-uy*8,stroke:col,'stroke-width':w,'stroke-linecap':'round'}));
+  g.appendChild(el('path',{d:`M${b[0]} ${b[1]} L${b[0]-ux*11-uy*6} ${b[1]-uy*11+ux*6} L${b[0]-ux*11+uy*6} ${b[1]-uy*11-ux*6} Z`,fill:col}));
+  if(cross){const cx=a[0]+ux*7,cy=a[1]+uy*7;g.appendChild(el('line',{x1:cx-uy*6,y1:cy+ux*6,x2:cx+uy*6,y2:cy-ux*6,stroke:col,'stroke-width':w}));}}
+function drawMol(){const M=MOL[mk],g=$('#mol');g.innerHTML='';const C=proj([0,0,0]),items=[];
+  M.pos.forEach(p=>{const P=proj(p);items.push({z:(P[2]+C[2])/2-.01,f:()=>{const dx=P[0]-C[0],dy=P[1]-C[1],L=Math.hypot(dx,dy)||1,nx=-dy/L*4,ny=dx/L*4;
+      if(M.dbl){[1,-1].forEach(s=>g.appendChild(el('line',{x1:C[0]+nx*s,y1:C[1]+ny*s,x2:P[0]+nx*s,y2:P[1]+ny*s,stroke:'#c6d6cf','stroke-width':3.5})));}
+      else g.appendChild(el('line',{x1:C[0],y1:C[1],x2:P[0],y2:P[1],stroke:'#c6d6cf','stroke-width':5}));}});
+    items.push({z:P[2],f:()=>atom(g,P,M.sub)});});
+  items.push({z:C[2],f:()=>atom(g,C,M.c)});
+  if($('#tLp').checked)M.lp.forEach(p=>{const P=proj(p.map(x=>x*.68));items.push({z:P[2],f:()=>{g.appendChild(el('ellipse',{cx:P[0],cy:P[1],rx:15,ry:15,fill:'rgba(255,224,102,.28)',stroke:'rgba(255,224,102,.7)','stroke-dasharray':'3 3'}));
+    [-4.5,4.5].forEach(o=>g.appendChild(el('circle',{cx:P[0]+o,cy:P[1],r:2.6,fill:'#ffe066'})));}});});
+  items.sort((a,b)=>a.z-b.z).forEach(i=>i.f());
+  if($('#tDip').checked){const d=EN[M.sub]-EN[M.c];M.pos.forEach(p=>{const P=proj(p),dx=P[0]-C[0],dy=P[1]-C[1],L=Math.hypot(dx,dy);if(L<20)return;
+    const nx=-dy/L*16,ny=dx/L*16,a=[C[0]+dx*.22+nx,C[1]+dy*.22+ny],b=[C[0]+dx*.78+nx,C[1]+dy*.78+ny];
+    d>0?arrow(g,a,b,'#4fd6e0',2.5,1):arrow(g,b,a,'#4fd6e0',2.5,1);});}
+  if($('#tNet').checked){const v=net(M),m=Math.hypot(...v);
+    if(m>.01){const P=proj(v.map(x=>x/m*1.3));arrow(g,[C[0]-(P[0]-C[0])*.35,C[1]-(P[1]-C[1])*.35],P,'#ffe066',5,1);}
+    else txt(g,160,272,'분자 쌍극자 = 0 (서로 상쇄)',{'text-anchor':'middle','font-size':14,fill:'#ffe066','font-weight':700});}}
+function atom(g,P,e){const r=e==='H'?11:e==='Cl'?17:15,s=1+P[2]*.12;
+  g.appendChild(el('circle',{cx:P[0],cy:P[1],r:r*s,fill:ACOL[e],stroke:'#0d1a15','stroke-width':1.5}));
+  txt(g,P[0],P[1]+4.5,e,{'text-anchor':'middle','font-size':e.length>1?11:13,'font-weight':700,fill:e==='C'?'#f1ede3':'#0d1a15'});}
+function molInfo(){const M=MOL[mk],v=net(M),m=Math.hypot(...v),seen=mk in done;
+  const row=(k,x)=>`<tr><td style="text-align:left;color:#c6d6cf">${k}</td><td style="text-align:left"><b>${x}</b></td></tr>`;
+  $('#molInfo').innerHTML=row('분자',M.n)+row('모양',M.shape)+row('결합각',M.ang)+row('중심 원자 비공유 전자쌍',M.lp.length+'개')+
+    row('결합의 극성',`${M.c}–${M.sub} (전기 음성도 차 ${Math.abs(EN[M.sub]-EN[M.c]).toFixed(1)})`)+row('분자의 극성',seen?(M.polar?'극성 분자':'무극성 분자'):'예측해 보세요');
+  $('#tNet').disabled=!seen;if(!seen)$('#tNet').checked=false;}
+chips('#molC',v=>{mk=v;document.querySelectorAll('#polC .chip').forEach(c=>c.classList.remove('active'));$('#polFb').textContent='';$('#polFb').className='fb';molInfo();drawMol();});
+['#tDip','#tLp','#tNet'].forEach(s=>$(s).onchange=drawMol);
+chips('#polC',v=>{const M=MOL[mk],ok=+v===M.polar,f=$('#polFb');
+  const exp={H2O:'O–H 결합은 극성이고, 비공유 전자쌍 2개 때문에 <b>굽은형</b>이라 두 결합 쌍극자가 상쇄되지 않습니다. 분자 쌍극자가 O 쪽을 향하는 <b>극성 분자</b>입니다.',
+    CO2:'C=O 결합은 극성이지만 <b>직선형</b>이라 두 결합 쌍극자가 정반대 방향으로 같은 크기여서 상쇄됩니다. <b>무극성 분자</b>입니다.',
+    NH3:'N–H 결합은 극성이고, 비공유 전자쌍 1개 때문에 <b>삼각뿔형</b>이라 결합 쌍극자가 모두 아래쪽 H에서 N 쪽으로 더해집니다. <b>극성 분자</b>입니다.',
+    CH4:'C–H 결합의 극성은 작고, <b>정사면체형</b>으로 대칭이라 네 결합 쌍극자가 상쇄됩니다. <b>무극성 분자</b>입니다.',
+    BF3:'B–F 결합은 극성이 매우 크지만(차 2.0), <b>평면 삼각형</b>으로 120°씩 대칭이라 세 결합 쌍극자의 합이 0입니다. <b>무극성 분자</b>입니다.',
+    CCl4:'C–Cl 결합은 극성이지만 <b>정사면체형</b>으로 대칭이라 네 결합 쌍극자가 상쇄됩니다. <b>무극성 분자</b>입니다.'}[mk];
+  f.className='fb '+(ok?'ok':'no');f.innerHTML=(ok?'맞습니다. ':'다시 생각해 보세요. ')+exp+' 노란 화살표(분자 전체 쌍극자)를 켜서 확인하세요.';
+  done[mk]=1;molInfo();$('#tNet').checked=true;drawMol();
+  if(ok){done[mk]=2;}
+  const right=Object.keys(done).filter(k=>done[k]===2);$('#molDone').innerHTML=right.length?right.map(k=>`${MOL[k].n} — ${MOL[k].shape}, <b>${MOL[k].polar?'극성':'무극성'}</b>`).join('<br>'):'아직 없습니다.';});
+const mv=$('#mol');
+mv.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY};mv.setPointerCapture(e.pointerId);});
+mv.addEventListener('pointermove',e=>{if(!drag)return;yaw+=(e.clientX-drag.x)*.012;pitch+=(e.clientY-drag.y)*.012;pitch=Math.max(-1.4,Math.min(1.4,pitch));drag={x:e.clientX,y:e.clientY};drawMol();});
+['pointerup','pointercancel'].forEach(t=>mv.addEventListener(t,()=>drag=null));
+molInfo();drawMol();
+
+// ── 대전된 빨대
+const LQ={w:{n:'물',polar:1,d:34,col:'rgba(130,190,240,.8)',why:'물은 굽은형 <b>극성 분자</b>입니다. 분자의 δ+ 쪽(H)이 빨대의 (−) 전하 쪽으로 돌아서 끌려가 줄기가 휩니다. 빨대가 (+)로 대전되어도 δ− 쪽(O)이 향해 마찬가지로 끌립니다.'},
+  hx:{n:'헥세인',polar:0,d:0,col:'rgba(230,235,240,.75)',why:'헥세인(C₆H₁₄)은 C–H 결합의 극성이 매우 작아 <b>무극성 분자</b>입니다. 전하에 끌리지 않아 줄기가 곧게 떨어집니다.'},
+  ccl4:{n:'사염화 탄소',polar:0,d:0,col:'rgba(225,235,230,.75)',why:'C–Cl 결합은 극성이지만 정사면체로 대칭이라 쌍극자가 상쇄된 <b>무극성 분자</b>입니다. 줄기가 휘지 않습니다.'},
+  et:{n:'에탄올',polar:1,d:24,col:'rgba(200,225,245,.75)',why:'에탄올(C₂H₅OH)은 O–H 부분 때문에 <b>극성 분자</b>입니다. 물보다는 조금 덜 휘지만 빨대 쪽으로 끌립니다.'}};
+let lq='w',lpred=null,near=0,defl=0,dash=0;
+function drawStraw(){const g=$('#straw');g.innerHTML='';const L=LQ[lq];
+  g.appendChild(el('rect',{x:98,y:4,width:24,height:62,rx:3,fill:L.col.replace(/[\d.]+\)$/,'.55)'),stroke:'#f1ede3','stroke-width':2}));
+  g.appendChild(el('path',{d:'M104 66 H116 L112 84 H108 Z',fill:'#f1ede3'}));
+  const d=defl,P=`M110 84 C110 130 ${110+d*.8} 150 ${110+d*1.25} 236`;
+  g.appendChild(el('path',{d:P,fill:'none',stroke:L.col,'stroke-width':5,'stroke-linecap':'round'}));
+  g.appendChild(el('path',{d:P,fill:'none',stroke:'rgba(255,255,255,.55)','stroke-width':2,'stroke-dasharray':'6 10','stroke-dashoffset':-dash}));
+  g.appendChild(el('path',{d:'M56 214 V266 Q56 274 64 274 H196 Q204 274 204 266 V214',fill:'none',stroke:'#f1ede3','stroke-width':2.5}));
+  g.appendChild(el('rect',{x:58,y:250,width:144,height:22,fill:L.col.replace(/[\d.]+\)$/,'.5)')}));
+  const sx=near?150:300;g.appendChild(el('rect',{x:sx+0,y:142,width:150,height:14,rx:7,fill:'#ffe066',stroke:'#c9a92a'}));
+  if(near)for(let i=0;i<5;i++)txt(g,sx+12+i*16,153,'−',{'font-size':14,fill:'#5a4500','font-weight':700});
+  txt(g,290,24,L.n,{'text-anchor':'end','font-size':14,fill:'#f1ede3','font-weight':700});}
+chips('#lqC',v=>{lq=v;lpred=null;near=0;defl=0;document.querySelectorAll('#lpC .chip').forEach(c=>c.classList.remove('active'));$('#strawGo').disabled=true;$('#strawFb').textContent='';drawStraw();});
+chips('#lpC',v=>{lpred=+v;$('#strawGo').disabled=false;});
+$('#strawGo').onclick=()=>{if(lpred==null)return;near=1;if(reduce)defl=LQ[lq].d;const L=LQ[lq],ok=lpred===L.polar,f=$('#strawFb');
+  f.className='fb '+(ok?'ok':'no');f.innerHTML=(ok?'예측이 맞았습니다. ':'예측과 다릅니다. ')+(L.polar?'줄기가 빨대 쪽으로 휩니다. ':'줄기가 휘지 않습니다. ')+L.why;
+  addLog(`빨대 · ${L.n}`,lpred?'휜다':'안 휜다',L.polar?'휜다':'안 휜다',ok);drawStraw();};
+$('#strawAway').onclick=()=>{near=0;if(reduce)defl=0;drawStraw();};
+drawStraw();
+
+// ── 용해성
+const SOL={'I2|w':{a:'no',why:'I₂는 무극성 분자라 극성인 물과 잘 섞이지 않습니다. 아주 조금만 녹아 연한 갈색을 띠고 고체가 대부분 남습니다(25 °C에서 물 100 g에 약 0.03 g).'},
+  'I2|hx':{a:'yes',why:'무극성인 I₂는 무극성 용매 헥세인에 잘 녹아 <b>보라색</b> 용액이 됩니다.'},
+  'NaCl|w':{a:'yes',why:'NaCl은 이온 결합 물질입니다. 극성인 물 분자가 Na⁺ 둘레에는 O 쪽(δ−)을, Cl⁻ 둘레에는 H 쪽(δ+)을 향해 둘러싸(수화) 잘 녹습니다(물 100 g에 약 36 g).'},
+  'NaCl|hx':{a:'no',why:'무극성인 헥세인은 이온을 끌어당기지 못해 NaCl이 녹지 않고 흰 결정이 그대로 가라앉아 있습니다.'},
+  'I2|both':{a:'top',why:'헥세인(밀도 0.66 g/mL)은 물보다 가볍고 물과 섞이지 않아 위층이 됩니다. 무극성인 I₂는 대부분 무극성인 <b>위층(헥세인)</b>으로 옮겨 가 위층이 보라색이 됩니다.'},
+  'NaCl|both':{a:'bot',why:'NaCl은 극성인 <b>아래층(물)</b>에 녹습니다. 위층 헥세인에는 녹지 않습니다.'}};
+const PRED={single:[['yes','잘 녹는다'],['no','거의 안 녹는다']],both:[['top','위층(헥세인)에 녹는다'],['bot','아래층(물)에 녹는다']]};
+let so='I2',sv='w',spred=null,shook=0,shT=-1;
+function predChips(){const P=sv==='both'?PRED.both:PRED.single;$('#spQ').textContent=sv==='both'?'예측: 흔들어 섞으면 용질은 어느 층에 녹을까요?':'예측: 흔들어 섞으면 용질이';
+  $('#spC').innerHTML=P.map(([v,t])=>`<button class="chip" data-v="${v}">${t}</button>`).join('');chips('#spC',v=>{spred=v;$('#shake').disabled=false;});
+  spred=null;shook=0;$('#shake').disabled=true;$('#solFb').textContent='';drawTube(0);}
+function drawTube(rot){const g=$('#tube');g.innerHTML='';const G=el('g',{transform:`rotate(${rot} 120 120)`});g.appendChild(G);
+  G.appendChild(el('defs',{})).appendChild(el('clipPath',{id:'tc'})).appendChild(el('path',{d:'M92 20 V180 A28 28 0 0 0 148 180 V20 Z'}));
+  const clip={'clip-path':'url(#tc)'},key=so+'|'+sv;
+  const W='rgba(150,200,235,.5)',HX='rgba(225,232,238,.5)',VIO='rgba(150,55,175,.8)',BRN='rgba(214,170,90,.6)';
+  if(sv==='both'){const top=shook?(so==='I2'?VIO:HX):HX,bot=shook&&so==='I2'?'rgba(214,180,110,.5)':W;
+    G.appendChild(el('rect',Object.assign({x:88,y:150,width:64,height:62,fill:bot},clip)));G.appendChild(el('rect',Object.assign({x:88,y:95,width:64,height:55,fill:top},clip)));
+    G.appendChild(el('line',{x1:92,x2:148,y1:150,y2:150,stroke:'#f1ede3','stroke-width':1,'stroke-dasharray':'3 3'}));
+    txt(G,160,125,'헥세인',{'font-size':12});txt(G,160,182,'물',{'font-size':12});}
+  else{const fill=!shook?(sv==='w'?W:HX):key==='I2|w'?BRN:key==='I2|hx'?VIO:sv==='w'?W:HX;
+    G.appendChild(el('rect',Object.assign({x:88,y:95,width:64,height:117,fill},clip)));txt(G,160,125,sv==='w'?'물':'헥세인',{'font-size':12});}
+  const left=!shook||key==='I2|w'||key==='NaCl|hx';
+  if(left){const n=shook&&key==='I2|w'?6:9;for(let i=0;i<n;i++){const x=104+(i*13)%34,y=200-Math.floor(i/3)*6;
+    G.appendChild(so==='I2'?el('rect',{x:x,y:y,width:7,height:5,fill:'#3b2f52',stroke:'#8e7fb0','stroke-width':.8}):el('rect',{x:x,y:y,width:6,height:6,fill:'#f7f7f2',stroke:'#9aa5a9','stroke-width':.6}));}}
+  G.appendChild(el('path',{d:'M92 14 V180 A28 28 0 0 0 148 180 V14',fill:'none',stroke:'#f1ede3','stroke-width':2.5}));
+  txt(g,120,234,`${so==='I2'?'I₂':'NaCl'} + ${sv==='w'?'물':sv==='hx'?'헥세인':'물 + 헥세인'}`,{'text-anchor':'middle','font-size':12,fill:'#f1ede3'});}
+chips('#soC',v=>{so=v;predChips();});chips('#svC',v=>{sv=v;predChips();});
+$('#shake').onclick=()=>{if(spred==null||shT>=0)return;if(reduce){finishShake();return;}shT=0;$('#shake').disabled=true;};
+function finishShake(){shT=-1;shook=1;drawTube(0);const key=so+'|'+sv,R=SOL[key],ok=spred===R.a,f=$('#solFb');
+  const lab=Object.fromEntries([...PRED.single,...PRED.both]);
+  f.className='fb '+(ok?'ok':'no');f.innerHTML=(ok?'예측이 맞았습니다. ':'예측과 다릅니다. ')+R.why+' — <b>극성은 극성끼리, 무극성은 무극성끼리</b> 잘 녹습니다.';
+  addLog(`용해 · ${so==='I2'?'I₂':'NaCl'} + ${sv==='w'?'물':sv==='hx'?'헥세인':'두 층'}`,lab[spred],lab[R.a],ok);$('#shake').disabled=false;}
+predChips();
+
+const log=[];
+function addLog(a,p,r,ok){log.push([a,p,r,ok]);$('#logT').innerHTML=log.map(x=>`<tr><td style="text-align:left">${x[0]}</td><td>${x[1]}</td><td>${x[2]}</td><td style="color:${x[3]?'#6fb98f':'#f2a541'}">${x[3]?'✓':'✗'}</td></tr>`).join('');}
+
+// ── 애니메이션 루프
+let last=performance.now();
+function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+  if($('#p1').classList.contains('active')){if(!reduce){ePh-=flow/300*60*dt;stepParts(dt);}drawParts();drawE();}
+  if($('#p2').classList.contains('active')){
+    if(!reduce&&!drag){yaw+=dt*.35;drawMol();}
+    if(!reduce){const tgt=near?LQ[lq].d:0;defl+=(tgt-defl)*Math.min(1,dt*4);dash+=dt*60;drawStraw();}
+    if(shT>=0){shT+=dt;drawTube(Math.sin(shT*22)*14*(1-shT/1.2));if(shT>=1.2)finishShake();}}
+  requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

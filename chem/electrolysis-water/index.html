@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>물의 전기 분해 실험실</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap');
+:root{
+  --bg:#10201b;--panel:#1c3a31;--panel-2:#264a3e;--line:#4b7062;--ink:#f1ede3;--muted:#c6d6cf;
+  --acid-2:#f2a541;--neutral:#6fb98f;
+  --mono:'Space Mono','Courier New',monospace;--sans:'Work Sans',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;color:var(--ink);font-family:var(--sans);padding:28px 16px 60px;
+  background:radial-gradient(circle at 15% 0%,rgba(111,185,143,.08),transparent 45%),radial-gradient(circle at 90% 90%,rgba(79,214,224,.07),transparent 45%),var(--bg);}
+.wrap{max-width:920px;margin:0 auto;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--neutral);text-transform:uppercase;margin-bottom:8px;}
+h1{font-weight:700;font-size:32px;margin:0 0 6px;letter-spacing:-.01em;}
+.sub{color:var(--muted);font-size:14.5px;line-height:1.6;margin:0 0 26px;max-width:620px;}
+.tabs{display:flex;gap:8px;margin-bottom:22px;border-bottom:1px solid var(--line);flex-wrap:wrap;}
+.tab-btn{font-family:var(--sans);font-weight:600;font-size:14px;background:none;border:none;color:var(--muted);padding:10px 4px;cursor:pointer;position:relative;}
+.tab-btn.active{color:#fff;}
+.tab-btn.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:3px;background:var(--neutral);border-radius:2px;}
+.tab-btn+.tab-btn{margin-left:18px;}
+.panel{display:none;}
+.panel.active{display:block;animation:fade .3s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:720px){.grid{grid-template-columns:1fr;}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;min-width:0;}
+.card h2{font-size:12px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#e3ece8;margin:0 0 14px;font-weight:700;}
+.card+.card,.grid+.card,.card+.grid,.grid+.grid{margin-top:18px;}
+.chip-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.chip{font-family:var(--sans);font-size:13px;font-weight:500;background:var(--panel-2);border:1px solid #5d8575;color:var(--ink);padding:8px 12px;border-radius:20px;cursor:pointer;}
+.chip.active{background:var(--neutral);color:#0d1a15;border-color:var(--neutral);font-weight:700;}
+.chip:disabled{opacity:.45;cursor:default;}
+.lbl{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0 0 8px;}
+.eq{font-family:var(--mono);font-size:14px;text-align:center;padding:12px;background:var(--panel-2);border-radius:8px;margin-bottom:16px;line-height:1.7;}
+.note{font-size:12.5px;color:#d5e1dc;line-height:1.6;background:var(--panel-2);border-radius:8px;padding:10px 12px;margin-top:14px;}
+.note b{color:var(--ink);}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.go{font-family:var(--sans);font-weight:700;font-size:14.5px;border:none;border-radius:10px;padding:11px 15px;cursor:pointer;background:var(--neutral);color:#0d1a15;touch-action:manipulation;}
+.go.ghost{background:var(--panel-2);color:var(--ink);border:1px solid var(--line);}
+.go:disabled{opacity:.45;cursor:default;}
+.stage{display:flex;justify-content:center;}
+.stage svg{width:100%;max-width:360px;height:auto;}
+svg text{font-family:var(--mono);}
+.read{display:flex;justify-content:space-around;font-family:var(--mono);text-align:center;margin-top:8px;gap:8px;flex-wrap:wrap;}
+.read .big{font-size:22px;font-weight:700;line-height:1.2;}
+.read .u{font-size:11px;color:var(--muted);letter-spacing:.06em;}
+.half{font-family:var(--mono);font-size:13.5px;line-height:1.8;background:var(--panel-2);border-radius:8px;padding:10px 12px;margin-top:12px;}
+.half b{font-family:var(--sans);}
+.steps{counter-reset:s;margin:0;padding:0;list-style:none;}
+.steps li{position:relative;padding:0 0 10px 30px;line-height:1.6;font-size:14px;}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;width:21px;height:21px;border-radius:50%;background:var(--panel-2);border:1px solid var(--line);font:700 11px/19px var(--mono);text-align:center;color:var(--neutral);}
+.ans{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:14px;}
+.ans input{width:120px;font:700 16px var(--mono);padding:9px 10px;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);color:var(--ink);}
+.fb{font-size:13.5px;margin-top:8px;min-height:1.2em;line-height:1.6;}
+.fb.ok{color:var(--neutral);}.fb.no{color:var(--acid-2);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th,td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:center;}
+th{font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:400;}
+.plot{background:var(--panel-2);border-radius:10px;padding:10px;margin-top:12px;}
+.plot svg{width:100%;height:auto;display:block;}
+.q{border-top:1px solid var(--line);padding:12px 0;}
+.q:first-child{border-top:none;padding-top:0;}
+.q p{margin:0 0 8px;line-height:1.6;font-size:14px;}
+.q details{font-size:13px;color:#d5e1dc;line-height:1.6;}
+.q summary{cursor:pointer;color:var(--neutral);font-weight:600;}
+@media (prefers-reduced-motion:reduce){.panel.active{animation:none;}}
+
+/* == IPAD-FIT BEGIN (자동 생성 · 직접 수정하지 말 것) == */
+/* ══ 아이패드 대응 (자동 삽입 · 화학실험실 파이프라인) ══════════
+   대상 폭 — 세로 744(mini)/810(10.9")/834(Air·Pro11)/1024(Pro12.9")
+            가로 1080/1133/1194/1366
+   원칙 — 손가락 터치 목표 44px 이상, 본문 글자 키우기, 홈판을 화면 폭에 맞춰 확대 */
+html{-webkit-text-size-adjust:100%;}
+
+/* 태블릿 세로부터 */
+@media (min-width:744px){
+  body{padding:38px 30px 78px;font-size:15.5px;}
+  .wrap{max-width:900px;}
+  h1{font-size:38px;}
+  .sub{font-size:16px;line-height:1.7;max-width:680px;}
+
+  /* 탭 — 손가락으로 누를 크기 */
+  .tabs{flex-wrap:wrap;gap:0 4px;}
+  .tab-btn{font-size:15.5px;padding:15px 6px;}
+  .tab-btn+.tab-btn{margin-left:26px;}
+
+  /* 선택 칩 — 44px 이상 */
+  .chip{font-size:14.5px;padding:12px 17px;border-radius:24px;}
+  .card{padding:22px 24px;}
+  .card h3{font-size:12.5px;margin-bottom:16px;}
+  .note{font-size:13.5px;padding:12px 14px;}
+
+  /* 비커·수치 */
+  .beaker-svg{width:172px;height:206px;}
+  .readout .ph-big{font-size:46px;}
+  .verdict{font-size:15px;padding:6px 15px;}
+  .ph-strip-wrap{margin-top:38px;}   /* pH 마커 라벨이 위 설명문과 겹치지 않게 */
+  .ph-strip{height:38px;}
+  .ph-labels{font-size:11.5px;}
+
+  /* 중화 반응 */
+  input[type=range]{height:6px;}
+  .slider-row label{font-size:14px;}
+  .eq{font-size:15.5px;padding:14px;}
+
+  /* 한눈에 비교 */
+  .compare-row{grid-template-columns:repeat(auto-fit,minmax(98px,1fr));gap:16px;}
+  .compare-cell .mini-beaker{width:54px;height:66px;}
+  .compare-cell .c-name{font-size:12.5px;min-height:32px;}
+
+  /* 홈판 — 화면 폭을 다 쓰고 칸을 키운다(손가락으로 칠할 크기) */
+  .well-grid{max-width:100%;gap:5px;margin-top:20px;}
+  .palette-row{gap:10px;}
+  .swatch-btn{padding:10px 14px;}
+  .swatch-dot{width:24px;height:24px;}
+  .swatch-label{font-size:11px;}
+  .toggle-btn{font-size:14.5px;padding:14px 18px;}
+  .tmpl-btn{font-size:13.5px;padding:11px 17px;}
+}
+
+/* 태블릿 가로 · 큰 화면 */
+@media (min-width:1024px){
+  .wrap{max-width:1000px;}
+  .grid{gap:24px;}
+  .well-grid{max-width:840px;}
+  .compare-row{gap:18px;}
+}
+
+/* 아이패드 세로에서 2단이 좁아지는 구간 — 카드 안쪽 여백만 줄여 숨통 */
+@media (min-width:744px) and (max-width:860px){
+  .grid{gap:16px;}
+  .card{padding:20px;}
+}
+
+/* 안전영역(홈 인디케이터) */
+@supports (padding:env(safe-area-inset-bottom)){
+  body{padding-bottom:calc(78px + env(safe-area-inset-bottom));}
+}
+
+/* ══ 선명도 (11-27 "색이 명확하게") ══════════════════════════
+   어두운 테마 실험실(탭 있는 것): 보조 글자·선·칸 배경 대비를 올린다 */
+:root:has(.tab-btn){--muted:#c6d6cf;--line:#4b7062;--panel:#1c3a31;--panel-2:#264a3e;}
+:root:has(.tab-btn) .tab-btn{color:#c6d6cf;}
+:root:has(.tab-btn) .tab-btn.active{color:#fff;}
+:root:has(.tab-btn) .tab-btn.active::after{height:3px;}
+:root:has(.tab-btn) .card h2,:root:has(.tab-btn) .card h3{color:#e3ece8;}
+:root:has(.tab-btn) .chip{border-color:#5d8575;}
+:root:has(.tab-btn) .note{color:#d5e1dc;}
+/* 헤스 실험실(자체 라이트/다크): 다크일 때만 보조 글자·선 대비 */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--mute:#c0d2cc;--line:#45605a;}}
+:root[data-theme="dark"]{--mute:#c0d2cc;--line:#45605a;}
+/* 돌아가기 링크(인라인 스타일이라 !important) */
+a[href="../"]{color:#dfe9e4!important;border-color:#5d8575!important;}
+
+/* ══ 가독성 (11-27) — 탭 있는 실험실: 작은 글씨 키우고 대문자 고정폭 제목을 한글 굵은 제목으로 ══ */
+:root:has(.tab-btn) body{line-height:1.6;}
+:root:has(.tab-btn) .sub{font-size:16px;line-height:1.75;color:#d5e1dc;}
+:root:has(.tab-btn) .tab-btn{font-size:15.5px;}
+:root:has(.tab-btn) .card h2,:root:has(.tab-btn) .card h3{font-family:var(--sans);font-size:15px;letter-spacing:0;text-transform:none;font-weight:700;color:#f1ede3;}
+:root:has(.tab-btn) .note{font-size:14.5px;line-height:1.7;}
+:root:has(.tab-btn) .lbl{font-size:13.5px;}
+:root:has(.tab-btn) .u,:root:has(.tab-btn) .read .u,:root:has(.tab-btn) .readout .u{font-size:12.5px;}
+:root:has(.tab-btn) .eq{font-size:15.5px;line-height:1.7;}
+:root:has(.tab-btn) .fb,:root:has(.tab-btn) .shift{font-size:15px;}
+:root:has(.tab-btn) .steps li,:root:has(.tab-btn) .q p{font-size:15.5px;}
+:root:has(.tab-btn) .q details,:root:has(.tab-btn) .log{font-size:14.5px;}
+:root:has(.tab-btn) th{font-size:12.5px;}
+:root:has(.tab-btn) td{font-size:14.5px;}
+:root:has(.tab-btn) .legend,:root:has(.tab-btn) .bar-l{font-size:13.5px;}
+:root:has(.tab-btn) .chip{font-size:14.5px;}
+:root:has(.tab-btn) .go{font-size:15.5px;}
+:root:has(.tab-btn) .empty{font-size:14px;}
+
+/* 두 칸 격자 안 두 번째 카드가 18px 내려가던 것(.card+.card) 바로잡음 (11-27) */
+.grid>.card{margin-top:0;}
+/* == IPAD-FIT END == */
+</style>
+</head>
+<body>
+  <a href="../" style="display:inline-flex;align-items:center;gap:7px;margin-bottom:18px;
+  font-family:'Space Mono','Courier New',monospace;font-size:12px;letter-spacing:.06em;
+  color:#9cb0a8;text-decoration:none;border:1px solid #2c473d;border-radius:20px;
+  padding:6px 13px;transition:.15s"
+  onmouseover="this.style.color='#f1ede3';this.style.borderColor='#6fb98f'"
+  onmouseout="this.style.color='#9cb0a8';this.style.borderColor='#2c473d'">← 실험실 목록</a>
+<div class="wrap">
+  <div class="eyebrow">Lab 12 · 물의 전기 분해</div>
+  <h1>물의 전기 분해 실험실</h1>
+  <p class="sub">호프만 장치에 전류를 흘려 물을 수소와 산소로 나눕니다. 두 극에서 모인 기체의 부피를 재어 비를 구하고, 불꽃으로 어떤 기체인지 확인해 보세요.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-p="p1">① 부피비</button>
+    <button class="tab-btn" data-p="p2">② 기체 확인</button>
+  </div>
+
+  <!-- ① 부피비 -->
+  <section class="panel active" id="p1">
+    <div class="eq">2H₂O(l) → 2H₂(g) + O₂(g)</div>
+    <div class="grid">
+      <div class="card">
+        <h2>실험 순서</h2>
+        <p class="lbl">물에 녹일 전해질</p>
+        <div class="chip-list" id="eSel"><button class="chip active" data-v="none">없음 (순수한 물)</button><button class="chip" data-v="na2so4">황산 나트륨 Na₂SO₄</button><button class="chip" data-v="naoh">수산화 나트륨 NaOH</button></div>
+        <ol class="steps">
+          <li>호프만 장치에 용액을 가득 채우고 위쪽 콕을 잠급니다.</li>
+          <li>전원을 켜고 두 전극에서 기체가 모이는 모습을 지켜봅니다.</li>
+          <li>적당히 모이면 전원을 끄고 두 관의 눈금을 읽습니다.</li>
+          <li>(−)극 기체 부피 ÷ (+)극 기체 부피를 구하세요. (소수 첫째 자리까지)
+            <div class="ans"><input id="rA" inputmode="decimal" placeholder="비"> <button class="go ghost" id="rC">확인</button></div>
+            <div class="fb" id="rFb"></div></li>
+        </ol>
+        <div class="btn-row">
+          <button class="go" id="ePow">전원 켜기</button>
+          <button class="go ghost" id="eRst">처음부터</button>
+        </div>
+        <div class="fb" id="eMsg"></div>
+      </div>
+      <div class="card">
+        <h2>호프만 전기 분해 장치</h2>
+        <div class="stage"><svg viewBox="0 0 340 330" id="hof">
+          <defs>
+            <clipPath id="tL"><rect x="62" y="40" width="26" height="232"/></clipPath>
+            <clipPath id="tR"><rect x="252" y="40" width="26" height="232"/></clipPath>
+            <clipPath id="tC"><path d="M161 272 V104 Q142 96 148 76 Q157 60 170 60 Q183 60 192 76 Q198 96 179 104 V272 Z"/></clipPath>
+          </defs>
+          <!-- 액체 -->
+          <rect id="lqL" x="62" y="44" width="26" height="228" />
+          <rect id="lqR" x="252" y="44" width="26" height="228" />
+          <rect id="lqC" x="140" y="100" width="60" height="172" clip-path="url(#tC)"/>
+          <rect id="lqBot" x="62" y="250" width="216" height="22" />
+          <g id="bbL" clip-path="url(#tL)"></g><g id="bbR" clip-path="url(#tR)"></g>
+          <!-- 유리 -->
+          <path d="M60 274 V38 H90 V250 H159 V104 M181 104 V250 H250 V38 H280 V274 H60" fill="none" stroke="#f1ede3" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M159 104 Q140 96 146 76 Q156 58 170 58 Q184 58 194 76 Q200 96 181 104" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
+          <rect x="68" y="24" width="14" height="14" fill="#c6d6cf"/><rect x="258" y="24" width="14" height="14" fill="#c6d6cf"/>
+          <g id="ticks"></g>
+          <!-- 전극 -->
+          <rect x="70" y="230" width="10" height="20" fill="#d8dde0"/><rect x="260" y="230" width="10" height="20" fill="#d8dde0"/>
+          <path d="M75 250 V292 H140" fill="none" stroke="#7fb0e0" stroke-width="2.5"/>
+          <path d="M265 250 V292 H200" fill="none" stroke="#ff8f6b" stroke-width="2.5"/>
+          <rect x="140" y="280" width="60" height="24" rx="4" fill="#5f7d73" stroke="#c6d6cf"/>
+          <text x="170" y="296" text-anchor="middle" fill="#0d1a15" font-size="11" font-weight="700">직류 전원</text>
+          <text x="75" y="318" text-anchor="middle" fill="#7fb0e0" font-size="13" font-weight="700">(−)극</text>
+          <text x="265" y="318" text-anchor="middle" fill="#ff8f6b" font-size="13" font-weight="700">(+)극</text>
+        </svg></div>
+        <div class="read">
+          <div><div class="big" id="rT">0.0</div><div class="u">시간 (분)</div></div>
+          <div><div class="big" id="rI">0</div><div class="u">전류 (mA)</div></div>
+          <div><div class="big" id="rH" style="color:#7fb0e0">0.0</div><div class="u">(−)극 기체 (mL)</div></div>
+          <div><div class="big" id="rO" style="color:#ff8f6b">0.0</div><div class="u">(+)극 기체 (mL)</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h2>모인 기체 부피 – 시간</h2>
+        <div class="plot"><svg viewBox="0 0 400 260" id="vPlot"></svg></div>
+      </div>
+      <div class="card">
+        <h2>전극에서 일어나는 반응</h2>
+        <div class="half" id="eHalf" style="margin-top:0"></div>
+        <div class="note" id="eNote"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>물의 성분과 연결하기</h2>
+      <p style="margin:0 0 10px;font-size:14px;line-height:1.6">같은 온도·압력에서 기체의 부피는 분자 수에 비례합니다. 이 실험 결과로 알 수 있는 물 분자 속 <b>수소 원자 : 산소 원자</b> 수의 비를 고르세요.</p>
+      <div class="chip-list" id="hoQ"><button class="chip" data-v="11">1 : 1</button><button class="chip" data-v="12">1 : 2</button><button class="chip" data-v="21">2 : 1</button><button class="chip" data-v="41">4 : 1</button></div>
+      <div class="fb" id="hoFb"></div>
+    </div>
+  </section>
+
+  <!-- ② 기체 확인 -->
+  <section class="panel" id="p2">
+    <div class="grid">
+      <div class="card">
+        <h2>두 시험관에 모은 기체</h2>
+        <p style="margin:0 0 10px;font-size:14px;line-height:1.6">호프만 장치의 두 관에서 기체를 시험관 <b>A</b>, <b>B</b>에 따로 모았는데, 어느 쪽이 어느 극인지 표시를 잊었습니다. 불꽃으로 확인해 보세요.</p>
+        <table><thead><tr><th>시험관</th><th>성냥불</th><th>꺼져 가는 불씨</th></tr></thead>
+          <tbody>
+            <tr><td><b>A</b></td><td><button class="chip" data-t="A" data-k="match">대 보기</button></td><td><button class="chip" data-t="A" data-k="ember">넣어 보기</button></td></tr>
+            <tr><td><b>B</b></td><td><button class="chip" data-t="B" data-k="match">대 보기</button></td><td><button class="chip" data-t="B" data-k="ember">넣어 보기</button></td></tr>
+          </tbody></table>
+        <div class="fb" id="gMsg"></div>
+      </div>
+      <div class="card">
+        <h2>시험관</h2>
+        <div class="stage"><svg viewBox="0 0 340 250" id="gSvg">
+          <g id="tubeA"><path d="M70 176 V40 A20 20 0 0 1 110 40 V176" fill="rgba(220,235,240,.12)" stroke="#f1ede3" stroke-width="2.5"/><text x="90" y="110" text-anchor="middle" fill="#f1ede3" font-size="20" font-weight="700">A</text></g>
+          <g id="tubeB"><path d="M230 176 V40 A20 20 0 0 1 270 40 V176" fill="rgba(220,235,240,.12)" stroke="#f1ede3" stroke-width="2.5"/><text x="250" y="110" text-anchor="middle" fill="#f1ede3" font-size="20" font-weight="700">B</text></g>
+          <g id="tool"></g><g id="fx"></g>
+        </svg></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>판단하기</h2>
+      <div class="grid" style="gap:12px">
+        <div><p class="lbl">시험관 A의 기체</p><div class="chip-list" id="qA"><button class="chip" data-v="H2">수소 H₂ · (−)극</button><button class="chip" data-v="O2">산소 O₂ · (+)극</button></div></div>
+        <div><p class="lbl">시험관 B의 기체</p><div class="chip-list" id="qB"><button class="chip" data-v="H2">수소 H₂ · (−)극</button><button class="chip" data-v="O2">산소 O₂ · (+)극</button></div></div>
+      </div>
+      <div class="btn-row"><button class="go" id="gChk">확인</button></div>
+      <div class="fb" id="gFb"></div>
+      <div class="half" id="gHalf" style="display:none">
+        <b>(−)극 · 환원</b> 2H₂O + 2e⁻ → H₂ + 2OH⁻ &nbsp;→ 성냥불에 '퍽' (2H₂ + O₂ → 2H₂O)<br>
+        <b>(+)극 · 산화</b> 2H₂O → O₂ + 4H⁺ + 4e⁻ &nbsp;→ 불씨가 다시 타오름 (O₂는 타는 것을 도움)<br>
+        <b>전체</b> 2H₂O → 2H₂ + O₂ &nbsp;(전자 4개가 흐를 때 H₂ 2분자, O₂ 1분자 → 부피비 2 : 1)
+      </div>
+    </div>
+    <div class="card">
+      <h2>생각해 보기</h2>
+      <div class="q"><p>1. 수소는 불에 타는데 왜 성냥불을 대면 '퍽' 소리가 날까요?</p><details><summary>확인</summary>시험관 입구에서 수소가 공기 중 산소와 섞여 한꺼번에 빠르게 타면서(2H₂ + O₂ → 2H₂O) 기체가 순간적으로 팽창하기 때문입니다. 타고 나면 물이 생겨 시험관 안쪽이 뿌옇게 흐려지기도 합니다.</details></div>
+      <div class="q"><p>2. 산소는 스스로 탈까요?</p><details><summary>확인</summary>아닙니다. 산소는 다른 물질이 타는 것을 돕는(조연성) 기체입니다. 그래서 꺼져 가던 불씨가 산소 속에서 다시 밝게 타오릅니다. 수소 속에서는 산소가 없어 불씨가 꺼집니다.</details></div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const txt=(g,x,y,s,a={})=>{const t=el('text',Object.assign({x,y,fill:'#c6d6cf','font-size':11},a));t.textContent=s;g.appendChild(t);return t;};
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+document.querySelectorAll('.tab-btn').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.toggle('active',x===b));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.p));});
+const num=v=>parseFloat(String(v).replace(',','.'));
+function check(inp,fb,ans,tol,okMsg,noMsg){const v=num($(inp).value),f=$(fb);
+  if(isNaN(v)){f.className='fb no';f.textContent='숫자를 넣어 주세요.';return false;}
+  const ok=Math.abs(v-ans)<=Math.abs(ans)*tol;f.className='fb '+(ok?'ok':'no');f.innerHTML=ok?okMsg:noMsg;return ok;}
+function chips(id,cb){const box=$(id);box.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{
+  box.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x===c));cb&&cb(c.dataset.v);});}
+const active=id=>$(id).classList.contains('active');
+
+// ── ① 호프만 장치. H₂ 부피(mL) = I·t/(2F) × 24.5 L/mol (25 °C, 1 atm). 화면 1초 = 실제 1분
+const F=96485,VM=24500,TMAX=15,VMAX=30,Y0=44,PX=6; // 눈금 0 mL = y 44, 1 mL = 6 px
+const EL={none:{I:0.0008,c:'rgba(150,200,235,.5)'},na2so4:{I:0.20*(0.92+Math.random()*0.16),c:'rgba(140,195,235,.55)'},naoh:{I:0.24*(0.92+Math.random()*0.16),c:'rgba(140,195,235,.55)'}};
+const O2F=0.985; // 산소가 물에 조금 더 녹아 실제로는 2 : 1보다 약간 작게 모임
+const HALF={none:'순수한 물에는 이온이 거의 없어(H⁺, OH⁻ 각 약 10⁻⁷ M) 전류가 거의 흐르지 않습니다. 전해질을 넣어 보세요.',
+  na2so4:'<b>(−)극 · 환원</b> 2H₂O + 2e⁻ → H₂ + 2OH⁻<br><b>(+)극 · 산화</b> 2H₂O → O₂ + 4H⁺ + 4e⁻<br><b>전체</b> 2H₂O → 2H₂ + O₂',
+  naoh:'<b>(−)극 · 환원</b> 4H₂O + 4e⁻ → 2H₂ + 4OH⁻<br><b>(+)극 · 산화</b> 4OH⁻ → O₂ + 2H₂O + 4e⁻<br><b>전체</b> 2H₂O → 2H₂ + O₂'};
+const NOTE={none:'전해질은 물에 녹아 이온이 되어 <b>전류가 흐르게</b> 해 줍니다. 순수한 물은 전기가 거의 통하지 않습니다.',
+  na2so4:'Na⁺과 SO₄²⁻은 전류만 흐르게 하고 스스로는 반응하지 않습니다. 물이 (−)극에서 환원, (+)극에서 산화됩니다. 같은 전자 4개가 흐를 때 H₂는 2분자, O₂는 1분자 생깁니다.',
+  naoh:'NaOH도 전류만 흐르게 하고 물이 분해됩니다. (+)극에서는 OH⁻이 산화되어 O₂가 생기고, 그만큼 (−)극에서 OH⁻이 다시 생깁니다. 같은 전자 4개로 H₂ 2분자, O₂ 1분자가 생깁니다.'};
+let ew={el:'none',t:0,on:false,h:0,pts:[[0,0,0]],bL:[],bR:[]},eLast=0;
+const g0=$('#ticks');
+[[90,'L'],[280,'R']].forEach(([x])=>{for(let v=0;v<=VMAX;v+=5){const y=Y0+v*PX;g0.appendChild(el('line',{x1:x,x2:x+(v%10?6:10),y1:y,y2:y,stroke:'#c6d6cf'}));if(v%10===0)txt(g0,x+13,y+4,v,{'font-size':10});}});
+function eSet(v){ew={el:v,t:0,on:false,h:0,pts:[[0,0,0]],bL:[],bR:[]};$('#ePow').disabled=false;$('#ePow').textContent='전원 켜기';
+  $('#eMsg').className='fb';$('#eMsg').textContent='';$('#rFb').className='fb';$('#rFb').textContent='';$('#rA').value='';$('#eHalf').innerHTML=HALF[v];$('#eNote').innerHTML=NOTE[v];
+  ['#lqL','#lqR','#lqC','#lqBot'].forEach(s=>$(s).setAttribute('fill',EL[v].c));eDraw();}
+const IA=()=>ew.on?EL[ew.el].I:0;
+function eDraw(){const h=ew.h,o=h/2*O2F;
+  $('#lqL').setAttribute('y',Y0+h*PX);$('#lqL').setAttribute('height',272-Y0-h*PX);
+  $('#lqR').setAttribute('y',Y0+o*PX);$('#lqR').setAttribute('height',272-Y0-o*PX);
+  const cy=100-(h+o)*0.75;$('#lqC').setAttribute('y',cy);$('#lqC').setAttribute('height',272-cy);
+  $('#rT').textContent=ew.t.toFixed(1);$('#rI').textContent=Math.round(IA()*1000*10)/10;$('#rH').textContent=h.toFixed(1);$('#rO').textContent=o.toFixed(1);
+  [['#bbL',ew.bL],['#bbR',ew.bR]].forEach(([s,b])=>{const g=$(s);g.innerHTML='';b.forEach(p=>g.appendChild(el('circle',{cx:p.x,cy:p.y,r:p.r,fill:'none',stroke:'#f1ede3','stroke-width':1})));});
+  vPlot();}
+function vPlot(){const g=$('#vPlot');g.innerHTML='';const L=46,R=386,T=14,B=214,X=t=>L+(R-L)*t/TMAX,Y=v=>B-(B-T)*v/VMAX;
+  for(let v=0;v<=VMAX;v+=10){g.appendChild(el('line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:'#3f6355'}));txt(g,L-6,Y(v)+4,v,{'text-anchor':'end'});}
+  for(let t=0;t<=TMAX;t+=5)txt(g,X(t),B+18,t,{'text-anchor':'middle'});txt(g,R,B+36,'시간 (분)',{'text-anchor':'end'});txt(g,L,T-2,'부피 (mL)',{'font-size':10});
+  [[1,'#7fb0e0','(−)극'],[2,'#ff8f6b','(+)극']].forEach(([k,c,n],i)=>{const p=ew.pts;
+    if(p.length>1)g.appendChild(el('path',{d:p.map((q,j)=>(j?'L':'M')+X(q[0]).toFixed(1)+' '+Y(q[k]).toFixed(1)).join(' '),fill:'none',stroke:c,'stroke-width':2.5}));
+    g.appendChild(el('rect',{x:L+12+i*90,y:T+6,width:14,height:4,fill:c}));txt(g,L+32+i*90,T+12,n,{fill:c});});}
+function eTick(now){const dt=Math.min(.1,(now-eLast)/1000||0);eLast=now;
+  if(ew.on){const dm=dt; // 분
+    ew.t+=dm;ew.h+=IA()*60*dm/(2*F)*VM;ew.pts.push([ew.t,ew.h,ew.h/2*O2F]);
+    const rate=IA()*40;if(!RM){if(Math.random()<rate*dt*2)ew.bL.push({x:68+Math.random()*14,y:230,r:1.5+Math.random()*1.5});if(Math.random()<rate*dt)ew.bR.push({x:258+Math.random()*14,y:230,r:1.5+Math.random()*1.5});}
+    if(ew.t>=TMAX||ew.h>=VMAX-0.5){ew.on=false;$('#ePow').textContent='전원 켜기';$('#ePow').disabled=true;$('#eMsg').className='fb';$('#eMsg').textContent='관이 거의 찼습니다. 전원을 껐습니다. 눈금을 읽으세요.';}}
+  ew.bL.forEach(b=>b.y-=dt*90);ew.bR.forEach(b=>b.y-=dt*90);
+  ew.bL=ew.bL.filter(b=>b.y>Y0+ew.h*PX+3);ew.bR=ew.bR.filter(b=>b.y>Y0+ew.h/2*O2F*PX+3);
+  if(active('#p1'))eDraw();requestAnimationFrame(eTick);}
+$('#ePow').onclick=()=>{ew.on=!ew.on;$('#ePow').textContent=ew.on?'전원 끄기':'전원 켜기';
+  const m=$('#eMsg');m.className='fb';m.textContent=ew.on?(ew.el==='none'?'전류계 바늘이 거의 움직이지 않습니다…':'두 전극에서 기포가 올라옵니다. 어느 쪽이 더 빨리 모일까요?'):'전원을 껐습니다. 눈금을 읽으세요.';};
+$('#eRst').onclick=()=>eSet(ew.el);
+chips('#eSel',eSet);
+$('#rC').onclick=()=>{const h=+ew.h.toFixed(1),o=+(ew.h/2*O2F).toFixed(1),f=$('#rFb');
+  if(ew.on){f.className='fb no';f.textContent='전원을 끄고 눈금이 멈춘 뒤 읽으세요.';return;}
+  if(o<3){f.className='fb no';f.textContent=ew.el==='none'?'기체가 거의 모이지 않았습니다. 전해질을 넣고 다시 해 보세요.':'(+)극 기체가 3 mL 이상 모일 때까지 전류를 흘리세요.';return;}
+  check('#rA','#rFb',h/o,0.04,`맞습니다! ${h.toFixed(1)} ÷ ${o.toFixed(1)} ≈ <b>${(h/o).toFixed(1)}</b>. (−)극 기체(수소)와 (+)극 기체(산소)의 부피비는 약 <b>2 : 1</b>입니다. 산소가 물에 조금 더 잘 녹아 실제로는 2보다 살짝 크게 나오기도 합니다.`,
+    `다시 해 보세요. ① 왼쪽 (−)극 관 눈금 = ${h.toFixed(1)} mL ② 오른쪽 (+)극 관 눈금 = ${o.toFixed(1)} mL ③ ① ÷ ② 를 계산합니다.`);};
+eSet('none');requestAnimationFrame(eTick);
+chips('#hoQ',v=>{const f=$('#hoFb'),ok=v==='21';f.className='fb '+(ok?'ok':'no');
+  f.innerHTML=ok?'맞습니다. 부피비 H₂ : O₂ = 2 : 1 → 분자 수비도 2 : 1 → 원자로는 H 4개 : O 2개 = <b>2 : 1</b>. 그래서 물의 화학식은 <b>H₂O</b>입니다.':
+    '부피비 2 : 1은 <b>분자</b> 수의 비입니다. H₂ 2분자에 든 H 원자 수와 O₂ 1분자에 든 O 원자 수를 세어 보세요.';});
+
+// ── ② 기체 확인 (A, B 중 어느 쪽이 수소인지 매번 무작위)
+const GAS=Math.random()<.5?{A:'H2',B:'O2'}:{A:'O2',B:'H2'};
+const RES={H2:{match:'퍽! 소리를 내며 탐',ember:'불씨가 꺼짐'},O2:{match:'불꽃이 더 밝아짐',ember:'불씨가 다시 타오름'}};
+let gBusy=false;
+const cx={A:90,B:250};
+function flame(x,y,s,c){return el('path',{d:`M${x-5*s} ${y} Q${x-6*s} ${y-12*s} ${x} ${y-26*s} Q${x+6*s} ${y-12*s} ${x+5*s} ${y} Z`,fill:c});}
+function gTest(t,k){if(gBusy)return;gBusy=true;const x=cx[t],gas=GAS[t],tool=$('#tool'),fx=$('#fx');fx.innerHTML='';const t0=performance.now();
+  const frame=now=>{const p=RM?1:Math.min(1,(now-t0)/1600),rise=Math.min(1,p/.4),y=250-rise*48; // 끝이 시험관 입구(176) 근처까지
+    tool.innerHTML='';tool.appendChild(el('line',{x1:x+28,y1:y+40,x2:x,y2:y,stroke:'#c9a46a','stroke-width':4,'stroke-linecap':'round'}));
+    const after=p>.45,q=Math.min(1,(p-.45)/.55);fx.innerHTML='';
+    if(k==='match'){if(!after)tool.appendChild(flame(x,y,1,'rgba(255,170,60,.95)'));
+      else if(gas==='H2'){if(q<.5){fx.appendChild(el('circle',{cx:x,cy:178,r:8+q*50,fill:'rgba(255,230,140,'+(0.8-q*1.4).toFixed(2)+')'}));}
+        const tt=el('text',{x:x,y:150,'text-anchor':'middle','font-size':22,'font-weight':700,fill:'#ffe066'});tt.textContent='퍽!';fx.appendChild(tt);
+        if(q>.5)for(let i=0;i<6;i++)fx.appendChild(el('circle',{cx:x-12+i*5,cy:60+(i%3)*14,r:2,fill:'rgba(200,225,240,.7)'}));}
+      else tool.appendChild(flame(x,y,1+q*.7,'rgba(255,200,80,.98)'));}
+    else{if(!after||gas==='O2'){tool.appendChild(el('circle',{cx:x,cy:y,r:4,fill:'#ff5a2a'}));if(after)tool.appendChild(flame(x,y,q*1.3,'rgba(255,190,70,.95)'));}
+      else{tool.appendChild(el('circle',{cx:x,cy:y,r:4,fill:'#3a2a22'}));if(q<.7)tool.appendChild(el('path',{d:`M${x} ${y-6} q-6 -10 0 -20 q6 -10 0 -20`,fill:'none',stroke:'rgba(200,210,210,.6)','stroke-width':2}));}}
+    if(p<1)requestAnimationFrame(frame);else{gBusy=false;const b=document.querySelector(`#p2 button[data-t="${t}"][data-k="${k}"]`);b.textContent=RES[gas][k];b.classList.add('active');
+      $('#gMsg').className='fb';$('#gMsg').textContent=`시험관 ${t} · ${k==='match'?'성냥불':'꺼져 가는 불씨'} → ${RES[gas][k]}`;}};
+  requestAnimationFrame(frame);}
+document.querySelectorAll('#p2 button[data-t]').forEach(b=>b.onclick=()=>gTest(b.dataset.t,b.dataset.k));
+let ga={};chips('#qA',v=>ga.A=v);chips('#qB',v=>ga.B=v);
+$('#gChk').onclick=()=>{const f=$('#gFb');if(!ga.A||!ga.B){f.className='fb no';f.textContent='A와 B를 모두 고르세요.';return;}
+  const ok=ga.A===GAS.A&&ga.B===GAS.B;f.className='fb '+(ok?'ok':'no');
+  if(ok){f.innerHTML=`맞습니다! 시험관 ${GAS.A==='H2'?'A':'B'}는 <b>수소</b>((−)극), ${GAS.A==='H2'?'B':'A'}는 <b>산소</b>((+)극)입니다.`;$('#gHalf').style.display='block';}
+  else f.innerHTML=ga.A===ga.B?'두 시험관의 기체는 서로 다릅니다. 하나는 수소, 하나는 산소입니다.':'다시 생각해 보세요. ① 성냥불에 <b>퍽</b> 소리 → 스스로 타는 기체(수소) ② 불씨가 <b>다시 타오름</b> → 타는 것을 돕는 기체(산소) ③ 아직 해 보지 않은 시험이 있다면 먼저 해 보세요.';};
+})();
+</script>
+</body>
+</html>

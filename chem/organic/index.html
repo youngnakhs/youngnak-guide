@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>유기 합성 실험실</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap');
+:root{
+  --bg:#10201b;--panel:#1c3a31;--panel-2:#264a3e;--line:#4b7062;--ink:#f1ede3;--muted:#c6d6cf;
+  --acid-2:#f2a541;--neutral:#6fb98f;
+  --mono:'Space Mono','Courier New',monospace;--sans:'Work Sans',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;color:var(--ink);font-family:var(--sans);padding:28px 16px 60px;
+  background:radial-gradient(circle at 15% 0%,rgba(111,185,143,.08),transparent 45%),radial-gradient(circle at 90% 90%,rgba(167,139,250,.09),transparent 45%),var(--bg);}
+.wrap{max-width:920px;margin:0 auto;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--neutral);text-transform:uppercase;margin-bottom:8px;}
+h1{font-weight:700;font-size:32px;margin:0 0 6px;letter-spacing:-.01em;}
+.sub{color:var(--muted);font-size:14.5px;line-height:1.6;margin:0 0 26px;max-width:620px;}
+.tabs{display:flex;gap:8px;margin-bottom:22px;border-bottom:1px solid var(--line);flex-wrap:wrap;}
+.tab-btn{font-family:var(--sans);font-weight:600;font-size:14px;background:none;border:none;color:var(--muted);padding:10px 4px;cursor:pointer;position:relative;}
+.tab-btn.active{color:#fff;}
+.tab-btn.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:3px;background:var(--neutral);border-radius:2px;}
+.tab-btn+.tab-btn{margin-left:18px;}
+.panel{display:none;}
+.panel.active{display:block;animation:fade .3s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+.grid>*{min-width:0;}
+@media(max-width:720px){.grid{grid-template-columns:1fr;}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;}
+.card h2{font-size:12px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#e3ece8;margin:0 0 14px;font-weight:700;}
+.card+.card,.grid+.card,.card+.grid,.grid+.grid{margin-top:18px;}
+.chip-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.chip{font-family:var(--sans);font-size:13px;font-weight:500;background:var(--panel-2);border:1px solid #5d8575;color:var(--ink);padding:8px 12px;border-radius:20px;cursor:pointer;text-align:left;}
+.chip.active{background:var(--neutral);color:#0d1a15;border-color:var(--neutral);font-weight:700;}
+.chip:disabled{opacity:.45;cursor:default;}
+.lbl{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0 0 8px;}
+.eq{font-family:var(--mono);font-size:14px;text-align:center;padding:12px;background:var(--panel-2);border-radius:8px;margin-bottom:16px;line-height:1.7;}
+.note{font-size:12.5px;color:#d5e1dc;line-height:1.6;background:var(--panel-2);border-radius:8px;padding:10px 12px;margin-top:14px;}
+.note b{color:var(--ink);}
+.note.warn{border:1px solid rgba(242,165,65,.55);background:rgba(242,165,65,.10);}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.go{font-family:var(--sans);font-weight:700;font-size:14.5px;border:none;border-radius:10px;padding:11px 15px;cursor:pointer;background:var(--neutral);color:#0d1a15;touch-action:manipulation;}
+.go.ghost{background:var(--panel-2);color:var(--ink);border:1px solid var(--line);}
+.go:disabled{opacity:.45;cursor:default;}
+.stage{display:flex;justify-content:center;}
+.stage svg{width:100%;max-width:340px;height:auto;}
+.stage.wide svg{max-width:640px;}
+svg text{font-family:var(--mono);}
+.read{display:flex;justify-content:space-around;font-family:var(--mono);text-align:center;margin-top:8px;gap:8px;}
+.read .big{font-size:22px;font-weight:700;line-height:1.2;}
+.read .u{font-size:11px;color:var(--muted);letter-spacing:.06em;}
+.steps{counter-reset:s;margin:0;padding:0;list-style:none;}
+.steps li{position:relative;padding:0 0 10px 30px;line-height:1.6;font-size:14px;}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;width:21px;height:21px;border-radius:50%;background:var(--panel-2);border:1px solid var(--line);font:700 11px/19px var(--mono);text-align:center;color:var(--neutral);}
+.ans{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:14px;}
+.ans input{width:110px;font:700 16px var(--mono);padding:9px 10px;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);color:var(--ink);}
+.fb{font-size:13.5px;margin-top:8px;min-height:1.2em;line-height:1.6;}
+.fb.ok{color:var(--neutral);}.fb.no{color:var(--acid-2);}
+.tbl{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th,td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:center;}
+th{font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:400;}
+td{font-family:var(--mono);}
+.plot{background:var(--panel-2);border-radius:10px;padding:10px;margin-top:12px;}
+.plot svg{width:100%;height:auto;display:block;}
+.q{border-top:1px solid var(--line);padding:12px 0 4px;}
+.q:first-of-type{border-top:none;padding-top:0;}
+.q p{margin:0 0 8px;line-height:1.6;font-size:14px;}
+.leg{display:flex;flex-wrap:wrap;gap:4px 14px;font:12.5px var(--mono);margin-top:6px;}
+.empty{color:var(--muted);font-size:13px;font-family:var(--mono);padding:6px 0;}
+@media (prefers-reduced-motion:reduce){.panel.active{animation:none;}}
+
+/* == IPAD-FIT BEGIN (자동 생성 · 직접 수정하지 말 것) == */
+/* ══ 아이패드 대응 (자동 삽입 · 화학실험실 파이프라인) ══════════
+   대상 폭 — 세로 744(mini)/810(10.9")/834(Air·Pro11)/1024(Pro12.9")
+            가로 1080/1133/1194/1366
+   원칙 — 손가락 터치 목표 44px 이상, 본문 글자 키우기, 홈판을 화면 폭에 맞춰 확대 */
+html{-webkit-text-size-adjust:100%;}
+
+/* 태블릿 세로부터 */
+@media (min-width:744px){
+  body{padding:38px 30px 78px;font-size:15.5px;}
+  .wrap{max-width:900px;}
+  h1{font-size:38px;}
+  .sub{font-size:16px;line-height:1.7;max-width:680px;}
+
+  /* 탭 — 손가락으로 누를 크기 */
+  .tabs{flex-wrap:wrap;gap:0 4px;}
+  .tab-btn{font-size:15.5px;padding:15px 6px;}
+  .tab-btn+.tab-btn{margin-left:26px;}
+
+  /* 선택 칩 — 44px 이상 */
+  .chip{font-size:14.5px;padding:12px 17px;border-radius:24px;}
+  .card{padding:22px 24px;}
+  .card h3{font-size:12.5px;margin-bottom:16px;}
+  .note{font-size:13.5px;padding:12px 14px;}
+
+  /* 비커·수치 */
+  .beaker-svg{width:172px;height:206px;}
+  .readout .ph-big{font-size:46px;}
+  .verdict{font-size:15px;padding:6px 15px;}
+  .ph-strip-wrap{margin-top:38px;}   /* pH 마커 라벨이 위 설명문과 겹치지 않게 */
+  .ph-strip{height:38px;}
+  .ph-labels{font-size:11.5px;}
+
+  /* 중화 반응 */
+  input[type=range]{height:6px;}
+  .slider-row label{font-size:14px;}
+  .eq{font-size:15.5px;padding:14px;}
+
+  /* 한눈에 비교 */
+  .compare-row{grid-template-columns:repeat(auto-fit,minmax(98px,1fr));gap:16px;}
+  .compare-cell .mini-beaker{width:54px;height:66px;}
+  .compare-cell .c-name{font-size:12.5px;min-height:32px;}
+
+  /* 홈판 — 화면 폭을 다 쓰고 칸을 키운다(손가락으로 칠할 크기) */
+  .well-grid{max-width:100%;gap:5px;margin-top:20px;}
+  .palette-row{gap:10px;}
+  .swatch-btn{padding:10px 14px;}
+  .swatch-dot{width:24px;height:24px;}
+  .swatch-label{font-size:11px;}
+  .toggle-btn{font-size:14.5px;padding:14px 18px;}
+  .tmpl-btn{font-size:13.5px;padding:11px 17px;}
+}
+
+/* 태블릿 가로 · 큰 화면 */
+@media (min-width:1024px){
+  .wrap{max-width:1000px;}
+  .grid{gap:24px;}
+  .well-grid{max-width:840px;}
+  .compare-row{gap:18px;}
+}
+
+/* 아이패드 세로에서 2단이 좁아지는 구간 — 카드 안쪽 여백만 줄여 숨통 */
+@media (min-width:744px) and (max-width:860px){
+  .grid{gap:16px;}
+  .card{padding:20px;}
+}
+
+/* 안전영역(홈 인디케이터) */
+@supports (padding:env(safe-area-inset-bottom)){
+  body{padding-bottom:calc(78px + env(safe-area-inset-bottom));}
+}
+
+/* ══ 선명도 (11-27 "색이 명확하게") ══════════════════════════
+   어두운 테마 실험실(탭 있는 것): 보조 글자·선·칸 배경 대비를 올린다 */
+:root:has(.tab-btn){--muted:#c6d6cf;--line:#4b7062;--panel:#1c3a31;--panel-2:#264a3e;}
+:root:has(.tab-btn) .tab-btn{color:#c6d6cf;}
+:root:has(.tab-btn) .tab-btn.active{color:#fff;}
+:root:has(.tab-btn) .tab-btn.active::after{height:3px;}
+:root:has(.tab-btn) .card h2,:root:has(.tab-btn) .card h3{color:#e3ece8;}
+:root:has(.tab-btn) .chip{border-color:#5d8575;}
+:root:has(.tab-btn) .note{color:#d5e1dc;}
+/* 헤스 실험실(자체 라이트/다크): 다크일 때만 보조 글자·선 대비 */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--mute:#c0d2cc;--line:#45605a;}}
+:root[data-theme="dark"]{--mute:#c0d2cc;--line:#45605a;}
+/* 돌아가기 링크(인라인 스타일이라 !important) */
+a[href="../"]{color:#dfe9e4!important;border-color:#5d8575!important;}
+
+/* ══ 가독성 (11-27) — 탭 있는 실험실: 작은 글씨 키우고 대문자 고정폭 제목을 한글 굵은 제목으로 ══ */
+:root:has(.tab-btn) body{line-height:1.6;}
+:root:has(.tab-btn) .sub{font-size:16px;line-height:1.75;color:#d5e1dc;}
+:root:has(.tab-btn) .tab-btn{font-size:15.5px;}
+:root:has(.tab-btn) .card h2,:root:has(.tab-btn) .card h3{font-family:var(--sans);font-size:15px;letter-spacing:0;text-transform:none;font-weight:700;color:#f1ede3;}
+:root:has(.tab-btn) .note{font-size:14.5px;line-height:1.7;}
+:root:has(.tab-btn) .lbl{font-size:13.5px;}
+:root:has(.tab-btn) .u,:root:has(.tab-btn) .read .u,:root:has(.tab-btn) .readout .u{font-size:12.5px;}
+:root:has(.tab-btn) .eq{font-size:15.5px;line-height:1.7;}
+:root:has(.tab-btn) .fb,:root:has(.tab-btn) .shift{font-size:15px;}
+:root:has(.tab-btn) .steps li,:root:has(.tab-btn) .q p{font-size:15.5px;}
+:root:has(.tab-btn) .q details,:root:has(.tab-btn) .log{font-size:14.5px;}
+:root:has(.tab-btn) th{font-size:12.5px;}
+:root:has(.tab-btn) td{font-size:14.5px;}
+:root:has(.tab-btn) .legend,:root:has(.tab-btn) .bar-l{font-size:13.5px;}
+:root:has(.tab-btn) .chip{font-size:14.5px;}
+:root:has(.tab-btn) .go{font-size:15.5px;}
+:root:has(.tab-btn) .empty{font-size:14px;}
+
+/* 두 칸 격자 안 두 번째 카드가 18px 내려가던 것(.card+.card) 바로잡음 (11-27) */
+.grid>.card{margin-top:0;}
+/* == IPAD-FIT END == */
+</style>
+</head>
+<body>
+  <a href="../" style="display:inline-flex;align-items:center;gap:7px;margin-bottom:18px;
+  font-family:'Space Mono','Courier New',monospace;font-size:12px;letter-spacing:.06em;
+  color:#9cb0a8;text-decoration:none;border:1px solid #2c473d;border-radius:20px;
+  padding:6px 13px;transition:.15s"
+  onmouseover="this.style.color='#f1ede3';this.style.borderColor='#6fb98f'"
+  onmouseout="this.style.color='#9cb0a8';this.style.borderColor='#2c473d'">← 실험실 목록</a>
+<div class="wrap">
+  <div class="eyebrow">Lab 18 · 유기 합성</div>
+  <h1>유기 합성 실험실</h1>
+  <p class="sub">살리실산으로 아스피린을, o-톨루엔설폰아마이드로 사카린을 만듭니다. 수득률을 계산하고 녹는점·염화 철(III)·TLC로 순도를 확인한 뒤, 분해 속도로 약의 사용기한을 추정해 보세요.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-p="p1">① 아스피린 합성과 순도</button>
+    <button class="tab-btn" data-p="p2">② 사카린 합성 · 산화와 녹는점</button>
+    <button class="tab-btn" data-p="p3">③ 아스피린 분해 속도와 사용기한</button>
+  </div>
+
+  <!-- ① 아스피린 -->
+  <section class="panel active" id="p1">
+    <div class="eq">C₇H₆O₃ (살리실산, 138.1) + (CH₃CO)₂O (아세트산 무수물, 102.1) → C₉H₈O₄ (아스피린, 180.2) + CH₃COOH</div>
+    <div class="grid">
+      <div class="card">
+        <h2>합성 순서</h2>
+        <ol class="steps">
+          <li>살리실산을 달아 삼각 플라스크에 넣습니다. <div class="btn-row"><button class="go" id="s1">살리실산 달기</button></div></li>
+          <li>아세트산 무수물 5.0 mL(밀도 1.08 g/mL)와 촉매 85 % 인산 5방울을 넣습니다. <div class="btn-row"><button class="go" id="s2" disabled>넣고 흔들기</button></div></li>
+          <li>75 °C 물중탕에서 15분 데웁니다. <div class="btn-row"><button class="go" id="s3" disabled>물중탕 15분</button></div></li>
+          <li>찬물 20 mL로 남은 무수물을 분해하고 얼음물에서 결정을 얻어 감압 거름합니다(조 아스피린). <div class="btn-row"><button class="go" id="s4" disabled>식히고 거르기</button></div></li>
+          <li>따뜻한 에탄올에 녹이고 물을 넣어 천천히 식혀 다시 결정을 얻고 말립니다(재결정). <div class="btn-row"><button class="go" id="s5" disabled>재결정·말리기</button></div></li>
+        </ol>
+        <div class="note warn"><b>안전</b> 아세트산 무수물은 피부·눈을 상하게 하고 증기가 자극적이며 물과 세게 반응합니다. 인산도 부식성입니다. 반드시 후드에서 장갑·보안경을 쓰고 다룹니다. 에탄올은 불이 붙기 쉬우니 불꽃 대신 물중탕을 씁니다.</div>
+      </div>
+      <div class="card">
+        <h2>물중탕 속 삼각 플라스크</h2>
+        <div class="stage"><svg viewBox="0 0 340 260" id="aSvg"></svg></div>
+        <div class="read">
+          <div><div class="big" id="aMin">0</div><div class="u">가열 시간 (분)</div></div>
+          <div><div class="big" id="aTemp">22</div><div class="u">물중탕 (°C)</div></div>
+        </div>
+        <div class="tbl" style="margin-top:10px"><table><tbody id="aRec"><tr><td colspan="2" class="empty">순서대로 버튼을 누르면 잰 값이 기록됩니다.</td></tr></tbody></table></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>수득률 계산</h2>
+      <div class="q"><p>1. 한계 반응물은? (살리실산 1 mol과 아세트산 무수물 1 mol이 반응)</p><div class="chip-list" id="yM"></div><div class="fb" id="yMf"></div></div>
+      <div class="q"><p>2. 이론적으로 얻을 수 있는 아스피린은 몇 g인가요?</p>
+        <div class="ans"><input id="yT" inputmode="decimal" placeholder="g"> g <button class="go ghost" id="yTc">확인</button></div><div class="fb" id="yTf"></div></div>
+      <div class="q"><p>3. <b>재결정해 말린</b> 아스피린의 수득률은 몇 %인가요?</p>
+        <div class="ans"><input id="yP" inputmode="decimal" placeholder="%"> % <button class="go ghost" id="yPc">확인</button></div><div class="fb" id="yPf"></div></div>
+      <div class="note">조 아스피린은 덜 말랐고 살리실산·아세트산이 섞여 있어 질량이 부풀려져 있습니다. 수득률은 <b>순수한 생성물</b>로 계산합니다.</div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h2>염화 철(III) 검사</h2>
+        <div class="stage"><svg viewBox="0 0 340 200" id="fSvg"></svg></div>
+        <div class="btn-row" style="justify-content:center"><button class="go" id="fGo">1 % FeCl₃ 2방울씩 넣기</button></div>
+        <div class="fb" id="fMsg"></div>
+        <div class="note">Fe³⁺은 <b>페놀성 −OH</b>(벤젠 고리에 바로 붙은 −OH)와 만나 보라색 착물을 만듭니다. 살리실산에는 있고, 아스피린에서는 이 −OH가 아세틸기로 바뀌어 없습니다.</div>
+      </div>
+      <div class="card">
+        <h2>녹는점 측정 (순수한 아스피린 135 °C)</h2>
+        <div id="mp1"></div>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h2>TLC (얇은 막 크로마토그래피)</h2>
+        <div class="stage"><svg viewBox="0 0 300 300" id="tSvg"></svg></div>
+        <div class="btn-row" style="justify-content:center"><button class="go" id="tDev">전개하기</button><button class="go ghost" id="tUV" disabled>UV 램프 비추기</button></div>
+        <div class="tbl" id="tTbl" style="margin-top:10px"></div>
+      </div>
+      <div class="card">
+        <h2 style="text-transform:none">Rf 값과 순도 판단</h2>
+        <p class="lbl">Rf = 출발선에서 점까지 거리 ÷ 출발선에서 용매 끝까지 거리</p>
+        <div class="ans">살리실산 Rf <input id="rS" inputmode="decimal" placeholder="0.00"></div>
+        <div class="ans">아스피린 Rf <input id="rA" inputmode="decimal" placeholder="0.00"> <button class="go ghost" id="rC">확인</button></div>
+        <div class="fb" id="rF"></div>
+        <div class="q" style="margin-top:12px"><p>조 아스피린의 녹는점이 순수한 것보다 <b>낮고 넓게</b> 나타나는 까닭은?</p><div class="chip-list" id="pM1"></div><div class="fb" id="pM1f"></div></div>
+        <div class="q"><p>세 검사를 모두 보면, 재결정이 잘 되었다는 증거로 알맞지 <b>않은</b> 것은?</p><div class="chip-list" id="pM2"></div><div class="fb" id="pM2f"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ② 사카린 -->
+  <section class="panel" id="p2">
+    <div class="eq">C₆H₄(CH₃)SO₂NH₂ + 2MnO₄⁻ → C₆H₄(COO⁻)SO₂NH₂ + 2MnO₂↓ + OH⁻ + H₂O<br>산성화 → C₆H₄(COOH)SO₂NH₂ → 사카린 C₇H₅NO₃S (183.2) + H₂O (고리 닫힘)</div>
+    <div class="grid">
+      <div class="card">
+        <h2>합성 순서</h2>
+        <ol class="steps">
+          <li>o-톨루엔설폰아마이드(C₇H₉NO₂S, 171.2) <b id="sM">-</b> g을 묽은 NaOH 수용액에 넣습니다.</li>
+          <li>메틸기(−CH₃)를 카복실기로 산화하려면 MnO₄⁻이 2배 몰 필요합니다. KMnO₄(158.0)는 몇 g 넣어야 할까요?
+            <div class="ans"><input id="kA" inputmode="decimal" placeholder="g"> g <button class="go ghost" id="kC">확인</button></div><div class="fb" id="kF"></div>
+            <div class="btn-row"><button class="go" id="c1">가열하며 KMnO₄ 조금씩 넣기</button></div></li>
+          <li>갈색 MnO₂를 거릅니다. <div class="btn-row"><button class="go" id="c2" disabled>거르기</button></div></li>
+          <li>거른 액에 진한 염산을 넣어 pH 1~2로 만들고 데운 뒤 식힙니다. <div class="btn-row"><button class="go" id="c3" disabled>산성으로 만들기</button></div></li>
+          <li>흰 결정을 걸러 찬물로 씻고 말려 잽니다. <div class="btn-row"><button class="go" id="c4" disabled>거르고 말려 달기</button></div></li>
+        </ol>
+        <div class="note warn"><b>안전</b> KMnO₄는 강한 산화제라 유기물(종이·알코올)과 섞이면 불이 날 수 있고 피부를 갈색으로 물들입니다. NaOH와 진한 염산은 부식성이며 염산 증기는 후드에서 다룹니다. 보안경·장갑을 씁니다.</div>
+      </div>
+      <div class="card">
+        <h2>반응 장치</h2>
+        <div class="stage"><svg viewBox="0 0 340 260" id="cSvg"></svg></div>
+        <div class="fb" id="cMsg" style="text-align:center"></div>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h2>수득률 계산</h2>
+        <div class="q"><p>1. 이론적으로 얻을 수 있는 사카린은 몇 g인가요?</p>
+          <div class="ans"><input id="cT" inputmode="decimal" placeholder="g"> g <button class="go ghost" id="cTc">확인</button></div><div class="fb" id="cTf"></div></div>
+        <div class="q"><p>2. 얻은 사카린 <b id="cGot">?</b> g의 수득률은 몇 %인가요?</p>
+          <div class="ans"><input id="cP" inputmode="decimal" placeholder="%"> % <button class="go ghost" id="cPc">확인</button></div><div class="fb" id="cPf"></div></div>
+        <div class="q"><p>3. 보라색이 사라지고 갈색 앙금이 생기는 까닭은?</p><div class="chip-list" id="cM1"></div><div class="fb" id="cM1f"></div></div>
+        <div class="q"><p>4. 염산을 넣으면 흰 앙금이 생기는 까닭은?</p><div class="chip-list" id="cM2"></div><div class="fb" id="cM2f"></div></div>
+      </div>
+      <div class="card">
+        <h2>녹는점으로 순도 판단 (사카린 약 228 °C)</h2>
+        <div id="mp2"></div>
+        <div class="q" style="margin-top:12px"><p>두 시료 중 더 순수한 것은?</p><div class="chip-list" id="cM3"></div><div class="fb" id="cM3f"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ③ 분해 속도 -->
+  <section class="panel" id="p3">
+    <div class="eq">C₉H₈O₄ (아스피린) + H₂O → C₇H₆O₃ (살리실산) + CH₃COOH &nbsp;·&nbsp; 1차 반응: ln[A] = ln[A]₀ − kt</div>
+    <div class="grid">
+      <div class="card">
+        <h2>가속 안정성 시험</h2>
+        <ol class="steps">
+          <li>습기에 노출된 아스피린 정을 40 °C, 50 °C, 60 °C 항온 장치에 넣습니다.</li>
+          <li>4일마다 꺼내 일정량을 녹이고 FeCl₃를 넣어, 분해로 생긴 살리실산의 보라색 흡광도 A를 잽니다.</li>
+          <li>모두 분해되었을 때(살리실산 100 %) 흡광도는 <b>0.850</b>입니다. 남은 아스피린 비율 = 1 − A ÷ 0.850</li>
+        </ol>
+        <div class="stage"><svg viewBox="0 0 340 190" id="dSvg"></svg></div>
+        <div class="btn-row" style="justify-content:center"><button class="go" id="dStep">+4일 지나고 측정</button><button class="go ghost" id="dReset">처음부터</button></div>
+      </div>
+      <div class="card">
+        <h2>측정한 흡광도 A</h2>
+        <div class="tbl" id="dTbl"></div>
+        <div class="plot"><svg viewBox="0 0 400 250" id="dPlot"></svg></div>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h2 style="text-transform:none">1 · 온도별 속도 상수 k</h2>
+        <p class="lbl">기울기 = −k &nbsp;(ln 남은 비율 – 시간 그래프)</p>
+        <div class="ans">40 °C k <input id="k40" inputmode="decimal" placeholder="/일"> /일</div>
+        <div class="ans">50 °C k <input id="k50" inputmode="decimal" placeholder="/일"> /일</div>
+        <div class="ans">60 °C k <input id="k60" inputmode="decimal" placeholder="/일"> /일</div>
+        <div class="btn-row"><button class="go ghost" id="kChk">확인</button></div>
+        <div class="fb" id="kFb"></div>
+      </div>
+      <div class="card">
+        <h2 style="text-transform:none">2 · 아레니우스 그래프로 25 °C 외삽</h2>
+        <div class="plot" style="margin-top:0"><svg viewBox="0 0 400 250" id="arPlot"></svg></div>
+        <p class="lbl" style="margin-top:10px">ln k = ln A − Ea / (R·T), R = 8.314 J/(mol·K)</p>
+        <div class="ans">활성화 에너지 Ea <input id="aEa" inputmode="decimal" placeholder="kJ/mol"> kJ/mol</div>
+        <div class="ans">25 °C의 k <input id="aK" inputmode="decimal" placeholder="/일"> /일</div>
+        <div class="ans">t₉₀ = 0.105 ÷ k <input id="aT" inputmode="decimal" placeholder="일"> 일</div>
+        <div class="btn-row"><button class="go ghost" id="arChk">확인</button></div>
+        <div class="fb" id="arFb"></div>
+      </div>
+    </div>
+    <div class="note">t₉₀은 처음 양의 90 %가 남는 시간입니다(ln(1/0.90) = 0.105). 의약품은 함량이 90 % 아래로 떨어지기 전까지를 <b>사용기한</b>으로 정합니다. 높은 온도에서 빠르게 잰 값으로 실온 기한을 예측하는 것이 <b>가속 시험</b>입니다. 실제 아스피린 정은 방습 포장 덕분에 이 모형보다 훨씬 오래 갑니다.</div>
+  </section>
+</div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const txt=(g,x,y,s,a={})=>{const t=el('text',Object.assign({x,y,fill:'#c6d6cf','font-size':12},a));t.textContent=s;g.appendChild(t);return t;};
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const rnd=(a,b)=>a+Math.random()*(b-a);
+document.querySelectorAll('.tab-btn').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.toggle('active',x===b));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.p));});
+const num=v=>parseFloat(String(v).replace(',','.').replace('−','-'));
+function check(inp,fb,ans,tol,okMsg,noMsg,abs){const v=num($(inp).value),f=$(fb);
+  if(isNaN(v)){f.className='fb no';f.textContent='숫자를 넣어 주세요.';return false;}
+  const ok=Math.abs(v-ans)<=(abs?tol:Math.abs(ans)*tol);f.className='fb '+(ok?'ok':'no');f.innerHTML=ok?okMsg:noMsg;return ok;}
+function chips(id,cb){const box=$(id);box.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{
+  box.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x===c));cb&&cb(c.dataset.v);});}
+const cv=id=>$(id+' .chip.active').dataset.v;
+function mcq(id,opts,right,ok,no){const box=$(id),f=$(id+'f');box.innerHTML='';
+  opts.forEach((o,i)=>{const b=document.createElement('button');b.className='chip';b.textContent=o;
+    b.onclick=()=>{box.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x===b));
+      f.className='fb '+(i===right?'ok':'no');f.innerHTML=i===right?ok:no;};box.appendChild(b);});}
+function anim(dur,fn,done){if(RM){fn(1);done&&done();return;}const t0=performance.now();
+  (function step(now){const p=Math.min(1,(now-t0)/dur);fn(p);if(p<1)requestAnimationFrame(step);else done&&done();})(t0);}
+// 그래프: o={x0,x1,y0,y1,xt,yt,xl,yl,xf,yf,s:[{pts,color,line,dot,dash,name}]}
+function plot(svg,o){svg.innerHTML='';const W=o.W||640,L=64,R=W-20,T=16,B=196;
+  const X=x=>L+(x-o.x0)/(o.x1-o.x0)*(R-L),Y=y=>B-(y-o.y0)/(o.y1-o.y0)*(B-T);
+  o.yt.forEach(v=>{svg.appendChild(el('line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:'#3f6355'}));txt(svg,L-8,Y(v)+4,o.yf?o.yf(v):v,{'text-anchor':'end','font-size':13});});
+  o.xt.forEach(v=>{svg.appendChild(el('line',{x1:X(v),x2:X(v),y1:T,y2:B,stroke:'#3f6355'}));txt(svg,X(v),B+18,o.xf?o.xf(v):v,{'text-anchor':'middle','font-size':13});});
+  txt(svg,(L+R)/2,242,o.xl,{'text-anchor':'middle','font-size':13});
+  txt(svg,14,(T+B)/2,o.yl,{'text-anchor':'middle','font-size':13,transform:`rotate(-90 14 ${(T+B)/2})`});
+  let lx=L+8;(o.s||[]).forEach(s=>{const p=s.pts.filter(q=>q[1]>=o.y0-1e-9&&q[1]<=o.y1+1e-9);
+    if(s.line&&p.length>1)svg.appendChild(el('path',{d:p.map((q,i)=>(i?'L':'M')+X(q[0]).toFixed(1)+' '+Y(q[1]).toFixed(1)).join(' '),fill:'none',stroke:s.color,'stroke-width':2.5,'stroke-dasharray':s.dash||''}));
+    if(s.dot)p.forEach(q=>svg.appendChild(el('circle',{cx:X(q[0]),cy:Y(q[1]),r:5,fill:s.color,stroke:'#10201b','stroke-width':1.5})));
+    if(s.name){const ly=o.ly||T+4;svg.appendChild(el('rect',{x:lx,y:ly,width:12,height:12,rx:2,fill:s.color}));const t=txt(svg,lx+16,ly+10,s.name,{fill:'#f1ede3','font-size':12});lx+=26+s.name.length*12.5;}});
+  return{X,Y};}
+const COL=['#ffb15c','#4fd6e0','#ff6fae','#a78bfa','#ffe066','#58f0a5'];
+
+
+// ── 녹는점 장치 (두 탭 공용)
+function mpWidget(box,samples){
+  box.innerHTML=`<div class="chip-list mpS">${samples.map((s,i)=>`<button class="chip${i?'':' active'}" data-i="${i}">${s.n}</button>`).join('')}</div>
+  <div class="stage"><svg viewBox="0 0 300 200">
+    <rect x="70" y="50" width="170" height="120" rx="10" fill="#4a5a55" stroke="#c6d6cf"/>
+    <rect x="150" y="70" width="70" height="80" rx="6" fill="rgba(255,236,190,.22)" stroke="#c6d6cf"/>
+    <rect x="182" y="40" width="7" height="110" rx="3" fill="rgba(220,235,245,.25)" stroke="#f1ede3" stroke-width="1.2"/>
+    <rect class="smp" x="183" y="126" width="5" height="22" fill="#fff"/>
+    <circle class="drop" cx="185.5" cy="140" r="0" fill="rgba(240,240,225,.7)"/>
+    <rect x="100" y="14" width="12" height="160" rx="6" fill="none" stroke="#f1ede3" stroke-width="1.5"/>
+    <circle cx="106" cy="178" r="10" fill="#e4572e"/><rect class="hg" x="102" y="170" width="8" height="0" fill="#e4572e"/>
+    <text x="185" y="190" text-anchor="middle" fill="#c6d6cf" font-size="12">모세관 속 시료</text>
+  </svg></div>
+  <div class="read"><div><div class="big mpT">-</div><div class="u">온도 (°C)</div></div><div><div class="big mpSt">-</div><div class="u">시료 상태</div></div></div>
+  <div class="btn-row" style="justify-content:center"><button class="go mpGo">천천히 가열하며 관찰</button></div>
+  <div class="tbl mpTbl" style="margin-top:10px"></div>`;
+  const q=s=>box.querySelector(s);let cur=0,busy=false;const done={};
+  box.querySelectorAll('.mpS .chip').forEach(c=>c.onclick=()=>{if(busy)return;cur=+c.dataset.i;box.querySelectorAll('.mpS .chip').forEach(x=>x.classList.toggle('active',x===c));draw(samples[cur].a-20,samples[cur]);});
+  function draw(T,s){const f=T<s.a?0:T>=s.b?1:(T-s.a)/(s.b-s.a);
+    q('.smp').setAttribute('fill',`rgba(255,255,255,${1-0.85*f})`);q('.smp').setAttribute('y',126+6*f);q('.smp').setAttribute('height',22-6*f);
+    q('.drop').setAttribute('r',f>0?2.5+1.5*f:0);q('.hg').setAttribute('height',Math.max(0,(T-80)/190*150));q('.hg').setAttribute('y',170-Math.max(0,(T-80)/190*150));
+    q('.mpT').textContent=T.toFixed(1);q('.mpSt').textContent=f===0?'고체':f>=1?'액체':'녹는 중';}
+  q('.mpGo').onclick=()=>{if(busy)return;busy=true;q('.mpGo').disabled=true;const s=samples[cur],T0=s.a-20,T1=s.b+6;
+    anim(4500,p=>draw(T0+(T1-T0)*p,s),()=>{busy=false;q('.mpGo').disabled=false;done[cur]=s;
+      q('.mpTbl').innerHTML=`<table><thead><tr><th>시료</th><th>녹기 시작 (°C)</th><th>다 녹음 (°C)</th><th>범위</th></tr></thead><tbody>${Object.values(done).map(d=>`<tr><td style="font-family:var(--sans)">${d.n}</td><td>${d.a.toFixed(1)}</td><td>${d.b.toFixed(1)}</td><td>${(d.b-d.a).toFixed(1)}</td></tr>`).join('')}</tbody></table>`;});};
+  draw(samples[0].a-20,samples[0]);}
+
+// ── ① 아스피린 합성
+const mSA=+rnd(2.0,2.2).toFixed(3),nSA=mSA/138.12,nAA=5.0*1.08/102.09,THEO=nSA*180.16;
+const CRUDE=+(THEO*rnd(.86,.95)).toFixed(3),PURE=+(THEO*rnd(.62,.78)).toFixed(3);
+const aS=$('#aSvg');
+aS.innerHTML=`<defs><clipPath id="ercl"><path d="M150 40 H190 V100 L242 226 Q244 232 236 232 H104 Q96 232 98 226 L150 100 Z"/></clipPath></defs>
+  <path id="bath" d="M30 130 H310 V244 Q310 252 302 252 H38 Q30 252 30 244 Z" fill="rgba(127,176,224,.45)" stroke="#c6d6cf" stroke-width="1.5"/>
+  <g clip-path="url(#ercl)"><rect id="eLiq" x="90" y="232" width="160" height="0" fill="rgba(215,232,245,.55)"/><g id="ePow"></g><g id="eCry"></g></g>
+  <path d="M150 40 H190 V100 L242 226 Q244 232 236 232 H104 Q96 232 98 226 L150 100 Z" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
+  <g id="bBub"></g>
+  <rect x="276" y="20" width="10" height="200" rx="5" fill="none" stroke="#f1ede3" stroke-width="1.5"/><rect id="thm" x="278" y="180" width="6" height="40" fill="#e4572e"/>`;
+let aStep=0,bathOn=false,bub=[];
+const pow=n=>{const g=$('#ePow');g.innerHTML='';for(let i=0;i<n;i++)g.appendChild(el('circle',{cx:118+(i*23)%104,cy:228-(i*7)%10,r:2.6,fill:'#fff'}));};
+function rec(rows){$('#aRec').innerHTML=rows.map(r=>`<tr><td style="text-align:left;font-family:var(--sans)">${r[0]}</td><td>${r[1]}</td></tr>`).join('');}
+const recRows=[];
+function setStep(n){aStep=n;['#s1','#s2','#s3','#s4','#s5'].forEach((b,i)=>$(b).disabled=i!==n);}
+$('#s1').onclick=()=>{pow(40);recRows.push(['살리실산',mSA.toFixed(3)+' g']);rec(recRows);setStep(1);};
+$('#s2').onclick=()=>{setStep(-1);anim(1200,p=>{$('#eLiq').setAttribute('y',232-50*p);$('#eLiq').setAttribute('height',50*p);},()=>{recRows.push(['아세트산 무수물','5.0 mL × 1.08 g/mL = 5.40 g']);rec(recRows);setStep(2);});};
+$('#s3').onclick=()=>{setStep(-1);bathOn=true;
+  anim(5000,p=>{$('#aMin').textContent=Math.round(15*p);const T=22+53*Math.min(1,p*3);$('#aTemp').textContent=Math.round(T);
+    $('#thm').setAttribute('y',220-(T/100)*190);$('#thm').setAttribute('height',(T/100)*190);
+    $('#bath').setAttribute('fill',`rgba(${127+113*Math.min(1,p*3)},${176-20*Math.min(1,p*3)},${224-110*Math.min(1,p*3)},.45)`);pow(Math.round(40*(1-p)));},
+  ()=>{bathOn=false;$('#bBub').innerHTML='';setStep(3);});};
+$('#s4').onclick=()=>{setStep(-1);$('#bath').setAttribute('fill','rgba(150,200,240,.55)');$('#aTemp').textContent=2;$('#thm').setAttribute('y',216);$('#thm').setAttribute('height',4);
+  const g=$('#eCry');anim(2000,p=>{g.innerHTML='';for(let i=0;i<Math.round(36*p);i++){const x=112+(i*29)%116,y=226-(i*11)%40,a=(i*47)%180;
+    g.appendChild(el('line',{x1:x,y1:y,x2:x+9*Math.cos(a),y2:y+9*Math.sin(a),stroke:'#fff','stroke-width':2.2,'stroke-linecap':'round'}));}},
+  ()=>{recRows.push(['조 아스피린 (거른 뒤)',CRUDE.toFixed(3)+' g']);rec(recRows);setStep(4);});};
+$('#s5').onclick=()=>{setStep(-1);anim(1200,p=>{$('#eLiq').setAttribute('opacity',1-p);},()=>{recRows.push(['재결정 아스피린 (마른 것)',PURE.toFixed(3)+' g']);rec(recRows);$('#s5').textContent='완료';});};
+function bLoop(){if(bathOn&&Math.random()<.5)bub.push({x:rnd(40,300),y:248,r:rnd(1.5,3)});bub.forEach(b=>b.y-=1.4);bub=bub.filter(b=>b.y>134);
+  const g=$('#bBub');g.innerHTML='';bub.forEach(b=>g.appendChild(el('circle',{cx:b.x,cy:b.y,r:b.r,fill:'rgba(255,255,255,.5)'})));if(!RM)requestAnimationFrame(bLoop);}
+bLoop();setStep(0);
+mcq('#yM',['살리실산','아세트산 무수물'],nSA<nAA?0:1,`맞습니다. 살리실산 ${mSA.toFixed(3)} ÷ 138.1 = ${nSA.toFixed(4)} mol, 무수물 5.40 ÷ 102.1 = ${nAA.toFixed(4)} mol → 살리실산이 먼저 바닥납니다.`,'두 물질의 몰수를 각각 구해 비교하세요. 무수물 질량 = 5.0 mL × 1.08 g/mL.');
+const needPure=f=>{if(!recRows.some(r=>r[0].startsWith('재결정'))){f.className='fb no';f.textContent='먼저 합성 순서 5단계까지 마치세요.';return true;}return false;};
+$('#yTc').onclick=()=>{if(!recRows.length){const f=$('#yTf');f.className='fb no';f.textContent='먼저 살리실산을 다세요.';return;}
+  check('#yT','#yTf',THEO,0.015,`맞습니다. ${nSA.toFixed(4)} mol × 180.2 g/mol = <b>${THEO.toFixed(3)} g</b>`,'① 살리실산 몰수 = 질량 ÷ 138.1 ② 아스피린도 같은 몰수(1:1) ③ × 180.2 g/mol');};
+$('#yPc').onclick=()=>{if(needPure($('#yPf')))return;const a=PURE/THEO*100;
+  check('#yP','#yPf',a,0.02,`맞습니다. ${PURE.toFixed(3)} ÷ ${THEO.toFixed(3)} × 100 = <b>${a.toFixed(1)} %</b>`,'수득률 = 실제로 얻은 질량(재결정 후) ÷ 이론적 수득량 × 100. 조 아스피린 질량은 쓰지 않습니다.');};
+// FeCl3
+const fS=$('#fSvg'),FT=[['살리실산','rgba(95,25,120,.9)'],['조 아스피린','rgba(150,75,165,.65)'],['재결정','rgba(225,200,110,.5)'],['물(대조)','rgba(225,200,110,.5)']];
+fS.innerHTML=FT.map((t,i)=>{const x=30+i*80;return `<defs><clipPath id="fc${i}"><path d="M${x+14} 20 V140 A16 16 0 0 0 ${x+46} 140 V20 Z"/></clipPath></defs>
+  <rect class="fl" x="${x+10}" y="90" width="40" height="80" fill="rgba(225,232,240,.5)" clip-path="url(#fc${i})"/>
+  <path d="M${x+14} 20 V140 A16 16 0 0 0 ${x+46} 140 V20" fill="none" stroke="#f1ede3" stroke-width="2"/>
+  <text x="${x+30}" y="182" text-anchor="middle" fill="#c6d6cf" font-size="12">${t[0]}</text>`;}).join('');
+$('#fGo').onclick=()=>{const fl=fS.querySelectorAll('.fl');$('#fGo').disabled=true;
+  anim(1500,p=>fl.forEach((e,i)=>{const c=FT[i][1].match(/[\d.]+/g).map(Number),b=[225,232,240,.5];e.setAttribute('fill',`rgba(${b.slice(0,3).map((v,k)=>Math.round(v+(c[k]-v)*p)).join(',')},${(b[3]+(c[3]-b[3])*p).toFixed(2)})`);}),
+  ()=>{const f=$('#fMsg');f.className='fb';f.innerHTML='살리실산은 <b>진한 보라색</b>, 조 아스피린은 <b>연한 보라색</b>(살리실산이 남아 있음), 재결정 아스피린은 FeCl₃의 연노란색 그대로입니다.';});};
+mpWidget($('#mp1'),[{n:'살리실산',a:158.4,b:159.8},{n:'조 아스피린',a:+rnd(121,126).toFixed(1)},{n:'재결정 아스피린',a:+rnd(133.0,133.8).toFixed(1)}].map(s=>(s.b=s.b||(s.n==='조 아스피린'?+(s.a+rnd(6,8)).toFixed(1):+(s.a+rnd(1.2,1.8)).toFixed(1)),s)));
+// TLC
+const DS=Math.round(rnd(52,60)*2)/2,RFS=rnd(.6,.64),RFA=rnd(.43,.47),dSA=Math.round(RFS*DS*2)/2,dAS=Math.round(RFA*DS*2)/2;
+const tS=$('#tSvg'),PY=mm=>250-3*mm;
+tS.innerHTML=`<rect x="80" y="20" width="160" height="250" rx="3" id="plate" fill="rgba(235,238,232,.9)"/>
+  <rect id="solv" x="80" y="${PY(-3)}" width="160" height="${270-PY(-3)}" fill="rgba(150,200,240,.45)"/>
+  <line x1="80" x2="240" y1="250" y2="250" stroke="#555" stroke-dasharray="3 3"/>
+  <line id="front" x1="80" x2="240" y1="250" y2="250" stroke="#2c5ea8" stroke-width="2" opacity="0"/>
+  <g id="spots"></g><g id="rul"></g><text x="160" y="290" text-anchor="middle" fill="#c6d6cf" font-size="12">① 살리실산 ② 조 생성물 ③ 재결정</text>
+  ${['살리실산','조 생성물','재결정'].map((n,i)=>`<circle cx="${120+40*i}" cy="250" r="3" fill="#888"/><text x="${120+40*i}" y="266" text-anchor="middle" fill="#333" font-size="12">${'①②③'[i]}</text>`).join('')}`;
+for(let m=0;m<=70;m+=10){$('#rul').appendChild(el('line',{x1:66,x2:78,y1:PY(m),y2:PY(m),stroke:'#c6d6cf'}));txt($('#rul'),62,PY(m)+4,m,{'text-anchor':'end','font-size':11});}
+txt($('#rul'),40,14,'mm',{'font-size':11});
+$('#tDev').onclick=()=>{$('#tDev').disabled=true;anim(3500,p=>{const y=PY(DS*p);$('#solv').setAttribute('y',Math.min(PY(-3),y));$('#solv').setAttribute('height',270-Math.min(PY(-3),y));
+    $('#front').setAttribute('y1',y);$('#front').setAttribute('y2',y);$('#front').setAttribute('opacity',p>0.05?1:0);},
+  ()=>{$('#solv').setAttribute('fill','rgba(150,200,240,.0)');$('#tUV').disabled=false;$('#tTbl').innerHTML=`<div class="empty">용매 끝을 연필로 표시했습니다. UV 램프로 점을 찾으세요.</div>`;});};
+$('#tUV').onclick=()=>{$('#plate').setAttribute('fill','rgba(110,230,160,.75)');const g=$('#spots');g.innerHTML='';
+  [[120,dSA,1],[160,dAS,1],[160,dSA,.45],[200,dAS,1]].forEach(([x,d,o])=>g.appendChild(el('ellipse',{cx:x,cy:PY(d),rx:8,ry:5,fill:`rgba(40,25,80,${o})`})));
+  $('#tTbl').innerHTML=`<table><thead><tr><th>측정</th><th>거리 (mm)</th></tr></thead><tbody>
+  <tr><td style="font-family:var(--sans)">출발선 → 용매 끝</td><td>${DS.toFixed(1)}</td></tr>
+  <tr><td style="font-family:var(--sans)">살리실산 점</td><td>${dSA.toFixed(1)}</td></tr>
+  <tr><td style="font-family:var(--sans)">조 생성물: 아래 점 / 위 점(흐림)</td><td>${dAS.toFixed(1)} / ${dSA.toFixed(1)}</td></tr>
+  <tr><td style="font-family:var(--sans)">재결정 점</td><td>${dAS.toFixed(1)}</td></tr></tbody></table>`;};
+$('#rC').onclick=()=>{const f=$('#rF');if($('#tUV').disabled||!$('#spots').childNodes.length){f.className='fb no';f.textContent='먼저 전개하고 UV 램프로 점을 확인하세요.';return;}
+  const s=num($('#rS').value),a=num($('#rA').value),rs=dSA/DS,ra=dAS/DS;
+  if(isNaN(s)||isNaN(a)){f.className='fb no';f.textContent='두 칸 모두 숫자를 넣어 주세요.';return;}
+  const okS=Math.abs(s-rs)<=0.015,okA=Math.abs(a-ra)<=0.015;
+  if(okS&&okA){f.className='fb ok';f.innerHTML=`맞습니다. 살리실산 Rf = ${dSA.toFixed(1)} ÷ ${DS.toFixed(1)} = <b>${rs.toFixed(2)}</b>, 아스피린 Rf = <b>${ra.toFixed(2)}</b>. 조 생성물에는 Rf ${rs.toFixed(2)} 점이 흐리게 있어 살리실산이 남아 있고, 재결정한 것에는 아스피린 점 하나뿐입니다.`;}
+  else{f.className='fb no';f.textContent=`${okS?'':'살리실산 '}${okA?'':'아스피린 '}Rf를 다시 계산하세요. 점까지 거리 ÷ 용매 끝까지 거리(${DS.toFixed(1)} mm)이고, Rf는 항상 0과 1 사이입니다.`;}};
+mcq('#pM1',['불순물(살리실산 등)이 섞여 결정 배열이 흐트러져서, 더 낮은 온도부터 조금씩 녹기 때문에','아스피린 분자가 더 커져서','가열 속도가 너무 빨라서'],0,'맞습니다. 불순물은 녹는점을 <b>낮추고</b> 녹는 범위를 <b>넓힙니다</b>. 순수한 물질은 1~2 °C 안에서 날카롭게 녹습니다.','다시 생각해 보세요. 조 생성물에는 무엇이 섞여 있었나요?');
+mcq('#pM2',['FeCl₃를 넣어도 보라색이 나타나지 않는다','녹는점이 135 °C 근처에서 좁은 범위로 나타난다','TLC에서 점이 두 개 나타난다'],2,'맞습니다. 점이 두 개라면 두 가지 물질이 섞여 있다는 뜻이므로 순수하다는 증거가 아닙니다.','다시 보세요. 순수한 물질이라면 TLC 점은 몇 개여야 할까요?');
+
+// ── ② 사카린
+const mT=+rnd(3.0,3.4).toFixed(3),nT=mT/171.22,KM=nT*2*158.03,SAC=nT*183.18,GOT=+(SAC*rnd(.55,.72)).toFixed(3);
+$('#sM').textContent=mT.toFixed(3);
+const cS=$('#cSvg');const PP=Array.from({length:60},()=>[rnd(102,218),Math.random()]);let cStage=0;
+function cScene(k,p){// k: 0 산화, 1 거르기, 2 산성화, 3 결정
+  if(k===0){cS.innerHTML=`<defs><clipPath id="rf"><path d="M140 30 H180 V96 C250 110 262 216 210 232 H110 C58 216 70 110 140 96 Z"/></clipPath></defs>
+    <path d="M60 236 H260" stroke="#c6d6cf" stroke-width="3"/><rect x="90" y="236" width="140" height="14" rx="3" fill="#6b4a3a"/>
+    <rect id="rLiq" x="60" y="130" width="200" height="110" clip-path="url(#rf)"/><g id="rPpt" clip-path="url(#rf)"></g><g id="rDrop"></g>
+    <path d="M140 30 H180 V96 C250 110 262 216 210 232 H110 C58 216 70 110 140 96 Z" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
+    <text x="160" y="20" text-anchor="middle" fill="#c6d6cf" font-size="12">NaOH 수용액 + 시료</text>`;}
+  else if(k===1){cS.innerHTML=`<path d="M100 30 L220 30 L168 110 V150 H152 V110 Z" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
+    <path d="M110 36 L210 36 L160 104 Z" fill="rgba(120,75,35,.85)"/>
+    <path d="M110 160 V236 Q110 246 120 246 H200 Q210 246 210 236 V160" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
+    <rect id="fil" x="112" y="244" width="96" height="0" fill="rgba(225,235,240,.5)"/><circle id="fd" cx="160" cy="160" r="3" fill="rgba(220,235,245,.8)"/>
+    <text x="250" y="74" fill="#c6d6cf" font-size="12">MnO₂</text><text x="230" y="220" fill="#c6d6cf" font-size="12">무색 거른 액</text>`;}
+  else{cS.innerHTML=`<path d="M100 60 V226 Q100 240 114 240 H226 Q240 240 240 226 V60" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
+    <rect x="102" y="130" width="136" height="108" rx="10" fill="rgba(225,235,240,.5)"/><g id="wp"></g>
+    <text x="170" y="40" text-anchor="middle" fill="#c6d6cf" font-size="12">${k===2?'진한 염산을 넣는 중':'흰 사카린 결정'}</text>`;}}
+function mix(a,b,t,al){return `rgba(${a.map((x,i)=>Math.round(x+(b[i]-x)*t)).join(',')},${al})`;}
+cScene(0);$('#rLiq').setAttribute('fill','rgba(225,232,240,.5)');
+$('#kC').onclick=()=>check('#kA','#kF',KM,0.02,`맞습니다. ${nT.toFixed(4)} mol × 2 × 158.0 = <b>${KM.toFixed(2)} g</b>. 실제로는 조금 더 넣어 보라색이 남을 때까지 반응시킵니다.`,'① 시료 몰수 = 질량 ÷ 171.2 ② MnO₄⁻은 그 2배 ③ × 158.0 g/mol');
+$('#c1').onclick=()=>{$('#c1').disabled=true;cScene(0);const m=$('#cMsg');m.className='fb';m.textContent='KMnO₄ 용액을 넣는 중…';
+  anim(5000,p=>{const ph=(p*8)%1,brown=Math.min(1,p*1.1),purple=Math.max(0,1-ph*1.6)*(p<.92?1:0)+(p>=.92?.7:0);
+    $('#rLiq').setAttribute('fill',mix(mix([225,232,240],[150,95,55],brown,1).match(/\d+/g).slice(0,3).map(Number),[140,40,150],purple*.85,.6));
+    const g=$('#rPpt');g.innerHTML='';for(let i=0;i<Math.round(60*brown);i++)g.appendChild(el('circle',{cx:PP[i][0],cy:228-PP[i][1]*(6+brown*20),r:2.4,fill:'#5a3518'}));
+    const d=$('#rDrop');d.innerHTML='';if(p<.98)d.appendChild(el('circle',{cx:160,cy:30+ph*100,r:4,fill:'rgba(130,30,150,.9)'}));},
+  ()=>{$('#rDrop').innerHTML='';m.textContent='보라색이 사라지고 갈색 MnO₂ 앙금이 생겼습니다. 마지막에 넣은 보라색이 남아 산화가 끝났음을 알 수 있습니다.';$('#c2').disabled=false;});};
+$('#c2').onclick=()=>{$('#c2').disabled=true;cScene(1);anim(2500,p=>{$('#fil').setAttribute('y',244-60*p);$('#fil').setAttribute('height',60*p);$('#fd').setAttribute('cy',160+((p*6)%1)*70);},
+  ()=>{$('#cMsg').textContent='갈색 MnO₂는 거름종이에 남고, 무색의 거른 액에는 o-설파모일벤조산 이온이 녹아 있습니다.';$('#c3').disabled=false;});};
+$('#c3').onclick=()=>{$('#c3').disabled=true;cScene(2);anim(3000,p=>{const g=$('#wp');g.innerHTML='';for(let i=0;i<Math.round(70*p);i++)g.appendChild(el('circle',{cx:112+(i*31)%116,cy:234-((i*17)%(20+80*(1-p)))*(i%3?1:.4),r:2.4,fill:'#fff'}));},
+  ()=>{$('#cMsg').textContent='산성이 되자 흰 결정이 생겼습니다. 데우면 고리가 닫히며 물이 빠져 사카린이 됩니다.';$('#c4').disabled=false;});};
+$('#c4').onclick=()=>{$('#c4').disabled=true;cScene(3);const g=$('#wp');for(let i=0;i<70;i++)g.appendChild(el('circle',{cx:112+(i*31)%116,cy:234-(i*7)%14,r:2.6,fill:'#fff'}));
+  $('#cGot').textContent=GOT.toFixed(3);$('#cMsg').className='fb ok';$('#cMsg').textContent=`말린 사카린 ${GOT.toFixed(3)} g을 얻었습니다.`;};
+$('#cTc').onclick=()=>check('#cT','#cTf',SAC,0.015,`맞습니다. ${nT.toFixed(4)} mol × 183.2 = <b>${SAC.toFixed(3)} g</b>`,'시료 1 mol에서 사카린 1 mol이 생깁니다. 시료 몰수 × 183.2 g/mol.');
+$('#cPc').onclick=()=>{if($('#cGot').textContent==='?'){const f=$('#cPf');f.className='fb no';f.textContent='먼저 5단계까지 마쳐 사카린을 다세요.';return;}
+  const a=GOT/SAC*100;check('#cP','#cPf',a,0.02,`맞습니다. ${GOT.toFixed(3)} ÷ ${SAC.toFixed(3)} × 100 = <b>${a.toFixed(1)} %</b>`,'수득률 = 얻은 질량 ÷ 이론적 수득량 × 100');};
+mcq('#cM1',['MnO₄⁻(Mn +7)이 전자를 얻어 MnO₂(Mn +4)로 환원되고, 메틸기는 산화되어서','사카린이 갈색 앙금으로 생겨서','NaOH가 KMnO₄를 산화시켜서'],0,'맞습니다. 메틸기의 C는 −3 → +3으로 전자 6개를 잃고, MnO₄⁻ 2개가 3개씩 받아 MnO₂가 됩니다. 그래서 MnO₄⁻이 2배 몰 필요합니다.','다시 생각해 보세요. 보라색은 MnO₄⁻의 색, 갈색 앙금은 MnO₂입니다. Mn의 산화수는 어떻게 바뀌었나요?');
+mcq('#cM2',['염산이 MnO₂를 다시 녹여서','염기에서는 이온(염)으로 잘 녹아 있던 생성물이 H⁺을 받아 물에 잘 녹지 않는 분자가 되어서','염산과 NaOH가 반응해 소금이 앙금으로 생겨서'],1,'맞습니다. −COO⁻이 −COOH가 되면 물에 잘 녹지 않아 가라앉고, 데우면 고리가 닫혀 사카린이 됩니다.','다시 생각해 보세요. 염기성일 때 생성물은 어떤 형태로 녹아 있었나요?');
+const BA=+rnd(226.2,226.8).toFixed(1),BB=+rnd(209,214).toFixed(1);
+mpWidget($('#mp2'),[{n:'시료 A (찬물로 씻어 말림)',a:BA,b:+(BA+rnd(1.2,1.8)).toFixed(1)},{n:'시료 B (씻지 않음)',a:BB,b:+(BB+rnd(7,10)).toFixed(1)}]);
+mcq('#cM3',['시료 A','시료 B'],0,'맞습니다. 시료 A는 사카린 녹는점(약 228 °C) 근처에서 좁은 범위로 녹습니다. 시료 B는 불순물 때문에 낮고 넓게 녹습니다.','녹는점 장치로 두 시료를 모두 재어 보고, 228 °C와 비교하세요.');
+
+// ── ③ 분해 속도
+const R_=8.314;
+const EA=rnd(72,82)*1000,K60=rnd(.026,.034),A100=0.850;
+const kT=T=>K60*Math.exp(-EA/R_*(1/(T+273.15)-1/333.15));
+const TS=[40,50,60],TC=['#4fd6e0','#ffe066','#ff6fae'];let dDay=0,dRows=[];
+function dMeasure(){dRows.push([dDay,...TS.map(T=>+Math.max(0,A100*(1-Math.exp(-kT(T)*dDay))+(dDay?rnd(-.003,.003):0)).toFixed(3))]);}
+const dS=$('#dSvg');
+dS.innerHTML=TS.map((T,i)=>{const x=40+i*100;return `<defs><clipPath id="vc${i}"><rect x="${x+8}" y="50" width="44" height="100" rx="6"/></clipPath></defs>
+  <rect class="dv" x="${x+8}" y="70" width="44" height="80" clip-path="url(#vc${i})"/>
+  <rect x="${x+8}" y="50" width="44" height="100" rx="6" fill="none" stroke="#f1ede3" stroke-width="2"/><rect x="${x+4}" y="38" width="52" height="14" rx="3" fill="#8aa29a"/>
+  <text x="${x+30}" y="24" text-anchor="middle" fill="${TC[i]}" font-size="14">${T} °C</text>
+  <text class="dA" x="${x+30}" y="172" text-anchor="middle" fill="#c6d6cf" font-size="12"></text>`;}).join('')+`<text id="dD" x="170" y="188" text-anchor="middle" fill="#f1ede3" font-size="12"></text>`;
+const f_=A=>1-A/A100;
+function fitK(i){let a=0,b=0;dRows.forEach(r=>{if(r[0]>0){const y=Math.log(f_(r[i+1]));a+=r[0]*y;b+=r[0]*r[0];}});return -a/b;}
+function dDraw(){const last=dRows[dRows.length-1];
+  dS.querySelectorAll('.dv').forEach((v,i)=>v.setAttribute('fill',`rgba(120,40,150,${(0.12+last[i+1]*0.95).toFixed(2)})`));
+  dS.querySelectorAll('.dA').forEach((t,i)=>t.textContent='A = '+last[i+1].toFixed(3));$('#dD').textContent=`${dDay}일째 (FeCl₃ 넣은 뒤)`;
+  $('#dTbl').innerHTML=`<table><thead><tr><th>날 (일)</th>${TS.map(T=>`<th>A (${T} °C)</th>`).join('')}</tr></thead><tbody>${dRows.map(r=>`<tr><td>${r[0]}</td>${r.slice(1).map(v=>`<td>${v.toFixed(3)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+  plot($('#dPlot'),{W:400,x0:0,x1:24,y0:-0.8,y1:0,xt:[0,4,8,12,16,20,24],yt:[-0.8,-0.6,-0.4,-0.2,0],ly:174,yf:v=>v.toFixed(1),xl:'시간 (일)',yl:'ln(남은 비율)',
+    s:TS.map((T,i)=>({pts:dRows.map(r=>[r[0],Math.log(Math.max(1e-3,f_(r[i+1])))]),color:TC[i],line:1,dot:1,name:T+' °C'}))});
+  $('#dStep').disabled=dDay>=24;$('#dStep').textContent=dDay>=24?'24일 측정 끝':'+4일 지나고 측정';}
+$('#dStep').onclick=()=>{if(dDay>=24)return;const prev=dRows[dRows.length-1];dDay+=4;dMeasure();const nw=dRows[dRows.length-1];$('#dStep').disabled=true;
+  anim(800,p=>dS.querySelectorAll('.dv').forEach((v,i)=>v.setAttribute('fill',`rgba(120,40,150,${(0.12+(prev[i+1]+(nw[i+1]-prev[i+1])*p)*0.95).toFixed(2)})`)),dDraw);};
+$('#dReset').onclick=()=>{dDay=0;dRows=[];dMeasure();dDraw();kOK=null;arDraw();['#kFb','#arFb'].forEach(s=>$(s).textContent='');};
+let kOK=null;
+function arFit(ks){const xs=TS.map(T=>1/(T+273.15)),ys=ks.map(Math.log),mx=xs.reduce((a,b)=>a+b)/3,my=ys.reduce((a,b)=>a+b)/3;
+  let sxy=0,sxx=0;xs.forEach((x,i)=>{sxy+=(x-mx)*(ys[i]-my);sxx+=(x-mx)**2;});const m=sxy/sxx,c=my-m*mx;
+  const k25=Math.exp(c+m/298.15);return{Ea:-m*R_/1000,k25,t90:0.105/k25,m,c};}
+function arDraw(showLine){const pts=kOK?kOK.map((k,i)=>[1000/(TS[i]+273.15),Math.log(k)]):[];let lo=-9,hi=-2;
+  const s=[{pts,color:'#ffb15c',dot:1,name:'측정 k'}];
+  if(kOK&&showLine){const F=arFit(kOK);s.push({pts:[[1000/298.15,Math.log(F.k25)],[1000/333.15,F.c+F.m/333.15]],color:'#58f0a5',line:1,dash:'6 5',name:'외삽'});s.push({pts:[[1000/298.15,Math.log(F.k25)]],color:'#58f0a5',dot:1});}
+  const g=plot($('#arPlot'),{W:400,x0:2.95,x1:3.40,y0:lo,y1:hi,xt:[3.0,3.1,3.2,3.3,3.4],xf:v=>v.toFixed(1),yt:[-9,-8,-7,-6,-5,-4,-3,-2],xl:'1000 / T (K⁻¹)',yl:'ln k',s});
+  txt($('#arPlot'),g.X(1000/298.15),190,'25 °C',{'text-anchor':'middle','font-size':12,fill:'#58f0a5'});}
+$('#kChk').onclick=()=>{const f=$('#kFb');if(dDay<16){f.className='fb no';f.textContent='16일 이상 측정한 뒤 계산하세요. 데이터가 많을수록 정확합니다.';return;}
+  const ks=TS.map((T,i)=>fitK(i)),vs=['#k40','#k50','#k60'].map(s=>num($(s).value));
+  if(vs.some(isNaN)){f.className='fb no';f.textContent='세 칸 모두 숫자를 넣어 주세요. (예: 0.0123)';return;}
+  const ok=vs.map((v,i)=>Math.abs(v-ks[i])<=ks[i]*0.07);
+  if(ok.every(x=>x)){kOK=ks;arDraw(false);f.className='fb ok';f.innerHTML=`맞습니다! 이 데이터의 k: 40 °C <b>${ks[0].toFixed(4)}</b>, 50 °C <b>${ks[1].toFixed(4)}</b>, 60 °C <b>${ks[2].toFixed(4)}</b> /일. 이제 아레니우스 그래프로 넘어가세요.`;}
+  else{f.className='fb no';f.innerHTML=`${TS.filter((T,i)=>!ok[i]).join(', ')} °C를 다시 계산하세요.<br>① 마지막 날 A로 남은 비율 = 1 − A ÷ 0.850 ② ln(남은 비율)을 구합니다(음수) ③ k = −ln(남은 비율) ÷ 날수.`;}};
+$('#arChk').onclick=()=>{const f=$('#arFb');if(!kOK){f.className='fb no';f.textContent='먼저 ① 세 온도의 k를 맞히세요.';return;}
+  const F=arFit(kOK),ea=num($('#aEa').value),k=num($('#aK').value),t=num($('#aT').value);
+  if([ea,k,t].some(isNaN)){f.className='fb no';f.textContent='세 칸 모두 숫자를 넣어 주세요.';return;}
+  const okE=Math.abs(ea-F.Ea)<=F.Ea*0.08,okK=Math.abs(k-F.k25)<=F.k25*0.2,okT=Math.abs(t-F.t90)<=F.t90*0.2||(okK&&Math.abs(t-0.105/k)<=0.105/k*0.03);
+  if(okE&&okK&&okT){arDraw(true);f.className='fb ok';f.innerHTML=`맞습니다! Ea ≈ <b>${F.Ea.toFixed(0)} kJ/mol</b>, k(25 °C) ≈ <b>${F.k25.toExponential(2)} /일</b>, t₉₀ ≈ <b>${F.t90.toFixed(0)}일</b>(약 ${(F.t90/30.4).toFixed(1)}개월). 이 보관 조건이라면 25 °C에서 사용기한은 약 ${F.t90.toFixed(0)}일입니다.`;}
+  else{const h=[];if(!okE)h.push('Ea: 두 온도(예: 40 °C와 60 °C)로 ln(k₂/k₁) = (Ea/R)(1/T₁ − 1/T₂). T는 K(+273), 답은 J → kJ로 바꿉니다.');
+    if(!okK)h.push('k(25 °C): ln(k₂₅/k₄₀) = −(Ea/R)(1/298 − 1/313)으로 외삽합니다.');if(!okT)h.push('t₉₀ = 0.105 ÷ k(25 °C), 단위는 일입니다.');
+    f.className='fb no';f.innerHTML=h.join('<br>');}};
+dMeasure();dDraw();arDraw(false);
+})();
+</script>
+</body>
+</html>
