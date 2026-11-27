@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>적정 실험실</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap');
+:root{
+  --bg:#10201b;--panel:#182f28;--panel-2:#1f382f;--line:#2c473d;--ink:#f1ede3;--muted:#9cb0a8;
+  --acid:#e4572e;--acid-2:#f2a541;--neutral:#6fb98f;--base-2:#3e9c9c;--base:#3b6fa0;--pink:#d95bb0;
+  --mono:'Space Mono','Courier New',monospace;--sans:'Work Sans',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;color:var(--ink);font-family:var(--sans);padding:28px 16px 60px;
+  background:radial-gradient(circle at 15% 0%,rgba(111,185,143,.08),transparent 45%),radial-gradient(circle at 90% 90%,rgba(217,91,176,.08),transparent 45%),var(--bg);}
+.wrap{max-width:920px;margin:0 auto;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--neutral);text-transform:uppercase;margin-bottom:8px;}
+h1{font-weight:700;font-size:32px;margin:0 0 6px;letter-spacing:-.01em;}
+.sub{color:var(--muted);font-size:14.5px;line-height:1.6;margin:0 0 26px;max-width:620px;}
+.tabs{display:flex;gap:8px;margin-bottom:22px;border-bottom:1px solid var(--line);flex-wrap:wrap;}
+.tab-btn{font-family:var(--sans);font-weight:600;font-size:14px;background:none;border:none;color:var(--muted);padding:10px 4px;cursor:pointer;position:relative;}
+.tab-btn.active{color:var(--ink);}
+.tab-btn.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:var(--neutral);border-radius:2px;}
+.tab-btn+.tab-btn{margin-left:18px;}
+.panel{display:none;}
+.panel.active{display:block;animation:fade .3s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:720px){.grid{grid-template-columns:1fr;}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;}
+.card h3{font-size:12px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;}
+.card+.card,.grid+.card,.card+.grid{margin-top:18px;}
+.chip-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.chip{font-family:var(--sans);font-size:13px;font-weight:500;background:var(--panel-2);border:1px solid var(--line);color:var(--ink);padding:8px 12px;border-radius:20px;cursor:pointer;}
+.chip:hover{border-color:var(--neutral);}
+.chip.active{background:var(--neutral);color:#0d1a15;border-color:var(--neutral);font-weight:700;}
+.chip:disabled{opacity:.45;cursor:default;}
+.eq{font-family:var(--mono);font-size:14px;text-align:center;padding:12px;background:var(--panel-2);border-radius:8px;margin-bottom:16px;}
+.note{font-size:12.5px;color:var(--muted);line-height:1.6;background:var(--panel-2);border-radius:8px;padding:10px 12px;margin-top:14px;}
+.note b{color:var(--ink);}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.go{font-family:var(--sans);font-weight:700;font-size:14.5px;border:none;border-radius:10px;padding:11px 15px;cursor:pointer;background:var(--neutral);color:#0d1a15;touch-action:manipulation;}
+.go.ghost{background:var(--panel-2);color:var(--ink);border:1px solid var(--line);}
+.go:disabled{opacity:.45;cursor:default;}
+.stage{display:flex;justify-content:center;}
+.stage svg{width:100%;max-width:300px;height:auto;}
+svg text{font-family:var(--mono);}
+.read{display:flex;justify-content:space-around;font-family:var(--mono);text-align:center;margin-top:8px;}
+.read .big{font-size:28px;font-weight:700;line-height:1.1;}
+.read .u{font-size:11px;color:var(--muted);letter-spacing:.08em;}
+.steps{counter-reset:s;margin:0;padding:0;list-style:none;}
+.steps li{position:relative;padding:0 0 10px 30px;line-height:1.6;font-size:14px;}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;width:21px;height:21px;border-radius:50%;background:var(--panel-2);border:1px solid var(--line);font:700 11px/19px var(--mono);text-align:center;color:var(--neutral);}
+.ans{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:14px;}
+.ans input{width:110px;font:700 16px var(--mono);padding:9px 10px;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);color:var(--ink);}
+.fb{font-size:13.5px;margin-top:8px;min-height:1.2em;line-height:1.6;}
+.fb.ok{color:var(--neutral);}.fb.no{color:var(--acid-2);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:center;}
+th{font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:400;}
+.plot{background:var(--panel-2);border-radius:10px;padding:10px;}
+.plot svg{width:100%;height:auto;display:block;}
+.q{border-top:1px solid var(--line);padding:12px 0;}
+.q:first-child{border-top:none;padding-top:0;}
+.q p{margin:0 0 8px;line-height:1.6;}
+.q details{font-size:13px;color:var(--muted);line-height:1.6;}
+.q summary{cursor:pointer;color:var(--neutral);font-weight:600;}
+@media (prefers-reduced-motion:reduce){.panel.active{animation:none;}}
+
+/* == IPAD-FIT BEGIN (자동 생성 · 직접 수정하지 말 것) == */
+/* ══ 아이패드 대응 (자동 삽입 · 화학실험실 파이프라인) ══════════
+   대상 폭 — 세로 744(mini)/810(10.9")/834(Air·Pro11)/1024(Pro12.9")
+            가로 1080/1133/1194/1366
+   원칙 — 손가락 터치 목표 44px 이상, 본문 글자 키우기, 홈판을 화면 폭에 맞춰 확대 */
+html{-webkit-text-size-adjust:100%;}
+
+/* 태블릿 세로부터 */
+@media (min-width:744px){
+  body{padding:38px 30px 78px;font-size:15.5px;}
+  .wrap{max-width:900px;}
+  h1{font-size:38px;}
+  .sub{font-size:16px;line-height:1.7;max-width:680px;}
+
+  /* 탭 — 손가락으로 누를 크기 */
+  .tabs{flex-wrap:wrap;gap:0 4px;}
+  .tab-btn{font-size:15.5px;padding:15px 6px;}
+  .tab-btn+.tab-btn{margin-left:26px;}
+
+  /* 선택 칩 — 44px 이상 */
+  .chip{font-size:14.5px;padding:12px 17px;border-radius:24px;}
+  .card{padding:22px 24px;}
+  .card h3{font-size:12.5px;margin-bottom:16px;}
+  .note{font-size:13.5px;padding:12px 14px;}
+
+  /* 비커·수치 */
+  .beaker-svg{width:172px;height:206px;}
+  .readout .ph-big{font-size:46px;}
+  .verdict{font-size:15px;padding:6px 15px;}
+  .ph-strip-wrap{margin-top:38px;}   /* pH 마커 라벨이 위 설명문과 겹치지 않게 */
+  .ph-strip{height:38px;}
+  .ph-labels{font-size:11.5px;}
+
+  /* 중화 반응 */
+  input[type=range]{height:6px;}
+  .slider-row label{font-size:14px;}
+  .eq{font-size:15.5px;padding:14px;}
+
+  /* 한눈에 비교 */
+  .compare-row{grid-template-columns:repeat(auto-fit,minmax(98px,1fr));gap:16px;}
+  .compare-cell .mini-beaker{width:54px;height:66px;}
+  .compare-cell .c-name{font-size:12.5px;min-height:32px;}
+
+  /* 홈판 — 화면 폭을 다 쓰고 칸을 키운다(손가락으로 칠할 크기) */
+  .well-grid{max-width:100%;gap:5px;margin-top:20px;}
+  .palette-row{gap:10px;}
+  .swatch-btn{padding:10px 14px;}
+  .swatch-dot{width:24px;height:24px;}
+  .swatch-label{font-size:11px;}
+  .toggle-btn{font-size:14.5px;padding:14px 18px;}
+  .tmpl-btn{font-size:13.5px;padding:11px 17px;}
+}
+
+/* 태블릿 가로 · 큰 화면 */
+@media (min-width:1024px){
+  .wrap{max-width:1000px;}
+  .grid{gap:24px;}
+  .well-grid{max-width:840px;}
+  .compare-row{gap:18px;}
+}
+
+/* 아이패드 세로에서 2단이 좁아지는 구간 — 카드 안쪽 여백만 줄여 숨통 */
+@media (min-width:744px) and (max-width:860px){
+  .grid{gap:16px;}
+  .card{padding:20px;}
+}
+
+/* 안전영역(홈 인디케이터) */
+@supports (padding:env(safe-area-inset-bottom)){
+  body{padding-bottom:calc(78px + env(safe-area-inset-bottom));}
+}
+/* == IPAD-FIT END == */
+</style>
+</head>
+<body>
+  <a href="../" style="display:inline-flex;align-items:center;gap:7px;margin-bottom:18px;
+  font-family:'Space Mono','Courier New',monospace;font-size:12px;letter-spacing:.06em;
+  color:#9cb0a8;text-decoration:none;border:1px solid #2c473d;border-radius:20px;
+  padding:6px 13px;transition:.15s"
+  onmouseover="this.style.color='#f1ede3';this.style.borderColor='#6fb98f'"
+  onmouseout="this.style.color='#9cb0a8';this.style.borderColor='#2c473d'">← 실험실 목록</a>
+<div class="wrap">
+  <div class="eyebrow">Lab 05 · 적정</div>
+  <h1>적정 실험실</h1>
+  <p class="sub">농도를 정확히 아는 용액을 만들고, 그 용액을 뷰렛으로 한 방울씩 떨어뜨려 모르는 용액의 양을 구합니다. 실험마다 시료 농도가 조금씩 달라지니 직접 계산해서 맞혀 보세요.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-p="p1">① 표준 용액 만들기</button>
+    <button class="tab-btn" data-p="p2">② 식초의 산도</button>
+    <button class="tab-btn" data-p="p3">③ pH 적정 곡선·완충</button>
+    <button class="tab-btn" data-p="p4">④ 비타민 C 정량</button>
+  </div>
+
+  <!-- ① 표준 용액 -->
+  <section class="panel active" id="p1">
+    <div class="grid">
+      <div class="card">
+        <h3>0.100 M 옥살산 표준 용액 100 mL</h3>
+        <ol class="steps">
+          <li>옥살산 이수화물(H₂C₂O₄·2H₂O, 화학식량 126.1)을 몇 g 달아야 할까요?
+            <div class="ans"><input id="m1" inputmode="decimal" placeholder="g"> g <button class="go ghost" id="c1">확인</button></div>
+            <div class="fb" id="f1"></div></li>
+          <li>비커에서 녹인 뒤 100 mL 부피 플라스크에 옮기고, 비커를 씻은 물도 넣습니다.</li>
+          <li>오른쪽에서 물을 채워 <b>메니스커스 아랫면</b>을 표선에 맞춥니다. 표선 근처에서는 세척병으로 한 방울씩!</li>
+          <li>이 용액 몇 mL를 피펫으로 덜어 100 mL로 묽히면 0.0100 M이 될까요?
+            <div class="ans"><input id="m2" inputmode="decimal" placeholder="mL"> mL <button class="go ghost" id="c2">확인</button></div>
+            <div class="fb" id="f2"></div></li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3>부피 플라스크 · 표선 맞추기</h3>
+        <div class="stage">
+          <svg viewBox="0 0 300 300" id="vf">
+            <defs><clipPath id="vfc"><path d="M135 20 H165 V150 C230 170 240 270 200 285 H100 C60 270 70 170 135 150 Z"/></clipPath></defs>
+            <rect id="vfLiq" x="40" y="285" width="220" height="0" fill="rgba(127,176,224,.35)" clip-path="url(#vfc)"/>
+            <path d="M135 20 H165 V150 C230 170 240 270 200 285 H100 C60 270 70 170 135 150 Z" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
+            <line x1="128" x2="172" y1="70" y2="70" stroke="#ffe066" stroke-width="2"/>
+            <text x="178" y="74" fill="#ffe066" font-size="11">표선</text>
+            <!-- 확대경 -->
+            <circle cx="245" cy="70" r="44" fill="#0c1915" stroke="#9cb0a8"/>
+            <g clip-path="url(#zc)"><rect id="zLiq" x="205" y="200" width="80" height="120" fill="rgba(127,176,224,.45)"/><path id="zMen" fill="#0c1915"/></g>
+            <defs><clipPath id="zc"><circle cx="245" cy="70" r="43"/></clipPath></defs>
+            <line x1="203" x2="287" y1="70" y2="70" stroke="#ffe066" stroke-width="1.5" stroke-dasharray="3 2"/>
+            <text x="245" y="128" text-anchor="middle" fill="#9cb0a8" font-size="10">목 부분 확대</text>
+          </svg>
+        </div>
+        <div class="btn-row" style="justify-content:center">
+          <button class="go" id="pour">물 붓기 (누르고 있기)</button>
+          <button class="go ghost" id="drop">세척병 한 방울</button>
+          <button class="go ghost" id="vfReset">처음부터</button>
+        </div>
+        <div class="fb" id="vfMsg" style="text-align:center">표선까지 채워 보세요.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ② 식초 -->
+  <section class="panel" id="p2">
+    <div class="eq">CH₃COOH(aq) + NaOH(aq) → CH₃COONa(aq) + H₂O(l)</div>
+    <div class="grid">
+      <div class="card">
+        <h3>실험 순서</h3>
+        <ol class="steps">
+          <li>식초 10.0 mL를 100 mL로 묽힙니다(10배).</li>
+          <li>묽힌 식초 20.0 mL를 삼각 플라스크에 넣고 페놀프탈레인 2~3방울.</li>
+          <li>0.100 M NaOH를 뷰렛으로 떨어뜨리다가 <b>붉은색이 사라지지 않으면</b> 멈춥니다.</li>
+          <li>넣은 부피로 식초 속 아세트산 농도(%)를 구합니다. (CH₃COOH 60.0, 식초 밀도 1.00 g/mL)
+            <div class="ans"><input id="vAns" inputmode="decimal" placeholder="%"> % <button class="go ghost" id="vChk">확인</button></div>
+            <div class="fb" id="vFb"></div></li>
+        </ol>
+        <div class="note">먼저 1 mL씩 넣어 대충 어디쯤인지 보고, <b>처음부터</b> 다시 해서 종말점 근처에서 한 방울씩 넣으면 정확해집니다.</div>
+      </div>
+      <div class="card" id="t2"></div>
+    </div>
+  </section>
+
+  <!-- ③ pH 곡선 -->
+  <section class="panel" id="p3">
+    <div class="card">
+      <h3>pH 미터로 적정 곡선 그리기 (산 0.100 M 20.0 mL ← NaOH 0.100 M)</h3>
+      <div class="chip-list" id="acidChips"><button class="chip active" data-v="weak">아세트산 (약산)</button><button class="chip" data-v="strong">염산 (강산)</button></div>
+      <div class="plot"><svg viewBox="0 0 640 320" id="curve"></svg></div>
+      <div class="read"><div><div class="big" id="cV">0.00</div><div class="u">NaOH (mL)</div></div><div><div class="big" id="cPH">-</div><div class="u">pH 미터</div></div></div>
+      <div class="btn-row" style="justify-content:center">
+        <button class="go" id="a1">+1 mL</button><button class="go ghost" id="a01">+0.2 mL</button><button class="go ghost" id="aAuto">끝까지 자동(1 mL씩)</button><button class="go ghost" id="aReset">처음부터</button>
+      </div>
+      <div class="btn-row" style="justify-content:center"><button class="go ghost" id="mEq" disabled>당량점 표시</button><button class="go ghost" id="mHalf" disabled>반당량점 표시</button></div>
+      <div class="fb" id="cMsg" style="text-align:center"></div>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h3>완충 용액 시험</h3>
+        <p style="margin:0 0 10px;font-size:14px;line-height:1.6">반당량점 용액(아세트산 + 아세트산 나트륨)과 순수한 물 30 mL에 같은 양의 산이나 염기를 넣어 봅니다.</p>
+        <table><thead><tr><th></th><th>완충 용액</th><th>물</th></tr></thead><tbody id="bufT"></tbody></table>
+        <div class="btn-row"><button class="go ghost" id="bH">0.100 M HCl 1 mL 넣기</button><button class="go ghost" id="bOH">0.100 M NaOH 1 mL 넣기</button><button class="go ghost" id="bR">다시</button></div>
+      </div>
+      <div class="card">
+        <h3>생각해 보기</h3>
+        <div class="q"><p>1. 반당량점에서 pH = pKa인 까닭은?</p><details><summary>확인</summary>아세트산의 절반이 중화되어 [CH₃COOH] = [CH₃COO⁻]이 됩니다. Ka = [H⁺][CH₃COO⁻]/[CH₃COOH]에서 두 농도가 같으니 Ka = [H⁺], 곧 pH = pKa ≈ 4.74 (Ka ≈ 1.8×10⁻⁵).</details></div>
+        <div class="q"><p>2. 약산의 당량점 pH가 7보다 큰 까닭은?</p><details><summary>확인</summary>당량점에는 CH₃COONa만 남는데, CH₃COO⁻이 물과 반응(가수 분해)해 OH⁻을 만들기 때문입니다. 그래서 지시약으로 페놀프탈레인(변색 8.2~10)을 씁니다.</details></div>
+        <div class="q"><p>3. 완충 용액의 pH가 잘 안 변하는 까닭은?</p><details><summary>확인</summary>넣은 H⁺는 CH₃COO⁻이, OH⁻는 CH₃COOH가 받아 없애기 때문입니다.</details></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ④ 비타민 C -->
+  <section class="panel" id="p4">
+    <div class="eq">C₆H₈O₆ (비타민 C) + I₂ → C₆H₆O₆ + 2HI</div>
+    <div class="grid">
+      <div class="card">
+        <h3>실험 순서</h3>
+        <ol class="steps">
+          <li>비타민 C 정 1알(표시량 500 mg)을 녹여 250 mL로 만듭니다.</li>
+          <li>이 용액 25.0 mL를 삼각 플라스크에 넣고 녹말 용액을 몇 방울 넣습니다.</li>
+          <li>0.0100 M 아이오딘 용액을 뷰렛으로 넣다가 <b>청람색이 사라지지 않으면</b> 멈춥니다.</li>
+          <li>정 1알에 든 비타민 C(mg)를 구하세요. (C₆H₈O₆ 176.1)
+            <div class="ans"><input id="cAns" inputmode="decimal" placeholder="mg"> mg <button class="go ghost" id="cChk">확인</button></div>
+            <div class="fb" id="cFb"></div></li>
+        </ol>
+        <div class="note">아이오딘은 비타민 C와 먼저 반응해 없어집니다. 비타민 C가 다 없어진 뒤 남는 첫 아이오딘이 녹말과 만나 청람색을 띱니다.</div>
+      </div>
+      <div class="card" id="t4"></div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+document.querySelectorAll('.tab-btn').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.toggle('active',x===b));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.p));});
+const num=v=>parseFloat(String(v).replace(',','.'));
+function check(inp,fb,ans,tol,okMsg,noMsg){const v=num($(inp).value),f=$(fb);
+  if(isNaN(v)){f.className='fb no';f.textContent='숫자를 넣어 주세요.';return;}
+  const ok=Math.abs(v-ans)<=Math.abs(ans)*tol;f.className='fb '+(ok?'ok':'no');f.innerHTML=ok?okMsg:noMsg;}
+
+// ── pH 계산: 전하 균형을 이분법으로 풂 (약산 nA, 강산 nS, 강염기 nB, 부피 V(L))
+function pH({nA=0,nS=0,nB=0,V,Ka=1.8e-5}){const Ct=nA/V,Na=nB/V,Cl=nS/V;let lo=-14,hi=1;
+  for(let i=0;i<60;i++){const m=(lo+hi)/2,H=10**m,f=Na+H-1e-14/H-Ct*Ka/(Ka+H)-Cl;if(f>0)hi=m;else lo=m;}return -(lo+hi)/2;}
+
+// ── ① 표준 용액
+$('#c1').onclick=()=>check('#m1','#f1',1.261,0.01,'맞습니다. 0.100 mol/L × 0.100 L = 0.0100 mol, × 126.1 g/mol = <b>1.26 g</b>.','몰수 = 몰농도 × 부피(L)를 먼저 구하고, 화학식량을 곱해 보세요. 결정수(2H₂O)까지 포함한 화학식량입니다.');
+$('#c2').onclick=()=>check('#m2','#f2',10,0.005,'맞습니다. M₁V₁ = M₂V₂ → 0.100 × V = 0.0100 × 100, <b>V = 10.0 mL</b>.','묽혀도 용질의 몰수는 같습니다: M₁V₁ = M₂V₂.');
+let vol=0,poring=null;const FULL=100;
+// 부피(mL) → 액면 높이(y). 몸통 0~92 mL는 y 285→150, 목 92~110 mL는 y 150→20 (표선 y=70 ↔ 100 mL)
+const yOf=v=>v<=92?285-135*(v/92):150-(v-92)*(80/8);
+function vfDraw(){const y=yOf(vol);$('#vfLiq').setAttribute('y',y);$('#vfLiq').setAttribute('height',285-y);
+  const zy=70+(yOf(vol)-yOf(FULL))*6; // 6배 확대, 표선=70
+  $('#zLiq').setAttribute('y',zy);$('#zMen').setAttribute('d',`M205 ${zy-1} H285 V${zy-9} Q245 ${zy+7} 205 ${zy-9} Z`);
+  const d=vol-FULL,m=$('#vfMsg');
+  if(vol<60)m.textContent='표선까지 채워 보세요.';
+  else if(d>0.15){m.className='fb no';m.textContent=`표선을 넘었습니다(+${d.toFixed(1)} mL). 덜어 낼 수 없으니 처음부터 다시!`;}
+  else if(Math.abs(d)<=0.15){m.className='fb ok';m.textContent='메니스커스 아랫면이 표선에 맞았습니다. 마개를 막고 여러 번 뒤집어 섞습니다.';}
+  else{m.textContent=`표선까지 약 ${(-d).toFixed(1)} mL 남았습니다.`;}}
+function pourStop(){clearInterval(poring);poring=null;}
+$('#pour').addEventListener('pointerdown',e=>{e.preventDefault();if(poring)return;poring=setInterval(()=>{vol+=vol<90?1.2:0.35;vol=Math.min(vol,105);vfDraw();},50);});
+['pointerup','pointerleave','pointercancel'].forEach(ev=>$('#pour').addEventListener(ev,pourStop));
+$('#drop').onclick=()=>{vol=Math.min(105,vol+0.05+Math.random()*0.03);vfDraw();};
+$('#vfReset').onclick=()=>{vol=0;$('#vfMsg').className='fb';vfDraw();};
+vfDraw();
+
+// ── 뷰렛 적정 위젯
+function titrator(box,{color,max=50,onEnd}){
+  box.innerHTML=`<h3>뷰렛 적정</h3><div class="stage"><svg viewBox="0 0 300 330">
+    <rect x="135" y="10" width="22" height="200" rx="3" fill="none" stroke="#f1ede3" stroke-width="2"/>
+    <rect class="bl" x="137" y="12" width="18" height="196" fill="rgba(127,176,224,.35)"/>
+    <g class="tk"></g><path d="M141 210 H151 L148 232 H144 Z" fill="#f1ede3"/>
+    <circle class="dr" cx="146" cy="240" r="3" fill="rgba(127,176,224,.8)" opacity="0"/>
+    <defs><clipPath id="${box.id}c"><path d="M128 250 H164 V268 L206 318 H86 L128 268 Z"/></clipPath></defs>
+    <rect class="fl" x="80" y="278" width="140" height="44" clip-path="url(#${box.id}c)"/>
+    <path d="M128 250 H164 V268 L206 318 H86 L128 268 Z" fill="none" stroke="#f1ede3" stroke-width="2.5"/></svg></div>
+    <div class="read"><div><div class="big rv">0.00</div><div class="u">넣은 부피 (mL)</div></div></div>
+    <div class="btn-row" style="justify-content:center"><button class="go b1">+1 mL</button><button class="go ghost b2">+0.1 mL</button><button class="go ghost b3">한 방울</button><button class="go ghost b4">처음부터</button></div>
+    <div class="fb msg" style="text-align:center"></div>`;
+  const q=s=>box.querySelector(s);let v=0;
+  for(let m=0;m<=max;m+=5){const y=12+196*m/max;q('.tk').appendChild(el('line',{x1:157,x2:m%10?163:167,y1:y,y2:y,stroke:'#9cb0a8'}));
+    if(m%10===0){const t=el('text',{x:170,y:y+4,fill:'#9cb0a8','font-size':10});t.textContent=m;q('.tk').appendChild(t);}}
+  function draw(){const y=12+196*v/max;q('.bl').setAttribute('y',y);q('.bl').setAttribute('height',Math.max(0,208-y));
+    q('.fl').setAttribute('fill',color(v));q('.rv').textContent=v.toFixed(2);onEnd&&onEnd(v,q('.msg'));}
+  function add(d){if(v>=max)return;v=Math.min(max,Math.round((v+d)*100)/100);const dr=q('.dr');dr.style.transition='none';dr.setAttribute('opacity',1);dr.setAttribute('cy',236);
+    requestAnimationFrame(()=>{dr.style.transition='all .35s ease-in';dr.setAttribute('cy',272);dr.setAttribute('opacity',0);});draw();}
+  q('.b1').onclick=()=>add(1);q('.b2').onclick=()=>add(0.1);q('.b3').onclick=()=>add(0.05);q('.b4').onclick=()=>{v=0;draw();};
+  draw();return{reset:()=>{v=0;draw();}};}
+const mix=(a,b,t)=>`rgba(${a.map((x,i)=>Math.round(x+(b[i]-x)*t)).join(',')})`;
+
+// ── ② 식초: 이번 시료 농도 4.0~6.0 %
+const pct=4+Math.random()*2,Mv=pct*10/60.0,nA2=Mv/10*0.020;
+titrator($('#t2'),{color:v=>{const p=pH({nA:nA2,nB:0.1*v/1000,V:(20+v)/1000}),t=Math.max(0,Math.min(1,(p-8.2)/3.8));return t<=0?'rgba(240,240,235,.18)':mix([240,170,205,.35],[230,60,150,.8],t*t);},
+  onEnd:(v,m)=>{const p=pH({nA:nA2,nB:0.1*v/1000,V:(20+v)/1000});m.textContent=p>=8.2&&p<10.5?'옅은 붉은색이 사라지지 않습니다. 여기가 종말점! 이 부피를 기록하세요.':p>=10.5?'너무 많이 넣었습니다(진한 붉은색). 처음부터 다시 하면 더 정확해요.':'';}});
+$('#vChk').onclick=()=>check('#vAns','#vFb',pct,0.03,`맞습니다! 이번 식초는 <b>${pct.toFixed(2)} %</b>입니다. (넣은 부피 × 0.100 = 아세트산 mmol → ×10배 묽힘 보정 → 식초 10 mL 기준 g → %)`,'다시 계산해 보세요. ① NaOH mmol = 0.100 × V ② 묽힌 식초 20 mL 속 아세트산 mmol도 같음 ③ 묽힌 용액 100 mL 전체 = ×5 ④ 그것이 식초 10 mL에 있던 양 → g으로 바꿔 10 g으로 나누고 ×100');
+
+// ── ④ 비타민 C: 실제 함량 460~520 mg
+const mg=460+Math.random()*60,Veq=(mg/10)/176.1/0.0100; // mL
+titrator($('#t4'),{color:v=>{const ex=v-Veq;if(ex<=0)return 'rgba(240,240,235,.18)';return mix([240,240,235,.18],[40,50,140,.9],Math.min(1,ex/0.25));},
+  onEnd:(v,m)=>{const ex=v-Veq;m.textContent=ex>0&&ex<0.3?'청람색이 사라지지 않습니다. 종말점! 부피를 기록하세요.':ex>=0.3?'많이 지나쳤습니다. 처음부터 다시 하면 더 정확해요.':'';}});
+$('#cChk').onclick=()=>check('#cAns','#cFb',mg,0.03,`맞습니다! 이 정에는 비타민 C <b>${Math.round(mg)} mg</b>이 들어 있었습니다(표시량 500 mg의 ${Math.round(mg/5)} %).`,'다시 계산해 보세요. ① I₂ mmol = 0.0100 × V ② 비타민 C mmol도 같음(1:1) ③ 25 mL는 전체 250 mL의 1/10 → ×10 ④ × 176.1 = mg');
+
+// ── ③ pH 적정 곡선
+let acid='weak',cv=0,pts=[],auto=null,marks={};
+const X=v=>50+(620-50)*v/40,Y=p=>290-(290-14)*p/14;
+function cpH(v){const nB=0.1*v/1000,V=(20+v)/1000;return acid==='weak'?pH({nA:0.002,nB,V}):pH({nS:0.002,nB,V});}
+function drawCurve(){const g=$('#curve');g.innerHTML='';
+  for(let p=0;p<=14;p+=2){g.appendChild(el('line',{x1:50,x2:620,y1:Y(p),y2:Y(p),stroke:'#2c473d'}));const t=el('text',{x:42,y:Y(p)+4,'text-anchor':'end',fill:'#9cb0a8','font-size':11});t.textContent=p;g.appendChild(t);}
+  for(let v=0;v<=40;v+=5){const t=el('text',{x:X(v),y:308,'text-anchor':'middle',fill:'#9cb0a8','font-size':11});t.textContent=v;g.appendChild(t);}
+  const lab=el('text',{x:620,y:Y(14)-2,'text-anchor':'end',fill:'#9cb0a8','font-size':11});lab.textContent='NaOH 부피 (mL) →';g.appendChild(lab);
+  if(acid==='weak'&&cv>=8)g.appendChild(el('rect',{x:X(4),y:Y(5.7),width:X(16)-X(4),height:Y(3.8)-Y(5.7),fill:'rgba(111,185,143,.10)'}));
+  if(pts.length>1)g.appendChild(el('path',{d:pts.map((p,i)=>(i?'L':'M')+X(p[0]).toFixed(1)+' '+Y(p[1]).toFixed(1)).join(' '),fill:'none',stroke:'#d95bb0','stroke-width':2.5}));
+  pts.forEach(p=>g.appendChild(el('circle',{cx:X(p[0]),cy:Y(p[1]),r:3,fill:'#f1ede3'})));
+  const mk=(v,p,txt,c,dy=-6)=>{g.appendChild(el('line',{x1:X(v),x2:X(v),y1:Y(0),y2:Y(p),stroke:c,'stroke-dasharray':'4 3'}));g.appendChild(el('line',{x1:X(0),x2:X(v),y1:Y(p),y2:Y(p),stroke:c,'stroke-dasharray':'4 3'}));
+    const t=el('text',{x:X(v)+6,y:Y(p)+dy,fill:c,'font-size':12});t.textContent=txt;g.appendChild(t);};
+  if(marks.eq)mk(20,cpH(20),`당량점 20.0 mL, pH ${cpH(20).toFixed(2)}`,'#ffe066');
+  if(marks.half)mk(10,cpH(10),`반당량점 pH ${cpH(10).toFixed(2)} = pKa`,'#4fd6e0',22);
+  $('#cV').textContent=cv.toFixed(2);$('#cPH').textContent=cpH(cv).toFixed(2);
+  $('#mEq').disabled=cv<22;$('#mHalf').disabled=cv<22||acid!=='weak';}
+function addC(d){if(cv>=40)return;cv=Math.min(40,Math.round((cv+d)*100)/100);pts.push([cv,cpH(cv)]);drawCurve();}
+function resetC(){clearInterval(auto);auto=null;cv=0;marks={};pts=[[0,cpH(0)]];$('#cMsg').textContent='';drawCurve();}
+$('#a1').onclick=()=>addC(1);$('#a01').onclick=()=>addC(0.2);$('#aReset').onclick=resetC;
+$('#aAuto').onclick=()=>{if(auto)return;auto=setInterval(()=>{addC(1);if(cv>=40){clearInterval(auto);auto=null;}},120);};
+$('#mEq').onclick=()=>{marks.eq=1;drawCurve();$('#cMsg').className='fb ok';$('#cMsg').textContent=acid==='weak'?'약산은 당량점 pH가 7보다 큽니다(약 8.7).':'강산은 당량점 pH가 7입니다.';};
+$('#mHalf').onclick=()=>{marks.half=1;drawCurve();$('#cMsg').className='fb ok';$('#cMsg').textContent=`pKa ≈ ${cpH(10).toFixed(2)} → Ka = 10^-pKa ≈ ${(10**-cpH(10)).toExponential(1)}. 초록 띠 = 완충 구간(pH가 잘 안 변함).`;};
+document.querySelectorAll('#acidChips .chip').forEach(c=>c.onclick=()=>{document.querySelectorAll('#acidChips .chip').forEach(x=>x.classList.toggle('active',x===c));acid=c.dataset.v;resetC();});
+resetC();
+
+// 완충 시험: 완충 = 아세트산 2 mmol + NaOH 1 mmol (30 mL), 물 30 mL
+let bx={h:0,oh:0};
+function bufDraw(){const V=(30+bx.h+bx.oh)/1000,nS=0.1*bx.h/1000,nB=0.1*bx.oh/1000;
+  const pb=pH({nA:0.002,nB:0.001+nB,nS,V}),pw=pH({nB,nS,V}),pb0=pH({nA:0.002,nB:0.001,V:0.03});
+  const row=(k,a,b)=>`<tr><td>${k}</td><td>${a}</td><td>${b}</td></tr>`;
+  $('#bufT').innerHTML=row('처음 pH',pb0.toFixed(2),'7.00')+row('지금 pH',pb.toFixed(2),pw.toFixed(2))+row('변화',(pb-pb0>=0?'+':'')+(pb-pb0).toFixed(2),(pw-7>=0?'+':'')+(pw-7).toFixed(2));}
+$('#bH').onclick=()=>{bx.h+=1;bufDraw();};$('#bOH').onclick=()=>{bx.oh+=1;bufDraw();};$('#bR').onclick=()=>{bx={h:0,oh:0};bufDraw();};
+bufDraw();
+})();
+</script>
+</body>
+</html>

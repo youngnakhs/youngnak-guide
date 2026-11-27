@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="ko">
-<head><script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML='<p style="font:16px sans-serif;padding:2em">이 자료의 열람 기간이 종료되었습니다(2027-02-05).</p>';throw new Error("expired");}</script>
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>반응 속도 실험실</title>
@@ -156,12 +156,13 @@ html{-webkit-text-size-adjust:100%;}
 <div class="wrap">
   <div class="eyebrow">Lab 04 · 반응 속도</div>
   <h1>반응 속도 실험실</h1>
-  <p class="sub">대리석(탄산 칼슘)에 묽은 염산을 부어 나오는 이산화 탄소를 주사기로 모읍니다. 염산 농도와 대리석 크기를 하나씩 바꿔 가며 기체가 모이는 빠르기를 비교해 보세요.</p>
+  <p class="sub">대리석(탄산 칼슘)에 묽은 염산을 부어 나오는 이산화 탄소를 주사기로 모읍니다. 염산 농도와 대리석 크기를 하나씩 바꿔 가며 기체가 모이는 빠르기를 비교하고, 아이오딘 시계 반응으로 반응 차수까지 구해 보세요.</p>
 
   <div class="tabs">
     <button class="tab-btn active" data-p="p1">① 농도·입자 크기 실험</button>
     <button class="tab-btn" data-p="p2">② 결과 정리</button>
     <button class="tab-btn" data-p="p3">③ 충돌 모형</button>
+    <button class="tab-btn" data-p="p4">④ 아이오딘 시계 반응</button>
   </div>
 
   <!-- ① 실험 -->
@@ -260,6 +261,38 @@ html{-webkit-text-size-adjust:100%;}
         <div><b id="sIon">0</b><small>화면 속 H⁺ 이온 수</small></div>
       </div>
       <div class="note">주황 점 = H⁺ 이온, 흰 사각형 = 탄산 칼슘. 이온이 표면에 부딪칠 때 반짝입니다. 충돌 가운데 일부만 반응으로 이어지므로, <b>충돌이 많을수록 반응이 빠릅니다</b>.</div>
+    </div>
+  </section>
+  <!-- ④ 아이오딘 시계 반응 -->
+  <section class="panel" id="p4">
+    <div class="eq">S₂O₈²⁻ + 2I⁻ → I₂ + 2SO₄²⁻ (느림) &nbsp;·&nbsp; I₂ + 2S₂O₃²⁻ → 2I⁻ + S₄O₆²⁻ (빠름)</div>
+    <div class="grid">
+      <div class="card">
+        <h3>섞을 양 고르기 (물을 더해 늘 20 mL씩)</h3>
+        <p class="lbl">0.20 M KI (I⁻)</p>
+        <div class="chip-list" id="kiChips"><button class="chip" data-v="5">5 mL</button><button class="chip" data-v="10">10 mL</button><button class="chip" data-v="15">15 mL</button><button class="chip active" data-v="20">20 mL</button></div>
+        <p class="lbl">0.10 M K₂S₂O₈ (S₂O₈²⁻)</p>
+        <div class="chip-list" id="psChips"><button class="chip" data-v="5">5 mL</button><button class="chip" data-v="10">10 mL</button><button class="chip" data-v="15">15 mL</button><button class="chip active" data-v="20">20 mL</button></div>
+        <div class="btn-row"><button class="go" id="kMix">▶ 섞고 시간 재기</button><button class="go ghost" id="kFf" disabled>⏩ 끝까지</button></div>
+        <div class="note">두 용액에 <b>싸이오황산 나트륨 0.010 M 5 mL와 녹말</b>을 늘 같이 넣습니다. 생긴 I₂를 싸이오황산 이온이 곧바로 없애다가, 그것이 다 떨어지는 순간 I₂가 남아 <b>갑자기 청람색</b>이 됩니다. 걸린 시간이 짧을수록 반응이 빠릅니다(속도 ∝ 1/t).</div>
+      </div>
+      <div class="card">
+        <h3>비커 · 초시계</h3>
+        <div class="stage"><svg viewBox="0 0 300 200">
+          <path d="M90 30 V170 Q90 182 102 182 H198 Q210 182 210 170 V30" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
+          <rect id="kLiq" x="92" y="70" width="116" height="110" rx="8" fill="rgba(240,240,235,.16)" style="transition:fill .25s"/>
+          <text x="150" y="196" text-anchor="middle" fill="#9cb0a8" font-size="11">총 45 mL</text></svg></div>
+        <div class="readout"><div><div class="big" id="kT">0.0</div><div class="u">시간 (초)</div></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>기록과 분석</h3>
+      <div id="kTbl"><div class="empty">아직 기록이 없습니다.</div></div>
+      <div class="plot" style="margin-top:12px"><svg viewBox="0 0 640 260" id="kPlot"></svg></div>
+      <div class="legend"><span><i style="background:#f2a541"></i>KI 부피 바꿈 (K₂S₂O₈ 20 mL 고정)</span><span><i style="background:#4fd6e0"></i>K₂S₂O₈ 부피 바꿈 (KI 20 mL 고정)</span></div>
+      <div class="q" style="margin-top:12px"><p>KI만 2배로 늘렸을 때 1/t는 몇 배가 되나요? K₂S₂O₈만 2배로 늘렸을 때는? 이것으로 속도 법칙을 써 보세요.</p>
+        <details><summary>확인</summary>둘 다 약 2배 → 각각 1차입니다. v = k[I⁻][S₂O₈²⁻], 전체 반응 차수는 2차. 그래프의 점들이 원점을 지나는 직선 위에 놓이는 것도 1차라는 증거입니다.</details></div>
+      <div class="btn-row"><button class="go ghost" id="kClr">기록 지우기</button></div>
     </div>
   </section>
 </div>
@@ -390,6 +423,29 @@ function mTick(now){const dt=Math.min(0.033,(now-mLast)/1000);mLast=now;
   requestAnimationFrame(mTick);}
 addEventListener('resize',()=>{if($('#p3').classList.contains('active'))resize();});
 resize();requestAnimationFrame(mTick);
+
+// ── ④ 아이오딘 시계 반응: t = 20 s × (20/KI) × (20/S2O8) × (1 ± 3 %)
+const kRuns=[];let kLive=null,kRaf=0,kLast=0;
+const kGet=chips('#kiChips'),pGet=chips('#psChips');
+function kLock(on){document.querySelectorAll('#kiChips .chip,#psChips .chip').forEach(c=>c.disabled=on);$('#kMix').disabled=on;$('#kFf').disabled=!on;}
+$('#kMix').onclick=()=>{const a=+kGet(),b=+pGet();kLive={a,b,T:20*(20/a)*(20/b)*(0.97+Math.random()*0.06),t:0};
+  $('#kLiq').setAttribute('fill','rgba(240,240,235,.16)');kLock(true);kLast=performance.now();kRaf=requestAnimationFrame(kTick);};
+function kTick(now){const dt=Math.min(0.1,(now-kLast)/1000);kLast=now;kLive.t+=dt*Math.max(1,kLive.T/25);
+  if(kLive.t>=kLive.T)return kDone();$('#kT').textContent=kLive.t.toFixed(1);kRaf=requestAnimationFrame(kTick);}
+$('#kFf').onclick=()=>{if(kLive)kDone();};
+function kDone(){cancelAnimationFrame(kRaf);const r=kLive;kLive=null;$('#kT').textContent=r.T.toFixed(1);$('#kLiq').setAttribute('fill','rgba(32,40,120,.92)');
+  kRuns.push({a:r.a,b:r.b,t:r.T});kLock(false);kTable();}
+function kTable(){if(!kRuns.length){$('#kTbl').innerHTML='<div class="empty">아직 기록이 없습니다.</div>';$('#kPlot').innerHTML='';return;}
+  $('#kTbl').innerHTML='<table><thead><tr><th>KI (mL)</th><th>K₂S₂O₈ (mL)</th><th>걸린 시간 t (초)</th><th>1/t (×10⁻³ /초)</th></tr></thead><tbody>'+
+    kRuns.map(r=>`<tr><td>${r.a}</td><td>${r.b}</td><td>${r.t.toFixed(1)}</td><td>${(1000/r.t).toFixed(1)}</td></tr>`).join('')+'</tbody></table>';
+  const g=$('#kPlot');g.innerHTML='';const L=56,R=620,T=14,B=220,X=v=>L+(R-L)*v/20,Y=y=>B-(B-T)*y/60;
+  for(let y=0;y<=60;y+=10){g.appendChild(el('line',{x1:L,x2:R,y1:Y(y),y2:Y(y),stroke:'#2c473d'}));const tx=el('text',{x:L-8,y:Y(y)+4,'text-anchor':'end',fill:'#9cb0a8','font-size':11});tx.textContent=y;g.appendChild(tx);}
+  for(let v=0;v<=20;v+=5){const tx=el('text',{x:X(v),y:B+18,'text-anchor':'middle',fill:'#9cb0a8','font-size':11});tx.textContent=v;g.appendChild(tx);}
+  const a1=el('text',{x:R,y:B+36,'text-anchor':'end',fill:'#9cb0a8','font-size':11});a1.textContent='바꾼 용액의 부피 (mL)';g.appendChild(a1);
+  const a2=el('text',{x:L,y:T-2,fill:'#9cb0a8','font-size':11});a2.textContent='1/t (×10⁻³ /초)';g.appendChild(a2);
+  kRuns.forEach(r=>{const y=1000/r.t;if(r.b===20)g.appendChild(el('circle',{cx:X(r.a),cy:Y(y),r:6,fill:'#f2a541'}));
+    if(r.a===20)g.appendChild(el('circle',{cx:X(r.b),cy:Y(y),r:r.b===20?9:6,fill:'none',stroke:'#4fd6e0','stroke-width':2.5}));});}
+$('#kClr').onclick=()=>{if(kLive)return;kRuns.length=0;kTable();$('#kT').textContent='0.0';$('#kLiq').setAttribute('fill','rgba(240,240,235,.16)');};
 })();
 </script>
 </body>
