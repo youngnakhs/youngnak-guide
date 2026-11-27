@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>화학 평형 실험실</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap');
+:root{
+  --bg:#10201b;--panel:#182f28;--panel-2:#1f382f;--line:#2c473d;--ink:#f1ede3;--muted:#9cb0a8;
+  --acid:#e4572e;--acid-2:#f2a541;--neutral:#6fb98f;--base-2:#3e9c9c;--base:#3b6fa0;--pink:#d95bb0;
+  --mono:'Space Mono','Courier New',monospace;--sans:'Work Sans',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;color:var(--ink);font-family:var(--sans);padding:28px 16px 60px;
+  background:radial-gradient(circle at 15% 0%,rgba(111,185,143,.08),transparent 45%),radial-gradient(circle at 90% 90%,rgba(255,177,92,.07),transparent 45%),var(--bg);}
+.wrap{max-width:920px;margin:0 auto;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--neutral);text-transform:uppercase;margin-bottom:8px;}
+h1{font-weight:700;font-size:32px;margin:0 0 6px;letter-spacing:-.01em;}
+.sub{color:var(--muted);font-size:14.5px;line-height:1.6;margin:0 0 26px;max-width:620px;}
+.tabs{display:flex;gap:8px;margin-bottom:22px;border-bottom:1px solid var(--line);flex-wrap:wrap;}
+.tab-btn{font-family:var(--sans);font-weight:600;font-size:14px;background:none;border:none;color:var(--muted);padding:10px 4px;cursor:pointer;position:relative;}
+.tab-btn.active{color:var(--ink);}
+.tab-btn.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:var(--neutral);border-radius:2px;}
+.tab-btn+.tab-btn{margin-left:18px;}
+.panel{display:none;}
+.panel.active{display:block;animation:fade .3s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:720px){.grid{grid-template-columns:1fr;}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;}
+.card h2{font-size:12px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;font-weight:700;}
+.card+.card,.grid+.card,.card+.grid{margin-top:18px;}
+.chip-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.chip{font-family:var(--sans);font-size:13px;font-weight:500;background:var(--panel-2);border:1px solid var(--line);color:var(--ink);padding:8px 12px;border-radius:20px;cursor:pointer;}
+.chip:hover{border-color:var(--neutral);}
+.chip.active{background:var(--neutral);color:#0d1a15;border-color:var(--neutral);font-weight:700;}
+.lbl{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0 0 8px;}
+.eq{font-family:var(--mono);font-size:14px;text-align:center;padding:12px;background:var(--panel-2);border-radius:8px;margin-bottom:16px;line-height:1.7;}
+.note{font-size:12.5px;color:var(--muted);line-height:1.6;background:var(--panel-2);border-radius:8px;padding:10px 12px;margin-top:14px;}
+.note b{color:var(--ink);}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.go{font-family:var(--sans);font-weight:700;font-size:14.5px;border:none;border-radius:10px;padding:11px 15px;cursor:pointer;background:var(--neutral);color:#0d1a15;touch-action:manipulation;}
+.go.ghost{background:var(--panel-2);color:var(--ink);border:1px solid var(--line);}
+.go:disabled{opacity:.45;cursor:default;}
+.stage{display:flex;justify-content:center;}
+.stage svg{width:100%;max-width:320px;height:auto;}
+svg text{font-family:var(--mono);}
+.read{display:flex;justify-content:space-around;font-family:var(--mono);text-align:center;margin-top:8px;gap:8px;}
+.read .big{font-size:22px;font-weight:700;line-height:1.2;}
+.read .u{font-size:11px;color:var(--muted);letter-spacing:.06em;}
+.fb{font-size:13.5px;margin-top:10px;min-height:1.2em;line-height:1.6;}
+.fb.ok{color:var(--neutral);}.fb.no{color:var(--acid-2);}
+.shift{font-size:15px;font-weight:700;text-align:center;margin-top:10px;min-height:1.4em;}
+.bar{height:16px;border-radius:8px;background:linear-gradient(90deg,#e169a0,#2d55d2);position:relative;margin:12px 0 4px;}
+.bar i{position:absolute;top:-5px;width:4px;height:26px;background:var(--ink);border-radius:2px;transition:left .8s ease;}
+.bar-l{display:flex;justify-content:space-between;font-size:11.5px;color:var(--muted);font-family:var(--mono);}
+.log{font-size:13px;line-height:1.7;color:var(--muted);max-height:160px;overflow:auto;margin:0;padding-left:18px;}
+.log li b{color:var(--ink);}
+.steps{counter-reset:s;margin:0;padding:0;list-style:none;}
+.steps li{position:relative;padding:0 0 10px 30px;line-height:1.6;font-size:14px;}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;width:21px;height:21px;border-radius:50%;background:var(--panel-2);border:1px solid var(--line);font:700 11px/19px var(--mono);text-align:center;color:var(--neutral);}
+.ans{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:14px;}
+.ans input{width:120px;font:700 16px var(--mono);padding:9px 10px;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);color:var(--ink);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:center;}
+th{font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:400;}
+.plot{background:var(--panel-2);border-radius:10px;padding:10px;margin-top:12px;}
+.plot svg{width:100%;height:auto;display:block;}
+.empty{color:var(--muted);font-size:13px;font-family:var(--mono);padding:6px 0;}
+@media (prefers-reduced-motion:reduce){.panel.active{animation:none;}.bar i{transition:none;}}
+
+/* == IPAD-FIT BEGIN (자동 생성 · 직접 수정하지 말 것) == */
+/* ══ 아이패드 대응 (자동 삽입 · 화학실험실 파이프라인) ══════════
+   대상 폭 — 세로 744(mini)/810(10.9")/834(Air·Pro11)/1024(Pro12.9")
+            가로 1080/1133/1194/1366
+   원칙 — 손가락 터치 목표 44px 이상, 본문 글자 키우기, 홈판을 화면 폭에 맞춰 확대 */
+html{-webkit-text-size-adjust:100%;}
+
+/* 태블릿 세로부터 */
+@media (min-width:744px){
+  body{padding:38px 30px 78px;font-size:15.5px;}
+  .wrap{max-width:900px;}
+  h1{font-size:38px;}
+  .sub{font-size:16px;line-height:1.7;max-width:680px;}
+
+  /* 탭 — 손가락으로 누를 크기 */
+  .tabs{flex-wrap:wrap;gap:0 4px;}
+  .tab-btn{font-size:15.5px;padding:15px 6px;}
+  .tab-btn+.tab-btn{margin-left:26px;}
+
+  /* 선택 칩 — 44px 이상 */
+  .chip{font-size:14.5px;padding:12px 17px;border-radius:24px;}
+  .card{padding:22px 24px;}
+  .card h3{font-size:12.5px;margin-bottom:16px;}
+  .note{font-size:13.5px;padding:12px 14px;}
+
+  /* 비커·수치 */
+  .beaker-svg{width:172px;height:206px;}
+  .readout .ph-big{font-size:46px;}
+  .verdict{font-size:15px;padding:6px 15px;}
+  .ph-strip-wrap{margin-top:38px;}   /* pH 마커 라벨이 위 설명문과 겹치지 않게 */
+  .ph-strip{height:38px;}
+  .ph-labels{font-size:11.5px;}
+
+  /* 중화 반응 */
+  input[type=range]{height:6px;}
+  .slider-row label{font-size:14px;}
+  .eq{font-size:15.5px;padding:14px;}
+
+  /* 한눈에 비교 */
+  .compare-row{grid-template-columns:repeat(auto-fit,minmax(98px,1fr));gap:16px;}
+  .compare-cell .mini-beaker{width:54px;height:66px;}
+  .compare-cell .c-name{font-size:12.5px;min-height:32px;}
+
+  /* 홈판 — 화면 폭을 다 쓰고 칸을 키운다(손가락으로 칠할 크기) */
+  .well-grid{max-width:100%;gap:5px;margin-top:20px;}
+  .palette-row{gap:10px;}
+  .swatch-btn{padding:10px 14px;}
+  .swatch-dot{width:24px;height:24px;}
+  .swatch-label{font-size:11px;}
+  .toggle-btn{font-size:14.5px;padding:14px 18px;}
+  .tmpl-btn{font-size:13.5px;padding:11px 17px;}
+}
+
+/* 태블릿 가로 · 큰 화면 */
+@media (min-width:1024px){
+  .wrap{max-width:1000px;}
+  .grid{gap:24px;}
+  .well-grid{max-width:840px;}
+  .compare-row{gap:18px;}
+}
+
+/* 아이패드 세로에서 2단이 좁아지는 구간 — 카드 안쪽 여백만 줄여 숨통 */
+@media (min-width:744px) and (max-width:860px){
+  .grid{gap:16px;}
+  .card{padding:20px;}
+}
+
+/* 안전영역(홈 인디케이터) */
+@supports (padding:env(safe-area-inset-bottom)){
+  body{padding-bottom:calc(78px + env(safe-area-inset-bottom));}
+}
+/* == IPAD-FIT END == */
+</style>
+</head>
+<body>
+  <a href="../" style="display:inline-flex;align-items:center;gap:7px;margin-bottom:18px;
+  font-family:'Space Mono','Courier New',monospace;font-size:12px;letter-spacing:.06em;
+  color:#9cb0a8;text-decoration:none;border:1px solid #2c473d;border-radius:20px;
+  padding:6px 13px;transition:.15s"
+  onmouseover="this.style.color='#f1ede3';this.style.borderColor='#6fb98f'"
+  onmouseout="this.style.color='#9cb0a8';this.style.borderColor='#2c473d'">← 실험실 목록</a>
+<div class="wrap">
+  <div class="eyebrow">Lab 06 · 화학 평형</div>
+  <h1>화학 평형 실험실</h1>
+  <p class="sub">평형에 있는 용액과 기체에 농도·온도·압력 변화를 주고, 색이 어느 쪽으로 바뀌는지 봅니다. 르샤틀리에 원리로 예측한 다음 직접 확인해 보세요.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-p="p1">① 농도·온도와 평형 이동</button>
+    <button class="tab-btn" data-p="p2">② NO₂·N₂O₄ 압력과 온도</button>
+    <button class="tab-btn" data-p="p3">③ 용해도곱과 공통 이온</button>
+  </div>
+
+  <!-- ① 코발트 착이온 -->
+  <section class="panel active" id="p1">
+    <div class="eq">[Co(H₂O)₆]²⁺ (분홍) + 4Cl⁻ ⇌ [CoCl₄]²⁻ (파랑) + 6H₂O &nbsp; ΔH &gt; 0</div>
+    <div class="grid">
+      <div class="card">
+        <h2>무엇을 바꿀까</h2>
+        <p class="lbl">농도</p>
+        <div class="btn-row" style="margin-top:0">
+          <button class="go ghost" id="coHCl">진한 염산 2 mL</button>
+          <button class="go ghost" id="coW">물 2 mL</button>
+          <button class="go ghost" id="coAg">질산 은 몇 방울</button>
+        </div>
+        <p class="lbl" style="margin-top:16px">온도 (시험관을 담그는 곳)</p>
+        <div class="chip-list" id="coT"><button class="chip" data-v="0">얼음물 0 °C</button><button class="chip active" data-v="25">실온 25 °C</button><button class="chip" data-v="80">뜨거운 물 80 °C</button></div>
+        <button class="go ghost" id="coR">처음 상태로</button>
+        <div class="note">먼저 <b>어느 쪽으로 이동할지 예측</b>한 뒤 버튼을 누르세요. 질산 은(Ag⁺)은 Cl⁻과 만나 흰 AgCl 앙금이 됩니다.</div>
+      </div>
+      <div class="card">
+        <h2>시험관</h2>
+        <div class="stage"><svg viewBox="0 0 300 230">
+          <rect x="112" y="10" width="76" height="16" rx="3" fill="none" stroke="#9cb0a8"/>
+          <defs><clipPath id="tt"><path d="M118 20 V170 A32 32 0 0 0 182 170 V20 Z"/></clipPath></defs>
+          <rect id="coLiq" x="110" y="80" width="80" height="140" clip-path="url(#tt)" style="transition:fill .8s ease,y .5s ease"/>
+          <g id="coPpt" clip-path="url(#tt)"></g>
+          <path d="M118 20 V170 A32 32 0 0 0 182 170 V20" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
+          <text x="150" y="224" text-anchor="middle" fill="#9cb0a8" font-size="11" id="coInfo"></text>
+        </svg></div>
+        <div class="bar"><i id="coBar"></i></div>
+        <div class="bar-l"><span>[Co(H₂O)₆]²⁺ 많음</span><span>[CoCl₄]²⁻ 많음</span></div>
+        <div class="shift" id="coShift"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>한 일과 결과</h2>
+      <ol class="log" id="coLog"></ol>
+    </div>
+  </section>
+
+  <!-- ② NO2 -->
+  <section class="panel" id="p2">
+    <div class="eq">2NO₂(g) (적갈색) ⇌ N₂O₄(g) (무색) &nbsp; ΔH &lt; 0</div>
+    <div class="grid">
+      <div class="card">
+        <h2>주사기 조작</h2>
+        <p class="lbl">부피 (피스톤)</p>
+        <div class="chip-list" id="nV"><button class="chip active" data-v="100">100 mL</button><button class="chip" data-v="50">50 mL로 누르기</button><button class="chip" data-v="200">200 mL로 당기기</button></div>
+        <p class="lbl">온도</p>
+        <div class="chip-list" id="nT"><button class="chip" data-v="0">얼음물 0 °C</button><button class="chip active" data-v="25">25 °C</button><button class="chip" data-v="80">뜨거운 물 80 °C</button></div>
+        <div class="note">피스톤을 누르는 <b>순간</b>에는 같은 기체가 좁은 곳에 모여 색이 진해집니다. 그 다음 몇 초 동안 색이 어떻게 변하는지 그래프로 지켜보세요.</div>
+      </div>
+      <div class="card">
+        <h2>기체 주사기 (옆에서 본 모습)</h2>
+        <div class="stage"><svg viewBox="0 0 320 120">
+          <rect x="20" y="30" width="260" height="56" rx="6" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
+          <rect id="nGas" x="22" y="32" width="200" height="52" style="transition:width .35s ease"/>
+          <g id="nPis" style="transition:transform .35s ease"><rect x="222" y="26" width="7" height="64" fill="#f1ede3"/><rect x="229" y="54" width="90" height="8" fill="#9cb0a8"/></g>
+          <rect x="6" y="50" width="16" height="16" fill="#9cb0a8"/>
+        </svg></div>
+        <div class="read">
+          <div><div class="big" id="nNO2">-</div><div class="u">[NO₂] (M)</div></div>
+          <div><div class="big" id="nN2O4">-</div><div class="u">[N₂O₄] (M)</div></div>
+          <div><div class="big" id="nQK">-</div><div class="u">Q / K</div></div>
+        </div>
+        <div class="shift" id="nShift"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>[NO₂] 농도 변화 (지난 20초)</h2>
+      <div class="plot"><svg viewBox="0 0 640 220" id="nPlot"></svg></div>
+    </div>
+  </section>
+
+  <!-- ③ Ksp -->
+  <section class="panel" id="p3">
+    <div class="eq">Ca(OH)₂(s) ⇌ Ca²⁺(aq) + 2OH⁻(aq) &nbsp; Ksp = [Ca²⁺][OH⁻]²</div>
+    <div class="grid">
+      <div class="card">
+        <h2>실험 순서</h2>
+        <p class="lbl">수산화 칼슘을 녹일 용매</p>
+        <div class="chip-list" id="kS"><button class="chip active" data-v="water">증류수</button><button class="chip" data-v="naoh">0.050 M NaOH</button><button class="chip" data-v="cacl2">0.050 M CaCl₂</button></div>
+        <ol class="steps">
+          <li>고른 용매에 Ca(OH)₂를 녹지 않고 남을 때까지 넣어 저은 뒤(포화) 거릅니다.</li>
+          <li>거른 액 25.0 mL에 페놀프탈레인을 넣습니다.</li>
+          <li>0.050 M HCl을 넣다가 <b>붉은색이 막 사라지면</b> 멈춥니다.</li>
+          <li>이 용매에서 Ca(OH)₂의 용해도 s(M)를 구하세요.
+            <div class="ans"><input id="sAns" inputmode="decimal" placeholder="M"> M <button class="go ghost" id="sChk">확인</button></div>
+            <div class="fb" id="sFb"></div></li>
+        </ol>
+        <div class="note" id="kHint">적정으로 구한 것은 [OH⁻]입니다. 용매에 처음부터 들어 있던 OH⁻나 Ca²⁺가 있는지 생각하세요.</div>
+      </div>
+      <div class="card" id="kT"></div>
+    </div>
+    <div class="card">
+      <h2>용매별 용해도 비교 (맞힌 것만 기록)</h2>
+      <div id="kTbl"><div class="empty">아직 맞힌 용매가 없습니다.</div></div>
+      <div class="note">같은 이온(OH⁻ 또는 Ca²⁺)이 이미 들어 있으면 평형이 왼쪽으로 이동해 덜 녹습니다. 이것이 <b>공통 이온 효과</b>입니다. Ksp는 온도가 같으면 용매가 달라도 같습니다.</div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+document.querySelectorAll('.tab-btn').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.toggle('active',x===b));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.p));});
+function chips(id,cb){const box=$(id);box.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{
+  box.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x===c));cb&&cb(c.dataset.v);});}
+const mix=(a,b,t,al)=>`rgba(${a.map((x,i)=>Math.round(x+(b[i]-x)*t)).join(',')},${al})`;
+const R=8.314,K25=t=>1/298.15-1/(t+273.15);
+
+// ── ① 코발트: 비 r = [파랑]/[분홍] = K(T)·(c/c0)^4, 처음 25 °C에서 r = 1 (보라)
+let co;
+function coInit(){co={V:6,nCl:6*6,T:25,ppt:0};$('#coLog').innerHTML='';document.querySelectorAll('#coT .chip').forEach(x=>x.classList.toggle('active',x.dataset.v==='25'));coDraw(null);}
+const coF=s=>{const r=Math.exp(50000/R*K25(s.T))*Math.pow((s.nCl/s.V)/6,4);return r/(1+r);};
+function coDraw(prev,what){const f=coF(co),al=Math.min(.95,.95*6/co.V+.15);
+  $('#coLiq').setAttribute('fill',mix([225,105,160],[45,85,210],f,al));
+  const top=170-120*Math.min(1,co.V/12);$('#coLiq').setAttribute('y',top);
+  $('#coBar').style.left=`calc(${(f*100).toFixed(1)}% - 2px)`;
+  $('#coInfo').textContent=`${co.V} mL · ${co.T} °C`;
+  const g=$('#coPpt');g.innerHTML='';for(let i=0;i<co.ppt*14;i++)g.appendChild(el('circle',{cx:126+((i*37)%48),cy:196-((i*13)%14),r:2.2,fill:'#f1ede3'}));
+  if(prev==null){$('#coShift').textContent='';return;}
+  const d=f-prev,dir=Math.abs(d)<0.01?'거의 변화 없음':d>0?'정반응 쪽(→ 파랑)으로 이동':'역반응 쪽(← 분홍)으로 이동';
+  $('#coShift').textContent=dir;$('#coShift').style.color=d>0?'#7fa6ff':'#f29cc4';
+  const why={hcl:'Cl⁻이 늘어 그것을 줄이는 쪽으로',w:'물을 넣어 모든 이온이 묽어지면 입자 수가 많은 쪽(왼쪽: 1+4개)으로',ag:'Ag⁺가 Cl⁻을 AgCl 앙금으로 없애 Cl⁻을 다시 만드는 쪽으로',hot:'온도를 높이면 열을 흡수하는 쪽(흡열 = 정반응)으로',cold:'온도를 낮추면 열을 내놓는 쪽(발열 = 역반응)으로'}[what]||'';
+  $('#coLog').insertAdjacentHTML('beforeend',`<li><b>${{hcl:'진한 염산',w:'물',ag:'질산 은',hot:'가열',cold:'냉각'}[what]}</b> → ${dir}. ${why} 이동합니다.</li>`);}
+$('#coHCl').onclick=()=>{const p=coF(co);co.V+=2;co.nCl+=12*2;coDraw(p,'hcl');};
+$('#coW').onclick=()=>{const p=coF(co);co.V+=2;coDraw(p,'w');};
+$('#coAg').onclick=()=>{const p=coF(co);co.nCl*=0.8;co.ppt=Math.min(4,co.ppt+1);coDraw(p,'ag');};
+chips('#coT',v=>{const p=coF(co),t=+v;if(t===co.T)return;const w=t>co.T?'hot':'cold';co.T=t;coDraw(p,w);});
+$('#coR').onclick=coInit;coInit();
+
+// ── ② NO2 ⇌ N2O4: Kc(25 °C) = 164 M⁻¹, ΔH = −57 kJ, NO₂로 환산한 전체 0.0020 mol
+const NTOT=0.002;let ns={V:100,T:25,a:0,hist:[]};
+const nK=t=>164*Math.exp(57000/R*(-K25(t)));
+const nEq=(V,T)=>{const C=NTOT/(V/1000),K=nK(T);return(-1+Math.sqrt(1+8*K*C))/(4*K);};
+ns.a=nEq(100,25);
+function nShow(){const C=NTOT/(ns.V/1000),b=(C-ns.a)/2,K=nK(ns.T),Q=b/(ns.a*ns.a);
+  $('#nGas').setAttribute('width',200*ns.V/100*0.98>254?254:200*ns.V/100*0.98);
+  $('#nGas').setAttribute('fill',`rgba(170,70,25,${Math.min(.95,ns.a*45)})`);
+  $('#nNO2').textContent=ns.a.toFixed(4);$('#nN2O4').textContent=b.toFixed(4);$('#nQK').textContent=(Q/K).toFixed(2);
+  const r=Q/K;$('#nShift').textContent=Math.abs(r-1)<0.03?'평형 상태 (Q = K)':r<1?'Q < K → 정반응(N₂O₄ 쪽)으로 이동 중':'Q > K → 역반응(NO₂ 쪽)으로 이동 중';}
+function nSet(V,T){const C0=NTOT/(ns.V/1000),C1=NTOT/(V/1000);ns.a*=C1/C0;ns.V=V;ns.T=T;
+  const w=Math.min(254,200*V/100*0.98);$('#nPis').style.transform=`translateX(${w-200}px)`;nShow();}
+chips('#nV',v=>nSet(+v,ns.T));chips('#nT',v=>nSet(ns.V,+v));
+let nLast=performance.now(),nAcc=0;
+function nTick(now){const dt=Math.min(.1,(now-nLast)/1000);nLast=now;
+  const target=nEq(ns.V,ns.T),tau=ns.T===0?1.6:ns.T===80?0.5:0.9;ns.a+=(target-ns.a)*(1-Math.exp(-dt/tau));
+  nAcc+=dt;if(nAcc>=0.1){nAcc=0;ns.hist.push(ns.a);if(ns.hist.length>200)ns.hist.shift();
+    if($('#p2').classList.contains('active')){nShow();nPlot();}}
+  requestAnimationFrame(nTick);}
+function nPlot(){const g=$('#nPlot');g.innerHTML='';const L=60,Rr=620,T=12,B=190,max=0.04;
+  for(let y=0;y<=max+1e-9;y+=0.01){const Y=B-(B-T)*y/max;g.appendChild(el('line',{x1:L,x2:Rr,y1:Y,y2:Y,stroke:'#2c473d'}));const t=el('text',{x:L-8,y:Y+4,'text-anchor':'end',fill:'#9cb0a8','font-size':11});t.textContent=y.toFixed(2);g.appendChild(t);}
+  const t1=el('text',{x:Rr,y:210,'text-anchor':'end',fill:'#9cb0a8','font-size':11});t1.textContent='← 20초 전 · 지금 →';g.appendChild(t1);
+  const h=ns.hist,n=h.length;if(n<2)return;
+  g.appendChild(el('path',{d:h.map((y,i)=>(i?'L':'M')+(Rr-(n-1-i)*(Rr-L)/199).toFixed(1)+' '+(B-(B-T)*Math.min(y,max)/max).toFixed(1)).join(' '),fill:'none',stroke:'#e4572e','stroke-width':2.5}));}
+nSet(100,25);requestAnimationFrame(nTick);
+
+// ── ③ Ksp: 이번 시간 Ksp = 5.5×10⁻⁶ × (0.97~1.03)
+const KSP=5.5e-6*(0.97+Math.random()*0.06);
+function bis(f,lo,hi){for(let i=0;i<80;i++){const m=(lo+hi)/2;if(f(m)>0)hi=m;else lo=m;}return(lo+hi)/2;}
+const SOLV={water:{name:'증류수',s:()=>Math.cbrt(KSP/4),oh:s=>2*s},
+  naoh:{name:'0.050 M NaOH',s:()=>bis(s=>s*(0.05+2*s)**2-KSP,0,0.02),oh:s=>0.05+2*s},
+  cacl2:{name:'0.050 M CaCl₂',s:()=>bis(s=>(0.05+s)*(2*s)**2-KSP,0,0.02),oh:s=>2*s}};
+let kCur='water',kVe=0,kDone={};
+function kSetup(){const S=SOLV[kCur],s=S.s();kVe=S.oh(s)*25/0.050;$('#sAns').value='';$('#sFb').textContent='';kTit.reset();}
+const kTit=titrator($('#kT'),{color:v=>{const left=kVe-v;if(left<=0)return 'rgba(240,240,235,.18)';return mix([240,170,205],[230,60,150],Math.min(1,left/3),Math.min(.8,.35+left/6));},
+  onEnd:(v,m)=>{const ex=v-kVe;m.textContent=ex>=0&&ex<0.15?'붉은색이 막 사라졌습니다. 종말점! 부피를 기록하세요.':ex>=0.15?'지나쳤습니다. 처음부터 다시 하면 더 정확해요.':'';}});
+chips('#kS',v=>{kCur=v;kSetup();});
+$('#sChk').onclick=()=>{const v=parseFloat($('#sAns').value.replace(',','.')),S=SOLV[kCur],s=S.s(),f=$('#sFb');
+  if(isNaN(v)){f.className='fb no';f.textContent='숫자를 넣어 주세요. (예: 0.011)';return;}
+  if(Math.abs(v-s)<=s*0.05){f.className='fb ok';f.innerHTML=`맞습니다! s = <b>${s.toFixed(4)} M</b>. 이때 Ksp = [Ca²⁺][OH⁻]² = <b>${KSP.toExponential(2)}</b>`;kDone[kCur]=s;kTable();}
+  else{f.className='fb no';f.innerHTML={water:'[OH⁻] = 0.050 × V ÷ 25.0 이고, Ca(OH)₂ 1개가 OH⁻ 2개를 내므로 s = [OH⁻] ÷ 2.',naoh:'적정한 OH⁻에는 NaOH에서 온 0.050 M이 섞여 있습니다. s = ([OH⁻] − 0.050) ÷ 2.',cacl2:'OH⁻는 모두 Ca(OH)₂에서 왔습니다. s = [OH⁻] ÷ 2.'}[kCur];}};
+function kTable(){const ks=Object.keys(SOLV).filter(k=>kDone[k]);if(!ks.length)return;
+  $('#kTbl').innerHTML='<table><thead><tr><th>용매</th><th>용해도 s (M)</th><th>증류수 대비</th></tr></thead><tbody>'+ks.map(k=>`<tr><td>${SOLV[k].name}</td><td>${kDone[k].toFixed(4)}</td><td>${kDone.water?Math.round(kDone[k]/kDone.water*100)+' %':'-'}</td></tr>`).join('')+'</tbody></table>';}
+
+function titrator(box,{color,max=50,onEnd}){
+  box.innerHTML=`<h2>뷰렛 적정 (0.050 M HCl)</h2><div class="stage"><svg viewBox="0 0 300 330" style="max-width:300px">
+    <rect x="135" y="10" width="22" height="200" rx="3" fill="none" stroke="#f1ede3" stroke-width="2"/>
+    <rect class="bl" x="137" y="12" width="18" height="196" fill="rgba(127,176,224,.35)"/>
+    <g class="tk"></g><path d="M141 210 H151 L148 232 H144 Z" fill="#f1ede3"/>
+    <circle class="dr" cx="146" cy="240" r="3" fill="rgba(127,176,224,.8)" opacity="0"/>
+    <defs><clipPath id="${box.id}c"><path d="M128 250 H164 V268 L206 318 H86 L128 268 Z"/></clipPath></defs>
+    <rect class="fl" x="80" y="278" width="140" height="44" clip-path="url(#${box.id}c)"/>
+    <path d="M128 250 H164 V268 L206 318 H86 L128 268 Z" fill="none" stroke="#f1ede3" stroke-width="2.5"/></svg></div>
+    <div class="read"><div><div class="big rv">0.00</div><div class="u">넣은 부피 (mL)</div></div></div>
+    <div class="btn-row" style="justify-content:center"><button class="go b1">+1 mL</button><button class="go ghost b2">+0.1 mL</button><button class="go ghost b3">한 방울</button><button class="go ghost b4">처음부터</button></div>
+    <div class="fb msg" style="text-align:center"></div>`;
+  const q=s=>box.querySelector(s);let v=0;
+  for(let m=0;m<=max;m+=5){const y=12+196*m/max;q('.tk').appendChild(el('line',{x1:157,x2:m%10?163:167,y1:y,y2:y,stroke:'#9cb0a8'}));
+    if(m%10===0){const t=el('text',{x:170,y:y+4,fill:'#9cb0a8','font-size':10});t.textContent=m;q('.tk').appendChild(t);}}
+  function draw(){const y=12+196*v/max;q('.bl').setAttribute('y',y);q('.bl').setAttribute('height',Math.max(0,208-y));
+    q('.fl').setAttribute('fill',color(v));q('.rv').textContent=v.toFixed(2);onEnd&&onEnd(v,q('.msg'));}
+  function add(d){if(v>=max)return;v=Math.min(max,Math.round((v+d)*100)/100);const dr=q('.dr');dr.style.transition='none';dr.setAttribute('opacity',1);dr.setAttribute('cy',236);
+    requestAnimationFrame(()=>{dr.style.transition='all .35s ease-in';dr.setAttribute('cy',272);dr.setAttribute('opacity',0);});draw();}
+  q('.b1').onclick=()=>add(1);q('.b2').onclick=()=>add(0.1);q('.b3').onclick=()=>add(0.05);q('.b4').onclick=()=>{v=0;draw();};
+  return{reset:()=>{v=0;draw();}};}
+kSetup();
+})();
+</script>
+</body>
+</html>

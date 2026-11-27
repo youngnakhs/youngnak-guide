@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>기체 실험실</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap');
+:root{
+  --bg:#10201b;--panel:#182f28;--panel-2:#1f382f;--line:#2c473d;--ink:#f1ede3;--muted:#9cb0a8;
+  --acid:#e4572e;--acid-2:#f2a541;--neutral:#6fb98f;--base-2:#3e9c9c;--base:#3b6fa0;--pink:#d95bb0;
+  --mono:'Space Mono','Courier New',monospace;--sans:'Work Sans',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;color:var(--ink);font-family:var(--sans);padding:28px 16px 60px;
+  background:radial-gradient(circle at 15% 0%,rgba(111,185,143,.08),transparent 45%),radial-gradient(circle at 90% 90%,rgba(79,214,224,.08),transparent 45%),var(--bg);}
+.wrap{max-width:920px;margin:0 auto;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--neutral);text-transform:uppercase;margin-bottom:8px;}
+h1{font-weight:700;font-size:32px;margin:0 0 6px;letter-spacing:-.01em;}
+.sub{color:var(--muted);font-size:14.5px;line-height:1.6;margin:0 0 26px;max-width:620px;}
+.tabs{display:flex;gap:8px;margin-bottom:22px;border-bottom:1px solid var(--line);flex-wrap:wrap;}
+.tab-btn{font-family:var(--sans);font-weight:600;font-size:14px;background:none;border:none;color:var(--muted);padding:10px 4px;cursor:pointer;position:relative;}
+.tab-btn.active{color:var(--ink);}
+.tab-btn.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:var(--neutral);border-radius:2px;}
+.tab-btn+.tab-btn{margin-left:18px;}
+.panel{display:none;}
+.panel.active{display:block;animation:fade .3s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:720px){.grid{grid-template-columns:1fr;}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;}
+.card h2{font-size:12px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;font-weight:700;}
+.card+.card,.grid+.card,.card+.grid{margin-top:18px;}
+.chip-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+.chip{font-family:var(--sans);font-size:13px;font-weight:500;background:var(--panel-2);border:1px solid var(--line);color:var(--ink);padding:8px 12px;border-radius:20px;cursor:pointer;}
+.chip:hover{border-color:var(--neutral);}
+.chip.active{background:var(--neutral);color:#0d1a15;border-color:var(--neutral);font-weight:700;}
+.lbl{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0 0 8px;}
+.eq{font-family:var(--mono);font-size:14px;text-align:center;padding:12px;background:var(--panel-2);border-radius:8px;margin-bottom:16px;}
+.note{font-size:12.5px;color:var(--muted);line-height:1.6;background:var(--panel-2);border-radius:8px;padding:10px 12px;margin-top:14px;}
+.note b{color:var(--ink);}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.go{font-family:var(--sans);font-weight:700;font-size:14.5px;border:none;border-radius:10px;padding:11px 15px;cursor:pointer;background:var(--neutral);color:#0d1a15;touch-action:manipulation;}
+.go.ghost{background:var(--panel-2);color:var(--ink);border:1px solid var(--line);}
+.go:disabled{opacity:.45;cursor:default;}
+.stage{display:flex;justify-content:center;}
+.stage svg{width:100%;max-width:340px;height:auto;}
+svg text{font-family:var(--mono);}
+.read{display:flex;justify-content:space-around;font-family:var(--mono);text-align:center;margin-top:8px;gap:8px;}
+.read .big{font-size:24px;font-weight:700;line-height:1.2;}
+.read .u{font-size:11px;color:var(--muted);letter-spacing:.06em;}
+.steps{counter-reset:s;margin:0;padding:0;list-style:none;}
+.steps li{position:relative;padding:0 0 10px 30px;line-height:1.6;font-size:14px;}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;width:21px;height:21px;border-radius:50%;background:var(--panel-2);border:1px solid var(--line);font:700 11px/19px var(--mono);text-align:center;color:var(--neutral);}
+.ans{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:14px;}
+.ans input{width:120px;font:700 16px var(--mono);padding:9px 10px;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);color:var(--ink);}
+.fb{font-size:13.5px;margin-top:8px;min-height:1.2em;line-height:1.6;}
+.fb.ok{color:var(--neutral);}.fb.no{color:var(--acid-2);}
+.data{font-family:var(--mono);font-size:13px;display:grid;grid-template-columns:1fr auto;gap:6px 12px;background:var(--panel-2);border-radius:8px;padding:12px;}
+.data b{text-align:right;}
+.tog{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px;line-height:1.5;cursor:pointer;}
+.tog input{width:22px;height:22px;accent-color:var(--neutral);flex:none;margin-top:1px;}
+.tog small{display:block;color:var(--muted);font-size:12.5px;}
+.big-r{font:700 40px var(--mono);text-align:center;margin-top:8px;}
+.err{text-align:center;font-family:var(--mono);font-size:14px;}
+@media (prefers-reduced-motion:reduce){.panel.active{animation:none;}}
+
+/* == IPAD-FIT BEGIN (자동 생성 · 직접 수정하지 말 것) == */
+/* ══ 아이패드 대응 (자동 삽입 · 화학실험실 파이프라인) ══════════
+   대상 폭 — 세로 744(mini)/810(10.9")/834(Air·Pro11)/1024(Pro12.9")
+            가로 1080/1133/1194/1366
+   원칙 — 손가락 터치 목표 44px 이상, 본문 글자 키우기, 홈판을 화면 폭에 맞춰 확대 */
+html{-webkit-text-size-adjust:100%;}
+
+/* 태블릿 세로부터 */
+@media (min-width:744px){
+  body{padding:38px 30px 78px;font-size:15.5px;}
+  .wrap{max-width:900px;}
+  h1{font-size:38px;}
+  .sub{font-size:16px;line-height:1.7;max-width:680px;}
+
+  /* 탭 — 손가락으로 누를 크기 */
+  .tabs{flex-wrap:wrap;gap:0 4px;}
+  .tab-btn{font-size:15.5px;padding:15px 6px;}
+  .tab-btn+.tab-btn{margin-left:26px;}
+
+  /* 선택 칩 — 44px 이상 */
+  .chip{font-size:14.5px;padding:12px 17px;border-radius:24px;}
+  .card{padding:22px 24px;}
+  .card h3{font-size:12.5px;margin-bottom:16px;}
+  .note{font-size:13.5px;padding:12px 14px;}
+
+  /* 비커·수치 */
+  .beaker-svg{width:172px;height:206px;}
+  .readout .ph-big{font-size:46px;}
+  .verdict{font-size:15px;padding:6px 15px;}
+  .ph-strip-wrap{margin-top:38px;}   /* pH 마커 라벨이 위 설명문과 겹치지 않게 */
+  .ph-strip{height:38px;}
+  .ph-labels{font-size:11.5px;}
+
+  /* 중화 반응 */
+  input[type=range]{height:6px;}
+  .slider-row label{font-size:14px;}
+  .eq{font-size:15.5px;padding:14px;}
+
+  /* 한눈에 비교 */
+  .compare-row{grid-template-columns:repeat(auto-fit,minmax(98px,1fr));gap:16px;}
+  .compare-cell .mini-beaker{width:54px;height:66px;}
+  .compare-cell .c-name{font-size:12.5px;min-height:32px;}
+
+  /* 홈판 — 화면 폭을 다 쓰고 칸을 키운다(손가락으로 칠할 크기) */
+  .well-grid{max-width:100%;gap:5px;margin-top:20px;}
+  .palette-row{gap:10px;}
+  .swatch-btn{padding:10px 14px;}
+  .swatch-dot{width:24px;height:24px;}
+  .swatch-label{font-size:11px;}
+  .toggle-btn{font-size:14.5px;padding:14px 18px;}
+  .tmpl-btn{font-size:13.5px;padding:11px 17px;}
+}
+
+/* 태블릿 가로 · 큰 화면 */
+@media (min-width:1024px){
+  .wrap{max-width:1000px;}
+  .grid{gap:24px;}
+  .well-grid{max-width:840px;}
+  .compare-row{gap:18px;}
+}
+
+/* 아이패드 세로에서 2단이 좁아지는 구간 — 카드 안쪽 여백만 줄여 숨통 */
+@media (min-width:744px) and (max-width:860px){
+  .grid{gap:16px;}
+  .card{padding:20px;}
+}
+
+/* 안전영역(홈 인디케이터) */
+@supports (padding:env(safe-area-inset-bottom)){
+  body{padding-bottom:calc(78px + env(safe-area-inset-bottom));}
+}
+/* == IPAD-FIT END == */
+</style>
+</head>
+<body>
+  <a href="../" style="display:inline-flex;align-items:center;gap:7px;margin-bottom:18px;
+  font-family:'Space Mono','Courier New',monospace;font-size:12px;letter-spacing:.06em;
+  color:#9cb0a8;text-decoration:none;border:1px solid #2c473d;border-radius:20px;
+  padding:6px 13px;transition:.15s"
+  onmouseover="this.style.color='#f1ede3';this.style.borderColor='#6fb98f'"
+  onmouseout="this.style.color='#9cb0a8';this.style.borderColor='#2c473d'">← 실험실 목록</a>
+<div class="wrap">
+  <div class="eyebrow">Lab 07 · 기체</div>
+  <h1>기체 실험실</h1>
+  <p class="sub">마그네슘 리본을 염산에 넣어 나오는 수소를 물에 거꾸로 세운 눈금 실린더에 모읍니다(수상 치환). 모은 부피로 기체 1몰의 부피와 기체 상수 R을 구하고, 오차가 어디서 생기는지 확인합니다.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-p="p1">① 기체의 몰 부피</button>
+    <button class="tab-btn" data-p="p2">② 기체 상수와 오차 줄이기</button>
+  </div>
+
+  <section class="panel active" id="p1">
+    <div class="eq">Mg(s) + 2HCl(aq) → MgCl₂(aq) + H₂(g)</div>
+    <div class="grid">
+      <div class="card">
+        <h2>실험 순서</h2>
+        <ol class="steps">
+          <li>마그네슘 리본을 사포로 닦고 잘라 질량을 잽니다. <button class="go ghost" id="gCut" style="padding:7px 12px;font-size:13px">리본 자르기</button></li>
+          <li>물을 가득 채운 눈금 실린더를 수조에 거꾸로 세우고, 염산과 리본을 넣은 가지 달린 플라스크를 연결합니다. <button class="go" id="gGo" style="padding:7px 12px;font-size:13px" disabled>반응 시작</button></li>
+          <li>반응이 끝나면 실린더를 움직여 <b>안팎 수면 높이를 맞춥니다</b>. <button class="go ghost" id="gLev" style="padding:7px 12px;font-size:13px" disabled>수면 맞추기</button></li>
+          <li>눈금을 읽고, 25 °C·1 atm에서 수소 1몰의 부피(L/mol)를 구하세요.
+            <div class="ans"><input id="gAns" inputmode="decimal" placeholder="L/mol"> L/mol <button class="go ghost" id="gChk">확인</button></div>
+            <div class="fb" id="gFb"></div></li>
+        </ol>
+        <div class="data">
+          <span>Mg 질량</span><b id="dM">-</b>
+          <span>물 온도</span><b>25.0 °C</b>
+          <span>대기압</span><b>760 mmHg</b>
+          <span>25 °C 수증기압</span><b>23.8 mmHg</b>
+          <span>Mg 원자량</span><b>24.3</b>
+        </div>
+      </div>
+      <div class="card">
+        <h2>수상 치환 장치</h2>
+        <div class="stage"><svg viewBox="0 0 340 310" id="rig">
+          <rect x="150" y="190" width="180" height="112" fill="rgba(127,176,224,.18)"/>
+          <g id="cyl">
+            <rect id="cWater" x="214" y="20" width="52" height="170" fill="rgba(127,176,224,.35)"/>
+            <rect id="cGas" x="214" y="20" width="52" height="0" fill="rgba(240,240,235,.06)"/>
+            <path d="M212 190 V20 Q212 18 214 18 H266 Q268 18 268 20 V190" fill="none" stroke="#f1ede3" stroke-width="2"/>
+            <g id="cTicks"></g>
+          </g>
+          <path d="M150 160 V302 H330 V160" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
+          <line x1="150" x2="330" y1="190" y2="190" stroke="#7fb0e0" stroke-width="1.5"/>
+          <path d="M60 180 H96 V210 L130 300 H26 L60 210 Z" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
+          <path d="M37 266 L119 266 L130 300 H26 Z" fill="rgba(242,165,65,.25)"/>
+          <rect id="rib" x="64" y="290" width="28" height="4" fill="#c9d1d6"/>
+          <g id="fBub"></g>
+          <path d="M96 195 H190 V296 H240 V284" fill="none" stroke="#9cb0a8" stroke-width="3"/>
+          <g id="cBub"></g>
+          <line id="lvIn" x1="200" x2="280" stroke="#ffe066" stroke-dasharray="3 3"/>
+          <text x="334" y="184" text-anchor="end" fill="#7fb0e0" font-size="10">수조 수면</text>
+        </svg></div>
+        <div class="read">
+          <div><div class="big" id="rV">0.0</div><div class="u">실린더 눈금 (mL)</div></div>
+          <div><div class="big" id="rH">-</div><div class="u">안쪽 수면 − 바깥 수면</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="p2">
+    <div class="grid">
+      <div class="card">
+        <h2>R = PV / nT 계산에 쓰는 값 고르기</h2>
+        <label class="tog"><input type="checkbox" id="eW" checked><span>수증기압 빼기 (P<sub>H₂</sub> = P<sub>대기</sub> − P<sub>물</sub>)<small>실린더 속 기체에는 수소와 함께 수증기가 섞여 있습니다.</small></span></label>
+        <label class="tog"><input type="checkbox" id="eL" checked><span>안팎 수면 높이 맞추기<small>안쪽 수면이 더 높으면 실린더 속 기체 압력이 대기압보다 낮습니다.</small></span></label>
+        <label class="tog"><input type="checkbox" id="eO" checked><span>리본을 사포로 닦기<small>겉의 산화 마그네슘(MgO)은 염산과 반응해도 수소를 내지 않습니다.</small></span></label>
+        <label class="tog"><input type="checkbox" id="eT" checked><span>온도를 켈빈으로 바꾸기 (T = t + 273)<small>섭씨 그대로 넣으면 어떻게 될까요?</small></span></label>
+        <div class="note">①에서 실험한 값을 씁니다(아직 안 했으면 Mg 0.0400 g 기준). 체크를 하나씩 풀어 보며 R이 어느 쪽으로, 얼마나 틀어지는지 보세요.</div>
+      </div>
+      <div class="card">
+        <h2>계산된 기체 상수</h2>
+        <div class="big-r" id="eR">-</div>
+        <div class="err" id="eErr"></div>
+        <div class="data" style="margin-top:14px" id="eData"></div>
+        <div class="fb" id="eMsg"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+document.querySelectorAll('.tab-btn').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.toggle('active',x===b));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.p));if(b.dataset.p==='p2')eCalc();});
+
+const Rgas=0.08206,T=298.15,PATM=760,PW=23.8,MG=24.3,OX=0.035; // OX: 안 닦은 리본의 MgO 질량 비율
+const HIN=9.5; // 맞추기 전 안쪽 수면이 9.5 cm 높음 → 기체 압력 낮음
+const pOf=lev=>PATM-(lev?0:HIN*10/13.6); // mmHg (물 기둥 → 수은 환산)
+const vol=(m,lev,clean)=>(clean?m:m*(1-OX))/MG*Rgas*T/((pOf(lev)-PW)/760)*1000; // mL
+let g={m:0.04,state:'idle',v:0,lev:false};
+
+// 실린더 눈금: 위쪽 0 mL, 50 mL가 y=20+200
+const yOfV=v=>20+v*2.4, SURF=190, HPX=HIN*4.5; // 실린더 좌표(그룹 기준), 수조 수면 y, 수면차 px
+const tk=$('#cTicks');for(let m=0;m<=50;m+=5){const y=yOfV(m);tk.appendChild(el('line',{x1:266,x2:m%10?260:256,y1:y,y2:y,stroke:'#9cb0a8'}));
+  if(m%10===0){const t=el('text',{x:252,y:y+4,'text-anchor':'end',fill:'#9cb0a8','font-size':9});t.textContent=m;tk.appendChild(t);}}
+let offFix=24; // 실린더 고정 높이: 반응 중엔 '맞추기 전' 높이, 맞춘 뒤엔 안팎 수면이 같은 높이
+function draw(){const off=g.lev?SURF-yOfV(g.v):offFix;
+  $('#cyl').setAttribute('transform',`translate(0,${off})`);
+  const y=yOfV(g.v);$('#cGas').setAttribute('height',y-20);$('#cWater').setAttribute('y',y);$('#cWater').setAttribute('height',Math.max(0,190-y));
+  const inside=y+off;$('#lvIn').setAttribute('y1',inside);$('#lvIn').setAttribute('y2',inside);
+  $('#rV').textContent=g.v.toFixed(1);
+  $('#rH').textContent=g.state==='idle'?'-':g.lev?'0.0 cm':`+${Math.max(0,(SURF-inside)/4.5).toFixed(1)} cm`;}
+$('#gCut').onclick=()=>{if(g.state==='run')return;g={m:+(0.0300+Math.random()*0.0150).toFixed(4),state:'ready',v:0,lev:false};
+  offFix=SURF-HPX-yOfV(vol(g.m,false,true));$('#dM').textContent=g.m.toFixed(4)+' g';$('#gGo').disabled=false;$('#gLev').disabled=true;$('#rib').setAttribute('width',28);$('#gFb').textContent='';draw();};
+let raf=0;
+$('#gGo').onclick=()=>{if(g.state!=='ready')return;g.state='run';$('#gGo').disabled=true;const V1=vol(g.m,false,true),t0=performance.now();
+  const step=now=>{const k=Math.min(1,(now-t0)/4500),e=1-Math.pow(1-k,2);g.v=V1*e;$('#rib').setAttribute('width',28*(1-e));
+    bubbles(k<1);draw();if(k<1)raf=requestAnimationFrame(step);else{g.state='done';$('#gLev').disabled=false;$('#fBub').innerHTML='';$('#cBub').innerHTML='';}};
+  raf=requestAnimationFrame(step);};
+let bs=[];
+function bubbles(on){if(on&&Math.random()<.5)bs.push({x:70+Math.random()*20,y:288,c:Math.random()<.5});
+  bs.forEach(b=>b.y-=2.5);bs=bs.filter(b=>b.y>268);
+  $('#fBub').innerHTML='';bs.forEach(b=>$('#fBub').appendChild(el('circle',{cx:b.x,cy:b.y,r:2,fill:'none',stroke:'#f1ede3'})));
+  $('#cBub').innerHTML='';if(on)for(let i=0;i<3;i++){const y=282-((performance.now()/6+i*30)%(282-(190+offFix)));$('#cBub').appendChild(el('circle',{cx:240+(i-1)*4,cy:y,r:2.5,fill:'none',stroke:'#f1ede3'}));}}
+$('#gLev').onclick=()=>{if(g.state!=='done')return;g.lev=true;g.v=vol(g.m,true,true);$('#gLev').disabled=true;draw();};
+$('#gChk').onclick=()=>{const v=parseFloat($('#gAns').value.replace(',','.')),f=$('#gFb');
+  if(g.state==='idle'||g.state==='ready'){f.className='fb no';f.textContent='먼저 실험을 해 보세요.';return;}
+  if(isNaN(v)){f.className='fb no';f.textContent='숫자를 넣어 주세요.';return;}
+  const n=g.m/MG,ans=g.v/1000*((pOf(g.lev)-PW)/760)/n;
+  if(!g.lev){f.className='fb no';f.textContent='수면 높이를 맞추지 않으면 실린더 속 압력이 대기압과 달라 계산할 수 없습니다. ③부터 하세요.';return;}
+  if(Math.abs(v-ans)<=ans*0.02){f.className='fb ok';f.innerHTML=`맞습니다! <b>${ans.toFixed(1)} L/mol</b>. 이론값 24.5 L/mol (25 °C, 1 atm).`;}
+  else if(Math.abs(v-g.v/1000/n)<=g.v/1000/n*0.02){f.className='fb no';f.innerHTML='수증기압을 빼지 않았습니다. 실린더 속 수소의 압력은 760 − 23.8 = 736.2 mmHg이니, 1 atm일 때 부피로 바꾸려면 × 736.2/760 하세요.';}
+  else{f.className='fb no';f.innerHTML='순서: ① n = Mg 질량 ÷ 24.3 ② 수소 압력 = 760 − 23.8 mmHg ③ 1 atm일 때 부피 = 읽은 부피 × (736.2 ÷ 760) ④ ÷ n, mL → L 단위 주의';}};
+draw();
+
+// ── ② 오차
+function eCalc(){const m=g.state==='idle'||g.state==='ready'?0.04:g.m;
+  const w=$('#eW').checked,l=$('#eL').checked,o=$('#eO').checked,tK=$('#eT').checked;
+  const Vm=vol(m,l,o); // 실제로 읽게 되는 부피(mL)
+  const P=(w?PATM-PW:PATM)/760,tt=tK?T:25,n=m/MG,Rc=P*(Vm/1000)/(n*tt);
+  $('#eR').textContent=Rc.toFixed(4);const err=(Rc-Rgas)/Rgas*100;
+  $('#eErr').innerHTML=`이론값 0.0821 L·atm/(mol·K) 대비 <b style="color:${Math.abs(err)<1?'#6fb98f':'#f2a541'}">${err>=0?'+':''}${err.toFixed(1)} %</b>`;
+  $('#eData').innerHTML=`<span>Mg 질량 (저울)</span><b>${m.toFixed(4)} g</b><span>n = m ÷ 24.3</span><b>${(n*1000).toFixed(3)} mmol</b><span>읽은 부피</span><b>${Vm.toFixed(1)} mL</b><span>쓴 압력</span><b>${(P*760).toFixed(1)} mmHg</b><span>쓴 온도</span><b>${tt.toFixed(tK?2:0)} ${tK?'K':'(°C 그대로)'}</b>`;
+  const tips=[];if(!w)tips.push('수증기압을 안 빼면 압력을 크게 잡아 R이 <b>커집니다</b>(약 +3 %).');
+  if(!l)tips.push('안쪽 수면이 높으면 기체가 덜 눌려 부피를 크게 읽어 R이 <b>커집니다</b>(약 +1 %).');
+  if(!o)tips.push('산화막만큼 수소가 덜 나와 R이 <b>작아집니다</b>(약 −3.5 %).');
+  if(!tK)tips.push('섭씨를 그대로 넣으면 완전히 틀린 값이 됩니다. 기체 법칙의 T는 언제나 절대 온도!');
+  $('#eMsg').className='fb '+(tips.length?'no':'ok');$('#eMsg').innerHTML=tips.length?tips.join('<br>'):'모든 보정을 했습니다. 이론값과 거의 같습니다.';}
+['#eW','#eL','#eO','#eT'].forEach(s=>$(s).onchange=eCalc);
+})();
+</script>
+</body>
+</html>
