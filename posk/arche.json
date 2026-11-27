@@ -57,5 +57,35 @@
   ],
   "from_hour": 5,
   "at": "2026-11-25T07:47+09:00"
+ },
+ "6": {
+  "actions": [
+   {
+    "do": "key",
+    "text": "봉인 차례로 거인은 맨 뒤",
+    "via": "type"
+   },
+   {
+    "types": [
+     "ROCK",
+     "FIRE",
+     "WATER",
+     "FLYING",
+     "DRAGON",
+     "NORMAL"
+    ],
+    "do": "desktop"
+   },
+   {
+    "item": "ARCHECROWN",
+    "pokemon": 0,
+    "do": "use_item"
+   },
+   {
+    "do": "check"
+   }
+  ],
+  "from_hour": 0,
+  "at": "2026-11-28T01:51+09:00"
  }
 }
