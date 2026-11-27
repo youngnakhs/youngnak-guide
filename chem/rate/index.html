@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="ko">
+<head><script data-expiry-gate="2027-02-05">if(new Date()>=new Date(2027,1,5)){document.documentElement.innerHTML='<p style="font:16px sans-serif;padding:2em">이 자료의 열람 기간이 종료되었습니다(2027-02-05).</p>';throw new Error("expired");}</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>반응 속도 실험실</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap');
+:root{
+  --bg:#10201b;--panel:#182f28;--panel-2:#1f382f;--line:#2c473d;--ink:#f1ede3;--muted:#9cb0a8;
+  --acid:#e4572e;--acid-2:#f2a541;--neutral:#6fb98f;--base-2:#3e9c9c;--base:#3b6fa0;--pink:#d95bb0;
+  --mono:'Space Mono','Courier New',monospace;--sans:'Work Sans',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;color:var(--ink);font-family:var(--sans);padding:28px 16px 60px;
+  background:radial-gradient(circle at 15% 0%,rgba(111,185,143,.08),transparent 45%),radial-gradient(circle at 90% 90%,rgba(59,111,160,.10),transparent 45%),var(--bg);}
+.wrap{max-width:920px;margin:0 auto;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--neutral);text-transform:uppercase;margin-bottom:8px;}
+h1{font-weight:700;font-size:32px;margin:0 0 6px;letter-spacing:-.01em;}
+.sub{color:var(--muted);font-size:14.5px;line-height:1.6;margin:0 0 26px;max-width:600px;}
+.tabs{display:flex;gap:8px;margin-bottom:22px;border-bottom:1px solid var(--line);}
+.tab-btn{font-family:var(--sans);font-weight:600;font-size:14px;background:none;border:none;color:var(--muted);padding:10px 4px;cursor:pointer;position:relative;}
+.tab-btn.active{color:var(--ink);}
+.tab-btn.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:var(--neutral);border-radius:2px;}
+.tab-btn+.tab-btn{margin-left:18px;}
+.panel{display:none;}
+.panel.active{display:block;animation:fade .3s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:720px){.grid{grid-template-columns:1fr;}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;}
+.card h3{font-size:12px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;}
+.card+.card,.grid+.card,.card+.grid{margin-top:18px;}
+.chip-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+.chip{font-family:var(--sans);font-size:13px;font-weight:500;background:var(--panel-2);border:1px solid var(--line);color:var(--ink);padding:8px 12px;border-radius:20px;cursor:pointer;}
+.chip:hover{border-color:var(--neutral);}
+.chip.active{background:var(--neutral);color:#0d1a15;border-color:var(--neutral);font-weight:700;}
+.chip:disabled{opacity:.45;cursor:default;}
+.lbl{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0 0 8px;}
+.eq{font-family:var(--mono);font-size:14px;text-align:center;padding:12px;background:var(--panel-2);border-radius:8px;margin-bottom:16px;}
+.note{font-size:12.5px;color:var(--muted);line-height:1.6;background:var(--panel-2);border-radius:8px;padding:10px 12px;margin-top:14px;}
+.note b{color:var(--ink);}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;}
+.go{font-family:var(--sans);font-weight:700;font-size:15px;border:none;border-radius:10px;padding:12px 18px;cursor:pointer;background:var(--neutral);color:#0d1a15;}
+.go.ghost{background:var(--panel-2);color:var(--ink);border:1px solid var(--line);}
+.go:disabled{opacity:.45;cursor:default;}
+.stage{display:flex;justify-content:center;}
+.stage svg{width:100%;max-width:400px;height:auto;}
+.readout{display:flex;justify-content:space-around;font-family:var(--mono);text-align:center;margin-top:10px;}
+.readout .big{font-size:30px;font-weight:700;line-height:1.1;}
+.readout .u{font-size:11px;color:var(--muted);letter-spacing:.1em;}
+svg text{font-family:var(--mono);}
+.plot{background:var(--panel-2);border-radius:10px;padding:10px;}
+.plot svg{width:100%;height:auto;display:block;}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px;font-size:12.5px;}
+.legend span{display:inline-flex;align-items:center;gap:6px;}
+.legend i{width:14px;height:4px;border-radius:2px;display:inline-block;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th,td{padding:9px 6px;border-bottom:1px solid var(--line);text-align:center;}
+th{font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:400;letter-spacing:.05em;}
+td:first-child,th:first-child{text-align:left;}
+.empty{color:var(--muted);font-size:13px;font-family:var(--mono);padding:10px 0;}
+.q{border-top:1px solid var(--line);padding:12px 0;}
+.q:first-of-type{border-top:none;}
+.q p{margin:0 0 8px;line-height:1.6;}
+.q details{font-size:13px;color:var(--muted);line-height:1.6;}
+.q summary{cursor:pointer;color:var(--neutral);font-weight:600;}
+canvas{width:100%;display:block;border-radius:10px;background:#0c1915;}
+.stat{display:flex;gap:18px;flex-wrap:wrap;font-family:var(--mono);margin-top:12px;}
+.stat div{flex:1;min-width:120px;background:var(--panel-2);border-radius:8px;padding:10px;text-align:center;}
+.stat b{display:block;font-size:24px;}
+.stat small{color:var(--muted);font-size:11px;}
+@media (prefers-reduced-motion:reduce){.panel.active{animation:none;}}
+
+/* == IPAD-FIT BEGIN (자동 생성 · 직접 수정하지 말 것) == */
+/* ══ 아이패드 대응 (자동 삽입 · 화학실험실 파이프라인) ══════════
+   대상 폭 — 세로 744(mini)/810(10.9")/834(Air·Pro11)/1024(Pro12.9")
+            가로 1080/1133/1194/1366
+   원칙 — 손가락 터치 목표 44px 이상, 본문 글자 키우기, 홈판을 화면 폭에 맞춰 확대 */
+html{-webkit-text-size-adjust:100%;}
+
+/* 태블릿 세로부터 */
+@media (min-width:744px){
+  body{padding:38px 30px 78px;font-size:15.5px;}
+  .wrap{max-width:900px;}
+  h1{font-size:38px;}
+  .sub{font-size:16px;line-height:1.7;max-width:680px;}
+
+  /* 탭 — 손가락으로 누를 크기 */
+  .tabs{flex-wrap:wrap;gap:0 4px;}
+  .tab-btn{font-size:15.5px;padding:15px 6px;}
+  .tab-btn+.tab-btn{margin-left:26px;}
+
+  /* 선택 칩 — 44px 이상 */
+  .chip{font-size:14.5px;padding:12px 17px;border-radius:24px;}
+  .card{padding:22px 24px;}
+  .card h3{font-size:12.5px;margin-bottom:16px;}
+  .note{font-size:13.5px;padding:12px 14px;}
+
+  /* 비커·수치 */
+  .beaker-svg{width:172px;height:206px;}
+  .readout .ph-big{font-size:46px;}
+  .verdict{font-size:15px;padding:6px 15px;}
+  .ph-strip-wrap{margin-top:38px;}   /* pH 마커 라벨이 위 설명문과 겹치지 않게 */
+  .ph-strip{height:38px;}
+  .ph-labels{font-size:11.5px;}
+
+  /* 중화 반응 */
+  input[type=range]{height:6px;}
+  .slider-row label{font-size:14px;}
+  .eq{font-size:15.5px;padding:14px;}
+
+  /* 한눈에 비교 */
+  .compare-row{grid-template-columns:repeat(auto-fit,minmax(98px,1fr));gap:16px;}
+  .compare-cell .mini-beaker{width:54px;height:66px;}
+  .compare-cell .c-name{font-size:12.5px;min-height:32px;}
+
+  /* 홈판 — 화면 폭을 다 쓰고 칸을 키운다(손가락으로 칠할 크기) */
+  .well-grid{max-width:100%;gap:5px;margin-top:20px;}
+  .palette-row{gap:10px;}
+  .swatch-btn{padding:10px 14px;}
+  .swatch-dot{width:24px;height:24px;}
+  .swatch-label{font-size:11px;}
+  .toggle-btn{font-size:14.5px;padding:14px 18px;}
+  .tmpl-btn{font-size:13.5px;padding:11px 17px;}
+}
+
+/* 태블릿 가로 · 큰 화면 */
+@media (min-width:1024px){
+  .wrap{max-width:1000px;}
+  .grid{gap:24px;}
+  .well-grid{max-width:840px;}
+  .compare-row{gap:18px;}
+}
+
+/* 아이패드 세로에서 2단이 좁아지는 구간 — 카드 안쪽 여백만 줄여 숨통 */
+@media (min-width:744px) and (max-width:860px){
+  .grid{gap:16px;}
+  .card{padding:20px;}
+}
+
+/* 안전영역(홈 인디케이터) */
+@supports (padding:env(safe-area-inset-bottom)){
+  body{padding-bottom:calc(78px + env(safe-area-inset-bottom));}
+}
+/* == IPAD-FIT END == */
+</style>
+</head>
+<body>
+  <a href="../" style="display:inline-flex;align-items:center;gap:7px;margin-bottom:18px;
+  font-family:'Space Mono','Courier New',monospace;font-size:12px;letter-spacing:.06em;
+  color:#9cb0a8;text-decoration:none;border:1px solid #2c473d;border-radius:20px;
+  padding:6px 13px;transition:.15s"
+  onmouseover="this.style.color='#f1ede3';this.style.borderColor='#6fb98f'"
+  onmouseout="this.style.color='#9cb0a8';this.style.borderColor='#2c473d'">← 실험실 목록</a>
+<div class="wrap">
+  <div class="eyebrow">Lab 04 · 반응 속도</div>
+  <h1>반응 속도 실험실</h1>
+  <p class="sub">대리석(탄산 칼슘)에 묽은 염산을 부어 나오는 이산화 탄소를 주사기로 모읍니다. 염산 농도와 대리석 크기를 하나씩 바꿔 가며 기체가 모이는 빠르기를 비교해 보세요.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-p="p1">① 농도·입자 크기 실험</button>
+    <button class="tab-btn" data-p="p2">② 결과 정리</button>
+    <button class="tab-btn" data-p="p3">③ 충돌 모형</button>
+  </div>
+
+  <!-- ① 실험 -->
+  <section class="panel active" id="p1">
+    <div class="eq">CaCO₃(s) + 2HCl(aq) → CaCl₂(aq) + H₂O(l) + CO₂(g)</div>
+    <div class="grid">
+      <div class="card">
+        <h3>조건 고르기</h3>
+        <p class="lbl">묽은 염산 농도 (50 mL)</p>
+        <div class="chip-list" id="concChips">
+          <button class="chip" data-v="0.5">0.5 M</button>
+          <button class="chip active" data-v="1">1.0 M</button>
+          <button class="chip" data-v="2">2.0 M</button>
+        </div>
+        <p class="lbl">대리석 0.50 g의 모양</p>
+        <div class="chip-list" id="sizeChips">
+          <button class="chip" data-v="lump">덩어리 1개</button>
+          <button class="chip active" data-v="chip">작은 조각</button>
+          <button class="chip" data-v="powder">가루</button>
+        </div>
+        <div class="btn-row">
+          <button class="go" id="start">▶ 염산 붓기</button>
+          <button class="go ghost" id="ff" disabled>⏩ 끝까지</button>
+        </div>
+        <div class="note" id="hint">대조 실험은 <b>한 번에 하나만</b> 바꿔야 비교가 됩니다. 대리석 양은 어느 조건이든 0.50 g이라 기체가 다 모이면 약 120 mL입니다. 측정은 최대 10분까지 합니다.</div>
+      </div>
+      <div class="card">
+        <h3>삼각 플라스크 · 기체 주사기</h3>
+        <div class="stage">
+          <svg viewBox="0 0 400 230" id="rig" aria-label="실험 장치">
+            <!-- 주사기 -->
+            <rect x="200" y="58" width="180" height="34" rx="4" fill="none" stroke="#9cb0a8" stroke-width="2"/>
+            <g id="ticks"></g>
+            <rect id="gas" x="202" y="60" width="0" height="30" fill="rgba(111,185,143,.22)"/>
+            <g id="plunger"><rect x="202" y="56" width="5" height="38" fill="#f1ede3"/><rect x="207" y="72" width="190" height="6" fill="#9cb0a8"/></g>
+            <!-- 관 -->
+            <path d="M120 40 V20 H170 V75 H200" fill="none" stroke="#9cb0a8" stroke-width="4"/>
+            <!-- 플라스크 -->
+            <defs><clipPath id="fc"><path d="M100 50 H140 V95 L190 205 H50 L100 95 Z"/></clipPath></defs>
+            <rect id="liq" x="40" y="140" width="160" height="70" clip-path="url(#fc)" fill="rgba(242,165,65,.30)"/>
+            <g clip-path="url(#fc)"><g id="solid"></g><g id="bub"></g></g>
+            <path d="M100 50 H140 V95 L190 205 H50 L100 95 Z" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
+            <rect x="96" y="40" width="48" height="12" rx="2" fill="#6b4e8e"/>
+            <text x="120" y="224" text-anchor="middle" fill="#9cb0a8" font-size="11">염산 + 대리석</text>
+            <text x="290" y="114" text-anchor="middle" fill="#9cb0a8" font-size="11">CO₂ 기체 주사기 (150 mL)</text>
+          </svg>
+        </div>
+        <div class="readout">
+          <div><div class="big" id="tRead">0</div><div class="u">시간 (초)</div></div>
+          <div><div class="big" id="vRead">0</div><div class="u">CO₂ 부피 (mL)</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>시간 – 기체 부피 그래프</h3>
+      <div class="plot"><svg viewBox="0 0 640 300" id="graph"></svg></div>
+      <div class="legend" id="legend"></div>
+      <div class="btn-row" style="margin-top:12px"><button class="go ghost" id="clear">그래프 지우기</button></div>
+    </div>
+  </section>
+
+  <!-- ② 결과 정리 -->
+  <section class="panel" id="p2">
+    <div class="card">
+      <h3>실험 기록</h3>
+      <div id="tbl"><div class="empty">아직 실험한 조건이 없습니다. ①에서 염산을 부어 보세요.</div></div>
+      <div class="note">처음 30초 평균 속도 = 30초 동안 모인 부피 ÷ 30. 그래프의 처음 기울기가 가파를수록 반응이 빠릅니다.</div>
+    </div>
+    <div class="card">
+      <h3>생각해 보기</h3>
+      <div class="q"><p>1. 대리석 모양은 그대로 두고 염산 농도만 바꾼 실험 셋을 비교하세요. 농도가 2배가 되면 처음 30초 평균 속도는 어떻게 되나요?</p>
+        <details><summary>확인</summary>대략 2배가 됩니다. 같은 부피 안에 H⁺ 이온이 2배 많아 대리석 표면과 부딪치는 횟수가 늘기 때문입니다.</details></div>
+      <div class="q"><p>2. 덩어리보다 가루가 빠른 까닭은 무엇일까요?</p>
+        <details><summary>확인</summary>같은 질량이라도 잘게 쪼갤수록 염산과 닿는 표면적이 넓어져, 1초 동안 일어나는 충돌이 많아집니다.</details></div>
+      <div class="q"><p>3. 어느 조건이든 마지막에 모인 CO₂ 부피가 거의 같은 까닭은 무엇일까요?</p>
+        <details><summary>확인</summary>이 실험에서는 염산이 넉넉하고 대리석 0.50 g이 먼저 다 반응합니다. 생기는 CO₂의 양은 대리석의 양으로 정해지므로, 빠르기만 달라지고 최종 부피는 같습니다.</details></div>
+      <div class="q"><p>4. 그래프가 시간이 지날수록 완만해지는 까닭은 무엇일까요?</p>
+        <details><summary>확인</summary>반응이 진행되면 대리석이 작아지고 염산 농도도 조금씩 줄어 충돌이 줄어듭니다. 대리석이 다 없어지면 기체가 더 생기지 않습니다.</details></div>
+    </div>
+  </section>
+
+  <!-- ③ 충돌 모형 -->
+  <section class="panel" id="p3">
+    <div class="card">
+      <h3>입자 수준에서 보기</h3>
+      <div class="grid" style="gap:12px">
+        <div><p class="lbl">H⁺ 이온 농도</p>
+          <div class="chip-list" id="mConc"><button class="chip" data-v="0.5">0.5 M</button><button class="chip active" data-v="1">1.0 M</button><button class="chip" data-v="2">2.0 M</button></div></div>
+        <div><p class="lbl">고체 모양 (전체 양은 같음)</p>
+          <div class="chip-list" id="mSize"><button class="chip active" data-v="1">덩어리</button><button class="chip" data-v="2">작은 조각</button><button class="chip" data-v="4">가루</button></div></div>
+      </div>
+      <canvas id="cv" height="320" aria-label="입자 충돌 모형"></canvas>
+      <div class="stat">
+        <div><b id="sHit">0</b><small>1초 동안 표면 충돌</small></div>
+        <div><b id="sArea">0</b><small>용액에 닿는 표면 (덩어리=1)</small></div>
+        <div><b id="sIon">0</b><small>화면 속 H⁺ 이온 수</small></div>
+      </div>
+      <div class="note">주황 점 = H⁺ 이온, 흰 사각형 = 탄산 칼슘. 이온이 표면에 부딪칠 때 반짝입니다. 충돌 가운데 일부만 반응으로 이어지므로, <b>충돌이 많을수록 반응이 빠릅니다</b>.</div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// 탭
+document.querySelectorAll('.tab-btn').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.toggle('active',x===b));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.p));
+  if(b.dataset.p==='p3')resize();
+});
+function chips(id,cb){const box=$(id);box.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{
+  if(c.disabled)return;box.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x===c));cb&&cb(c.dataset.v);});
+  return()=>box.querySelector('.chip.active').dataset.v;}
+
+// ── 반응 모형 ──
+// 대리석 0.50 g = 0.0050 mol, 염산 50 mL(넉넉함). 속도 = k·[H⁺]·표면적, 표면적 ∝ (남은 양)^(2/3)
+const N0=0.005, VOL=0.05, VM=24.5, K=2.4e-5;
+const SIZE={lump:{s:1,name:'덩어리'},chip:{s:2.2,name:'작은 조각'},powder:{s:5,name:'가루'}};
+const COLORS=['#6fb98f','#f2a541','#3e9c9c','#d95bb0','#e4572e','#7fb0e0','#ffe066','#a78bfa','#f1ede3'];
+function simulate(C,size){const pts=[[0,0]];let n=N0,t=0;const dt=0.1,s=SIZE[size].s;
+  while(t<600){const h=(VOL*C-2*(N0-n))/VOL;const r=K*h*s*Math.pow(n/N0,2/3);n=Math.max(0,n-r*dt);t+=dt;
+    if(Math.round(t*10)%5===0)pts.push([+t.toFixed(1),(N0-n)*VM*1000]);if(n<N0*0.002){pts.push([+t.toFixed(1),N0*VM*1000]);break;}}
+  return pts;}
+const vAt=(pts,t)=>{for(let i=1;i<pts.length;i++)if(pts[i][0]>=t){const[a,b]=[pts[i-1],pts[i]];return a[1]+(b[1]-a[1])*((t-a[0])/((b[0]-a[0])||1));}return pts[pts.length-1][1];};
+const tTo=(pts,v)=>{for(const p of pts)if(p[1]>=v)return p[0];return null;};
+
+const getC=chips('#concChips',()=>hintCheck()), getS=chips('#sizeChips',()=>hintCheck());
+let runs=[], live=null;
+
+// 주사기 눈금
+const ticks=$('#ticks');for(let m=0;m<=150;m+=10){const x=202+m*176/150;ticks.appendChild(el('line',{x1:x,x2:x,y1:58,y2:m%50?64:68,stroke:'#9cb0a8','stroke-width':1}));
+  if(m%50===0){const tx=el('text',{x,y:52,'text-anchor':'middle',fill:'#9cb0a8','font-size':9});tx.textContent=m;ticks.appendChild(tx);}}
+
+// 고체 그리기
+let pieces=[];
+function drawSolid(size,frac){const g=$('#solid');g.innerHTML='';const k=Math.cbrt(Math.max(frac,0));
+  if(frac<=0.001)return;
+  if(size==='lump'){const w=46*k,h=30*k;g.appendChild(el('rect',{x:120-w/2,y:203-h,width:w,height:h,rx:6*k,fill:'#e9e4d8'}));}
+  else{const cnt=size==='chip'?7:40,base=size==='chip'?13:4.5;
+    if(pieces.length!==cnt){pieces=[];for(let i=0;i<cnt;i++)pieces.push([70+Math.random()*100,0.6+Math.random()*0.6]);}
+    pieces.forEach(([x,f])=>{const w=base*f*k;g.appendChild(el('rect',{x:x-w/2,y:203-w*0.8,width:w,height:w*0.8,rx:w*0.25,fill:'#e9e4d8'}));});}}
+let bubbles=[];
+function stepBubbles(rate){const g=$('#bub');
+  if(!reduce&&Math.random()<rate)bubbles.push({x:75+Math.random()*90,y:200,r:1.5+Math.random()*2.5});
+  bubbles.forEach(b=>{b.y-=2.2;b.x+=Math.sin(b.y/9)*0.4;});bubbles=bubbles.filter(b=>b.y>145);
+  g.innerHTML='';bubbles.forEach(b=>g.appendChild(el('circle',{cx:b.x,cy:b.y,r:b.r,fill:'none',stroke:'#f1ede3','stroke-width':1})));}
+function showRig(v,t){const w=Math.min(v,150)*176/150;$('#gas').setAttribute('width',w);$('#plunger').setAttribute('transform',`translate(${w},0)`);
+  $('#vRead').textContent=Math.round(v);$('#tRead').textContent=Math.floor(t);}
+
+// 그래프
+function drawGraph(){const g=$('#graph');g.innerHTML='';const L=52,R=620,T=14,B=262;
+  const all=runs.concat(live?[live]:[]);let tMax=60;all.forEach(r=>{tMax=Math.max(tMax,r.pts[r.pts.length-1][0]);});
+  tMax=Math.min(600,Math.ceil(tMax/60)*60);const step=tMax<=120?20:tMax<=300?60:120;
+  const X=t=>L+(R-L)*t/tMax,Y=v=>B-(B-T)*v/140;
+  for(let v=0;v<=140;v+=20){g.appendChild(el('line',{x1:L,x2:R,y1:Y(v),y2:Y(v),stroke:'#2c473d'}));const tx=el('text',{x:L-8,y:Y(v)+4,'text-anchor':'end',fill:'#9cb0a8','font-size':11});tx.textContent=v;g.appendChild(tx);}
+  for(let t=0;t<=tMax;t+=step){const tx=el('text',{x:X(t),y:B+18,'text-anchor':'middle',fill:'#9cb0a8','font-size':11});tx.textContent=t;g.appendChild(tx);}
+  const a=el('text',{x:R,y:B+36,'text-anchor':'end',fill:'#9cb0a8','font-size':11});a.textContent='시간 (초)';g.appendChild(a);
+  const b=el('text',{x:L,y:T-2,fill:'#9cb0a8','font-size':11});b.textContent='CO₂ (mL)';g.appendChild(b);
+  all.forEach(r=>{const upto=r===live?live.t:Infinity;const d=r.pts.filter(p=>p[0]<=upto).map((p,i)=>(i?'L':'M')+X(p[0]).toFixed(1)+' '+Y(p[1]).toFixed(1)).join(' ');
+    if(r===live)d&&g.appendChild(el('path',{d:d+` L${X(live.t).toFixed(1)} ${Y(vAt(r.pts,live.t)).toFixed(1)}`,fill:'none',stroke:r.color,'stroke-width':3,'stroke-linecap':'round'}));
+    else g.appendChild(el('path',{d,fill:'none',stroke:r.color,'stroke-width':2.5,'stroke-linecap':'round'}));});
+  $('#legend').innerHTML=all.map(r=>`<span><i style="background:${r.color}"></i>${r.label}</span>`).join('');}
+
+function hintCheck(){const C=+getC(),S=getS(),last=runs[runs.length-1];const h=$('#hint');
+  if(runs.some(r=>r.C===C&&r.S===S)){h.innerHTML='이 조건은 이미 해 봤습니다. 다른 조건을 골라 보세요.';return;}
+  if(last&&last.C!==C&&last.S!==S){h.innerHTML='<b>농도와 모양을 둘 다 바꿨어요.</b> 이러면 무엇 때문에 빨라졌는지 알 수 없습니다. 하나만 바꿔 보세요.';return;}
+  h.innerHTML='대조 실험은 <b>한 번에 하나만</b> 바꿔야 비교가 됩니다. 대리석 양은 어느 조건이든 0.50 g이라 기체가 다 모이면 약 120 mL입니다. 측정은 최대 10분까지 합니다.';}
+
+const SPEED=20; // 화면 1초 = 실험 20초, 최대 10분(600초) 측정
+let raf=0,last=0;
+function lock(on){document.querySelectorAll('#concChips .chip,#sizeChips .chip').forEach(c=>c.disabled=on);$('#start').disabled=on;$('#ff').disabled=!on;}
+$('#start').onclick=()=>{const C=+getC(),S=getS();pieces=[];bubbles=[];
+  live={C,S,pts:simulate(C,S),t:0,color:COLORS[runs.length%COLORS.length],label:`${C.toFixed(1)} M · ${SIZE[S].name}`};
+  lock(true);last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(tick);};
+$('#ff').onclick=()=>{if(live){live.t=live.pts[live.pts.length-1][0];finish();}};
+function tick(now){const dt=Math.min(0.1,(now-last)/1000);last=now;live.t+=dt*SPEED;const end=live.pts[live.pts.length-1][0];
+  if(live.t>=end){live.t=end;finish();return;}
+  const v=vAt(live.pts,live.t),rate=(vAt(live.pts,live.t+1)-v);showRig(v,live.t);drawSolid(live.S,1-v/(N0*VM*1000));stepBubbles(Math.min(1,rate/1.2));drawGraph();
+  raf=requestAnimationFrame(tick);}
+function finish(){cancelAnimationFrame(raf);const v=vAt(live.pts,live.t);showRig(v,live.t);drawSolid(live.S,1-v/(N0*VM*1000));$('#bub').innerHTML='';
+  runs=runs.filter(r=>!(r.C===live.C&&r.S===live.S));runs.push(live);live=null;lock(false);drawGraph();table();hintCheck();}
+$('#clear').onclick=()=>{if(live)return;runs=[];drawGraph();table();showRig(0,0);drawSolid(getS(),1);hintCheck();};
+
+function table(){if(!runs.length){$('#tbl').innerHTML='<div class="empty">아직 실험한 조건이 없습니다. ①에서 염산을 부어 보세요.</div>';return;}
+  const rows=runs.slice().sort((a,b)=>a.C-b.C||SIZE[a.S].s-SIZE[b.S].s).map(r=>{const v30=vAt(r.pts,30),t90=tTo(r.pts,N0*VM*1000*0.9);
+    return `<tr><td><i style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${r.color};margin-right:6px"></i>${r.label}</td><td>${Math.round(v30)}</td><td>${(v30/30).toFixed(2)}</td><td>${t90==null?'10분 넘음':Math.round(t90)}</td></tr>`;}).join('');
+  $('#tbl').innerHTML=`<table><thead><tr><th>조건</th><th>30초 때 부피(mL)</th><th>처음 30초 평균 속도(mL/s)</th><th>110 mL 모이는 시간(초)</th></tr></thead><tbody>${rows}</tbody></table>`;}
+
+drawSolid('chip',1);drawGraph();
+
+// ── 충돌 모형 ──
+const cv=$('#cv'),cx=cv.getContext('2d');let W=600,H=320,ions=[],blocks=[],flashes=[],hits=[];
+let mC=1,mS=1;
+chips('#mConc',v=>{mC=+v;setupIons();});chips('#mSize',v=>{mS=+v;setupBlocks();});
+function resize(){const dpr=devicePixelRatio||1;W=cv.clientWidth||600;H=320;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);setupBlocks();setupIons();}
+function setupBlocks(){blocks=[];const n=mS*mS,side=Math.min(120,W*0.3)/mS,gap=mS===1?0:side*0.9,total=n*side+(n-1)*gap;
+  // 같은 양: 한 변 side의 정사각형 n²개를 한 줄 또는 두 줄로
+  const perRow=Math.min(n,Math.floor((W-40)/(side+gap))),rows=Math.ceil(n/perRow);
+  for(let i=0;i<n;i++){const r=Math.floor(i/perRow),c=i%perRow,cnt=Math.min(perRow,n-r*perRow),rowW=cnt*side+(cnt-1)*gap;
+    blocks.push({x:(W-rowW)/2+c*(side+gap),y:H-14-side-r*(side+gap),s:side});}
+$('#sArea').textContent=mS===1?'1':(mS).toFixed(0)+'배';}
+function setupIons(){const n=Math.round(24*mC);while(ions.length<n)ions.push(newIon());ions.length=n;$('#sIon').textContent=n;}
+function newIon(){const a=Math.random()*Math.PI*2,sp=170+Math.random()*90;let x,y,ok;do{x=10+Math.random()*(W-20);y=10+Math.random()*(H*0.55);ok=!blocks.some(b=>inB(x,y,b,6));}while(!ok);return{x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp};}
+const inB=(x,y,b,r)=>x>b.x-r&&x<b.x+b.s+r&&y>b.y-r&&y<b.y+b.s+r;
+let mLast=performance.now();
+function mTick(now){const dt=Math.min(0.033,(now-mLast)/1000);mLast=now;
+  if($('#p3').classList.contains('active')){
+    ions.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;
+      if(p.x<5){p.x=5;p.vx=Math.abs(p.vx);}if(p.x>W-5){p.x=W-5;p.vx=-Math.abs(p.vx);}
+      if(p.y<5){p.y=5;p.vy=Math.abs(p.vy);}if(p.y>H-19){p.y=H-19;p.vy=-Math.abs(p.vy);}
+      for(const b of blocks)if(inB(p.x,p.y,b,4)){const dl=p.x-(b.x-4),dr=b.x+b.s+4-p.x,dtp=p.y-(b.y-4),db=b.y+b.s+4-p.y,m=Math.min(dl,dr,dtp,db);
+        if(m===dl){p.x=b.x-4;p.vx=-Math.abs(p.vx);}else if(m===dr){p.x=b.x+b.s+4;p.vx=Math.abs(p.vx);}else if(m===dtp){p.y=b.y-4;p.vy=-Math.abs(p.vy);}else{p.y=b.y+b.s+4;p.vy=Math.abs(p.vy);}
+        flashes.push({x:p.x,y:p.y,a:1});hits.push(now);break;}});
+    hits=hits.filter(t=>now-t<1000);$('#sHit').textContent=hits.length;
+    cx.clearRect(0,0,W,H);cx.fillStyle='rgba(242,165,65,.07)';cx.fillRect(0,0,W,H);
+    cx.fillStyle='#2c473d';cx.fillRect(0,H-14,W,14);
+    cx.fillStyle='#e9e4d8';blocks.forEach(b=>cx.fillRect(b.x,b.y,b.s,b.s));
+    flashes.forEach(f=>{cx.beginPath();cx.arc(f.x,f.y,9*(1.4-f.a),0,7);cx.strokeStyle=`rgba(255,224,102,${f.a})`;cx.lineWidth=2;cx.stroke();f.a-=dt*3;});flashes=flashes.filter(f=>f.a>0);
+    cx.fillStyle='#f2a541';ions.forEach(p=>{cx.beginPath();cx.arc(p.x,p.y,4,0,7);cx.fill();});
+  }
+  requestAnimationFrame(mTick);}
+addEventListener('resize',()=>{if($('#p3').classList.contains('active'))resize();});
+resize();requestAnimationFrame(mTick);
+})();
+</script>
+</body>
+</html>
