@@ -364,7 +364,16 @@ h1{text-shadow:0 5px 0 rgba(0,0,0,.45)}
 @media (prefers-reduced-motion:reduce){
   .ticker .roll{animation:none}
   .doodle path{stroke-dashoffset:0;animation:none}
-}</style></head><body>
+}
+
+/* ══ 가독성 (11-27 "전체 좀 더 가독성") — 흐린 회색·작은 글씨 올림 ══ */
+:root{--muted:#d2e2da;--dim:#a9c2b5;}
+.lab p{color:var(--muted);line-height:1.75;}
+.info,.foot .info{font-size:14px;color:var(--dim);gap:14px;}
+.stat span{font-size:14px;color:var(--dim);}
+.lbl,.phcap{font-size:13px;color:var(--dim);}
+.tag{font-size:14.5px;}
+.sub{color:var(--muted);line-height:1.75;}</style></head><body>
 <div id="boot"><div class="in">
 
   <div class="scene">
