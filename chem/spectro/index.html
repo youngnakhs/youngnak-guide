@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>분광 실험실</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap');
+:root{
+  --bg:#10201b;--panel:#1c3a31;--panel-2:#264a3e;--line:#4b7062;--ink:#f1ede3;--muted:#c6d6cf;
+  --acid-2:#f2a541;--neutral:#6fb98f;--pink:#d95bb0;
+  --mono:'Space Mono','Courier New',monospace;--sans:'Work Sans',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;color:var(--ink);font-family:var(--sans);padding:28px 16px 60px;
+  background:radial-gradient(circle at 15% 0%,rgba(111,185,143,.08),transparent 45%),radial-gradient(circle at 90% 90%,rgba(167,139,250,.10),transparent 45%),var(--bg);}
+.wrap{max-width:920px;margin:0 auto;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--neutral);text-transform:uppercase;margin-bottom:8px;}
+h1{font-weight:700;font-size:32px;margin:0 0 6px;letter-spacing:-.01em;}
+.sub{color:var(--muted);font-size:14.5px;line-height:1.6;margin:0 0 26px;max-width:620px;}
+.tabs{display:flex;gap:8px;margin-bottom:22px;border-bottom:1px solid var(--line);flex-wrap:wrap;}
+.tab-btn{font-family:var(--sans);font-weight:600;font-size:14px;background:none;border:none;color:var(--muted);padding:10px 4px;cursor:pointer;position:relative;}
+.tab-btn.active{color:#fff;}
+.tab-btn.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:3px;background:var(--neutral);border-radius:2px;}
+.tab-btn+.tab-btn{margin-left:18px;}
+.panel{display:none;}
+.panel.active{display:block;animation:fade .3s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:720px){.grid{grid-template-columns:1fr;}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;}
+.card h2{font-size:12px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#e3ece8;margin:0 0 14px;font-weight:700;}
+.card+.card,.grid+.card,.card+.grid{margin-top:18px;}
+.chip-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.chip{font-family:var(--sans);font-size:13px;font-weight:500;background:var(--panel-2);border:1px solid #5d8575;color:var(--ink);padding:8px 12px;border-radius:20px;cursor:pointer;}
+.chip.active{background:var(--neutral);color:#0d1a15;border-color:var(--neutral);font-weight:700;}
+.lbl{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0 0 8px;}
+.eq{font-family:var(--mono);font-size:14px;text-align:center;padding:12px;background:var(--panel-2);border-radius:8px;margin-bottom:16px;}
+.note{font-size:12.5px;color:#d5e1dc;line-height:1.6;background:var(--panel-2);border-radius:8px;padding:10px 12px;margin-top:14px;}
+.note b{color:var(--ink);}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.go{font-family:var(--sans);font-weight:700;font-size:14.5px;border:none;border-radius:10px;padding:11px 15px;cursor:pointer;background:var(--neutral);color:#0d1a15;touch-action:manipulation;}
+.go.ghost{background:var(--panel-2);color:var(--ink);border:1px solid var(--line);}
+.stage{display:flex;justify-content:center;}
+.stage svg{width:100%;max-width:400px;height:auto;}
+svg text{font-family:var(--mono);}
+.read{display:flex;justify-content:space-around;font-family:var(--mono);text-align:center;margin-top:8px;gap:8px;}
+.read .big{font-size:26px;font-weight:700;line-height:1.2;}
+.read .u{font-size:11px;color:var(--muted);letter-spacing:.06em;}
+input[type=range]{width:100%;accent-color:#a78bfa;height:28px;}
+.ans{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;font-size:14px;}
+.ans input{width:120px;font:700 16px var(--mono);padding:9px 10px;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);color:var(--ink);}
+.fb{font-size:13.5px;margin-top:8px;min-height:1.2em;line-height:1.6;}
+.fb.ok{color:var(--neutral);}.fb.no{color:var(--acid-2);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th,td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:center;}
+th{font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:400;}
+.plot{background:var(--panel-2);border-radius:10px;padding:10px;}
+.plot svg{width:100%;height:auto;display:block;}
+@media (prefers-reduced-motion:reduce){.panel.active{animation:none;}}
+
+/* == IPAD-FIT BEGIN (자동 생성 · 직접 수정하지 말 것) == */
+/* ══ 아이패드 대응 (자동 삽입 · 화학실험실 파이프라인) ══════════
+   대상 폭 — 세로 744(mini)/810(10.9")/834(Air·Pro11)/1024(Pro12.9")
+            가로 1080/1133/1194/1366
+   원칙 — 손가락 터치 목표 44px 이상, 본문 글자 키우기, 홈판을 화면 폭에 맞춰 확대 */
+html{-webkit-text-size-adjust:100%;}
+
+/* 태블릿 세로부터 */
+@media (min-width:744px){
+  body{padding:38px 30px 78px;font-size:15.5px;}
+  .wrap{max-width:900px;}
+  h1{font-size:38px;}
+  .sub{font-size:16px;line-height:1.7;max-width:680px;}
+
+  /* 탭 — 손가락으로 누를 크기 */
+  .tabs{flex-wrap:wrap;gap:0 4px;}
+  .tab-btn{font-size:15.5px;padding:15px 6px;}
+  .tab-btn+.tab-btn{margin-left:26px;}
+
+  /* 선택 칩 — 44px 이상 */
+  .chip{font-size:14.5px;padding:12px 17px;border-radius:24px;}
+  .card{padding:22px 24px;}
+  .card h3{font-size:12.5px;margin-bottom:16px;}
+  .note{font-size:13.5px;padding:12px 14px;}
+
+  /* 비커·수치 */
+  .beaker-svg{width:172px;height:206px;}
+  .readout .ph-big{font-size:46px;}
+  .verdict{font-size:15px;padding:6px 15px;}
+  .ph-strip-wrap{margin-top:38px;}   /* pH 마커 라벨이 위 설명문과 겹치지 않게 */
+  .ph-strip{height:38px;}
+  .ph-labels{font-size:11.5px;}
+
+  /* 중화 반응 */
+  input[type=range]{height:6px;}
+  .slider-row label{font-size:14px;}
+  .eq{font-size:15.5px;padding:14px;}
+
+  /* 한눈에 비교 */
+  .compare-row{grid-template-columns:repeat(auto-fit,minmax(98px,1fr));gap:16px;}
+  .compare-cell .mini-beaker{width:54px;height:66px;}
+  .compare-cell .c-name{font-size:12.5px;min-height:32px;}
+
+  /* 홈판 — 화면 폭을 다 쓰고 칸을 키운다(손가락으로 칠할 크기) */
+  .well-grid{max-width:100%;gap:5px;margin-top:20px;}
+  .palette-row{gap:10px;}
+  .swatch-btn{padding:10px 14px;}
+  .swatch-dot{width:24px;height:24px;}
+  .swatch-label{font-size:11px;}
+  .toggle-btn{font-size:14.5px;padding:14px 18px;}
+  .tmpl-btn{font-size:13.5px;padding:11px 17px;}
+}
+
+/* 태블릿 가로 · 큰 화면 */
+@media (min-width:1024px){
+  .wrap{max-width:1000px;}
+  .grid{gap:24px;}
+  .well-grid{max-width:840px;}
+  .compare-row{gap:18px;}
+}
+
+/* 아이패드 세로에서 2단이 좁아지는 구간 — 카드 안쪽 여백만 줄여 숨통 */
+@media (min-width:744px) and (max-width:860px){
+  .grid{gap:16px;}
+  .card{padding:20px;}
+}
+
+/* 안전영역(홈 인디케이터) */
+@supports (padding:env(safe-area-inset-bottom)){
+  body{padding-bottom:calc(78px + env(safe-area-inset-bottom));}
+}
+
+/* ══ 선명도 (11-27 "색이 명확하게") ══════════════════════════
+   어두운 테마 실험실(탭 있는 것): 보조 글자·선·칸 배경 대비를 올린다 */
+:root:has(.tab-btn){--muted:#c6d6cf;--line:#4b7062;--panel:#1c3a31;--panel-2:#264a3e;}
+:root:has(.tab-btn) .tab-btn{color:#c6d6cf;}
+:root:has(.tab-btn) .tab-btn.active{color:#fff;}
+:root:has(.tab-btn) .tab-btn.active::after{height:3px;}
+:root:has(.tab-btn) .card h2,:root:has(.tab-btn) .card h3{color:#e3ece8;}
+:root:has(.tab-btn) .chip{border-color:#5d8575;}
+:root:has(.tab-btn) .note{color:#d5e1dc;}
+/* 헤스 실험실(자체 라이트/다크): 다크일 때만 보조 글자·선 대비 */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--mute:#c0d2cc;--line:#45605a;}}
+:root[data-theme="dark"]{--mute:#c0d2cc;--line:#45605a;}
+/* 돌아가기 링크(인라인 스타일이라 !important) */
+a[href="../"]{color:#dfe9e4!important;border-color:#5d8575!important;}
+/* == IPAD-FIT END == */
+</style>
+</head>
+<body>
+  <a href="../" style="display:inline-flex;align-items:center;gap:7px;margin-bottom:18px;
+  font-family:'Space Mono','Courier New',monospace;font-size:12px;letter-spacing:.06em;
+  color:#9cb0a8;text-decoration:none;border:1px solid #2c473d;border-radius:20px;
+  padding:6px 13px;transition:.15s"
+  onmouseover="this.style.color='#f1ede3';this.style.borderColor='#6fb98f'"
+  onmouseout="this.style.color='#9cb0a8';this.style.borderColor='#2c473d'">← 실험실 목록</a>
+<div class="wrap">
+  <div class="eyebrow">Lab 08 · 분광 분석</div>
+  <h1>분광 실험실</h1>
+  <p class="sub">분광 광도계로 용액이 빛을 얼마나 흡수하는지(흡광도 A) 잽니다. 흡수 스펙트럼으로 측정할 파장을 고르고, 검량선으로 모르는 농도를 구하고, 색으로 평형 상수까지 구합니다.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-p="p1">① 흡수 스펙트럼</button>
+    <button class="tab-btn" data-p="p2">② 검량선과 미지 시료</button>
+    <button class="tab-btn" data-p="p3">③ 싸이오사이안산 철 평형 상수</button>
+  </div>
+
+  <section class="panel active" id="p1">
+    <div class="grid">
+      <div class="card">
+        <h2>분광 광도계 · KMnO₄ 2.0×10⁻⁴ M</h2>
+        <div class="stage"><svg viewBox="0 0 400 170">
+          <circle cx="30" cy="80" r="16" fill="#f1ede3"/>
+          <path d="M60 60 L90 100 L60 100 Z" fill="none" stroke="#c6d6cf" stroke-width="2"/>
+          <text x="75" y="122" text-anchor="middle" fill="#c6d6cf" font-size="10">프리즘</text>
+          <rect id="beam1" x="96" y="76" width="134" height="8"/>
+          <rect x="230" y="50" width="40" height="70" rx="3" fill="rgba(150,40,150,.75)" stroke="#f1ede3" stroke-width="2"/>
+          <text x="250" y="138" text-anchor="middle" fill="#c6d6cf" font-size="10">시료(1 cm)</text>
+          <rect id="beam2" x="270" y="76" width="70" height="8"/>
+          <rect x="340" y="58" width="44" height="44" rx="6" fill="#264a3e" stroke="#c6d6cf"/>
+          <text x="362" y="84" text-anchor="middle" fill="#c6d6cf" font-size="10">검출기</text>
+        </svg></div>
+        <p class="lbl">파장 λ = <b id="lamT" style="color:#fff">525</b> nm</p>
+        <input type="range" id="lam" min="400" max="700" step="5" value="525" aria-label="파장">
+        <div class="read"><div><div class="big" id="aT">-</div><div class="u">흡광도 A</div></div><div><div class="big" id="tT">-</div><div class="u">투과율 T (%)</div></div></div>
+        <div class="btn-row" style="justify-content:center"><button class="go" id="rec">이 파장 기록</button><button class="go ghost" id="scan">400~700 nm 전체 스캔</button><button class="go ghost" id="clr1">지우기</button></div>
+      </div>
+      <div class="card">
+        <h2>흡수 스펙트럼</h2>
+        <div class="plot"><svg viewBox="0 0 400 260" id="spec"></svg></div>
+        <div class="ans">가장 많이 흡수하는 파장 λmax = <input id="lmAns" inputmode="numeric" placeholder="nm"> nm <button class="go ghost" id="lmChk">확인</button></div>
+        <div class="fb" id="lmFb"></div>
+        <div class="note">KMnO₄ 용액이 <b>보라색</b>으로 보이는 까닭: 초록빛(500~560 nm)을 흡수하고 그 보색인 붉은빛과 푸른빛을 통과시키기 때문입니다. 농도 측정은 λmax에서 해야 가장 정밀합니다.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="p2">
+    <div class="eq">A = ε · b · c &nbsp;(비어-람베르트 법칙, b = 1 cm)</div>
+    <div class="grid">
+      <div class="card">
+        <h2>표준 용액 측정 (λmax에서)</h2>
+        <p class="lbl">KMnO₄ 표준 용액 (×10⁻⁴ M)</p>
+        <div class="chip-list" id="stdC"><button class="chip" data-v="1">1.0</button><button class="chip" data-v="2">2.0</button><button class="chip" data-v="3">3.0</button><button class="chip" data-v="4">4.0</button><button class="chip" data-v="5">5.0</button></div>
+        <table><thead><tr><th>농도 (×10⁻⁴ M)</th><th>흡광도 A</th></tr></thead><tbody id="stdT"><tr><td colspan="2" style="color:var(--muted)">칩을 눌러 측정</td></tr></tbody></table>
+        <div class="btn-row"><button class="go" id="unk">미지 시료 측정</button></div>
+        <div class="read"><div><div class="big" id="unkA">-</div><div class="u">미지 시료 A</div></div></div>
+        <div class="ans">미지 시료 농도 = <input id="ucAns" inputmode="decimal" placeholder="×10⁻⁴ M"> ×10⁻⁴ M <button class="go ghost" id="ucChk">확인</button></div>
+        <div class="fb" id="ucFb"></div>
+      </div>
+      <div class="card">
+        <h2>검량선</h2>
+        <div class="plot"><svg viewBox="0 0 400 300" id="cal"></svg></div>
+        <div class="fb" id="fitT" style="font-family:var(--mono)"></div>
+        <div class="note">표준 용액 2개 이상을 재면 직선(검량선)이 그려집니다. 미지 시료의 A를 검량선에 대입해 농도를 구하세요. 점이 많을수록 믿을 만합니다.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="p3">
+    <div class="eq">Fe³⁺(aq) + SCN⁻(aq) ⇌ FeSCN²⁺(aq, 붉은색) &nbsp; K = [FeSCN²⁺] / ([Fe³⁺][SCN⁻])</div>
+    <div class="grid">
+      <div class="card">
+        <h2>연속 변화법 (둘 다 0.0020 M, 합 10 mL)</h2>
+        <p class="lbl">Fe³⁺ 용액 <b id="xT" style="color:#fff">5</b> mL + SCN⁻ 용액 <b id="yT" style="color:#fff">5</b> mL</p>
+        <input type="range" id="xF" min="0" max="10" step="1" value="5" aria-label="Fe 용액 부피">
+        <div class="stage"><svg viewBox="0 0 200 120" style="max-width:180px"><rect x="80" y="10" width="40" height="100" rx="4" fill="none" stroke="#f1ede3" stroke-width="2"/><rect id="cuv" x="82" y="30" width="36" height="78" rx="2"/></svg></div>
+        <div class="read"><div><div class="big" id="jA">-</div><div class="u">A (447 nm)</div></div></div>
+        <div class="btn-row" style="justify-content:center"><button class="go" id="jRec">기록</button><button class="go ghost" id="jAll">0~10 mL 모두 측정</button></div>
+      </div>
+      <div class="card">
+        <h2>연속 변화 그림</h2>
+        <div class="plot"><svg viewBox="0 0 400 260" id="job"></svg></div>
+        <div class="fb" id="jMsg"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>평형 상수 구하기 (Fe³⁺ 5 mL + SCN⁻ 5 mL 용액)</h2>
+      <ol style="margin:0;padding-left:20px;line-height:1.8;font-size:14px">
+        <li>섞은 직후 처음 농도: [Fe³⁺]₀ = [SCN⁻]₀ = 0.0020 × 5/10 = 0.0010 M</li>
+        <li>FeSCN²⁺의 ε = 4.70×10³ M⁻¹cm⁻¹ → [FeSCN²⁺] = A ÷ 4700</li>
+        <li>평형에서 [Fe³⁺] = [SCN⁻] = 0.0010 − [FeSCN²⁺]</li>
+      </ol>
+      <div class="ans">K = <input id="kAns" inputmode="decimal" placeholder="K"> <button class="go ghost" id="kChk">확인</button></div>
+      <div class="fb" id="kFb"></div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const txt=(g,x,y,s,a={})=>{const t=el('text',Object.assign({x,y,fill:'#c6d6cf','font-size':11},a));t.textContent=s;g.appendChild(t);return t;};
+document.querySelectorAll('.tab-btn').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.toggle('active',x===b));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.p));});
+const noise=s=>(Math.random()*2-1)*s;
+const num=v=>parseFloat(String(v).replace(',','.'));
+function check(inp,fb,ans,tol,ok,no){const v=num($(inp).value),f=$(fb);
+  if(isNaN(v)){f.className='fb no';f.textContent='숫자를 넣어 주세요.';return false;}
+  const good=Math.abs(v-ans)<=Math.abs(ans)*tol;f.className='fb '+(good?'ok':'no');f.innerHTML=good?ok:no;return good;}
+// 파장 → 색
+function wl(l){let r=0,g=0,b=0;if(l<440){r=-(l-440)/40;b=1;}else if(l<490){g=(l-440)/50;b=1;}else if(l<510){g=1;b=-(l-510)/20;}else if(l<580){r=(l-510)/70;g=1;}else if(l<645){r=1;g=-(l-645)/65;}else r=1;
+  return `rgb(${Math.round(r*255)},${Math.round(g*255)},${Math.round(b*255)})`;}
+
+// ── ① KMnO₄ 몰 흡광 계수 ε(λ): 가우스 합, 최댓값 2400
+const G=(l,c,w,a)=>a*Math.exp(-(((l-c)/w)**2));
+const raw=l=>G(l,525,14,1)+G(l,546,12,.8)+G(l,507,12,.45)+G(l,566,12,.3)+G(l,530,45,.28);
+let mx=0,LMAX=0;for(let l=400;l<=700;l++){if(raw(l)>mx){mx=raw(l);LMAX=l;}}
+const eps=l=>2400*raw(l)/mx;
+const C1=2.0e-4;let pts1=[];
+function showLam(){const l=+$('#lam').value,A=eps(l)*C1;$('#lamT').textContent=l;
+  $('#beam1').setAttribute('fill',wl(l));$('#beam2').setAttribute('fill',wl(l));$('#beam2').setAttribute('opacity',Math.max(.08,10**-A));
+  $('#aT').textContent=A.toFixed(3);$('#tT').textContent=(100*10**-A).toFixed(1);}
+function drawSpec(){const g=$('#spec');g.innerHTML='';const L=44,R=390,T=12,B=225,X=l=>L+(R-L)*(l-400)/300,Y=a=>B-(B-T)*a/0.6;
+  for(let l=400;l<700;l+=5)g.appendChild(el('rect',{x:X(l),y:B+2,width:(R-L)/60+0.5,height:6,fill:wl(l)}));
+  for(let a=0;a<=0.6001;a+=0.1){g.appendChild(el('line',{x1:L,x2:R,y1:Y(a),y2:Y(a),stroke:'#3f6355'}));txt(g,L-6,Y(a)+4,a.toFixed(1),{'text-anchor':'end'});}
+  for(let l=400;l<=700;l+=50)txt(g,X(l),B+22,l,{'text-anchor':'middle'});txt(g,R,B+36,'파장 (nm)',{'text-anchor':'end'});txt(g,L,T-2,'A');
+  const s=pts1.slice().sort((a,b)=>a[0]-b[0]);
+  if(s.length>1)g.appendChild(el('path',{d:s.map((p,i)=>(i?'L':'M')+X(p[0]).toFixed(1)+' '+Y(p[1]).toFixed(1)).join(' '),fill:'none',stroke:'#d77fe0','stroke-width':2.5}));
+  s.forEach(p=>g.appendChild(el('circle',{cx:X(p[0]),cy:Y(p[1]),r:3,fill:'#f1ede3'})));}
+$('#lam').oninput=showLam;
+$('#rec').onclick=()=>{const l=+$('#lam').value;pts1=pts1.filter(p=>p[0]!==l);pts1.push([l,eps(l)*C1]);drawSpec();};
+$('#scan').onclick=()=>{pts1=[];for(let l=400;l<=700;l+=5)pts1.push([l,eps(l)*C1]);drawSpec();};
+$('#clr1').onclick=()=>{pts1=[];drawSpec();};
+$('#lmChk').onclick=()=>{const v=num($('#lmAns').value),f=$('#lmFb');if(isNaN(v)){f.className='fb no';f.textContent='숫자를 넣어 주세요.';return;}
+  const ok=Math.abs(v-LMAX)<=5;f.className='fb '+(ok?'ok':'no');f.innerHTML=ok?`맞습니다. λmax ≈ <b>${LMAX} nm</b> (초록빛). ②에서는 이 파장으로 잽니다.`:'스펙트럼에서 가장 높은 봉우리의 파장을 읽으세요. 5 nm 간격으로 재면 더 정확합니다.';};
+showLam();drawSpec();
+
+// ── ② 검량선
+const E2=eps(LMAX),CU=(1.5+Math.random()*3)*1e-4;let std={},unkA=null;
+function meas(c){return Math.max(0,E2*c+noise(0.004));}
+function fit(){const k=Object.keys(std).map(Number);if(k.length<2)return null;
+  const xs=k,ys=k.map(c=>std[c]),n=xs.length,mx=xs.reduce((a,b)=>a+b)/n,my=ys.reduce((a,b)=>a+b)/n;
+  let sxy=0,sxx=0;xs.forEach((x,i)=>{sxy+=(x-mx)*(ys[i]-my);sxx+=(x-mx)**2;});const m=sxy/sxx;return{m,b:my-m*mx};}
+function drawCal(){const g=$('#cal');g.innerHTML='';const L=46,R=390,T=12,B=262,X=c=>L+(R-L)*c/6,Y=a=>B-(B-T)*a/1.6;
+  for(let a=0;a<=1.6001;a+=0.4){g.appendChild(el('line',{x1:L,x2:R,y1:Y(a),y2:Y(a),stroke:'#3f6355'}));txt(g,L-6,Y(a)+4,a.toFixed(1),{'text-anchor':'end'});}
+  for(let c=0;c<=6;c++)txt(g,X(c),B+18,c,{'text-anchor':'middle'});txt(g,R,B+34,'농도 (×10⁻⁴ M)',{'text-anchor':'end'});txt(g,L,T-2,'A');
+  const f=fit();if(f){g.appendChild(el('line',{x1:X(0),y1:Y(f.b),x2:X(6),y2:Y(f.b+f.m*6),stroke:'#a78bfa','stroke-width':2}));$('#fitT').textContent=`검량선: A = ${f.m.toFixed(4)} × c + ${f.b.toFixed(4)}  (c 단위 ×10⁻⁴ M)`;}else $('#fitT').textContent='';
+  Object.keys(std).forEach(c=>g.appendChild(el('circle',{cx:X(+c),cy:Y(std[c]),r:5,fill:'#f1ede3'})));
+  if(unkA!=null){g.appendChild(el('line',{x1:L,x2:R,y1:Y(unkA),y2:Y(unkA),stroke:'#f2a541','stroke-dasharray':'5 4'}));txt(g,R-4,Y(unkA)-6,'미지 시료',{'text-anchor':'end',fill:'#f2a541'});}
+  const rows=Object.keys(std).map(Number).sort((a,b)=>a-b).map(c=>`<tr><td>${c.toFixed(1)}</td><td>${std[c].toFixed(3)}</td></tr>`).join('');
+  $('#stdT').innerHTML=rows||'<tr><td colspan="2" style="color:var(--muted)">칩을 눌러 측정</td></tr>';}
+document.querySelectorAll('#stdC .chip').forEach(c=>c.onclick=()=>{c.classList.add('active');const v=+c.dataset.v;std[v]=meas(v*1e-4);drawCal();});
+$('#unk').onclick=()=>{unkA=meas(CU);$('#unkA').textContent=unkA.toFixed(3);drawCal();};
+$('#ucChk').onclick=()=>{if(unkA==null){$('#ucFb').className='fb no';$('#ucFb').textContent='먼저 미지 시료를 측정하세요.';return;}
+  check('#ucAns','#ucFb',CU*1e4,0.04,`맞습니다! 미지 시료는 <b>${(CU*1e4).toFixed(2)}×10⁻⁴ M</b>입니다.`,'검량선 식 A = 기울기 × c + 절편에 미지 시료의 A를 넣어 c를 구하세요.');};
+drawCal();
+
+// ── ③ FeSCN: K = 140, ε = 4700, 각 0.0020 M, 합 10 mL
+const KF=140,EF=4700;let jp={};
+function feA(x){const a=0.002*x/10,b=0.002*(10-x)/10;if(!a||!b)return{A:0,y:0};
+  const s=a+b+1/KF,y=(s-Math.sqrt(s*s-4*a*b))/2;return{A:EF*y,y};}
+function jShow(){const x=+$('#xF').value,{A}=feA(x);$('#xT').textContent=x;$('#yT').textContent=10-x;$('#jA').textContent=A.toFixed(3);
+  $('#cuv').setAttribute('fill',`rgba(200,40,30,${Math.min(.9,.06+A*1.1)})`);}
+function jDraw(){const g=$('#job');g.innerHTML='';const L=44,R=390,T=12,B=222,X=f=>L+(R-L)*f,Y=a=>B-(B-T)*a/0.8;
+  for(let a=0;a<=0.8001;a+=0.2){g.appendChild(el('line',{x1:L,x2:R,y1:Y(a),y2:Y(a),stroke:'#3f6355'}));txt(g,L-6,Y(a)+4,a.toFixed(1),{'text-anchor':'end'});}
+  for(let i=0;i<=10;i+=2)txt(g,X(i/10),B+18,(i/10).toFixed(1),{'text-anchor':'middle'});txt(g,R,B+34,'Fe³⁺의 몰분율',{'text-anchor':'end'});txt(g,L,T-2,'A');
+  const k=Object.keys(jp).map(Number).sort((a,b)=>a-b);
+  if(k.length>1)g.appendChild(el('path',{d:k.map((x,i)=>(i?'L':'M')+X(x/10).toFixed(1)+' '+Y(jp[x]).toFixed(1)).join(' '),fill:'none',stroke:'#e4572e','stroke-width':2.5}));
+  k.forEach(x=>g.appendChild(el('circle',{cx:X(x/10),cy:Y(jp[x]),r:4,fill:'#f1ede3'})));
+  if(k.length>=9){const best=k.reduce((a,b)=>jp[b]>jp[a]?b:a);$('#jMsg').className='fb ok';$('#jMsg').innerHTML=`몰분율 <b>${(best/10).toFixed(1)}</b>에서 A가 가장 큽니다 → Fe³⁺ : SCN⁻ = 1 : 1로 결합합니다.`;}}
+$('#xF').oninput=jShow;
+$('#jRec').onclick=()=>{const x=+$('#xF').value;jp[x]=Math.max(0,feA(x).A+noise(0.003));jDraw();};
+$('#jAll').onclick=()=>{for(let x=0;x<=10;x++)jp[x]=Math.max(0,feA(x).A+noise(0.003));jDraw();};
+$('#kChk').onclick=()=>check('#kAns','#kFb',KF,0.06,`맞습니다! K ≈ <b>${KF}</b>. [FeSCN²⁺] = ${(feA(5).y).toExponential(2)} M, [Fe³⁺] = [SCN⁻] = ${(0.001-feA(5).y).toExponential(2)} M`,'순서: ① [FeSCN²⁺] = A ÷ 4700 (x=5 용액의 A) ② 남은 [Fe³⁺] = [SCN⁻] = 0.0010 − ① ③ K = ① ÷ (②)²');
+jShow();jDraw();
+})();
+</script>
+</body>
+</html>

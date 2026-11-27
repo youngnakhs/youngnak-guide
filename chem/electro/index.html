@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>전기 화학 실험실</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap');
+:root{
+  --bg:#10201b;--panel:#1c3a31;--panel-2:#264a3e;--line:#4b7062;--ink:#f1ede3;--muted:#c6d6cf;
+  --acid-2:#f2a541;--neutral:#6fb98f;
+  --mono:'Space Mono','Courier New',monospace;--sans:'Work Sans',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;color:var(--ink);font-family:var(--sans);padding:28px 16px 60px;
+  background:radial-gradient(circle at 15% 0%,rgba(111,185,143,.08),transparent 45%),radial-gradient(circle at 90% 90%,rgba(255,224,102,.07),transparent 45%),var(--bg);}
+.wrap{max-width:920px;margin:0 auto;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--neutral);text-transform:uppercase;margin-bottom:8px;}
+h1{font-weight:700;font-size:32px;margin:0 0 6px;letter-spacing:-.01em;}
+.sub{color:var(--muted);font-size:14.5px;line-height:1.6;margin:0 0 26px;max-width:620px;}
+.tabs{display:flex;gap:8px;margin-bottom:22px;border-bottom:1px solid var(--line);flex-wrap:wrap;}
+.tab-btn{font-family:var(--sans);font-weight:600;font-size:14px;background:none;border:none;color:var(--muted);padding:10px 4px;cursor:pointer;position:relative;}
+.tab-btn.active{color:#fff;}
+.tab-btn.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:3px;background:var(--neutral);border-radius:2px;}
+.tab-btn+.tab-btn{margin-left:18px;}
+.panel{display:none;}
+.panel.active{display:block;animation:fade .3s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:720px){.grid{grid-template-columns:1fr;}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;}
+.card h2{font-size:12px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#e3ece8;margin:0 0 14px;font-weight:700;}
+.card+.card,.grid+.card,.card+.grid{margin-top:18px;}
+.chip-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.chip{font-family:var(--sans);font-size:13px;font-weight:500;background:var(--panel-2);border:1px solid #5d8575;color:var(--ink);padding:8px 12px;border-radius:20px;cursor:pointer;}
+.chip.active{background:var(--neutral);color:#0d1a15;border-color:var(--neutral);font-weight:700;}
+.chip:disabled{opacity:.45;cursor:default;}
+.lbl{font-family:var(--mono);font-size:12px;color:var(--muted);margin:0 0 8px;}
+.note{font-size:12.5px;color:#d5e1dc;line-height:1.6;background:var(--panel-2);border-radius:8px;padding:10px 12px;margin-top:14px;}
+.note b{color:var(--ink);}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.go{font-family:var(--sans);font-weight:700;font-size:14.5px;border:none;border-radius:10px;padding:11px 15px;cursor:pointer;background:var(--neutral);color:#0d1a15;touch-action:manipulation;}
+.go.ghost{background:var(--panel-2);color:var(--ink);border:1px solid var(--line);}
+.go:disabled{opacity:.45;cursor:default;}
+.stage{display:flex;justify-content:center;}
+.stage svg{width:100%;height:auto;}
+svg text{font-family:var(--mono);}
+.half{font-family:var(--mono);font-size:13.5px;line-height:1.8;background:var(--panel-2);border-radius:8px;padding:10px 12px;margin-top:12px;}
+.half b{font-family:var(--sans);}
+.ans{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:14px;}
+.ans input{width:120px;font:700 16px var(--mono);padding:9px 10px;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);color:var(--ink);}
+.fb{font-size:13.5px;margin-top:8px;min-height:1.2em;line-height:1.6;}
+.fb.ok{color:var(--neutral);}.fb.no{color:var(--acid-2);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th,td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:center;}
+th{font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:400;}
+.plot{background:var(--panel-2);border-radius:10px;padding:10px;margin-top:12px;}
+.plot svg{width:100%;height:auto;display:block;}
+.tog{display:flex;align-items:center;gap:10px;font-size:14px;margin-top:6px;cursor:pointer;}
+.tog input{width:22px;height:22px;accent-color:var(--neutral);}
+@media (prefers-reduced-motion:reduce){.panel.active{animation:none;}}
+
+/* == IPAD-FIT BEGIN (자동 생성 · 직접 수정하지 말 것) == */
+/* ══ 아이패드 대응 (자동 삽입 · 화학실험실 파이프라인) ══════════
+   대상 폭 — 세로 744(mini)/810(10.9")/834(Air·Pro11)/1024(Pro12.9")
+            가로 1080/1133/1194/1366
+   원칙 — 손가락 터치 목표 44px 이상, 본문 글자 키우기, 홈판을 화면 폭에 맞춰 확대 */
+html{-webkit-text-size-adjust:100%;}
+
+/* 태블릿 세로부터 */
+@media (min-width:744px){
+  body{padding:38px 30px 78px;font-size:15.5px;}
+  .wrap{max-width:900px;}
+  h1{font-size:38px;}
+  .sub{font-size:16px;line-height:1.7;max-width:680px;}
+
+  /* 탭 — 손가락으로 누를 크기 */
+  .tabs{flex-wrap:wrap;gap:0 4px;}
+  .tab-btn{font-size:15.5px;padding:15px 6px;}
+  .tab-btn+.tab-btn{margin-left:26px;}
+
+  /* 선택 칩 — 44px 이상 */
+  .chip{font-size:14.5px;padding:12px 17px;border-radius:24px;}
+  .card{padding:22px 24px;}
+  .card h3{font-size:12.5px;margin-bottom:16px;}
+  .note{font-size:13.5px;padding:12px 14px;}
+
+  /* 비커·수치 */
+  .beaker-svg{width:172px;height:206px;}
+  .readout .ph-big{font-size:46px;}
+  .verdict{font-size:15px;padding:6px 15px;}
+  .ph-strip-wrap{margin-top:38px;}   /* pH 마커 라벨이 위 설명문과 겹치지 않게 */
+  .ph-strip{height:38px;}
+  .ph-labels{font-size:11.5px;}
+
+  /* 중화 반응 */
+  input[type=range]{height:6px;}
+  .slider-row label{font-size:14px;}
+  .eq{font-size:15.5px;padding:14px;}
+
+  /* 한눈에 비교 */
+  .compare-row{grid-template-columns:repeat(auto-fit,minmax(98px,1fr));gap:16px;}
+  .compare-cell .mini-beaker{width:54px;height:66px;}
+  .compare-cell .c-name{font-size:12.5px;min-height:32px;}
+
+  /* 홈판 — 화면 폭을 다 쓰고 칸을 키운다(손가락으로 칠할 크기) */
+  .well-grid{max-width:100%;gap:5px;margin-top:20px;}
+  .palette-row{gap:10px;}
+  .swatch-btn{padding:10px 14px;}
+  .swatch-dot{width:24px;height:24px;}
+  .swatch-label{font-size:11px;}
+  .toggle-btn{font-size:14.5px;padding:14px 18px;}
+  .tmpl-btn{font-size:13.5px;padding:11px 17px;}
+}
+
+/* 태블릿 가로 · 큰 화면 */
+@media (min-width:1024px){
+  .wrap{max-width:1000px;}
+  .grid{gap:24px;}
+  .well-grid{max-width:840px;}
+  .compare-row{gap:18px;}
+}
+
+/* 아이패드 세로에서 2단이 좁아지는 구간 — 카드 안쪽 여백만 줄여 숨통 */
+@media (min-width:744px) and (max-width:860px){
+  .grid{gap:16px;}
+  .card{padding:20px;}
+}
+
+/* 안전영역(홈 인디케이터) */
+@supports (padding:env(safe-area-inset-bottom)){
+  body{padding-bottom:calc(78px + env(safe-area-inset-bottom));}
+}
+
+/* ══ 선명도 (11-27 "색이 명확하게") ══════════════════════════
+   어두운 테마 실험실(탭 있는 것): 보조 글자·선·칸 배경 대비를 올린다 */
+:root:has(.tab-btn){--muted:#c6d6cf;--line:#4b7062;--panel:#1c3a31;--panel-2:#264a3e;}
+:root:has(.tab-btn) .tab-btn{color:#c6d6cf;}
+:root:has(.tab-btn) .tab-btn.active{color:#fff;}
+:root:has(.tab-btn) .tab-btn.active::after{height:3px;}
+:root:has(.tab-btn) .card h2,:root:has(.tab-btn) .card h3{color:#e3ece8;}
+:root:has(.tab-btn) .chip{border-color:#5d8575;}
+:root:has(.tab-btn) .note{color:#d5e1dc;}
+/* 헤스 실험실(자체 라이트/다크): 다크일 때만 보조 글자·선 대비 */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--mute:#c0d2cc;--line:#45605a;}}
+:root[data-theme="dark"]{--mute:#c0d2cc;--line:#45605a;}
+/* 돌아가기 링크(인라인 스타일이라 !important) */
+a[href="../"]{color:#dfe9e4!important;border-color:#5d8575!important;}
+/* == IPAD-FIT END == */
+</style>
+</head>
+<body>
+  <a href="../" style="display:inline-flex;align-items:center;gap:7px;margin-bottom:18px;
+  font-family:'Space Mono','Courier New',monospace;font-size:12px;letter-spacing:.06em;
+  color:#9cb0a8;text-decoration:none;border:1px solid #2c473d;border-radius:20px;
+  padding:6px 13px;transition:.15s"
+  onmouseover="this.style.color='#f1ede3';this.style.borderColor='#6fb98f'"
+  onmouseout="this.style.color='#9cb0a8';this.style.borderColor='#2c473d'">← 실험실 목록</a>
+<div class="wrap">
+  <div class="eyebrow">Lab 10 · 전기 화학</div>
+  <h1>전기 화학 실험실</h1>
+  <p class="sub">산화·환원 반응으로 전기를 만들고(화학 전지), 거꾸로 전기로 반응을 일으킵니다(전기 분해). 금속을 바꿔 전압을 재고, 전류와 시간으로 석출된 구리의 질량에서 패러데이 상수를 구해 보세요.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-p="p1">① 화학 전지와 염다리</button>
+    <button class="tab-btn" data-p="p2">② 전기 분해와 패러데이 법칙</button>
+  </div>
+
+  <section class="panel active" id="p1">
+    <div class="grid">
+      <div class="card">
+        <h2>반쪽 전지 고르기 (각 1 M 수용액)</h2>
+        <p class="lbl">왼쪽 비커</p>
+        <div class="chip-list" id="mL"></div>
+        <p class="lbl">오른쪽 비커</p>
+        <div class="chip-list" id="mR"></div>
+        <label class="tog"><input type="checkbox" id="bridge" checked> 염다리(KNO₃) 연결</label>
+        <table style="margin-top:14px"><thead><tr><th>환원 반쪽 반응</th><th>E° (V)</th></tr></thead><tbody id="eT"></tbody></table>
+      </div>
+      <div class="card">
+        <h2>전지</h2>
+        <div class="stage"><svg viewBox="0 0 400 270" id="cell">
+          <path d="M80 60 V30 H320 V60" fill="none" stroke="#c6d6cf" stroke-width="3"/>
+          <rect x="165" y="12" width="70" height="36" rx="6" fill="#0c1915" stroke="#c6d6cf"/>
+          <text x="200" y="37" text-anchor="middle" fill="#7dffb0" font-size="17" font-weight="700" id="volt">0.00 V</text>
+          <g id="elec"></g>
+          <path d="M30 110 V240 Q30 252 42 252 H138 Q150 252 150 240 V110" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
+          <path d="M250 110 V240 Q250 252 262 252 H358 Q370 252 370 240 V110" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
+          <rect x="32" y="140" width="116" height="110" id="solL"/><rect x="252" y="140" width="116" height="110" id="solR"/>
+          <rect id="rodL" x="72" y="60" width="16" height="150" rx="2"/><rect id="rodR" x="312" y="60" width="16" height="150" rx="2"/>
+          <path id="br" d="M115 200 V105 H285 V200" fill="none" stroke="rgba(240,240,235,.55)" stroke-width="16"/>
+          <g id="ions"></g>
+          <text x="90" y="268" text-anchor="middle" fill="#c6d6cf" font-size="11" id="lblL"></text>
+          <text x="310" y="268" text-anchor="middle" fill="#c6d6cf" font-size="11" id="lblR"></text>
+          <text x="50" y="56" text-anchor="middle" font-size="13" font-weight="700" id="sgL"></text>
+          <text x="350" y="56" text-anchor="middle" font-size="13" font-weight="700" id="sgR"></text>
+        </svg></div>
+        <div class="half" id="half"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>생각해 보기</h2>
+      <div class="ans">아연–구리 전지(다니엘 전지)의 표준 전지 전위는? <input id="dAns" inputmode="decimal" placeholder="V"> V <button class="go ghost" id="dChk">확인</button></div>
+      <div class="fb" id="dFb"></div>
+      <div class="note">염다리를 떼면 전압이 0이 됩니다. 염다리 속 이온이 두 비커로 옮겨 가 <b>전하 균형</b>을 맞춰 주어야 전자가 계속 흐를 수 있기 때문입니다. 전자는 도선으로, 이온은 용액과 염다리로 움직입니다.</div>
+    </div>
+  </section>
+
+  <section class="panel" id="p2">
+    <div class="grid">
+      <div class="card">
+        <h2>황산 구리(II) 수용액 · 구리 전극</h2>
+        <p class="lbl">전류</p>
+        <div class="chip-list" id="cI"><button class="chip" data-v="0.5">0.50 A</button><button class="chip active" data-v="1">1.00 A</button><button class="chip" data-v="1.5">1.50 A</button></div>
+        <p class="lbl">시간</p>
+        <div class="chip-list" id="cT"><button class="chip" data-v="10">10분</button><button class="chip active" data-v="20">20분</button><button class="chip" data-v="30">30분</button></div>
+        <div class="btn-row"><button class="go" id="run">전류 흘리기</button></div>
+        <div class="half">(−)극: Cu²⁺ + 2e⁻ → Cu &nbsp;(석출, 질량 증가)<br>(+)극: Cu → Cu²⁺ + 2e⁻ &nbsp;(녹아 나감)</div>
+        <table style="margin-top:12px"><thead><tr><th>전류(A)</th><th>시간(s)</th><th>전하량 Q(C)</th><th>(−)극 증가(g)</th></tr></thead><tbody id="rT"><tr><td colspan="4" style="color:var(--muted)">아직 없음</td></tr></tbody></table>
+      </div>
+      <div class="card">
+        <h2>전해조</h2>
+        <div class="stage"><svg viewBox="0 0 400 230">
+          <rect x="150" y="8" width="100" height="34" rx="6" fill="#0c1915" stroke="#c6d6cf"/>
+          <text x="200" y="31" text-anchor="middle" fill="#7dffb0" font-size="15" font-weight="700" id="amm">0.00 A</text>
+          <path d="M120 60 V25 H150 M250 25 H280 V60" fill="none" stroke="#c6d6cf" stroke-width="3"/>
+          <path d="M60 80 V200 Q60 214 74 214 H326 Q340 214 340 200 V80" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
+          <rect x="62" y="100" width="276" height="112" fill="rgba(60,140,230,.5)" id="cuSol"/>
+          <rect x="110" y="55" width="20" height="140" rx="2" fill="#c97a4a" id="cat"/>
+          <rect x="270" y="55" width="20" height="140" rx="2" fill="#c97a4a" id="an"/>
+          <text x="120" y="226" text-anchor="middle" fill="#c6d6cf" font-size="11">(−)극</text>
+          <text x="280" y="226" text-anchor="middle" fill="#c6d6cf" font-size="11">(+)극</text>
+          <g id="mv"></g>
+        </svg></div>
+        <div class="plot"><svg viewBox="0 0 400 200" id="fPlot"></svg></div>
+        <div class="ans">마지막 실험으로 구한 패러데이 상수 F = <input id="fAns" inputmode="decimal" placeholder="C/mol"> C/mol <button class="go ghost" id="fChk">확인</button></div>
+        <div class="fb" id="fFb"></div>
+        <div class="note">Cu 원자량 63.5. 전자 1몰의 전하량이 F입니다. Cu 1몰이 석출되려면 전자 2몰이 필요하므로 F = Q × 63.5 ÷ (2 × 석출 질량).</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const txt=(g,x,y,s,a={})=>{const t=el('text',Object.assign({x,y,fill:'#c6d6cf','font-size':11},a));t.textContent=s;g.appendChild(t);};
+document.querySelectorAll('.tab-btn').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.toggle('active',x===b));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.p));});
+const num=v=>parseFloat(String(v).replace(',','.'));
+
+// ── ① 화학 전지
+const M={Mg:{E:-2.37,ion:'Mg²⁺',n:2,rod:'#d6dbe0',sol:'rgba(230,235,240,.18)'},Zn:{E:-0.76,ion:'Zn²⁺',n:2,rod:'#a9b4bf',sol:'rgba(230,235,240,.18)'},
+  Fe:{E:-0.44,ion:'Fe²⁺',n:2,rod:'#8a8f96',sol:'rgba(150,200,150,.35)'},Cu:{E:0.34,ion:'Cu²⁺',n:2,rod:'#c97a4a',sol:'rgba(60,140,230,.5)'},Ag:{E:0.80,ion:'Ag⁺',n:1,rod:'#e8eef3',sol:'rgba(230,235,240,.18)'}};
+let L='Zn',Rm='Cu';
+$('#eT').innerHTML=Object.keys(M).sort((a,b)=>M[b].E-M[a].E).map(k=>`<tr><td>${M[k].ion} + ${M[k].n===1?'':M[k].n}e⁻ → ${k}</td><td>${M[k].E>0?'+':''}${M[k].E.toFixed(2)}</td></tr>`).join('');
+function mk(box,cur,set){$(box).innerHTML=Object.keys(M).map(k=>`<button class="chip${k===cur?' active':''}" data-v="${k}">${k} | ${M[k].ion}</button>`).join('');
+  $(box).querySelectorAll('.chip').forEach(c=>c.onclick=()=>{$(box).querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x===c));set(c.dataset.v);cell();});}
+mk('#mL',L,v=>L=v);mk('#mR',Rm,v=>Rm=v);$('#bridge').onchange=()=>cell();
+let flow=0,anodeLeft=true;
+function cell(){const br=$('#bridge').checked,a=M[L],b=M[Rm],same=L===Rm,E=br&&!same?Math.abs(a.E-b.E):0;
+  $('#volt').textContent=E.toFixed(2)+' V';$('#br').style.display=br?'':'none';
+  $('#rodL').setAttribute('fill',a.rod);$('#rodR').setAttribute('fill',b.rod);$('#solL').setAttribute('fill',a.sol);$('#solR').setAttribute('fill',b.sol);
+  $('#lblL').textContent=`${L} | ${a.ion}`;$('#lblR').textContent=`${Rm} | ${b.ion}`;
+  anodeLeft=a.E<b.E;flow=E;
+  const sg=(id,neg)=>{$(id).textContent=E?(neg?'(−)극':'(+)극'):'';$(id).setAttribute('fill',neg?'#7fb0ff':'#ff8f7a');};sg('#sgL',anodeLeft);sg('#sgR',!anodeLeft);
+  const an=anodeLeft?L:Rm,ca=anodeLeft?Rm:L,A=M[an],C=M[ca];
+  if(same){$('#half').innerHTML='두 전극이 같은 금속이면 전위차가 없어 전류가 흐르지 않습니다.';return;}
+  if(!br){$('#half').innerHTML='<b>염다리가 없어 회로가 끊겼습니다.</b> 전압 0 V.';return;}
+  $('#half').innerHTML=`<b>(−)극 · 산화</b> ${an} → ${A.ion} + ${A.n}e⁻ &nbsp;(전극이 녹아 가벼워짐)<br><b>(+)극 · 환원</b> ${C.ion} + ${C.n===1?'':C.n}e⁻ → ${ca} &nbsp;(금속이 붙어 무거워짐)<br><b>전지 전위</b> E° = ${C.E.toFixed(2)} − (${A.E.toFixed(2)}) = <b>${E.toFixed(2)} V</b>`;}
+let t0=performance.now();
+function anim(now){const g=$('#elec');g.innerHTML='';const gi=$('#ions');gi.innerHTML='';
+  if(flow>0&&$('#p1').classList.contains('active')){const sp=0.04+flow*0.03,ph=((now-t0)/1000*sp)%1;
+    for(let i=0;i<8;i++){let f=(ph+i/8)%1;if(!anodeLeft)f=1-f; // 경로: (80,60)→(80,30)→(320,30)→(320,60)
+      const d=f*300;let x,y;if(d<30){x=80;y=60-d;}else if(d<270){x=80+(d-30);y=30;}else{x=320;y=30+(d-270);}
+      g.appendChild(el('circle',{cx:x,cy:y,r:4,fill:'#ffe066'}));}
+    // 염다리 이온: NO₃⁻은 (−)극 쪽, K⁺은 (+)극 쪽으로
+    for(let i=0;i<4;i++){const f=((now-t0)/4000+i/4)%1,xa=200+(anodeLeft?-1:1)*f*80,xb=200-(anodeLeft?-1:1)*f*80;
+      gi.appendChild(el('circle',{cx:xa,cy:105,r:3.5,fill:'#7fb0ff'}));gi.appendChild(el('circle',{cx:xb,cy:105,r:3.5,fill:'#ff8f7a'}));}}
+  requestAnimationFrame(anim);}
+cell();requestAnimationFrame(anim);
+$('#dChk').onclick=()=>{const v=num($('#dAns').value),f=$('#dFb');if(isNaN(v)){f.className='fb no';f.textContent='숫자를 넣어 주세요.';return;}
+  const ok=Math.abs(v-1.10)<=0.01;f.className='fb '+(ok?'ok':'no');f.innerHTML=ok?'맞습니다. E° = 0.34 − (−0.76) = <b>1.10 V</b>. 위에서 Zn과 Cu를 골라 확인해 보세요.':'(+)극(환원되는 쪽)의 E°에서 (−)극의 E°를 빼세요. 표준 환원 전위 표를 보세요.';};
+
+// ── ② 전기 분해
+let I=1,Tm=20,runs=[],busy=false;
+function ch(box,set){$(box).querySelectorAll('.chip').forEach(c=>c.onclick=()=>{if(busy)return;$(box).querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x===c));set(+c.dataset.v);});}
+ch('#cI',v=>I=v);ch('#cT',v=>Tm=v);
+$('#run').onclick=()=>{if(busy)return;busy=true;$('#run').disabled=true;$('#amm').textContent=I.toFixed(2)+' A';
+  const t=Tm*60,Q=I*t,dm=Q/96485*63.5/2*(1+(Math.random()*2-1)*0.012),start=performance.now(),dur=3000;
+  const step=now=>{const k=Math.min(1,(now-start)/dur);$('#cat').setAttribute('width',20+6*k*I);$('#cat').setAttribute('x',110-3*k*I);$('#an').setAttribute('width',20-5*k*I);
+    const g=$('#mv');g.innerHTML='';if(k<1)for(let i=0;i<6;i++){const f=((now-start)/900+i/6)%1;g.appendChild(el('circle',{cx:270-f*140,cy:120+(i*15)%70,r:3.5,fill:'#3c8ce6',stroke:'#fff','stroke-width':.8}));}
+    if(k<1)requestAnimationFrame(step);else{busy=false;$('#run').disabled=false;$('#amm').textContent='0.00 A';
+      runs.push({I,t,Q,dm});$('#rT').innerHTML=runs.map(r=>`<tr><td>${r.I.toFixed(2)}</td><td>${r.t}</td><td>${r.Q}</td><td>${r.dm.toFixed(3)}</td></tr>`).join('');fplot();
+      setTimeout(()=>{$('#cat').setAttribute('width',20);$('#cat').setAttribute('x',110);$('#an').setAttribute('width',20);},800);}};
+  requestAnimationFrame(step);};
+function fplot(){const g=$('#fPlot');g.innerHTML='';const L=50,R=390,T=12,B=166,X=q=>L+(R-L)*q/3000,Y=m=>B-(B-T)*m/1.0;
+  for(let m=0;m<=1.0001;m+=0.25){g.appendChild(el('line',{x1:L,x2:R,y1:Y(m),y2:Y(m),stroke:'#3f6355'}));txt(g,L-6,Y(m)+4,m.toFixed(2),{'text-anchor':'end','font-size':10});}
+  for(let q=0;q<=3000;q+=1000)txt(g,X(q),B+16,q,{'text-anchor':'middle'});txt(g,R,B+30,'전하량 Q (C)',{'text-anchor':'end'});txt(g,L,T-2,'석출 Cu (g)');
+  runs.forEach(r=>g.appendChild(el('circle',{cx:X(r.Q),cy:Y(r.dm),r:5,fill:'#c97a4a',stroke:'#fff'})));
+  if(runs.length>=2){const k=runs.reduce((a,r)=>a+r.dm*r.Q,0)/runs.reduce((a,r)=>a+r.Q*r.Q,0);g.appendChild(el('line',{x1:X(0),y1:Y(0),x2:X(3000),y2:Y(k*3000),stroke:'#f2a541','stroke-dasharray':'5 4'}));}}
+fplot();
+$('#fChk').onclick=()=>{const f=$('#fFb'),v=num($('#fAns').value);if(!runs.length){f.className='fb no';f.textContent='먼저 전류를 흘려 보세요.';return;}
+  if(isNaN(v)){f.className='fb no';f.textContent='숫자를 넣어 주세요.';return;}
+  const r=runs[runs.length-1],F=r.Q*63.5/(2*r.dm);
+  if(Math.abs(v-F)<=F*0.03){f.className='fb ok';f.innerHTML=`맞습니다! 측정값 F ≈ <b>${Math.round(F)} C/mol</b> (이론값 96 485). 점들이 원점을 지나는 직선 위에 있으면 석출량 ∝ 전하량(패러데이 제1법칙).`;}
+  else{f.className='fb no';f.innerHTML=`① Q = I × t = ${r.Q} C ② Cu mol = ${r.dm.toFixed(3)} ÷ 63.5 ③ 전자 mol = ② × 2 ④ F = Q ÷ ③`;}};
+})();
+</script>
+</body>
+</html>

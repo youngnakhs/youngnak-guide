@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>양적 관계 실험실</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Work+Sans:wght@400;500;600;700&display=swap');
+:root{
+  --bg:#10201b;--panel:#1c3a31;--panel-2:#264a3e;--line:#4b7062;--ink:#f1ede3;--muted:#c6d6cf;
+  --acid-2:#f2a541;--neutral:#6fb98f;
+  --mono:'Space Mono','Courier New',monospace;--sans:'Work Sans',-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+}
+*{box-sizing:border-box;}
+body{margin:0;color:var(--ink);font-family:var(--sans);padding:28px 16px 60px;
+  background:radial-gradient(circle at 15% 0%,rgba(111,185,143,.08),transparent 45%),radial-gradient(circle at 90% 90%,rgba(59,130,246,.09),transparent 45%),var(--bg);}
+.wrap{max-width:920px;margin:0 auto;}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:var(--neutral);text-transform:uppercase;margin-bottom:8px;}
+h1{font-weight:700;font-size:32px;margin:0 0 6px;letter-spacing:-.01em;}
+.sub{color:var(--muted);font-size:14.5px;line-height:1.6;margin:0 0 26px;max-width:620px;}
+.tabs{display:flex;gap:8px;margin-bottom:22px;border-bottom:1px solid var(--line);flex-wrap:wrap;}
+.tab-btn{font-family:var(--sans);font-weight:600;font-size:14px;background:none;border:none;color:var(--muted);padding:10px 4px;cursor:pointer;position:relative;}
+.tab-btn.active{color:#fff;}
+.tab-btn.active::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:3px;background:var(--neutral);border-radius:2px;}
+.tab-btn+.tab-btn{margin-left:18px;}
+.panel{display:none;}
+.panel.active{display:block;animation:fade .3s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+@media(max-width:720px){.grid{grid-template-columns:1fr;}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;}
+.card h2{font-size:12px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#e3ece8;margin:0 0 14px;font-weight:700;}
+.card+.card,.grid+.card,.card+.grid{margin-top:18px;}
+.chip-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+.chip{font-family:var(--sans);font-size:13px;font-weight:500;background:var(--panel-2);border:1px solid #5d8575;color:var(--ink);padding:8px 12px;border-radius:20px;cursor:pointer;}
+.chip.active{background:var(--neutral);color:#0d1a15;border-color:var(--neutral);font-weight:700;}
+.eq{font-family:var(--mono);font-size:14px;text-align:center;padding:12px;background:var(--panel-2);border-radius:8px;margin-bottom:16px;}
+.note{font-size:12.5px;color:#d5e1dc;line-height:1.6;background:var(--panel-2);border-radius:8px;padding:10px 12px;margin-top:14px;}
+.note b{color:var(--ink);}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+.go{font-family:var(--sans);font-weight:700;font-size:14.5px;border:none;border-radius:10px;padding:11px 15px;cursor:pointer;background:var(--neutral);color:#0d1a15;touch-action:manipulation;}
+.go.ghost{background:var(--panel-2);color:var(--ink);border:1px solid var(--line);}
+.go:disabled{opacity:.45;cursor:default;}
+.stage{display:flex;justify-content:center;}
+.stage svg{width:100%;max-width:340px;height:auto;}
+svg text{font-family:var(--mono);}
+.scale{font:700 30px var(--mono);text-align:center;background:#0c1915;border:2px solid var(--line);border-radius:10px;padding:8px;margin:10px auto 0;max-width:240px;color:#7dffb0;letter-spacing:.05em;}
+.scale small{display:block;font:400 11px var(--mono);color:var(--muted);letter-spacing:.06em;}
+.steps{counter-reset:s;margin:0;padding:0;list-style:none;}
+.steps li{position:relative;padding:0 0 10px 30px;line-height:1.6;font-size:14px;}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:1px;width:21px;height:21px;border-radius:50%;background:var(--panel-2);border:1px solid var(--line);font:700 11px/19px var(--mono);text-align:center;color:var(--neutral);}
+.ans{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;font-size:14px;}
+.ans input{width:110px;font:700 16px var(--mono);padding:9px 10px;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);color:var(--ink);}
+.fb{font-size:13.5px;margin-top:8px;min-height:1.2em;line-height:1.6;}
+.fb.ok{color:var(--neutral);}.fb.no{color:var(--acid-2);}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th,td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:center;}
+th{font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:400;}
+.plot{background:var(--panel-2);border-radius:10px;padding:10px;margin-top:12px;}
+.plot svg{width:100%;height:auto;display:block;}
+@media (prefers-reduced-motion:reduce){.panel.active{animation:none;}}
+
+/* == IPAD-FIT BEGIN (자동 생성 · 직접 수정하지 말 것) == */
+/* ══ 아이패드 대응 (자동 삽입 · 화학실험실 파이프라인) ══════════
+   대상 폭 — 세로 744(mini)/810(10.9")/834(Air·Pro11)/1024(Pro12.9")
+            가로 1080/1133/1194/1366
+   원칙 — 손가락 터치 목표 44px 이상, 본문 글자 키우기, 홈판을 화면 폭에 맞춰 확대 */
+html{-webkit-text-size-adjust:100%;}
+
+/* 태블릿 세로부터 */
+@media (min-width:744px){
+  body{padding:38px 30px 78px;font-size:15.5px;}
+  .wrap{max-width:900px;}
+  h1{font-size:38px;}
+  .sub{font-size:16px;line-height:1.7;max-width:680px;}
+
+  /* 탭 — 손가락으로 누를 크기 */
+  .tabs{flex-wrap:wrap;gap:0 4px;}
+  .tab-btn{font-size:15.5px;padding:15px 6px;}
+  .tab-btn+.tab-btn{margin-left:26px;}
+
+  /* 선택 칩 — 44px 이상 */
+  .chip{font-size:14.5px;padding:12px 17px;border-radius:24px;}
+  .card{padding:22px 24px;}
+  .card h3{font-size:12.5px;margin-bottom:16px;}
+  .note{font-size:13.5px;padding:12px 14px;}
+
+  /* 비커·수치 */
+  .beaker-svg{width:172px;height:206px;}
+  .readout .ph-big{font-size:46px;}
+  .verdict{font-size:15px;padding:6px 15px;}
+  .ph-strip-wrap{margin-top:38px;}   /* pH 마커 라벨이 위 설명문과 겹치지 않게 */
+  .ph-strip{height:38px;}
+  .ph-labels{font-size:11.5px;}
+
+  /* 중화 반응 */
+  input[type=range]{height:6px;}
+  .slider-row label{font-size:14px;}
+  .eq{font-size:15.5px;padding:14px;}
+
+  /* 한눈에 비교 */
+  .compare-row{grid-template-columns:repeat(auto-fit,minmax(98px,1fr));gap:16px;}
+  .compare-cell .mini-beaker{width:54px;height:66px;}
+  .compare-cell .c-name{font-size:12.5px;min-height:32px;}
+
+  /* 홈판 — 화면 폭을 다 쓰고 칸을 키운다(손가락으로 칠할 크기) */
+  .well-grid{max-width:100%;gap:5px;margin-top:20px;}
+  .palette-row{gap:10px;}
+  .swatch-btn{padding:10px 14px;}
+  .swatch-dot{width:24px;height:24px;}
+  .swatch-label{font-size:11px;}
+  .toggle-btn{font-size:14.5px;padding:14px 18px;}
+  .tmpl-btn{font-size:13.5px;padding:11px 17px;}
+}
+
+/* 태블릿 가로 · 큰 화면 */
+@media (min-width:1024px){
+  .wrap{max-width:1000px;}
+  .grid{gap:24px;}
+  .well-grid{max-width:840px;}
+  .compare-row{gap:18px;}
+}
+
+/* 아이패드 세로에서 2단이 좁아지는 구간 — 카드 안쪽 여백만 줄여 숨통 */
+@media (min-width:744px) and (max-width:860px){
+  .grid{gap:16px;}
+  .card{padding:20px;}
+}
+
+/* 안전영역(홈 인디케이터) */
+@supports (padding:env(safe-area-inset-bottom)){
+  body{padding-bottom:calc(78px + env(safe-area-inset-bottom));}
+}
+
+/* ══ 선명도 (11-27 "색이 명확하게") ══════════════════════════
+   어두운 테마 실험실(탭 있는 것): 보조 글자·선·칸 배경 대비를 올린다 */
+:root:has(.tab-btn){--muted:#c6d6cf;--line:#4b7062;--panel:#1c3a31;--panel-2:#264a3e;}
+:root:has(.tab-btn) .tab-btn{color:#c6d6cf;}
+:root:has(.tab-btn) .tab-btn.active{color:#fff;}
+:root:has(.tab-btn) .tab-btn.active::after{height:3px;}
+:root:has(.tab-btn) .card h2,:root:has(.tab-btn) .card h3{color:#e3ece8;}
+:root:has(.tab-btn) .chip{border-color:#5d8575;}
+:root:has(.tab-btn) .note{color:#d5e1dc;}
+/* 헤스 실험실(자체 라이트/다크): 다크일 때만 보조 글자·선 대비 */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--mute:#c0d2cc;--line:#45605a;}}
+:root[data-theme="dark"]{--mute:#c0d2cc;--line:#45605a;}
+/* 돌아가기 링크(인라인 스타일이라 !important) */
+a[href="../"]{color:#dfe9e4!important;border-color:#5d8575!important;}
+/* == IPAD-FIT END == */
+</style>
+</head>
+<body>
+  <a href="../" style="display:inline-flex;align-items:center;gap:7px;margin-bottom:18px;
+  font-family:'Space Mono','Courier New',monospace;font-size:12px;letter-spacing:.06em;
+  color:#9cb0a8;text-decoration:none;border:1px solid #2c473d;border-radius:20px;
+  padding:6px 13px;transition:.15s"
+  onmouseover="this.style.color='#f1ede3';this.style.borderColor='#6fb98f'"
+  onmouseout="this.style.color='#9cb0a8';this.style.borderColor='#2c473d'">← 실험실 목록</a>
+<div class="wrap">
+  <div class="eyebrow">Lab 09 · 화학 반응의 양적 관계</div>
+  <h1>양적 관계 실험실</h1>
+  <p class="sub">전자저울로 질량 변화를 재서 몰수를 구합니다. 황산 구리 결정에 들어 있는 물 분자 수와, 달걀 껍데기·칼슘제 속 탄산 칼슘의 비율을 직접 계산해 보세요. 시료 값은 실험할 때마다 조금씩 달라집니다.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-p="p1">① 황산 구리 결정수</button>
+    <button class="tab-btn" data-p="p2">② 탄산 칼슘 함량</button>
+  </div>
+
+  <section class="panel active" id="p1">
+    <div class="eq">CuSO₄·xH₂O(s, 파랑) → CuSO₄(s, 흰색) + xH₂O(g)</div>
+    <div class="grid">
+      <div class="card">
+        <h2>실험 순서</h2>
+        <ol class="steps">
+          <li>빈 도가니의 질량을 잽니다. <button class="go ghost" id="w0" style="padding:7px 12px;font-size:13px">빈 도가니 달기</button></li>
+          <li>푸른 황산 구리 결정을 넣고 잽니다. <button class="go ghost" id="w1" style="padding:7px 12px;font-size:13px" disabled>결정 넣고 달기</button></li>
+          <li>가열 → 식히기 → 달기를 <b>질량이 더 줄지 않을 때(항량)</b>까지 되풀이합니다. <button class="go" id="heat" style="padding:7px 12px;font-size:13px" disabled>가열하고 달기</button></li>
+          <li>x를 구하세요. (CuSO₄ 159.6, H₂O 18.0)
+            <div class="ans">x = <input id="xAns" inputmode="decimal" placeholder="x"> <button class="go ghost" id="xChk">확인</button></div>
+            <div class="fb" id="xFb"></div></li>
+        </ol>
+        <table style="margin-top:6px"><thead><tr><th>측정</th><th>질량 (g)</th></tr></thead><tbody id="wT"></tbody></table>
+      </div>
+      <div class="card">
+        <h2>도가니 · 전자저울</h2>
+        <div class="stage"><svg viewBox="0 0 340 230">
+          <g id="flame" opacity="0"><path d="M170 220 C150 195 160 180 170 165 C180 180 190 195 170 220 Z" fill="#4fb3ff"/><path d="M170 220 C162 205 166 195 170 186 C174 195 178 205 170 220 Z" fill="#c9ecff"/></g>
+          <path d="M120 70 H220 L205 150 H135 Z" fill="none" stroke="#f1ede3" stroke-width="3"/>
+          <defs><clipPath id="cr"><path d="M120 70 H220 L205 150 H135 Z"/></clipPath></defs>
+          <g clip-path="url(#cr)" id="crys"></g>
+          <rect x="110" y="152" width="120" height="8" rx="2" fill="#c6d6cf"/>
+          <text x="170" y="40" text-anchor="middle" fill="#c6d6cf" font-size="12" id="crLabel">빈 도가니</text>
+        </svg></div>
+        <div class="scale"><span id="sc1">0.00</span> g<small>전자저울 (0.01 g)</small></div>
+        <div class="note">한 번만 가열하고 멈추면 물이 덜 빠져 x가 작게 나옵니다. <b>마지막 두 번의 질량 차이가 0.01 g 이하</b>면 항량입니다.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="p2">
+    <div class="eq">CaCO₃(s) + 2HCl(aq) → CaCl₂(aq) + H₂O(l) + CO₂(g)↑</div>
+    <div class="grid">
+      <div class="card">
+        <h2>실험 순서</h2>
+        <div class="chip-list" id="smp"><button class="chip active" data-v="egg">달걀 껍데기 가루</button><button class="chip" data-v="tab">칼슘제 정제 가루</button></div>
+        <ol class="steps">
+          <li>묽은 염산 50 mL가 든 삼각 플라스크를 저울에 올리고, 시료를 담은 약포지도 함께 올려 전체 질량을 잽니다. <span id="msT" style="font-family:var(--mono);color:#fff"></span> <button class="go ghost" id="c0" style="padding:7px 12px;font-size:13px">전체 달기</button></li>
+          <li>시료를 플라스크에 넣고(약포지는 저울 위에 그대로) 기포가 그칠 때까지 질량을 지켜봅니다. <button class="go" id="c1" style="padding:7px 12px;font-size:13px" disabled>시료 넣기</button></li>
+          <li>시료 속 CaCO₃의 질량 백분율(%)을 구하세요. (CaCO₃ 100.1, CO₂ 44.0)
+            <div class="ans"><input id="pAns" inputmode="decimal" placeholder="%"> % <button class="go ghost" id="pChk">확인</button></div>
+            <div class="fb" id="pFb"></div></li>
+        </ol>
+        <div class="note">줄어든 질량 = 빠져나간 CO₂의 질량. 염산은 넉넉해서 CaCO₃가 모두 반응합니다. 껍데기의 나머지(단백질 막 등)는 염산과 반응해도 기체를 내지 않습니다.</div>
+      </div>
+      <div class="card">
+        <h2>저울 위 플라스크</h2>
+        <div class="stage"><svg viewBox="0 0 340 200">
+          <path d="M150 30 H190 V70 L230 160 H110 L150 70 Z" fill="none" stroke="#f1ede3" stroke-width="2.5"/>
+          <path d="M127 122 H213 L230 160 H110 Z" fill="rgba(242,165,65,.45)"/>
+          <g id="cbub"></g><g id="pow"></g>
+          <rect x="250" y="150" width="50" height="10" rx="2" fill="#e9e4d8" id="paper"/>
+          <rect x="90" y="162" width="230" height="10" rx="2" fill="#c6d6cf"/>
+          <text x="275" y="140" text-anchor="middle" fill="#c6d6cf" font-size="11">약포지</text>
+        </svg></div>
+        <div class="scale"><span id="sc2">0.00</span> g<small>전자저울 (0.01 g)</small></div>
+        <div class="plot"><svg viewBox="0 0 400 200" id="mPlot"></svg></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const NS='http://www.w3.org/2000/svg';
+const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+const txt=(g,x,y,s,a={})=>{const t=el('text',Object.assign({x,y,fill:'#c6d6cf','font-size':11},a));t.textContent=s;g.appendChild(t);};
+document.querySelectorAll('.tab-btn').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.toggle('active',x===b));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.toggle('active',p.id===b.dataset.p));});
+const num=v=>parseFloat(String(v).replace(',','.'));
+const r2=v=>Math.round(v*100)/100;
+
+// ── ① 결정수: CuSO₄·5H₂O, 물 비율 = 90.0/249.6
+const WF=5*18.0/(159.6+5*18.0);
+let cu={cru:+(18+Math.random()*4).toFixed(2),hyd:0,left:1,rows:[],step:0};
+function crys(){const g=$('#crys');g.innerHTML='';if(!cu.hyd)return;const t=1-cu.left; // 0 파랑 → 1 흰색
+  const c=`rgb(${Math.round(40+(235-40)*t)},${Math.round(110+(232-110)*t)},${Math.round(220+(225-220)*t)})`;
+  for(let i=0;i<46;i++){const x=128+(i*29)%80,y=150-((i*17)%34)-(i>23?10:0);g.appendChild(el('rect',{x,y,width:9,height:7,rx:1.5,fill:c,transform:`rotate(${(i*37)%60-30} ${x+4} ${y+3})`}));}}
+function addRow(name,m){cu.rows.push([name,m]);$('#wT').innerHTML=cu.rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1].toFixed(2)}</td></tr>`).join('');$('#sc1').textContent=m.toFixed(2);}
+$('#w0').onclick=()=>{if(cu.rows.length)return;addRow('빈 도가니',cu.cru);$('#w0').disabled=true;$('#w1').disabled=false;};
+$('#w1').onclick=()=>{cu.hyd=+(2.40+Math.random()*0.2).toFixed(2);crys();addRow('도가니+결정',cu.cru+cu.hyd);$('#crLabel').textContent='CuSO₄·xH₂O';$('#w1').disabled=true;$('#heat').disabled=false;};
+$('#heat').onclick=()=>{cu.step++;cu.left*=cu.step===1?0.38:0.22;if(cu.left<0.004)cu.left=0;
+  $('#flame').setAttribute('opacity',1);$('#heat').disabled=true;
+  setTimeout(()=>{$('#flame').setAttribute('opacity',0);crys();const m=r2(cu.cru+cu.hyd*(1-WF)+cu.hyd*WF*cu.left);addRow(`가열 ${cu.step}회 후`,m);
+    $('#crLabel').textContent=cu.left<0.01?'CuSO₄ (흰색)':'물이 빠지는 중';$('#heat').disabled=false;},700);};
+$('#xChk').onclick=()=>{const v=num($('#xAns').value),f=$('#xFb'),h=cu.rows.filter(r=>r[0].startsWith('가열'));
+  if(h.length<2){f.className='fb no';f.textContent='항량이 되었는지 확인하려면 적어도 두 번은 가열해야 합니다.';return;}
+  const last=h[h.length-1][1],prev=h[h.length-2][1];
+  if(prev-last>0.01+1e-9){f.className='fb no';f.textContent=`마지막 두 질량 차이가 ${(prev-last).toFixed(2)} g입니다. 아직 항량이 아니니 한 번 더 가열하세요.`;return;}
+  if(isNaN(v)){f.className='fb no';f.textContent='숫자를 넣어 주세요.';return;}
+  const mA=last-cu.cru,mW=cu.cru+cu.hyd-last,x=(mW/18.0)/(mA/159.6);
+  if(Math.abs(v-x)<=0.15||Math.round(v)===5&&Math.abs(x-5)<0.3){f.className='fb ok';f.innerHTML=`맞습니다! 측정값으로 x = ${x.toFixed(2)} ≈ <b>5</b> → CuSO₄·5H₂O`;}
+  else{f.className='fb no';f.innerHTML='① 물 질량 = (도가니+결정) − (항량 질량) ② 무수 CuSO₄ 질량 = 항량 질량 − 빈 도가니 ③ x = (물 ÷ 18.0) ÷ (CuSO₄ ÷ 159.6)';}};
+
+// ── ② CaCO₃ 함량
+const TRUE={egg:0.92+Math.random()*0.04,tab:0.60+Math.random()*0.10};
+let ca={k:'egg',m0:0,ms:0,hist:[],run:false,done:false};
+document.querySelectorAll('#smp .chip').forEach(c=>c.onclick=()=>{if(ca.run)return;document.querySelectorAll('#smp .chip').forEach(x=>x.classList.toggle('active',x===c));ca={k:c.dataset.v,m0:0,ms:0,hist:[],run:false,done:false};$('#sc2').textContent='0.00';$('#c0').disabled=false;$('#c1').disabled=true;$('#pFb').textContent='';$('#pow').innerHTML='';$('#msT').textContent='';$('#paper').setAttribute('fill','#e9e4d8');plot();});
+$('#c0').onclick=()=>{ca.ms=+(1.95+Math.random()*0.1).toFixed(2);ca.m0=r2(150+Math.random()*8+ca.ms);ca.hist=[[0,ca.m0]];$('#msT').textContent=`(시료 ${ca.ms.toFixed(2)} g)`;$('#sc2').textContent=ca.m0.toFixed(2);$('#c0').disabled=true;$('#c1').disabled=false;
+  $('#paper').setAttribute('fill','#e9e4d8');const g=$('#pow');g.innerHTML='';for(let i=0;i<14;i++)g.appendChild(el('circle',{cx:258+(i*7)%34,cy:147-(i%3)*2,r:2.2,fill:'#f4efe4'}));plot();};
+$('#c1').onclick=()=>{ca.run=true;$('#c1').disabled=true;$('#pow').innerHTML='';
+  const co2=ca.ms*TRUE[ca.k]/100.1*44.0,t0=performance.now();
+  const step=now=>{const s=(now-t0)/1000*12,k=1-Math.exp(-s/18);const m=ca.m0-co2*k;$('#sc2').textContent=m.toFixed(2);
+    if(!ca.hist.length||s-ca.hist[ca.hist.length-1][0]>=2)ca.hist.push([s,m]);
+    const g=$('#cbub');g.innerHTML='';if(k<0.97)for(let i=0;i<8*(1-k)+1;i++){const y=155-((now/7+i*23)%35);g.appendChild(el('circle',{cx:135+(i*31)%70,cy:y,r:2.5,fill:'none',stroke:'#f1ede3'}));}
+    plot();if(s<120)requestAnimationFrame(step);else{ca.run=false;ca.done=true;ca.end=r2(ca.m0-co2);$('#sc2').textContent=ca.end.toFixed(2);g.innerHTML='';}};
+  requestAnimationFrame(step);};
+function plot(){const g=$('#mPlot');g.innerHTML='';if(!ca.hist.length)return;const L=56,R=390,T=12,B=168,lo=ca.m0-1.0,X=t=>L+(R-L)*t/120,Y=m=>B-(B-T)*(m-lo)/1.0;
+  for(let i=0;i<=4;i++){const m=lo+i*0.25;g.appendChild(el('line',{x1:L,x2:R,y1:Y(m),y2:Y(m),stroke:'#3f6355'}));txt(g,L-6,Y(m)+4,m.toFixed(2),{'text-anchor':'end','font-size':10});}
+  for(let t=0;t<=120;t+=30)txt(g,X(t),B+16,t,{'text-anchor':'middle'});txt(g,R,B+30,'시간 (초)',{'text-anchor':'end'});
+  g.appendChild(el('path',{d:ca.hist.map((p,i)=>(i?'L':'M')+X(p[0]).toFixed(1)+' '+Y(p[1]).toFixed(1)).join(' '),fill:'none',stroke:'#f2a541','stroke-width':2.5}));}
+$('#pChk').onclick=()=>{const v=num($('#pAns').value),f=$('#pFb');
+  if(!ca.done){f.className='fb no';f.textContent='반응이 끝난 뒤 계산하세요.';return;}
+  if(isNaN(v)){f.className='fb no';f.textContent='숫자를 넣어 주세요.';return;}
+  const p=(ca.m0-ca.end)/44.0*100.1/ca.ms*100;
+  if(Math.abs(v-p)<=Math.max(1.5,p*0.02)){f.className='fb ok';f.innerHTML=`맞습니다! 측정값으로 <b>${p.toFixed(1)} %</b>. 시료 ${ca.ms.toFixed(2)} g 중 CaCO₃ ${((ca.m0-ca.end)/44*100.1).toFixed(2)} g`;}
+  else{f.className='fb no';f.innerHTML='① CO₂ 질량 = 처음 전체 − 나중 전체 ② CO₂ mol = ① ÷ 44.0 = CaCO₃ mol ③ CaCO₃ g = ② × 100.1 ④ ÷ 시료 질량 × 100';}};
+plot();
+})();
+</script>
+</body>
+</html>
