@@ -29,7 +29,7 @@ h1{font-weight:700;font-size:32px;margin:0 0 6px;letter-spacing:-.01em;}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
 @media(max-width:720px){.grid{grid-template-columns:1fr;}}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;}
-.card h3{font-size:12px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;}
+.card h2{font-size:12px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;}
 .card+.card,.grid+.card,.card+.grid{margin-top:18px;}
 .chip-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
 .chip{font-family:var(--sans);font-size:13px;font-weight:500;background:var(--panel-2);border:1px solid var(--line);color:var(--ink);padding:8px 12px;border-radius:20px;cursor:pointer;}
@@ -165,7 +165,7 @@ html{-webkit-text-size-adjust:100%;}
   <section class="panel active" id="p1">
     <div class="grid">
       <div class="card">
-        <h3>0.100 M 옥살산 표준 용액 100 mL</h3>
+        <h2>0.100 M 옥살산 표준 용액 100 mL</h2>
         <ol class="steps">
           <li>옥살산 이수화물(H₂C₂O₄·2H₂O, 화학식량 126.1)을 몇 g 달아야 할까요?
             <div class="ans"><input id="m1" inputmode="decimal" placeholder="g"> g <button class="go ghost" id="c1">확인</button></div>
@@ -178,7 +178,7 @@ html{-webkit-text-size-adjust:100%;}
         </ol>
       </div>
       <div class="card">
-        <h3>부피 플라스크 · 표선 맞추기</h3>
+        <h2>부피 플라스크 · 표선 맞추기</h2>
         <div class="stage">
           <svg viewBox="0 0 300 300" id="vf">
             <defs><clipPath id="vfc"><path d="M135 20 H165 V150 C230 170 240 270 200 285 H100 C60 270 70 170 135 150 Z"/></clipPath></defs>
@@ -209,7 +209,7 @@ html{-webkit-text-size-adjust:100%;}
     <div class="eq">CH₃COOH(aq) + NaOH(aq) → CH₃COONa(aq) + H₂O(l)</div>
     <div class="grid">
       <div class="card">
-        <h3>실험 순서</h3>
+        <h2>실험 순서</h2>
         <ol class="steps">
           <li>식초 10.0 mL를 100 mL로 묽힙니다(10배).</li>
           <li>묽힌 식초 20.0 mL를 삼각 플라스크에 넣고 페놀프탈레인 2~3방울.</li>
@@ -227,7 +227,7 @@ html{-webkit-text-size-adjust:100%;}
   <!-- ③ pH 곡선 -->
   <section class="panel" id="p3">
     <div class="card">
-      <h3>pH 미터로 적정 곡선 그리기 (산 0.100 M 20.0 mL ← NaOH 0.100 M)</h3>
+      <h2>pH 미터로 적정 곡선 그리기 (산 0.100 M 20.0 mL ← NaOH 0.100 M)</h2>
       <div class="chip-list" id="acidChips"><button class="chip active" data-v="weak">아세트산 (약산)</button><button class="chip" data-v="strong">염산 (강산)</button></div>
       <div class="plot"><svg viewBox="0 0 640 320" id="curve"></svg></div>
       <div class="read"><div><div class="big" id="cV">0.00</div><div class="u">NaOH (mL)</div></div><div><div class="big" id="cPH">-</div><div class="u">pH 미터</div></div></div>
@@ -239,13 +239,13 @@ html{-webkit-text-size-adjust:100%;}
     </div>
     <div class="grid">
       <div class="card">
-        <h3>완충 용액 시험</h3>
+        <h2>완충 용액 시험</h2>
         <p style="margin:0 0 10px;font-size:14px;line-height:1.6">반당량점 용액(아세트산 + 아세트산 나트륨)과 순수한 물 30 mL에 같은 양의 산이나 염기를 넣어 봅니다.</p>
         <table><thead><tr><th></th><th>완충 용액</th><th>물</th></tr></thead><tbody id="bufT"></tbody></table>
         <div class="btn-row"><button class="go ghost" id="bH">0.100 M HCl 1 mL 넣기</button><button class="go ghost" id="bOH">0.100 M NaOH 1 mL 넣기</button><button class="go ghost" id="bR">다시</button></div>
       </div>
       <div class="card">
-        <h3>생각해 보기</h3>
+        <h2>생각해 보기</h2>
         <div class="q"><p>1. 반당량점에서 pH = pKa인 까닭은?</p><details><summary>확인</summary>아세트산의 절반이 중화되어 [CH₃COOH] = [CH₃COO⁻]이 됩니다. Ka = [H⁺][CH₃COO⁻]/[CH₃COOH]에서 두 농도가 같으니 Ka = [H⁺], 곧 pH = pKa ≈ 4.74 (Ka ≈ 1.8×10⁻⁵).</details></div>
         <div class="q"><p>2. 약산의 당량점 pH가 7보다 큰 까닭은?</p><details><summary>확인</summary>당량점에는 CH₃COONa만 남는데, CH₃COO⁻이 물과 반응(가수 분해)해 OH⁻을 만들기 때문입니다. 그래서 지시약으로 페놀프탈레인(변색 8.2~10)을 씁니다.</details></div>
         <div class="q"><p>3. 완충 용액의 pH가 잘 안 변하는 까닭은?</p><details><summary>확인</summary>넣은 H⁺는 CH₃COO⁻이, OH⁻는 CH₃COOH가 받아 없애기 때문입니다.</details></div>
@@ -258,7 +258,7 @@ html{-webkit-text-size-adjust:100%;}
     <div class="eq">C₆H₈O₆ (비타민 C) + I₂ → C₆H₆O₆ + 2HI</div>
     <div class="grid">
       <div class="card">
-        <h3>실험 순서</h3>
+        <h2>실험 순서</h2>
         <ol class="steps">
           <li>비타민 C 정 1알(표시량 500 mg)을 녹여 250 mL로 만듭니다.</li>
           <li>이 용액 25.0 mL를 삼각 플라스크에 넣고 녹말 용액을 몇 방울 넣습니다.</li>
@@ -314,7 +314,7 @@ vfDraw();
 
 // ── 뷰렛 적정 위젯
 function titrator(box,{color,max=50,onEnd}){
-  box.innerHTML=`<h3>뷰렛 적정</h3><div class="stage"><svg viewBox="0 0 300 330">
+  box.innerHTML=`<h2>뷰렛 적정</h2><div class="stage"><svg viewBox="0 0 300 330">
     <rect x="135" y="10" width="22" height="200" rx="3" fill="none" stroke="#f1ede3" stroke-width="2"/>
     <rect class="bl" x="137" y="12" width="18" height="196" fill="rgba(127,176,224,.35)"/>
     <g class="tk"></g><path d="M141 210 H151 L148 232 H144 Z" fill="#f1ede3"/>
